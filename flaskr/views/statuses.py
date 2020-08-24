@@ -1,6 +1,6 @@
- from flaskr.views.view import View
+from flaskr.views.view import View
 
- class Statuses(View):
+class Statuses(View):
     meta = {
         'name': 'Statuses'
     }
