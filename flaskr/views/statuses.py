@@ -1,14 +1,16 @@
- class Statuses:
+ from flaskr.views.view import View
+
+ class Statuses(View):
     meta = {
         'name': 'Statuses'
     }
 
-    methods = {
+    method_map = {
         'onSortStatuses': 'statuses/onSortStatuses.js'
     }
 
     def get_header(self):
         return None
 
-    def get_view(self):
+    def get_schema(self):
         return None
