@@ -1,6 +1,9 @@
+
 class View():
     def get_methods(self):
-        pass
+        methods = []
+
+        return methods
 
     def get_header(self):
         return None
