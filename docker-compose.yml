@@ -5,7 +5,9 @@ services:
     image: postgres
     restart: always
     ports:
-      - 5432:5432
+      - 4001:5432
+    env_file:
+      - .env
     environment:
       - POSTGRES_USER
       - POSTGRES_PASSWORD
@@ -16,7 +18,7 @@ services:
     volumes:
       - .:/code
     ports:
-      - 5000:5000
+      - 4000:4000
     depends_on:
       - db
     env_file:

@@ -1,12 +1,14 @@
+class View:
+    def __init__(self):
+        self.header = {}
+        self.schema = []
+        self.methods = {}
 
-class View():
     def get_methods(self):
-        methods = []
-
-        return methods
+        return self.methods
 
     def get_header(self):
-        return None
+        return self.header
 
     def get_schema(self):
-        return []
+        return self.schema
