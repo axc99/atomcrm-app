@@ -1,7 +1,8 @@
 import os
 from flask import request
-from flaskr import app, requests
+from flaskr import app
 from flaskr.views import views_map
+from flaskr.requests import requests_map
 
 
 # Index page
@@ -21,6 +22,7 @@ def api():
     # Get view
     if data['_req'] == 'getView':
         view_key = data['key']
+        view_params = data.get('params', {})
 
         #7
         if not views_map.get(view_key):
@@ -29,21 +31,44 @@ def api():
                 "key": "view_not_found"
             }
         else:
+            # Create view object
             view = views_map[view_key]()
+            result_view = {}
+
+            view.before(view_params)
+
+            view.before_get_meta(view_params)
+            result_view['meta'] = view.get_meta(view_params)
+
+            view.before_get_header(view_params)
+            result_view['header'] = view.get_header(view_params)
+
+            view.before_get_methods(view_params)
+            result_view['methods'] = view.get_methods(view_params)
+
+            view.before_get_schema(view_params)
+            result_view['schema'] = view.get_schema(view_params)
 
             return {
-                'meta': view.meta,
-                'methods': view.get_methods(),
-                'header': view.get_header(),
-                'schema': view.get_schema()
+                '_res': 'ok',
+                **result_view
             }
 
     # Custom requests
     else:
-        if not hasattr(requests, data['_req']):
-            request_func = requests[data['_req']]
+        request_name = data['_req']
+        request_params = data['params']
 
-            return request_func()
+        if not requests_map.get(request_name):
+            raise Exception()
+        else:
+            request_func = requests_map[request_name]
+            request_result = request_func(request_params)
+
+            return {
+                '_res': 'ok',
+                **(request_result if isinstance(request_result, dict) else {})
+            }
 
     return {}
 

@@ -16,7 +16,7 @@ class Lead(db.Model):
 class LeadField(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
-    value = db.Column(db.String(1000), min=0, max=1000, nullable=True)
+    value = db.Column(db.String(1000), nullable=True)
 
     lead_id = db.Column(db.Integer, db.ForeignKey('lead.id', ondelete='SET NULL'), nullable=False)
 
