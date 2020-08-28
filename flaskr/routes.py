@@ -3,6 +3,8 @@ from flask import request
 from flaskr import app
 from flaskr.views import views_map
 from flaskr.requests import requests_map
+import flaskr.api as api_methods
+from flaskr.secure import validate_api_token
 
 
 # Index page
@@ -12,8 +14,8 @@ def index():
 
 
 # Requests
-@app.route('/api', methods=['POST'])
-def api():
+@app.route('/req', methods=['POST'])
+def req():
     if not request.is_json:
         return {}, 400
 
@@ -24,7 +26,6 @@ def api():
         view_key = data['key']
         view_params = data.get('params', {})
 
-        #7
         if not views_map.get(view_key):
             return {
                 '_res': 'err',
@@ -77,8 +78,45 @@ def api():
 @app.route('/wh', methods=['POST'])
 def webhook():
     if not request.is_json:
-        return False, 400
+        return {}, 400
 
-    data = request.json()
+    data = request.get_json()
 
     return True
+
+
+# API
+@app.route('/api/<token>/<method>', methods=['POST'])
+def api_method(token, method):
+    is_token_valid, veokit_system_id = validate_api_token(token)
+
+    if not is_token_valid:
+        return {
+            'message': 'Invalid token'
+        }, 401
+
+    data = {}
+    if request.is_json:
+        data = request.get_json()
+
+    method_map = {
+        'getLeads': 'get_leads',
+        'createLead': 'create_lead',
+        'updateLead': 'update_lead',
+        'archiveLead': 'archive_lead',
+
+        'getStatuses': 'get_statuses',
+
+        'getFields': 'get_fields'
+    }
+
+    if not method_map.get(method):
+        return {
+           'message': 'Method /{} does not exist'.format(method)
+       }, 400
+    else:
+        method_func = getattr(api_methods, method_map[method])
+
+        return method_func(data, veokit_system_id)
+
+    return {}

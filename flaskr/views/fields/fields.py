@@ -1,17 +1,17 @@
 from flaskr.views.view import View
-from flaskr.models.tag import Tag
+from flaskr.models.field import Field, FieldType
 
 
-# Page: Tags
-class Tags(View):
+# Page: Fields
+class Fields(View):
     meta = {
-        'name': 'Tags'
+        'name': 'Lead fields'
     }
 
-    tags = []
+    fields = []
 
     def before(self, params):
-        self.tags = Tag.query \
+        self.fields = Field.query \
             .filter_by(veokit_system_id=1) \
             .all()
 
@@ -21,10 +21,10 @@ class Tags(View):
             'actions': [
                 {
                     '_com': 'Button',
-                    'label': 'Add tag',
+                    'label': 'Add field',
                     'type': 'primary',
                     'icon': 'plus',
-                    'toWindow': 'createTag'
+                    'toWindow': 'createField'
                 }
             ]
         }
@@ -32,28 +32,54 @@ class Tags(View):
     def get_schema(self, params):
         list_items = []
 
-        for tag in self.tags:
+        for field in self.fields:
+
+            # Description with field type, min and max values
+            field_description = ''
+            if field.value_type == FieldType.string:
+                field_description = 'String ({} - {} length)'.format(field.min, field.max)
+            elif field.value_type == FieldType.number:
+                field_description = 'Number ({} - {})'.format(field.min, field.max)
+            elif field.value_type == FieldType.boolean:
+                field_description = 'Checkbox'
+            elif field.value_type == FieldType.select:
+                field_description = 'Dropdown select ({} options)'.format(23)
+
+            # Extra with flags
+            field_extra = []
+            if field.as_title:
+                field_extra.append('Show in title')
+            if field.primary:
+                field_extra.append({
+                    '_com': 'Badge',
+                    'dot': True,
+                    'color': 'blue',
+                    'text': 'Primary field'
+                })
+
             list_items.append({
-                'id': status.id,
-                'title': status.name,
+                'id': field.id,
+                'title': field.name,
+                'description': field_description,
+                'extra': field_extra,
                 'actions': [
                     {
                         '_com': 'Button',
                         'icon': 'edit',
-                        'label': 'Edit',
-                        'toWindow': ['status', {
-                            'id': status.id
+                        'label': 'Edit field',
+                        'toWindow': ['field', {
+                            'id': field.id
                         }]
                     },
                     {
                         '_com': 'Button',
                         'icon': 'delete',
                         'openModal': {
-                            'title': 'Delete tag',
-                            'description': '',
-                            'okText': 'Are you sure you want to remove this tag?',
-                            'onOk': ['deleteStatus', {
-                                'id': status.id
+                            'title': 'Delete field',
+                            'description': 'Are you sure you want to delete this field?',
+                            'okText': 'Delete',
+                            'onOk': ['deleteField', {
+                                'id': field.id
                             }]
                         }
                     }
@@ -64,43 +90,18 @@ class Tags(View):
             {
                 '_com': 'List',
                 'sortable': True,
-                'onSort': 'onSortStatuses',
+                'onSort': 'onSortFields',
                 'items': list_items
             }
         ]
 
     methods = {
-        'onSortStatuses':
+        'onSortFields':
             """(app, params) => {
-                const statuses = []
-
-                params.items.map((item, itemIndex) => {
-                    statuses.push({
-                        id: item.key,
-                        values: {
-                            index: itemIndex
-                        }
-                    })
-                })
-
-                res = await app.sendReq('updateStatuses', { 
-                    statuses 
-                })  
+                
             }""",
-        'deleteStatus':
+        'deleteField':
             """(app, params) => {
-                const { id, assignedStatusId } = params
-
-                app.modal.setAttr('okLoading', true)
-
-                res = await app.sendReq('deleteStatus', {
-                    statusId: id,
-                    assignedStatusId
-                })
-
-                app.modal.setAttr('okLoading', false)
-
-                # Reload parent page with statuses
-                app.reloadPage()
+                
             }"""
     }

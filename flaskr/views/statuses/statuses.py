@@ -47,7 +47,7 @@ class Statuses(View):
             else:
                 deleteButton['openModal'] = {
                     'title': 'Delete status',
-                    'description': '',
+                    'description': 'Are you sure you want to delete this status?',
                     'okText': 'Delete',
                     'onOk': ['deleteStatus', {
                         'id': status.id
@@ -61,7 +61,7 @@ class Statuses(View):
                     {
                         '_com': 'Button',
                         'icon': 'edit',
-                        'label': 'Edit',
+                        'label': 'Edit staus',
                         'toWindow': ['status', {
                             'id': status.id
                         }]
