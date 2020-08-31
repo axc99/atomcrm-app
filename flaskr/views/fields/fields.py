@@ -67,7 +67,7 @@ class Fields(View):
                         '_com': 'Button',
                         'icon': 'edit',
                         'label': 'Edit field',
-                        'toWindow': ['field', {
+                        'toWindow': ['updateField', {
                             'id': field.id
                         }]
                     },

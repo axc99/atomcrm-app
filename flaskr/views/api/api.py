@@ -1,3 +1,5 @@
+import os
+
 from flaskr.views.view import View
 from flaskr.models.field import Field, FieldType
 
@@ -14,29 +16,30 @@ class Api(View):
             'actions': [
                 {
                     '_com': 'Button',
-                    'type': 'danger',
-                    'label': 'Get new token',
-                    'toWindow': 'createNewToken'
+                    'type': 'primary',
+                    'icon': 'lock',
+                    'label': 'Get token',
+                    'toWindow': 'getToken'
                 }
             ],
             'tabs': [
                 {
                     'key': 'leads',
-                    'title': 'Leads',
+                    'text': 'Leads',
                     'to': {
                         'tab': None
                     }
                 },
                 {
                     'key': 'statuses',
-                    'title': 'Statuses',
+                    'text': 'Statuses',
                     'to': {
                         'tab': 'statuses'
                     }
                 },
                 {
                     'key': 'fields',
-                    'title': 'Fields',
+                    'text': 'Fields',
                     'to': {
                         'tab': 'fields'
                     }
@@ -46,13 +49,15 @@ class Api(View):
 
     def get_schema(self, params):
         content = ''
+        dirname = os.path.dirname(__file__)
+        tab = params.get('tab')
 
-        if not params.tab or params.tab == 'leads':
-            content = open('pages/leads.md', 'r').read()
-        elif params.tab == 'statuses':
-            content = open('pages/statuses.md', 'r').read()
-        elif params.tab == 'fields':
-            content = open('pages/fields.md', 'r').read()
+        if not tab or tab == 'leads':
+            content = open(os.path.join(dirname, './pages/leads.md'), 'r').read()
+        elif tab == 'statuses':
+            content = open(os.path.join(dirname, './pages/statuses.md'), 'r').read()
+        elif tab == 'fields':
+            content = open(os.path.join(dirname, './pages/fields.md'), 'r').read()
 
         return [
             {

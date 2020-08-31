@@ -1,5 +1,5 @@
 from flaskr.views.view import View
-from flaskr.models.status import Status
+from flaskr.models.field import Field
 
 
 # Window: Update field

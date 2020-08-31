@@ -58,7 +58,7 @@ def req():
     # Custom requests
     else:
         request_name = data['_req']
-        request_params = data['params']
+        request_params = data.get('params', {})
 
         if not requests_map.get(request_name):
             raise Exception()
@@ -71,18 +71,16 @@ def req():
                 **(request_result if isinstance(request_result, dict) else {})
             }
 
-    return {}
-
 
 # Web hook
 @app.route('/wh', methods=['POST'])
 def webhook():
-    if not request.is_json:
-        return {}, 400
+    # if not request.is_json:
+    #     return {}, 400
+    #
+    # data = request.get_json()
 
-    data = request.get_json()
-
-    return True
+    return 'ok'
 
 
 # API
@@ -118,5 +116,3 @@ def api_method(token, method):
         method_func = getattr(api_methods, method_map[method])
 
         return method_func(data, veokit_system_id)
-
-    return {}

@@ -1,5 +1,4 @@
 from flaskr.views.view import View
-from flaskr.models.status import Field
 
 
 # Window: Create Field

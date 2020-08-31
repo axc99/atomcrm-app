@@ -1,6 +1,7 @@
 from secrets import choice
 import string
 from flaskr.models.token import Token
+from flaskr import db
 
 
 # Validate api token

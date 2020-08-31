@@ -41,14 +41,17 @@ class CreateStatus(View):
 
     methods = {
         'onSubmitForm':
-            """(app, params) => {
-                const { values } = params
+            """(app, values) => {
+                console.log('values', values)
                 
-                res = await app.sendReq('createStatus', { values })
-                
-                if (res.response) {
-                    # Reload parent page with statuses
-                    app.reloadPage()
-                }
             }"""
     }
+
+    # const { values } = params
+    #
+    # res = await app.sendReq('createStatus', { values })
+    #
+    # if (res.response) {
+    #     # Reload parent page with statuses
+    #     app.reloadPage()
+    # }

@@ -17,6 +17,7 @@ def update_statuses(params):
         pass
 
 
+# Delete status
 def delete_status(params):
     if params['statusId']:
         Status.query\

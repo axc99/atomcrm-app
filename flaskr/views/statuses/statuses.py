@@ -61,8 +61,8 @@ class Statuses(View):
                     {
                         '_com': 'Button',
                         'icon': 'edit',
-                        'label': 'Edit staus',
-                        'toWindow': ['status', {
+                        'label': 'Edit status',
+                        'toWindow': ['updateStatus', {
                             'id': status.id
                         }]
                     },
@@ -80,37 +80,37 @@ class Statuses(View):
         ]
 
     methods = {
-        'onSortStatuses':
-            """(app, params) => {
-                const statuses = []
-            
-                params.items.map((item, itemIndex) => {
-                    statuses.push({
-                        id: item.key,
-                        values: {
-                            index: itemIndex
-                        }
-                    })
-                })
-                
-                res = await app.sendReq('updateStatuses', { 
-                    statuses 
-                })  
-            }""",
-        'deleteStatus':
-            """(app, params) => {
-                const { id, assignedStatusId } = params
-                
-                app.modal.setAttr('okLoading', true)
-                
-                res = await app.sendReq('deleteStatus', {
-                    statusId: id,
-                    assignedStatusId
-                })
-                
-                app.modal.setAttr('okLoading', false)
-                
-                # Reload parent page with statuses
-                app.reloadPage()
-            }"""
+        # 'onSortStatuses':
+        #     """(app, params) => {
+        #         const statuses = []
+        #
+        #         params.items.map((item, itemIndex) => {
+        #             statuses.push({
+        #                 id: item.key,
+        #                 values: {
+        #                     index: itemIndex
+        #                 }
+        #             })
+        #         })
+        #
+        #         res = await app.sendReq('updateStatuses', {
+        #             statuses
+        #         })
+        #     }""",
+        # 'deleteStatus':
+        #     """(app, params) => {
+        #         const { id, assignedStatusId } = params
+        #
+        #         app.modal.setAttr('okLoading', true)
+        #
+        #         res = await app.sendReq('deleteStatus', {
+        #             statusId: id,
+        #             assignedStatusId
+        #         })
+        #
+        #         app.modal.setAttr('okLoading', false)
+        #
+        #         # Reload parent page with statuses
+        #         app.reloadPage()
+        #     }"""
     }

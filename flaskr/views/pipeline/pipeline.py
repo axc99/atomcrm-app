@@ -26,9 +26,10 @@ class Pipeline(View):
             'title': self.meta.get('name'),
             'actions': [
                 {
-                    '_com': 'Field.Input',
-                    'multiple': True,
-                    'placeholder': 'Enter tags'
+                    '_com': 'Button',
+                    'type': 'solid',
+                    'icon': 'infoCircle',
+                    'toWindow': 'searchSyntax'
                 }
             ],
             'search': {
@@ -42,14 +43,15 @@ class Pipeline(View):
         for status in self.statuses:
             board_rows.append({
                 'id': status.id,
-                'title': [
-                    {
-                        '_com': 'Badge',
-                        'dot': True,
-                        'color': 'red',
-                        'text': status.name
-                    }
-                ],
+                'title': status.name,
+                #     [
+                #     {
+                #         '_com': 'Badge',
+                #         'dot': True,
+                #         'color': 'red',
+                #         'text': status.name
+                #     }
+                # ],
                 'subtitle': '{} {}'.format(23, 'lead' if 23 == 1 else 'leads')
             })
 
@@ -57,7 +59,7 @@ class Pipeline(View):
         for lead in self.leads:
             board_items.append({
                 'id': lead.id,
-                'title': lead.title,
+                'title': '12345',
                 'description': 'max three random fields here',
                 'extra': [
                     'Added on 12 Jun at 11:34',

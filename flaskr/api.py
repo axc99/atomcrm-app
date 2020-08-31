@@ -1,10 +1,21 @@
-from flaskr.models.lead import Lead
+from flaskr.models.lead import Lead, LeadTag
 from flaskr.models.status import Status
 from flaskr.models.field import Field
+from flaskr.models.tag import Tag
+from flaskr import db
+from cerberus import Validator
 
 
 # Get leads
 def get_leads(data, veokit_system_id):
+    vld = Validator({
+        'id': {'type': ['number', 'list'], 'nullable': True}
+    })
+    is_valid = vld.validate(data)
+
+    if not is_valid:
+        return vld.errors, 400
+
     res_leads = []
 
     leads_q = Lead.query.filter_by(veokit_system_id=veokit_system_id)
@@ -23,8 +34,10 @@ def get_leads(data, veokit_system_id):
         res_leads.append({
             'id': lead.id,
             'status_id': lead.status_id,
-            'add_date': lead.add_date,
-            'upd_date': lead.upd_date
+            'add_date': lead.add_date.strftime('%Y-%m-%d %H:%M:%S'),
+            'upd_date': lead.upd_date.strftime('%Y-%m-%d %H:%M:%S'),
+            'fields': lead.get_fields(for_api=True),
+            'tags': lead.get_tags(for_api=True)
         })
 
     return {
@@ -34,25 +47,127 @@ def get_leads(data, veokit_system_id):
 
 # Create lead
 def create_lead(data, veokit_system_id):
-    lead = {}
+    vld = Validator({
+        'status_id': {'type': 'number', 'required': True},
+        'tags': {
+            'type': 'list',
+            'schema': {'type': ['number', 'string']}
+        },
+        'fields': {
+            'type': 'list',
+            'schema': {
+                'type': 'dict',
+                'schema': {
+                    'field_id': {'type': 'number', 'required': True, 'nullable': False},
+                    'value': {'type': ['number', 'string', 'boolean', 'list'], 'required': True}
+                }
+            }
+        }
+    })
+    is_valid = vld.validate(data)
+
+    if not is_valid:
+        return vld.errors, 400
+
+    # Check status id
+    is_status_exist = Status.query \
+                          .filter_by(id=data['status_id'],
+                                     veokit_system_id=veokit_system_id) \
+                          .count() != 0
+    if not is_status_exist:
+        return {'message': 'Status (id={}) does not exist'.format(data['status_id'])}, \
+               400
+
+    # Create lead
+    lead = Lead()
+    lead.veokit_system_id = veokit_system_id
+    lead.status_id = data['status_id']
+    db.session.add(lead)
+    db.session.commit()
+
+    # Add tags and fields
+    if data.get('tags'):
+        lead.set_tags(data['tags'], new_lead=True)
+    if data.get('fields'):
+        lead.set_fields(data['fields'], new_lead=True)
 
     return {
-        'lead': lead
+        'lead': {
+            'id': lead.id,
+            'status_id': lead.status_id,
+            'add_date': lead.add_date.strftime('%Y-%m-%d %H:%M:%S'),
+            'upd_date': lead.upd_date.strftime('%Y-%m-%d %H:%M:%S'),
+            'fields': lead.get_fields(for_api=True),
+            'tags': lead.get_tags(for_api=True)
+        }
     }
 
 
 # Update lead
 def update_lead(data, veokit_system_id):
-    lead = {}
+    vld = Validator({
+        'id': {'type': 'number', 'required': True},
+        'status_id': {'type': 'number', 'required': True},
+        'tags': {
+            'type': 'list',
+            'schema': {'type': ['number', 'string']}
+        },
+        'fields': {
+            'type': 'list',
+            'schema': {
+                'type': 'dict',
+                'schema': {
+                    'field_id': {'type': 'number', 'required': True, 'nullable': False},
+                    'value': {'type': ['number', 'string', 'boolean', 'list'], 'required': True}
+                }
+            }
+        }
+    })
+    is_valid = vld.validate(data)
+
+    if not is_valid:
+        return vld.errors, 400
+
+    # Get lead by id
+    lead = Lead.query \
+        .filter_by(id=data['id'],
+                   veokit_system_id=veokit_system_id) \
+        .first()
+
+    if not lead:
+        return {"message": "Lead (id={}) does not exist".format(data['id'])}, 400
+
+    if lead.status_id != data['status_id']:
+        # Check status id
+        is_status_exist = Status.query \
+                              .filter_by(id=data['status_id'],
+                                         veokit_system_id=veokit_system_id) \
+                              .count() != 0
+        if not is_status_exist:
+            return {'message': 'Status (id={}) does not exist'.format(data['status_id'])}, \
+                   400
+
+    # Update lead
+    lead.veokit_system_id = veokit_system_id
+    lead.status_id = data['status_id']
+    db.session.commit()
+
+    # Set tags and fields
+    if data.get('tags'):
+        lead.set_tags(data['tags'])
+    if data.get('fields'):
+        lead.set_fields(data['fields'])
 
     return {
-        'lead': lead
+        'lead': {
+            'id': lead.id,
+            'status_id': lead.status_id,
+            'add_date': lead.add_date.strftime('%Y-%m-%d %H:%M:%S'),
+            'upd_date': lead.upd_date.strftime('%Y-%m-%d %H:%M:%S'),
+            'fields': lead.get_fields(for_api=True),
+            'tags': lead.get_tags(for_api=True)
+        }
     }
-
-
-# Archive lead (delete)
-def archive_lead(data, veokit_system_id):
-    return ()
 
 
 # Get statuses
