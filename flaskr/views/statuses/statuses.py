@@ -55,7 +55,7 @@ class Statuses(View):
                 }
 
             list_items.append({
-                'id': status.id,
+                'key': status.id,
                 'title': status.name,
                 'actions': [
                     {

@@ -58,7 +58,7 @@ class Fields(View):
                 })
 
             list_items.append({
-                'id': field.id,
+                'key': field.id,
                 'title': field.name,
                 'description': field_description,
                 'extra': field_extra,
