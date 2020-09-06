@@ -8,17 +8,18 @@ class GetToken(View):
         'name': 'Get token'
     }
 
-    def get_header(self, params):
+    def get_header(self, params, request_data):
         return {
-            'title': self.meta.get('name')
+            'title': self.meta.get('name'),
+            'subtitle': 'Your current token will be deactivated.'
         }
 
-    def get_schema(self, params):
+    def get_schema(self, params, request_data):
         return [
-            'Your current token will be deactivated.',
             {
                 '_id': 'getTokenBtn',
                 '_com': 'Button',
+                'type': 'primary',
                 'label': 'Generate new token',
                 'onClick': 'getToken'
             },
@@ -26,6 +27,8 @@ class GetToken(View):
                 '_id': 'tokenInput',
                 '_com': 'Field.Input',
                 '_vis': False,
+                'label': 'New token',
+                'multiline': True,
                 'type': 'text',
                 'readOnly': True
             }
@@ -33,18 +36,41 @@ class GetToken(View):
 
     methods = {
         'getToken':
-            """(app, params) => {
-                const getTokenBtn = app.getById('getTokenBtn')
-                const tokenInput = app.getById('tokenInput')
+            """(app, params, e) => {
+                const view = app.getView()
+                const getTokenBtn = view.getCom('getTokenBtn')
+                const tokenInput = view.getCom('tokenInput')
                 
-                tokenInput.setAttrs('loading', true)
+                getTokenBtn.setAttr('loading', true)
                 
-                const res = await app.sendReq('getToken')
-                tokenInput.setAttrs({
-                    value: res.token,
-                    _vis: true
-                })
-                
-                tokenInput.setAttr('loading', false)
+                // Get new token
+                app
+                    .sendReq('getToken', {})
+                    .then(result => {
+                        if (result._res == 'ok') {
+                            tokenInput.setAttrs({
+                                _vis: true,
+                                value: result.token
+                            })
+                        
+                            getTokenBtn.setAttrs({
+                                _vis: false,
+                                loading: false
+                            })
+                        }
+                    })
             }"""
+
+        # const getTokenBtn = app.getById('getTokenBtn')
+        # const tokenInput = app.getById('tokenInput')
+        #
+        # tokenInput.setAttrs('loading', true)
+        #
+        # const res = await app.sendReq('getToken')
+        # tokenInput.setAttrs({
+        #     value: res.token,
+        #     _vis: true
+        # })
+        #
+        # tokenInput.setAttr('loading', false)
     }

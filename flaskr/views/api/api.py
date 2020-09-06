@@ -10,7 +10,7 @@ class Api(View):
         'name': 'API'
     }
 
-    def get_header(self, params):
+    def get_header(self, params, request_data):
         return {
             'title': self.meta.get('name'),
             'actions': [
@@ -47,7 +47,7 @@ class Api(View):
             ]
         }
 
-    def get_schema(self, params):
+    def get_schema(self, params, request_data):
         content = ''
         dirname = os.path.dirname(__file__)
         tab = params.get('tab')

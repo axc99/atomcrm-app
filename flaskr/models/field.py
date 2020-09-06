@@ -28,7 +28,9 @@ class Field(db.Model):
     min = db.Column(db.Integer, default=1, nullable=True)
     max = db.Column(db.Integer, nullable=True)
 
-    veokit_system_id = db.Column(db.Integer, nullable=False, index=True)
+    index = db.Column(db.Integer, default=0, nullable=True)
+
+    veokit_installation_id = db.Column(db.Integer, nullable=False, index=True)
 
 
 # Select option

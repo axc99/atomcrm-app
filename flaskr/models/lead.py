@@ -13,7 +13,7 @@ class Lead(db.Model):
 
     archived = db.Column(db.Boolean, default=False, nullable=False)
 
-    veokit_system_id = db.Column(db.Integer, nullable=False, index=True)
+    veokit_installation_id = db.Column(db.Integer, nullable=False, index=True)
     status_id = db.Column(db.Integer, db.ForeignKey('status.id', ondelete='SET NULL'), nullable=False)
 
     # Set tags
@@ -28,7 +28,7 @@ class Lead(db.Model):
             # Search tag by name
             exist_tag = Tag.query \
                     .filter_by(name=tag_name,
-                               veokit_system_id=self.veokit_system_id) \
+                               veokit_installation_id=self.veokit_installation_id) \
                     .first()
 
             # If tag with such name already exist
@@ -36,7 +36,7 @@ class Lead(db.Model):
                 # Create tag
                 new_tag = Tag()
                 new_tag.name = tag_name
-                new_tag.veokit_system_id = self.veokit_system_id
+                new_tag.veokit_installation_id = self.veokit_installation_id
                 db.session.add(tag)
                 db.session.commit()
 
@@ -67,7 +67,7 @@ class Lead(db.Model):
         for lead_field in fields:
             field = Field.query \
                 .filter_by(id=lead_field['field_id'],
-                           veokit_system_id=self.veokit_system_id) \
+                           veokit_installation_id=self.veokit_installation_id) \
                 .first()
 
             if field:

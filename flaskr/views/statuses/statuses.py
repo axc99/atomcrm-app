@@ -1,5 +1,7 @@
+from flaskr import db
 from flaskr.views.view import View
 from flaskr.models.status import Status
+import enum
 
 
 # Page: Statuses
@@ -10,13 +12,22 @@ class Statuses(View):
 
     statuses = []
 
-    def before(self, params):
-        self.statuses = Status.query \
-            .filter_by(veokit_system_id=1) \
-            .order_by(Status.index.asc()) \
-            .all()
+    def before(self, params, request_data):
+        self.statuses = db.session.execute("""
+            SELECT 
+                s.*,
+                (SELECT COUNT(*) FROM public.lead AS l WHERE l.status_id = s.id) AS lead_count,
+                COUNT(*) OVER () AS total
+            FROM 
+                public.status AS s
+            WHERE
+                s.veokit_installation_id = :veokit_installation_id
+            ORDER BY 
+                s.index""", {
+            'veokit_installation_id': request_data['installation_id']
+        })
 
-    def get_header(self, params):
+    def get_header(self, params, request_data):
         return {
             'title': self.meta.get('name'),
             'actions': [
@@ -30,7 +41,7 @@ class Statuses(View):
             ]
         }
 
-    def get_schema(self, params):
+    def get_schema(self, params, request_data):
         list_items = []
 
         for status in self.statuses:
@@ -40,23 +51,20 @@ class Statuses(View):
             }
 
             # If leads with deleted status exist
-            if True:
+            if status.lead_count > 0:
                 deleteButton['toWindow'] = ['deleteStatus', {
                     'id': status.id
                 }]
             else:
-                deleteButton['openModal'] = {
-                    'title': 'Delete status',
-                    'description': 'Are you sure you want to delete this status?',
-                    'okText': 'Delete',
-                    'onOk': ['deleteStatus', {
-                        'id': status.id
-                    }]
-                }
+                deleteButton['onClick'] = ['deleteStatus', {
+                    'id': status.id
+                }]
 
             list_items.append({
                 'key': status.id,
+                'color': status.color,
                 'title': status.name,
+                'extra': "{} {}".format(status.lead_count, 'lead' if status.lead_count == 1 else 'leads'),
                 'actions': [
                     {
                         '_com': 'Button',
@@ -73,44 +81,57 @@ class Statuses(View):
         return [
             {
                 '_com': 'List',
+                '_id': 'statusesList',
                 'sortable': True,
-                'onSort': 'onSortStatuses',
+                'emptyText': 'No statuses',
+                'onDrag': 'onDragStatuses',
                 'items': list_items
             }
         ]
 
     methods = {
-        # 'onSortStatuses':
-        #     """(app, params) => {
-        #         const statuses = []
-        #
-        #         params.items.map((item, itemIndex) => {
-        #             statuses.push({
-        #                 id: item.key,
-        #                 values: {
-        #                     index: itemIndex
-        #                 }
-        #             })
-        #         })
-        #
-        #         res = await app.sendReq('updateStatuses', {
-        #             statuses
-        #         })
-        #     }""",
-        # 'deleteStatus':
-        #     """(app, params) => {
-        #         const { id, assignedStatusId } = params
-        #
-        #         app.modal.setAttr('okLoading', true)
-        #
-        #         res = await app.sendReq('deleteStatus', {
-        #             statusId: id,
-        #             assignedStatusId
-        #         })
-        #
-        #         app.modal.setAttr('okLoading', false)
-        #
-        #         # Reload parent page with statuses
-        #         app.reloadPage()
-        #     }"""
+        'onDragStatuses':
+            """(app, params, event) => {
+                const { key, newIndex, oldIndex } = event
+                const window = app.getView()
+                const list = window.getCom('statusesList')
+                
+                const items = list.getAttr('items')
+                
+                items.splice(newIndex, 0, items.splice(oldIndex, 1)[0])
+                
+                list.setAttr('items', items)
+                
+                app.sendReq('updateStatusIndex', {
+                    id: key,
+                    newIndex,
+                    oldIndex
+                })
+            }""",
+        'deleteStatus':
+            """(app, params) => {
+                const { id } = params
+                const window = app.getView()
+                const list = window.getCom('statusesList')
+                
+                const items = list.getAttr('items')
+                const item = items.find(item => item.key == id)
+                
+                item.actions[1].loading = true
+                list.setAttr('items', items)
+                
+                app
+                    .sendReq('deleteStatus', {
+                        id
+                    })
+                    .then(result => {
+                        item.actions[1].loading = false
+                        list.setAttr('items', items)
+                        
+                        if (result._res == 'ok') {
+                            // Reload parent page
+                            app.getPage().reload()
+                        }
+                    })
+            }"""
     }

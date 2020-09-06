@@ -12,7 +12,7 @@ class DeleteStatus(View):
     deleted_status = None
     other_statuses = []
 
-    def before(self, params):
+    def before(self, params, request_data):
         id = params.get('id')
 
         if not id:
@@ -20,24 +20,24 @@ class DeleteStatus(View):
 
         self.deleted_status = Status.query \
             .filter_by(id=id,
-                       veokit_system_id=1) \
+                       veokit_installation_id=1) \
             .first()
         if not self.deleted_status:
             raise Exception()
 
         self.other_statuses = Status.query \
-            .filter(Status.veokit_system_id==1,
+            .filter(Status.veokit_installation_id==1,
                     Status.id != id) \
             .order_by(Status.id.asc()) \
             .all()
 
-    def get_header(self, params):
+    def get_header(self, params, request_data):
         return {
             'title': self.meta.get('name'),
             'subtitle': 'Leads with a deleted status exist. What to do with leads with the status «{}»?'.format(self.deleted_status.name)
         }
 
-    def get_schema(self, params):
+    def get_schema(self, params, request_data):
         select_options = [
             {
                 'key': 'deleteLeads',
@@ -48,13 +48,15 @@ class DeleteStatus(View):
         for status in self.other_statuses:
             select_options.append({
                 'key': status.id,
+                'color': status.color.name,
                 'label': "Move leads to «{}»".format(status.name)
             })
 
         return [
             {
                 '_com': 'Form',
-                'onSubmit': 'onSubmitForm',
+                '_id': 'deleteStatusForm',
+                'onFinish': 'onFinish',
                 'fields': [
                     {
                         '_com': 'Field.Select',
@@ -73,30 +75,38 @@ class DeleteStatus(View):
             }
         ]
 
-    def get_methods(self, params):
+    def get_methods(self, params, request_data):
         return {
-            'onSubmitForm':
-                """(app, params) => {
-                    const { values } = params
+            'onFinish':
+                """(app, params, event) => {
+                    const window = app.getView()
+                    const form = window.getCom('deleteStatusForm')
+                    const { values } = event
                     
                     let deleteLeads = false
-                    let assignStatusId = null
+                    let assignedStatusId = null
                     
                     if (values.action == 'deleteLeads') {
                         deleteLeads = True
                     } else {
-                        assignStatusId = values.action
+                        assignedStatusId = values.action
                     }
-    
-                    res = await app.sendReq('deleteStatus', { 
-                        id: """ + str(self.deleted_status.id) + """,
-                        deleteLeads,
-                        assignedStatusId
-                    })
-    
-                    if (res.response) {
-                        # Reload parent page with statuses
-                        app.reloadPage()
-                    }
+                    
+                    form.setAttr('loading', true)
+                    
+                    app
+                        .sendReq('deleteStatus', {
+                            statusId: """ + str(self.deleted_status.id) + """,
+                            deleteLeads,
+                            assignedStatusId
+                        })
+                        .then(result => {
+                            form.setAttr('loading', false)
+                            
+                            if (result._res == 'ok') {
+                                // Reload parent page
+                                app.getPage().reload()
+                            }
+                        })
                 }"""
         }

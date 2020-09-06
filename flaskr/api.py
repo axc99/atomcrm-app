@@ -18,7 +18,7 @@ def get_leads(data, veokit_system_id):
 
     res_leads = []
 
-    leads_q = Lead.query.filter_by(veokit_system_id=veokit_system_id)
+    leads_q = Lead.query.filter_by(veokit_installation_id=veokit_installation_id)
 
     if data.get('id'):
         if isinstance(data['id'], list):
@@ -46,7 +46,7 @@ def get_leads(data, veokit_system_id):
 
 
 # Create lead
-def create_lead(data, veokit_system_id):
+def create_lead(data, veokit_installation_id):
     vld = Validator({
         'status_id': {'type': 'number', 'required': True},
         'tags': {
@@ -72,7 +72,7 @@ def create_lead(data, veokit_system_id):
     # Check status id
     is_status_exist = Status.query \
                           .filter_by(id=data['status_id'],
-                                     veokit_system_id=veokit_system_id) \
+                                     veokit_installation_id=veokit_installation_id) \
                           .count() != 0
     if not is_status_exist:
         return {'message': 'Status (id={}) does not exist'.format(data['status_id'])}, \
@@ -80,7 +80,7 @@ def create_lead(data, veokit_system_id):
 
     # Create lead
     lead = Lead()
-    lead.veokit_system_id = veokit_system_id
+    lead.veokit_installation_id = veokit_installation_id
     lead.status_id = data['status_id']
     db.session.add(lead)
     db.session.commit()
@@ -104,7 +104,7 @@ def create_lead(data, veokit_system_id):
 
 
 # Update lead
-def update_lead(data, veokit_system_id):
+def update_lead(data, veokit_installation_id):
     vld = Validator({
         'id': {'type': 'number', 'required': True},
         'status_id': {'type': 'number', 'required': True},
@@ -131,7 +131,7 @@ def update_lead(data, veokit_system_id):
     # Get lead by id
     lead = Lead.query \
         .filter_by(id=data['id'],
-                   veokit_system_id=veokit_system_id) \
+                   veokit_installation_id=veokit_installation_id) \
         .first()
 
     if not lead:
@@ -141,14 +141,14 @@ def update_lead(data, veokit_system_id):
         # Check status id
         is_status_exist = Status.query \
                               .filter_by(id=data['status_id'],
-                                         veokit_system_id=veokit_system_id) \
+                                         veokit_installation_id=veokit_installation_id) \
                               .count() != 0
         if not is_status_exist:
             return {'message': 'Status (id={}) does not exist'.format(data['status_id'])}, \
                    400
 
     # Update lead
-    lead.veokit_system_id = veokit_system_id
+    lead.veokit_installation_id = veokit_installation_id
     lead.status_id = data['status_id']
     db.session.commit()
 
@@ -171,10 +171,10 @@ def update_lead(data, veokit_system_id):
 
 
 # Get statuses
-def get_statuses(data, veokit_system_id):
+def get_statuses(data, veokit_installation_id):
     res_statuses = []
 
-    statuses_q = Status.query.filter_by(veokit_system_id=veokit_system_id)
+    statuses_q = Status.query.filter_by(veokit_installation_id=veokit_installation_id)
 
     if data.get('id'):
         if isinstance(data['id'], list):
@@ -198,10 +198,10 @@ def get_statuses(data, veokit_system_id):
 
 
 # Get fields
-def get_fields(data, veokit_system_id):
+def get_fields(data, veokit_installation_id):
     res_fields = []
 
-    fields_q = Field.query.filter_by(veokit_system_id=veokit_system_id)
+    fields_q = Field.query.filter_by(veokit_installation_id=veokit_installation_id)
 
     if data.get('id'):
         if isinstance(data['id'], list):

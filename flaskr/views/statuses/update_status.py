@@ -6,7 +6,7 @@ from flaskr.models.status import Status
 class UpdateStatus(View):
     status = None
 
-    def before(self, params):
+    def before(self, params, request_data):
         id = params.get('id')
 
         if not id:
@@ -14,29 +14,55 @@ class UpdateStatus(View):
 
         self.status = Status.query\
                             .filter_by(id=id,
-                                       veokit_system_id=1)\
+                                       veokit_installation_id=request_data['installation_id'])\
                             .first()
         if not self.status:
             raise Exception()
 
-    def get_header(self, params):
+    def get_header(self, params, request_data):
         return {
             'title': 'Edit status'
         }
 
-    def get_schema(self, params):
+    def get_schema(self, params, request_data):
+        color_options = [
+            {'value': 'red', 'label': 'Red', 'color': '#E57373'},
+            {'value': 'pink', 'label': 'Pink', 'color': '#F48FB1'},
+            {'value': 'purple', 'label': 'Purple', 'color': '#9575CD'},
+            {'value': 'blue', 'label': 'Blue', 'color': '#64B5F6'},
+            {'value': 'green', 'label': 'Green', 'color': '#81C784'},
+            {'value': 'orange', 'label': 'Orange', 'color': '#FFA726'}
+        ]
+
         return [
             {
                 '_com': 'Form',
-                'onSubmit': 'onSubmitForm',
+                '_id': 'updateStatusForm',
+                'onFinish': 'onFinish',
                 'fields': [
                     {
                         '_com': 'Field.Input',
                         'type': 'text',
                         'key': 'name',
-                        'label': 'Status label',
-                        'value': self.status.name,
-                        'maxLength': 20
+                        'label': 'Status name',
+                        'placeholder': 'Ex: In Progress',
+                        'maxLength': 20,
+                        'rules': [
+                            { 'min': 2, 'max': 20, 'message': 'Must contain 2 - 20 chars.' },
+                            { 'required': True, 'message': 'Name is required' }
+                        ],
+                        'value': self.status.name
+                    },
+                    {
+                        '_com': 'Field.Select',
+                        'value': 'red',
+                        'key': 'color',
+                        'label': 'Color',
+                        'options': color_options,
+                        'value': self.status.color.name,
+                        'rules': [
+                            {'required': True, 'message': 'Color is required'}
+                        ]
                     }
                 ],
                 'buttons': [
@@ -44,25 +70,36 @@ class UpdateStatus(View):
                         '_com': 'Button',
                         'type': 'primary',
                         'submitForm': True,
-                        'label': 'Save changes'
+                        'icon': 'edit',
+                        'label': 'Save'
                     }
                 ]
             }
         ]
 
-    methods = {
-        'onSubmitForm':
-            """(app, params) => {
-                const { values } = params
+    def get_methods(self, params, request_data):
+        return {
+            'onFinish':
+                """(app, params, event) => {
+                    const window = app.getView()
+                    const form = window.getCom('updateStatusForm')
+                    const { values } = event
 
-                res = await app.sendReq('createStatus', { values })
+                    form.setAttr('loading', true)
 
-                if (res.response) {
-                    # Reload parent page with statuses
-                    app.reloadPage()
+                    app
+                        .sendReq('updateStatus', {
+                            id: """ + str(self.status.id) + """,
+                            name: values.name,
+                            color: values.color
+                        })
+                        .then(result => {
+                            form.setAttr('loading', false)
 
-                    # Close this modal
-                    app.currentModal.close()
-                }
-            }"""
-    }
+                            if (result._res == 'ok') {
+                                // Reload parent page
+                                app.getPage().reload()
+                            }
+                        })
+                    }"""
+        }

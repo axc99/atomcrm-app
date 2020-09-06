@@ -22,7 +22,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('add_date', sa.DateTime(), nullable=False),
     sa.Column('upd_date', sa.DateTime(), nullable=False),
-    sa.Column('veokit_system_id', sa.Integer(), nullable=False),
+    sa.Column('veokit_installation_id', sa.Integer(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_lead_veokit_system_id'), 'lead', ['veokit_system_id'], unique=False)

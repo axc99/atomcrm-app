@@ -4,7 +4,7 @@ from flaskr import app
 from flaskr.views import views_map
 from flaskr.requests import requests_map
 import flaskr.api as api_methods
-from flaskr.secure import validate_api_token
+from flaskr.secure import validate_api_token, validate_secret_key
 
 
 # Index page
@@ -16,10 +16,21 @@ def index():
 # Requests
 @app.route('/req', methods=['POST'])
 def req():
-    if not request.is_json:
-        return {}, 400
-
     data = request.get_json()
+    is_secret_key_valid = validate_secret_key(data['appSecretKey'])
+    request_data = {
+        'installation_id': data['installationId'],
+        'system_id': data['systemId'],
+        'user_id': data['userId'],
+        'app_id': data['appId'],
+        'lang_key': data['langKey']
+    }
+
+    # Check secret key
+    if not is_secret_key_valid:
+        return {
+            'message': 'Wrong request data'
+        }, 401
 
     # Get view
     if data['_req'] == 'getView':
@@ -36,35 +47,35 @@ def req():
             view = views_map[view_key]()
             result_view = {}
 
-            view.before(view_params)
+            view.before(view_params, request_data)
 
-            view.before_get_meta(view_params)
-            result_view['meta'] = view.get_meta(view_params)
+            view.before_get_meta(view_params, request_data)
+            result_view['meta'] = view.get_meta(view_params, request_data)
 
-            view.before_get_header(view_params)
-            result_view['header'] = view.get_header(view_params)
+            view.before_get_header(view_params, request_data)
+            result_view['header'] = view.get_header(view_params, request_data)
 
-            view.before_get_methods(view_params)
-            result_view['methods'] = view.get_methods(view_params)
+            view.before_get_methods(view_params, request_data)
+            result_view['methods'] = view.get_methods(view_params, request_data)
 
-            view.before_get_schema(view_params)
-            result_view['schema'] = view.get_schema(view_params)
+            view.before_get_schema(view_params, request_data)
+            result_view['schema'] = view.get_schema(view_params, request_data)
 
             return {
                 '_res': 'ok',
                 **result_view
             }
 
-    # Custom requests
+    # Other requests
     else:
         request_name = data['_req']
-        request_params = data.get('params', {})
+        request_params = data
 
         if not requests_map.get(request_name):
             raise Exception()
         else:
             request_func = requests_map[request_name]
-            request_result = request_func(request_params)
+            request_result = request_func(request_params, request_data)
 
             return {
                 '_res': 'ok',
@@ -86,7 +97,7 @@ def webhook():
 # API
 @app.route('/api/<token>/<method>', methods=['POST'])
 def api_method(token, method):
-    is_token_valid, veokit_system_id = validate_api_token(token)
+    is_token_valid, veokit_installation_id = validate_api_token(token)
 
     if not is_token_valid:
         return {
@@ -115,4 +126,4 @@ def api_method(token, method):
     else:
         method_func = getattr(api_methods, method_map[method])
 
-        return method_func(data, veokit_system_id)
+        return method_func(data, veokit_installation_id)

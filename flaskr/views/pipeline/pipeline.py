@@ -12,21 +12,21 @@ class Pipeline(View):
     leads = []
     statuses = []
 
-    def before(self, params):
+    def before(self, params, request_data):
         self.statuses = Status.query \
-            .filter_by(veokit_system_id=1) \
+            .filter_by(veokit_installation_id=request_data['installation_id']) \
             .order_by(Status.index.asc()) \
             .all()
 
         for status in self.statuses:
             status.leads = Lead.query \
-                .filter_by(veokit_system_id=1,
+                .filter_by(veokit_installation_id=request_data['installation_id'],
                            status_id=status.id)\
                 .offset(0) \
                 .limit(5) \
                 .all()
 
-    def get_header(self, params):
+    def get_header(self, params, request_data):
         return {
             'title': self.meta.get('name'),
             'actions': [
@@ -38,6 +38,7 @@ class Pipeline(View):
                 },
                 {
                     '_com': 'Button',
+                    '_vis': len(self.statuses) > 0,
                     'type': 'primary',
                     'icon': 'plus',
                     'label': 'Add lead',
@@ -50,7 +51,7 @@ class Pipeline(View):
             }
         }
 
-    def get_schema(self, params):
+    def get_schema(self, params, request_data):
         board_columns = []
         board_items = []
 
@@ -60,7 +61,14 @@ class Pipeline(View):
                 'key': status.id,
                 'title': status.name,
                 'subtitle': '{} {}'.format(23, 'lead' if 23 == 1 else 'leads'),
-                # 'color': status.color,
+                'color': {
+                    'red': '#E57373',
+                    'pink': '#F48FB1',
+                    'purple': '#9575CD',
+                    'blue': '#64B5F6',
+                    'green': '#81C784',
+            'orange': '#FFA726'
+                }[status.color.name],
                 'loadMore': load_more_vis,
                 'onLoadMore': 'loadMireItems'
             })
