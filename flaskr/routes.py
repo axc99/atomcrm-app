@@ -77,10 +77,7 @@ def req():
             request_func = requests_map[request_name]
             request_result = request_func(request_params, request_data)
 
-            return {
-                '_res': 'ok',
-                **(request_result if isinstance(request_result, dict) else {})
-            }
+            return request_result
 
 
 # Web hook

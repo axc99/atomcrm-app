@@ -1,6 +1,6 @@
 from flaskr import db
 from flaskr.views.view import View
-from flaskr.models.status import Status
+from flaskr.models.status import Status, get_hex_by_color
 import enum
 
 
@@ -62,7 +62,7 @@ class Statuses(View):
 
             list_items.append({
                 'key': status.id,
-                'color': status.color,
+                'color': get_hex_by_color(status.color),
                 'title': status.name,
                 'extra': "{} {}".format(status.lead_count, 'lead' if status.lead_count == 1 else 'leads'),
                 'actions': [

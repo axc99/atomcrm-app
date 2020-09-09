@@ -148,7 +148,6 @@ def update_lead(data, veokit_installation_id):
                    400
 
     # Update lead
-    lead.veokit_installation_id = veokit_installation_id
     lead.status_id = data['status_id']
     db.session.commit()
 

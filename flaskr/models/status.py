@@ -27,9 +27,14 @@ class Status(db.Model):
 
 
 # Get HEX color by color key
-def get_hex_by_color():
+def get_hex_by_color(color):
     color_map = {
-
+        'red': '#E57373',
+        'pink': '#F48FB1',
+        'purple': '#9575CD',
+        'blue': '#64B5F6',
+        'green': '#81C784',
+        'orange': '#FFA726'
     }
 
-    pass
+    return color_map[color]

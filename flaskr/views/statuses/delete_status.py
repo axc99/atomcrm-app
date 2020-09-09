@@ -1,5 +1,5 @@
 from flaskr.views.view import View
-from flaskr.models.status import Status
+from flaskr.models.status import Status, get_hex_by_color
 
 
 # Window: Delete status
@@ -48,7 +48,7 @@ class DeleteStatus(View):
         for status in self.other_statuses:
             select_options.append({
                 'key': status.id,
-                'color': status.color.name,
+                'color': get_hex_by_color(status.color.name),
                 'label': "Move leads to «{}»".format(status.name)
             })
 

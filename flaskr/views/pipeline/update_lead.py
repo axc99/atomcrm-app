@@ -88,7 +88,8 @@ class UpdateLead(View):
                                     },
                                     {
                                         '_com': 'Button',
-                                        'icon': 'delete'
+                                        'icon': 'delete',
+                                        'onClick': 'onClickDelete'
                                     }
                                 ]
                             }
@@ -135,30 +136,56 @@ class UpdateLead(View):
             }
         ]
 
-    methods = {
-        'onFinish':
-            """(app, params, event) => {
-                const { values } = event
+    def get_methods(self, params, request_data):
+        return {
+            'onFinish':
+                """(app, params, event) => {
+                    const { values } = event
 
-                const window = app.getView()
-                const form = window.getCom('createLeadForm')
-                const statusId = window.getCom('createLeadForm_status').getAttr('value')
+                    const window = app.getView()
+                    const form = window.getCom('createLeadForm')
+                    const statusId = window.getCom('createLeadForm_status').getAttr('value')
 
-                form.setAttr('loading', true)
+                    form.setAttr('loading', true)
 
-                app
-                    .sendReq('createLead', {
-                        fields: values,
-                        tags: values,
-                        statusId
-                    })
-                    .then(result => {
-                        form.setAttr('loading', false)
+                    app
+                        .sendReq('createLead', {
+                            fields: values,
+                            tags: values,
+                            statusId
+                        })
+                        .then(result => {
+                            form.setAttr('loading', false)
 
-                        if (result._res == 'ok') {
-                            // Reload parent page
-                            app.getPage().reload()
-                        }
-                    })
-            }"""
-    }
+                            if (result._res == 'ok') {
+                                // Reload parent page
+                                app.getPage().reload()
+                            }
+                        })
+                }""",
+            'onClickDelete':
+                """(app, params, event) => {
+                     app.openModal({
+                        type: 'answer',
+                        title: 'Delete lead?',
+                        content: 'Are you sure you want to move this lead to the archive? You can restore it at any time.',
+                        okText: 'Delete',
+                        onOk: (modal) => {
+                            modal.setAttr('okLoading', true)
+
+                            app
+                                .sendReq('deleteLead', {
+                                    id: """ + self.lead.id + """
+                                })
+                                .then(result => {
+                                    modal.setAttr('okLoading', false)
+                                    
+                                    if (result._res == 'ok') {
+                                        // Reload parent page
+                                        app.getPage().reload()
+                                    }
+                                })
+                            }
+                         })
+                    }"""
+        }

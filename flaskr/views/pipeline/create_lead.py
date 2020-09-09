@@ -32,11 +32,17 @@ class CreateLead(View):
 
     def get_schema(self, params, request_data):
         lead_fields = []
-
         for field in self.fields:
-            field_component = {}
-
             if field.value_type.name == 'boolean':
+                field_component = {
+                    '_com': 'Field.Select',
+                    'options': [],
+                    'key': field.id,
+                    'type': 'text',
+                    'columnWidth': 12,
+                    'label': field.name
+                }
+            elif field.value_type.name == 'boolean':
                 field_component = {
                     '_com': 'Field.Checkbox',
                     'columnWidth': 12,
@@ -65,6 +71,7 @@ class CreateLead(View):
         return [
             {
                 '_com': 'Grid',
+                'bordered': True,
                 'columns': [
                     {
                         'span': 7,
@@ -93,14 +100,14 @@ class CreateLead(View):
                                 '_com': 'Field.Select',
                                 '_id': 'createLeadForm_status',
                                 'placeholder': 'Select status',
-                                'value': lead_statuses[0]['value'],
+                                'value': lead_statuses[0]['value'] if len(lead_statuses) > 0 else None,
                                 'options': lead_statuses
                             },
                             {
                                 '_com': 'Field.Input',
                                 '_id': 'createLeadForm_tags',
                                 'multiple': True,
-                                'placeholder': 'Enter tags...'
+                                'placeholder': 'Add an tags'
                             }
                         ]
                     }
@@ -118,6 +125,14 @@ class CreateLead(View):
                 const statusId = window.getCom('createLeadForm_status').getAttr('value')
                 
                 form.setAttr('loading', true)
+                
+                const fields = []
+                Object.entries(values).map(([fieldId, value]) => {
+                    fields.push({
+                        fieldId,
+                        value
+                    })
+                })
                 
                 app
                     .sendReq('createLead', {

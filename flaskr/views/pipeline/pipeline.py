@@ -1,7 +1,7 @@
 from flaskr import db
 from flaskr.views.view import View
 from flaskr.models.lead import Lead
-from flaskr.models.status import Status
+from flaskr.models.status import Status, get_hex_by_color
 
 
 # Page: Pipeline
@@ -79,17 +79,12 @@ class Pipeline(View):
             board_columns.append({
                 'key': status['id'],
                 'title': status['name'],
-                'subtitle': '{} {}'.format(status['lead_count'], 'lead' if status['lead_count'] == 1 else 'leads'),
-                'color': {
-                    'red': '#E57373',
-                    'pink': '#F48FB1',
-                    'purple': '#9575CD',
-                    'blue': '#64B5F6',
-                    'green': '#81C784',
-                    'orange': '#FFA726'
-                }[status['color']],
-                'loadMore': load_more_vis,
-                'onLoadMore': 'loadMireItems'
+                'count': status['lead_count'],
+                'color': get_hex_by_color(status['color']),
+                'showLoadBtn': load_more_vis,
+                'onLoad': ['loadLeads', {
+                    'statusId': status['id']
+                }]
             })
 
             for lead in status['leads']:
@@ -126,19 +121,11 @@ class Pipeline(View):
             """(app, params) => {
                 
             }""",
-        'onEnterTags':
-            """(app, params) => {
-                
-            }""",
         'onSearchLeads':
             """(app, params) => {
                 
             }""",
         'onDragLead':
-            """(app, params) => {
-
-            }""",
-        'archiveLead':
             """(app, params) => {
 
             }"""
