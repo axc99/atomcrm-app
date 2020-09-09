@@ -1,3 +1,4 @@
+from flaskr import db
 from flaskr.views.view import View
 from flaskr.models.lead import Lead
 from flaskr.models.status import Status
@@ -13,18 +14,36 @@ class Pipeline(View):
     statuses = []
 
     def before(self, params, request_data):
-        self.statuses = Status.query \
-            .filter_by(veokit_installation_id=request_data['installation_id']) \
-            .order_by(Status.index.asc()) \
-            .all()
+        self.statuses = []
 
-        for status in self.statuses:
-            status.leads = Lead.query \
+        statuses_q = db.session.execute("""  
+            SELECT 
+                s.*,
+                (SELECT COUNT(*) FROM public.lead AS l WHERE l.status_id = s.id) AS lead_count
+            FROM 
+                public.status AS s
+            WHERE
+                s.veokit_installation_id = :installation_id
+            ORDER BY 
+                s.index""", {
+            'installation_id': request_data['installation_id']
+        })
+
+        for status in statuses_q:
+            status_leads = Lead.query \
                 .filter_by(veokit_installation_id=request_data['installation_id'],
-                           status_id=status.id)\
+                           status_id=status['id']) \
                 .offset(0) \
                 .limit(5) \
                 .all()
+
+            self.statuses.append({
+                'id': status['id'],
+                'name': status['name'],
+                'lead_count': status['lead_count'],
+                'color': status['color'],
+                'leads': status_leads
+            })
 
     def get_header(self, params, request_data):
         return {
@@ -41,7 +60,7 @@ class Pipeline(View):
                     '_vis': len(self.statuses) > 0,
                     'type': 'primary',
                     'icon': 'plus',
-                    'label': 'Add lead',
+                    'label': 'New lead',
                     'toWindow': 'createLead'
                 }
             ],
@@ -58,25 +77,28 @@ class Pipeline(View):
         for status in self.statuses:
             load_more_vis = False
             board_columns.append({
-                'key': status.id,
-                'title': status.name,
-                'subtitle': '{} {}'.format(23, 'lead' if 23 == 1 else 'leads'),
+                'key': status['id'],
+                'title': status['name'],
+                'subtitle': '{} {}'.format(status['lead_count'], 'lead' if status['lead_count'] == 1 else 'leads'),
                 'color': {
                     'red': '#E57373',
                     'pink': '#F48FB1',
                     'purple': '#9575CD',
                     'blue': '#64B5F6',
                     'green': '#81C784',
-            'orange': '#FFA726'
-                }[status.color.name],
+                    'orange': '#FFA726'
+                }[status['color']],
                 'loadMore': load_more_vis,
                 'onLoadMore': 'loadMireItems'
             })
 
-            for lead in status.leads:
+            for lead in status['leads']:
                 board_items.append({
+                    'toWindow': ['updateLead', {
+                        'id': lead.id
+                    }],
                     'key': lead.id,
-                    'columnKey': status.id,
+                    'columnKey': status['id'],
                     'title': 'Lead title',
                     'description': 'Lead description...',
                     'extra': [
@@ -100,6 +122,10 @@ class Pipeline(View):
         ]
 
     methods = {
+        'loadLeads':
+            """(app, params) => {
+                
+            }""",
         'onEnterTags':
             """(app, params) => {
                 

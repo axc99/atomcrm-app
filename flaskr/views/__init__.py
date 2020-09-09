@@ -1,4 +1,6 @@
 from flaskr.views.pipeline.pipeline import Pipeline
+from flaskr.views.pipeline.create_lead import CreateLead
+from flaskr.views.pipeline.update_lead import UpdateLead
 from flaskr.views.statuses.statuses import Statuses
 from flaskr.views.statuses.create_status import CreateStatus
 from flaskr.views.statuses.update_status import UpdateStatus
@@ -12,6 +14,8 @@ from flaskr.views.api.getToken import GetToken
 views_map = {
     # Pipeline
     'pipeline': Pipeline,
+    'createLead': CreateLead,
+    'updateLead': UpdateLead,
 
     # Statuses
     'statuses': Statuses,

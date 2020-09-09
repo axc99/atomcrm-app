@@ -7,7 +7,7 @@ from cerberus import Validator
 
 
 # Get leads
-def get_leads(data, veokit_system_id):
+def get_leads(data, veokit_installation_id):
     vld = Validator({
         'id': {'type': ['number', 'list'], 'nullable': True}
     })
