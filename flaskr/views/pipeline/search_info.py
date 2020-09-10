@@ -4,10 +4,10 @@ from flaskr.models.field import Field, FieldType
 from flaskr.models.status import Status
 
 
-# Window: Search engine
-class SearchEngine(View):
+# Window: Search info
+class SearchInfo(View):
     meta = {
-        'name': 'Search Engine'
+        'name': 'Advanced search'
     }
 
     def get_header(self, params, request_data):
@@ -20,14 +20,14 @@ class SearchEngine(View):
             {
                 '_com': 'Information',
                 'content': """
-                    ## Search by ID:
-                    ```id=1```
-                    
-                    ## Show only archived leads
-                    ```archived=true```
-                    
-                    ## Search lead by first name
-                    ```firstName=ABC```
+### Search by ID:
+```id=1```
+
+### Show only archived leads
+```archived=true```
+
+### Search lead by first name
+```firstName=ABC```
                 """
             }
         ]

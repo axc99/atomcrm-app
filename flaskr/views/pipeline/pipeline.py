@@ -53,16 +53,16 @@ class Pipeline(View):
                     '_com': 'Button',
                     'type': 'solid',
                     'icon': 'infoCircle',
-                    'toWindow': 'searchSyntax'
+                    'toWindow': 'searchInfo',
                 },
-                {
-                    '_com': 'Button',
-                    '_vis': len(self.statuses) > 0,
-                    'type': 'primary',
-                    'icon': 'plus',
-                    'label': 'New lead',
-                    'toWindow': 'createLead'
-                }
+                # {
+                #     '_com': 'Button',
+                #     '_vis': len(self.statuses) > 0,
+                #     'type': 'primary',
+                #     'icon': 'plus',
+                #     'label': 'New lead',
+                #     'toWindow': 'createLead'
+                # }
             ],
             'search': {
                 'placeholder': 'Search...',
@@ -72,23 +72,13 @@ class Pipeline(View):
 
     def get_schema(self, params, request_data):
         board_columns = []
-        board_items = []
 
         for status in self.statuses:
             load_more_vis = False
-            board_columns.append({
-                'key': status['id'],
-                'title': status['name'],
-                'count': status['lead_count'],
-                'color': get_hex_by_color(status['color']),
-                'showLoadBtn': load_more_vis,
-                'onLoad': ['loadLeads', {
-                    'statusId': status['id']
-                }]
-            })
 
+            board_column_items = []
             for lead in status['leads']:
-                board_items.append({
+                board_column_items.append({
                     'toWindow': ['updateLead', {
                         'id': lead.id
                     }],
@@ -108,18 +98,90 @@ class Pipeline(View):
                     ]
                 })
 
+            board_columns.append({
+                'key': status['id'],
+                'title': status['name'],
+                'count': status['lead_count'],
+                'color': get_hex_by_color(status['color']),
+                'showAdd': True,
+                'onAdd': 'addLead',
+                'showLoad': load_more_vis,
+                'items': board_column_items,
+                'onLoad': ['loadLeads', {
+                    'statusId': status['id']
+                }]
+            })
+
         return [
             {
                 '_com': 'Board',
-                'columns': board_columns,
-                'items': board_items
+                '_id': 'leadsBoard',
+                'columns': board_columns
             }
         ]
 
     methods = {
-        'loadLeads':
-            """(app, params) => {
+        'addLead':
+            """(app, params, event) => {
+                const { columnKey, columnIndex } = event
+                const page = app.getView()
+                const board = page.getCom('leadsBoard')
+                const boardColumns = board.getAttr('columns')
                 
+                // Set loading to add button
+                boardColumns[columnIndex].addLoading = true
+                board.setAttr('columns', boardColumns)
+                
+                app
+                    .sendReq('createLead', {
+                        statusId: columnKey
+                    })
+                    .then(result => {
+                        if (result._res === 'ok') {
+                            page.callMethod('loadLeads', {
+                                byAdd: true,
+                                statusId: columnKey,
+                                showLoading: false
+                            })
+                        }
+                    })
+            }""",
+        'loadLeads':
+            """(app, params, event) => {
+                const { statusId, offset, limit, byAdd=false } = params
+                const page = app.getView()
+                const board = page.getCom('leadsBoard')
+                const boardItems = board.getAttr('items')
+                const boardColumns = board.getAttr('columns')
+                const boardColumn = boardColumns.find(c => c.key == statusId)
+                
+                app
+                    .sendReq('getLeads', {
+                        statusId,
+                        offset,
+                        limit
+                    })
+                    .then(result => {
+                        if (result._res === 'ok') {
+                            const { leads, total } = result
+                            
+                            // Unset loading to add button
+                            boardColumn.addLoading = false
+                            
+                            // Delete items
+                            boardColumn.count = total
+                            boardColumn.items = leads.map(lead => ({
+                                key: lead.id,
+                                title: lead.title,
+                                description: lead.description,
+                                onClick
+                            }))
+                        
+                            if (byAdd && statusId) {
+                                board.setAttr('columns', boardColumns)
+                            }
+                        }
+                    })
             }""",
         'onSearchLeads':
             """(app, params) => {

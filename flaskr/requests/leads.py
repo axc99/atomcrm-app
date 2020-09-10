@@ -1,30 +1,43 @@
+from cerberus import Validator
+
 from flaskr import db
 from flaskr.models.lead import Lead
+
+
+# Get leads
+def get_leads(params, request_data):
+    leads_q = Lead.query \
+        .filter_by(veokit_installation_id=request_data['installation_id'],
+                   status_id=params['statusId']) \
+        .order_by(Lead.id.desc()) \
+        .offset(0) \
+        .limit(5) \
+        .all()
+
+    leads = []
+    for lead in leads_q:
+        leads.append({
+            'id': lead.id,
+            'title': lead.id,
+            'description': lead.id
+        })
+
+    return {
+        '_res': 'ok',
+        'leads': leads,
+        'total': 100
+    }
 
 
 # Create lead
 def create_lead(params, request_data):
     vld = Validator({
-        'statusId': {'type': 'number', 'required': True},
-        'tags': {
-            'type': 'list',
-            'schema': {'type': ['number', 'string']}
-        },
-        'fields': {
-            'type': 'list',
-            'schema': {
-                'type': 'dict',
-                'schema': {
-                    'fieldId': {'type': 'number', 'required': True, 'nullable': False},
-                    'value': {'type': ['number', 'string', 'boolean', 'list'], 'required': True}
-                }
-            }
-        }
+        'statusId': {'type': 'number', 'required': True}
     })
-    is_valid = vld.validate(data)
+    is_valid = vld.validate(params)
 
-    if not is_valid:
-        return {'_res': 'err'}
+    # if not is_valid:
+    #     return {'_res': 'err'}
 
     # Create lead
     new_lead = Lead()
@@ -34,15 +47,13 @@ def create_lead(params, request_data):
     db.session.add(new_lead)
     db.session.commit()
 
-    # Add tags and fields
-    if params.get('tags'):
-        lead.set_tags(params['tags'], new_lead=True)
-    if params.get('fields'):
-        lead.set_fields(params['fields'], new_lead=True)
-
     return {
         '_res': 'ok',
-        'leadId': new_lead.id
+        'lead': {
+            'title': 111,
+            'description': 222
+        },
+        'leadId': None
     }
 
 
