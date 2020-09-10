@@ -16,6 +16,13 @@ class Lead(db.Model):
     veokit_installation_id = db.Column(db.Integer, nullable=False, index=True)
     status_id = db.Column(db.Integer, db.ForeignKey('status.id', ondelete='SET NULL'), nullable=False)
 
+    # UTM marks
+    utm_source = db.Column(db.String(500))
+    utm_medium = db.Column(db.String(500))
+    utm_campaign = db.Column(db.String(500))
+    utm_term = db.Column(db.String(500))
+    utm_content = db.Column(db.String(500))
+
     # Set tags
     def set_tags(self, tags, new_lead=False):
         if not new_lead:
@@ -66,7 +73,7 @@ class Lead(db.Model):
 
         for lead_field in fields:
             field = Field.query \
-                .filter_by(id=lead_field['field_id'],
+                .filter_by(id=lead_field['fieldId'],
                            veokit_installation_id=self.veokit_installation_id) \
                 .first()
 
@@ -104,7 +111,10 @@ class Lead(db.Model):
                 'field_id': field.field_id,
                 'field_name': field.field_name,
                 'value': field.value
-            } if for_api else {})
+            } if for_api else {
+                'field_id': field.field_id,
+                'value': field.value
+            })
 
         return res_fields
 
@@ -127,7 +137,7 @@ class Lead(db.Model):
             'lead_id': self.id
         })
         for tag in tags:
-            res_tags.append(tag.tag_name if for_api else {})
+            res_tags.append(tag.tag_name)
 
         return res_tags
 
@@ -137,12 +147,12 @@ class LeadField(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     value = db.Column(db.String(1000), nullable=True)
 
-    lead_id = db.Column(db.Integer, db.ForeignKey('lead.id', ondelete='SET NULL'), nullable=False)
-    field_id = db.Column(db.Integer, db.ForeignKey('field.id', ondelete='SET NULL'), nullable=False)
+    lead_id = db.Column(db.Integer, db.ForeignKey('lead.id', ondelete='CASCADE'), nullable=False)
+    field_id = db.Column(db.Integer, db.ForeignKey('field.id', ondelete='CASCADE'), nullable=False)
 
 
 # Lead tag
 class LeadTag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    lead_id = db.Column(db.Integer, db.ForeignKey('lead.id', ondelete='SET NULL'), nullable=False)
-    tag_id = db.Column(db.Integer, db.ForeignKey('tag.id', ondelete='SET NULL'), nullable=False)
+    lead_id = db.Column(db.Integer, db.ForeignKey('lead.id', ondelete='CASCADE'), nullable=False)
+    tag_id = db.Column(db.Integer, db.ForeignKey('tag.id', ondelete='CASCADE'), nullable=False)

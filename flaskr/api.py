@@ -1,7 +1,6 @@
-from flaskr.models.lead import Lead, LeadTag
+from flaskr.models.lead import Lead
 from flaskr.models.status import Status
 from flaskr.models.field import Field
-from flaskr.models.tag import Tag
 from flaskr import db
 from cerberus import Validator
 
@@ -33,9 +32,9 @@ def get_leads(data, veokit_installation_id):
     for lead in leads:
         res_leads.append({
             'id': lead.id,
-            'status_id': lead.status_id,
-            'add_date': lead.add_date.strftime('%Y-%m-%d %H:%M:%S'),
-            'upd_date': lead.upd_date.strftime('%Y-%m-%d %H:%M:%S'),
+            'statusId': lead.status_id,
+            'addDate': lead.add_date.strftime('%Y-%m-%d %H:%M:%S'),
+            'updDate': lead.upd_date.strftime('%Y-%m-%d %H:%M:%S'),
             'fields': lead.get_fields(for_api=True),
             'tags': lead.get_tags(for_api=True)
         })
@@ -48,7 +47,7 @@ def get_leads(data, veokit_installation_id):
 # Create lead
 def create_lead(data, veokit_installation_id):
     vld = Validator({
-        'status_id': {'type': 'number', 'required': True},
+        'statusId': {'type': 'number', 'required': True},
         'tags': {
             'type': 'list',
             'schema': {'type': ['number', 'string']}
@@ -58,7 +57,7 @@ def create_lead(data, veokit_installation_id):
             'schema': {
                 'type': 'dict',
                 'schema': {
-                    'field_id': {'type': 'number', 'required': True, 'nullable': False},
+                    'fieldId': {'type': 'number', 'required': True, 'nullable': False},
                     'value': {'type': ['number', 'string', 'boolean', 'list'], 'required': True}
                 }
             }
@@ -71,17 +70,23 @@ def create_lead(data, veokit_installation_id):
 
     # Check status id
     is_status_exist = Status.query \
-                          .filter_by(id=data['status_id'],
+                          .filter_by(id=data['statusId'],
                                      veokit_installation_id=veokit_installation_id) \
                           .count() != 0
     if not is_status_exist:
-        return {'message': 'Status (id={}) does not exist'.format(data['status_id'])}, \
+        return {'message': 'Status (id={}) does not exist'.format(data['statusId'])}, \
                400
 
     # Create lead
     lead = Lead()
     lead.veokit_installation_id = veokit_installation_id
     lead.status_id = data['status_id']
+    lead.urm_source = data.get('utm_source', None)
+    lead.utm_medium = data.get('utm_medium', None)
+    lead.utm_campaign = data.get('utm_campaign', None)
+    lead.utm_term = data.get('utm_term', None)
+    lead.utm_content = data.get('utm_content', None)
+
     db.session.add(lead)
     db.session.commit()
 
@@ -94,9 +99,9 @@ def create_lead(data, veokit_installation_id):
     return {
         'lead': {
             'id': lead.id,
-            'status_id': lead.status_id,
-            'add_date': lead.add_date.strftime('%Y-%m-%d %H:%M:%S'),
-            'upd_date': lead.upd_date.strftime('%Y-%m-%d %H:%M:%S'),
+            'statusId': lead.status_id,
+            'addDate': lead.add_date.strftime('%Y-%m-%d %H:%M:%S'),
+            'updDate': lead.upd_date.strftime('%Y-%m-%d %H:%M:%S'),
             'fields': lead.get_fields(for_api=True),
             'tags': lead.get_tags(for_api=True)
         }
@@ -107,7 +112,7 @@ def create_lead(data, veokit_installation_id):
 def update_lead(data, veokit_installation_id):
     vld = Validator({
         'id': {'type': 'number', 'required': True},
-        'status_id': {'type': 'number', 'required': True},
+        'statusId': {'type': 'number', 'required': True},
         'tags': {
             'type': 'list',
             'schema': {'type': ['number', 'string']}
@@ -117,7 +122,7 @@ def update_lead(data, veokit_installation_id):
             'schema': {
                 'type': 'dict',
                 'schema': {
-                    'field_id': {'type': 'number', 'required': True, 'nullable': False},
+                    'fieldId': {'type': 'number', 'required': True, 'nullable': False},
                     'value': {'type': ['number', 'string', 'boolean', 'list'], 'required': True}
                 }
             }
@@ -149,6 +154,7 @@ def update_lead(data, veokit_installation_id):
 
     # Update lead
     lead.status_id = data['status_id']
+    lead.upd_date = datetime.utcnow
     db.session.commit()
 
     # Set tags and fields
@@ -160,9 +166,9 @@ def update_lead(data, veokit_installation_id):
     return {
         'lead': {
             'id': lead.id,
-            'status_id': lead.status_id,
-            'add_date': lead.add_date.strftime('%Y-%m-%d %H:%M:%S'),
-            'upd_date': lead.upd_date.strftime('%Y-%m-%d %H:%M:%S'),
+            'statusId': lead.status_id,
+            'addDate': lead.add_date.strftime('%Y-%m-%d %H:%M:%S'),
+            'updDate': lead.upd_date.strftime('%Y-%m-%d %H:%M:%S'),
             'fields': lead.get_fields(for_api=True),
             'tags': lead.get_tags(for_api=True)
         }
@@ -215,7 +221,7 @@ def get_fields(data, veokit_installation_id):
     for field in fields:
         res_fields.append({
             'id': field.id,
-            'value_type': field.value_type.name,
+            'valueType': field.value_type.name,
             'name': field.name,
             'min': field.min,
             'max': field.max

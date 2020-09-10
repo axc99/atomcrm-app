@@ -2,30 +2,55 @@ from cerberus import Validator
 
 from flaskr import db
 from flaskr.models.lead import Lead
+from flaskr.views.pipeline.pipeline import get_lead_component
 
 
-# Get leads
-def get_leads(params, request_data):
-    leads_q = Lead.query \
-        .filter_by(veokit_installation_id=request_data['installation_id'],
-                   status_id=params['statusId']) \
-        .order_by(Lead.id.desc()) \
-        .offset(0) \
-        .limit(5) \
-        .all()
+# Get lead components for status
+def get_lead_components(params, request_data):
+    vld = Validator({
+        'offset': {'type': 'number'},
+        'limit': {'type': 'number'},
+        'statusId': {'type': 'number', 'required': True},
+        'search': {'type': 'string', 'empty': True}
+    })
+    is_valid = vld.validate(params)
 
-    leads = []
+    if not is_valid:
+        return {'_res': 'err', 'message': 'Invalid params'}
+
+    leads_q = db.session.execute("""  
+        SELECT 
+            l.*
+        FROM 
+            public.lead AS l
+        WHERE
+            l.veokit_installation_id = :installation_id AND 
+            l.status_id = :status_id
+        ORDER BY 
+            l.add_date
+        LIMIT
+            :limit
+        OFFSET
+            :offset""", {
+        'installation_id': request_data['installation_id'],
+        'limit': params['limit'],
+        'offset': params['offset'],
+        'status_id': params['statusId']
+    })
+
+    lead_components = []
     for lead in leads_q:
-        leads.append({
+        lead_components.append(get_lead_component({
             'id': lead.id,
-            'title': lead.id,
-            'description': lead.id
-        })
+            'status_id': lead.status_id,
+            'fields': lead.get_fields(),
+            'tags': lead.get_tags()
+        }))
 
     return {
         '_res': 'ok',
-        'leads': leads,
-        'total': 100
+        'leadComponents': lead_components,
+        'leadTotal': 100
     }
 
 
@@ -36,8 +61,8 @@ def create_lead(params, request_data):
     })
     is_valid = vld.validate(params)
 
-    # if not is_valid:
-    #     return {'_res': 'err'}
+    if not is_valid:
+        return {'_res': 'err', 'message': 'Invalid params'}
 
     # Create lead
     new_lead = Lead()
@@ -49,11 +74,7 @@ def create_lead(params, request_data):
 
     return {
         '_res': 'ok',
-        'lead': {
-            'title': 111,
-            'description': 222
-        },
-        'leadId': None
+        'leadId': new_lead.id
     }
 
 
@@ -62,6 +83,7 @@ def update_lead(params, request_data):
     vld = Validator({
         'id': {'type': 'number', 'required': True},
         'status_id': {'type': 'number', 'required': True},
+        'archived': {'type': 'boolean'},
         'tags': {
             'type': 'list',
             'schema': {'type': ['number', 'string']}
@@ -71,7 +93,7 @@ def update_lead(params, request_data):
             'schema': {
                 'type': 'dict',
                 'schema': {
-                    'field_id': {'type': 'number', 'required': True, 'nullable': False},
+                    'fieldId': {'type': 'number', 'required': True, 'nullable': False},
                     'value': {'type': ['number', 'string', 'boolean', 'list'], 'required': True}
                 }
             }
@@ -80,19 +102,21 @@ def update_lead(params, request_data):
     is_valid = vld.validate(data)
 
     if not is_valid:
-        return {'_res': 'err'}
+        return {'_res': 'err', 'message': 'Invalid params'}
 
     # Get lead by id
     lead = Lead.query \
         .filter_by(id=params['id'],
                    veokit_installation_id=request_data['installation_id']) \
         .first()
-
     if not lead:
-        return {'_res': 'err'}
+        return {'_res': 'err', 'message': 'Unknown lead'}
 
     # Update lead
     lead.status_id = params['status_id']
+    if data.get('archived') is not None:
+        lead.archived = data['archived']
+
     db.session.commit()
 
     # Set tags and fields
@@ -100,54 +124,6 @@ def update_lead(params, request_data):
         lead.set_tags(data['tags'])
     if data.get('fields'):
         lead.set_fields(data['fields'])
-
-    return {
-        '_res': 'ok'
-    }
-
-
-# Archive lead
-def archive_lead(params, request_data):
-    vld = Validator({
-        'id': {'type': ['number', 'list'], 'nullable': True}
-    })
-    is_valid = vld.validate(data)
-
-    if not is_valid:
-        return {'_res': 'err'}
-
-    # Get lead by id
-    lead = Lead.query \
-        .filter_by(id=params['id'],
-                   veokit_installation_id=request_data['installation_id']) \
-        .first()
-
-    lead.archived = True
-    db.session.commit()
-
-    return {
-        '_res': 'ok'
-    }
-
-
-# Restore lead
-def restore_lead(params, request_data):
-    vld = Validator({
-        'id': {'type': ['number', 'list'], 'nullable': True}
-    })
-    is_valid = vld.validate(data)
-
-    if not is_valid:
-        return {'_res': 'err'}
-
-    # Get lead by id
-    lead = Lead.query \
-        .filter_by(id=params['id'],
-                   veokit_installation_id=request_data['installation_id']) \
-        .first()
-
-    lead.archived = False
-    db.session.commit()
 
     return {
         '_res': 'ok'

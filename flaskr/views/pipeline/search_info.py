@@ -4,6 +4,16 @@ from flaskr.models.field import Field, FieldType
 from flaskr.models.status import Status
 
 
+content = """
+### Search by ID:
+```id=1```
+
+### Show only archived leads
+```archived=true```
+
+### Search lead by specific field
+```First name=John``` """
+
 # Window: Search info
 class SearchInfo(View):
     meta = {
@@ -19,15 +29,6 @@ class SearchInfo(View):
         return [
             {
                 '_com': 'Information',
-                'content': """
-### Search by ID:
-```id=1```
-
-### Show only archived leads
-```archived=true```
-
-### Search lead by first name
-```firstName=ABC```
-                """
+                'content': content
             }
         ]

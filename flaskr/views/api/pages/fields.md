@@ -2,7 +2,7 @@
 
 For getting all fields do not pass `id` field.
 
-`POST` `https://atomcrm.herokuapp.com/api/<YOUR TOKEN HERE>/getFields`
+`POST` `https://atomcrm.herokuapp.com/api/<TOKEN HERE>/getFields`
 
 Sample request body:
 ```json
@@ -19,7 +19,7 @@ Sample response body:
     "name": "First name",
     "min": 0,
     "max": 30,
-    "as_title": true,
+    "asTitle": true,
     "primary": false
   },
   {
@@ -27,7 +27,7 @@ Sample response body:
     "name": "Mobile phone",
     "min": 0,
     "max": 50,
-    "as_title": false,
+    "asTitle": false,
     "primary": false
   }
 ]

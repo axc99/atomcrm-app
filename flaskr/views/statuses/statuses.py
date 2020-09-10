@@ -84,13 +84,13 @@ class Statuses(View):
                 '_id': 'statusesList',
                 'sortable': True,
                 'emptyText': 'No statuses',
-                'onDrag': 'onDragStatuses',
+                'onDrag': 'onDragStatus',
                 'items': list_items
             }
         ]
 
     methods = {
-        'onDragStatuses':
+        'onDragStatus':
             """(app, params, event) => {
                 const { key, newIndex, oldIndex } = event
                 const window = app.getView()
@@ -117,6 +117,7 @@ class Statuses(View):
                 const items = list.getAttr('items')
                 const item = items.find(item => item.key == id)
                 
+                // Set loading to delete button
                 item.actions[1].loading = true
                 list.setAttr('items', items)
                 
@@ -125,6 +126,7 @@ class Statuses(View):
                         id
                     })
                     .then(result => {
+                        // Unset loading to delete button
                         item.actions[1].loading = false
                         list.setAttr('items', items)
                         

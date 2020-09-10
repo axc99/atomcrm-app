@@ -15,11 +15,13 @@ class UpdateLead(View):
             .filter_by(id=params['id']) \
             .first()
         self.fields = Field.query \
-            .filter_by(veokit_installation_id=request_data['installation_id']) \
+            .filter_by(veokit_installation_id=request_data['installation_id'],
+                       lead_id=self.lead.id) \
             .order_by(Field.index) \
             .all()
         self.statuses = Status.query \
-            .filter_by(veokit_installation_id=request_data['installation_id']) \
+            .filter_by(veokit_installation_id=request_data['installation_id'],
+                       lead_id=self.lead.id) \
             .order_by(Status.index) \
             .all()
 
@@ -35,9 +37,11 @@ class UpdateLead(View):
         }
 
     def get_schema(self, params, request_data):
-        lead_fields = []
+        form_fields = []
+        lead_fields = self.lead.get_fields()
 
         for field in self.fields:
+            field_value = [f for f in lead_fields if f['field_id'] == field.id],
             field_component = {}
 
             if field.value_type.name == 'boolean':
@@ -45,7 +49,8 @@ class UpdateLead(View):
                     '_com': 'Field.Checkbox',
                     'columnWidth': 12,
                     'key': field.id,
-                    'text': field.name
+                    'text': field.name,
+                    'value': field_value
                 }
             else:
                 field_component = {
@@ -53,14 +58,15 @@ class UpdateLead(View):
                     'key': field.id,
                     'type': 'text',
                     'columnWidth': 12,
-                    'label': field.name
+                    'label': field.name,
+                    'value': field_value
                 }
 
-            lead_fields.append(field_component)
+            form_fields.append(field_component)
 
-        lead_statuses = []
+        status_options = []
         for status in self.statuses:
-            lead_statuses.append({
+            status_options.append({
                 'value': status.id,
                 'label': status.name,
                 'color': status.color.name
@@ -77,7 +83,7 @@ class UpdateLead(View):
                                 '_com': 'Form',
                                 '_id': 'createLeadForm',
                                 'onFinish': 'onFinish',
-                                'fields': lead_fields,
+                                'fields': form_fields,
                                 'buttons': [
                                     {
                                         '_com': 'Button',
@@ -89,7 +95,14 @@ class UpdateLead(View):
                                     {
                                         '_com': 'Button',
                                         'icon': 'delete',
-                                        'onClick': 'onClickDelete'
+                                        'type': 'danger',
+                                        'onClick': 'onClickArchive'
+                                    } if not self.lead.archived else {
+                                        '_com': 'Button',
+                                        'icon': 'reload',
+                                        'type': 'solid',
+                                        'label': 'Restore lead',
+                                        'onClick': 'onClickRestore'
                                     }
                                 ]
                             }
@@ -99,36 +112,50 @@ class UpdateLead(View):
                         'span': 5,
                         'content': [
                             {
-                                '_com': 'Field.Select',
-                                '_id': 'createLeadForm_status',
-                                'placeholder': 'Select status',
-                                'value': lead_statuses[0]['value'],
-                                'options': lead_statuses
-                            },
-                            {
-                                '_com': 'Field.Input',
-                                '_id': 'createLeadForm_tags',
-                                'multiple': True,
-                                'placeholder': 'Enter tags...'
-                            },
-                            {
-                                '_com': 'Details',
-                                'items': [
-                                    { 'label': 'Add date', 'value': '25 Jun 2020 at 12:05' },
-                                    { 'label': 'Update date', 'value': '25 Jun 2020 at 12:05' }
+                                '_com': 'Area',
+                                'background': '#f5f5f5',
+                                'content': [
+                                    {
+                                        '_com': 'Field.Select',
+                                        '_id': 'createLeadForm_status',
+                                        'placeholder': 'Select status',
+                                        'value': self.lead.status_id,
+                                        'options': status_options
+                                    },
+                                    {
+                                        '_com': 'Field.Input',
+                                        '_id': 'createLeadForm_tags',
+                                        'multiple': True,
+                                        'label': 'Tags',
+                                        'value': lead.get_tags(),
+                                        'placeholder': 'Enter tags'
+                                    },
+                                    {
+                                        '_com': 'Details',
+                                        'items': [
+                                            {'label': 'Add date', 'value': self.lead.add_date.strftime('%d.%m.%Y at %H:%M')},
+                                            {'label': 'Update date', 'value': self.lead.upd_date.strftime('%d.%m.%Y at %H:%M')},
+                                            {
+                                                'label': 'Creator',
+                                                'value': {
+                                                    '_com': 'User',
+                                                    'userId': 2
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        '_com': 'Details',
+                                        'title': 'UTM marks',
+                                        'items': [
+                                            {'label': 'utm_source', 'value': self.lead.utm_source},
+                                            {'label': 'utm_medium', 'value': self.lead.utm_medium},
+                                            {'label': 'utm_campaign', 'value': self.lead.utm_campaign},
+                                            {'label': 'utm_term', 'value': self.lead.utm_term},
+                                            {'label': 'utm_content', 'value': self.lead.utm_content}
+                                        ]
+                                    }
                                 ]
-                            },
-                            {
-                                '_com': 'Details',
-                                'title': 'UTM marks',
-                                'items': [
-                                    { 'label': 'utm_source', 'value': 'google' },
-                                    { 'label': 'utm_id', 'value': '23' }
-                                ]
-                            },
-                            {
-                                '_com': 'User',
-                                'userId': 2
                             }
                         ]
                     }
@@ -146,12 +173,20 @@ class UpdateLead(View):
                     const form = window.getCom('createLeadForm')
                     const statusId = window.getCom('createLeadForm_status').getAttr('value')
 
+                    const fields = []
+                    Object.entries(values).map(([key, value]) => {
+                        fields.append({
+                            fieldId: key,
+                            value
+                        })
+                    })
+
                     form.setAttr('loading', true)
 
                     app
-                        .sendReq('createLead', {
-                            fields: values,
-                            tags: values,
+                        .sendReq('updateLead', {
+                            fields,
+                            tags: [],
                             statusId
                         })
                         .then(result => {
@@ -163,29 +198,40 @@ class UpdateLead(View):
                             }
                         })
                 }""",
-            'onClickDelete':
+            'onClickArchive':
                 """(app, params, event) => {
                      app.openModal({
                         type: 'answer',
                         title: 'Delete lead?',
                         content: 'Are you sure you want to move this lead to the archive? You can restore it at any time.',
                         okText: 'Delete',
-                        onOk: (modal) => {
-                            modal.setAttr('okLoading', true)
-
+                        onOk: modal => {
                             app
-                                .sendReq('deleteLead', {
-                                    id: """ + self.lead.id + """
+                                .sendReq('updateLead', {
+                                    id: """ + self.lead.id + """,
+                                    archived: true
                                 })
                                 .then(result => {
-                                    modal.setAttr('okLoading', false)
-                                    
                                     if (result._res == 'ok') {
                                         // Reload parent page
-                                        app.getPage().reload()
+                                        app.getWindow().reload()
                                     }
                                 })
                             }
                          })
-                    }"""
+                    }""",
+            'onClickRestore':
+                """(app, params, event) => {
+                    app
+                        .sendReq('updateLead', {
+                            id: """ + self.lead.id + """,
+                            archived: false
+                        })
+                        .then(result => {
+                            if (result._res == 'ok') {
+                                // Reload parent page
+                                app.getWindow().reload()
+                            }
+                        })     
+                }"""
         }

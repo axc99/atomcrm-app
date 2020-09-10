@@ -4,6 +4,19 @@ from flaskr.models.field import Field
 
 # Create field
 def create_field(params, request_data):
+    vld = Validator({
+        'name': {'type': 'string', 'required': True},
+        'valueType': {'type': 'string', 'required': True},
+        'min': {'type': 'number', 'min': 0, 'required': True},
+        'max': {'type': 'number', 'max': 1000, 'required': True},
+        'asTitle': {'type': 'boolean', 'required': True},
+        'primary': {'type': 'boolean', 'required': True}
+    })
+    is_valid = vld.validate(params)
+
+    if not is_valid:
+        return {'_res': 'err'}
+
     new_field = Field()
     new_field.veokit_installation_id = request_data['installation_id']
     new_field.name = params.get('name')
