@@ -1,9 +1,15 @@
 import os
 from flask import request
+from flaskr import db
 from flaskr import app
 from flaskr.views import views_map
 from flaskr.requests import requests_map
 import flaskr.api as api_methods
+from flaskr.models.lead import Lead
+from flaskr.models.status import Status
+from flaskr.models.field import Field
+from flaskr.models.tag import Tag
+from flaskr.models.token import Token
 from flaskr.secure import validate_api_token, validate_secret_key
 
 
@@ -83,12 +89,64 @@ def req():
 # Web hook
 @app.route('/wh', methods=['POST'])
 def webhook():
-    # if not request.is_json:
-    #     return {}, 400
-    #
-    # data = request.get_json()
+    data = request.get_json()
+    is_secret_key_valid = validate_secret_key(data['appSecretKey'])
 
-    return 'ok'
+    # Check secret key
+    if not is_secret_key_valid:
+        return {
+           'message': 'Wrong request data'
+        }, 401
+
+    if data['event'] == 'installApp':
+        # Add statuses
+        default_statuses = [
+            {'index': 0, 'color': 'blue', 'name': 'Lead'},
+            {'index': 1, 'color': 'blue', 'name': 'Contacted'},
+            {'index': 2, 'color': 'pink', 'name': 'Qualified'},
+            {'index': 3, 'color': 'green', 'name': 'Proposal made'},
+            {'index': 4, 'color': 'green', 'name': 'Win'},
+            {'index': 5, 'color': 'red', 'name': 'Lost'}
+        ]
+        for default_status in default_statuses:
+            new_status = Status()
+            new_status.index = default_status['index']
+            new_status.color = default_status['color']
+            new_status.name = default_status['name']
+            new_status.veokit_installation_id = data['installationId']
+
+            db.session.add(new_status)
+
+        # Add fields
+        default_fields = [
+            {'index': 0, 'name': 'First name', 'value_type': 'string', 'max': 40},
+            {'index': 0, 'name': 'Last name', 'value_type': 'string', 'max': 60},
+            {'index': 0, 'name': 'Email', 'value_type': 'string', 'max': 260},
+            {'index': 0, 'name': 'Mobile phone', 'value_type': 'string', 'max': 30}
+        ]
+        for default_field in default_fields:
+            new_field = Field()
+            new_field.index = default_field['index']
+            new_field.name = default_field['name']
+            new_field.value_type = default_field['value_type']
+            new_field.max = default_field['max']
+            new_field.veokit_installation_id = data['installationId']
+
+            db.session.add(new_field)
+
+        db.session.commit()
+
+    elif data['event'] == 'uninstallApp':
+        # Delete all data
+        Lead.query.filter_by(veokit_installation_id=data['installationId']).delete()
+        Status.query.filter_by(veokit_installation_id=data['installationId']).delete()
+        Field.query.filter_by(veokit_installation_id=data['installationId']).delete()
+        Tag.query.filter_by(veokit_installation_id=data['installationId']).delete()
+        Token.query.filter_by(veokit_installation_id=data['installationId']).delete()
+
+        db.session.commit()
+
+    return {}
 
 
 # API

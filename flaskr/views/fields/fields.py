@@ -88,7 +88,7 @@ class Fields(View):
             {
                 '_com': 'List',
                 '_id': 'fieldsList',
-                'sortable': True,
+                'draggable': True,
                 'emptyText': 'No fields',
                 'onDrag': 'onDragFields',
                 'items': list_items

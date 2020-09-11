@@ -1,5 +1,4 @@
 from cerberus import Validator
-
 from flaskr import db
 from flaskr.models.lead import Lead
 from flaskr.models.status import Status

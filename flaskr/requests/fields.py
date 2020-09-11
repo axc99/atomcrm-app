@@ -1,3 +1,4 @@
+from cerberus import Validator
 from flaskr import db
 from flaskr.models.field import Field
 
@@ -12,10 +13,11 @@ def create_field(params, request_data):
         'asTitle': {'type': 'boolean', 'required': True},
         'primary': {'type': 'boolean', 'required': True}
     })
+    vld.allow_unknown = True
     is_valid = vld.validate(params)
 
     if not is_valid:
-        return {'_res': 'err'}
+        return {'_res': 'err', 'message': 'Invalid params', 'errors': vld.errors}
 
     new_field = Field()
     new_field.veokit_installation_id = request_data['installation_id']
@@ -33,6 +35,7 @@ def create_field(params, request_data):
     db.session.commit()
 
     return {
+        '_res': 'ok',
         'status_id': 1
     }
 
@@ -52,6 +55,10 @@ def update_field(params, request_data):
 
     db.session.commit()
 
+    return {
+        '_res': 'ok'
+    }
+
 
 # Update field index
 def update_field_index(params, request_data):
@@ -60,6 +67,10 @@ def update_field_index(params, request_data):
         .all()
 
     # TODO: update field indexes
+
+    return {
+        '_res': 'ok'
+    }
 
 
 # Delete field
@@ -70,3 +81,7 @@ def delete_field(params, request_data):
             .delete()
 
         db.session.commit()
+
+    return {
+        '_res': 'ok'
+    }

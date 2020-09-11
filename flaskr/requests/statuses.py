@@ -16,6 +16,7 @@ def create_status(params, request_data):
     db.session.commit()
 
     return {
+        '_res': 'ok',
         'status_id': 1
     }
 
@@ -30,6 +31,10 @@ def update_status(params, request_data):
     status.color = params.get('color')
 
     db.session.commit()
+
+    return {
+        '_res': 'ok'
+    }
 
 
 # Update status index
@@ -49,3 +54,7 @@ def delete_status(params, request_data):
             .delete()
 
         db.session.commit()
+
+    return {
+        '_res': 'ok'
+    }

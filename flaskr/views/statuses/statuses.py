@@ -82,7 +82,7 @@ class Statuses(View):
             {
                 '_com': 'List',
                 '_id': 'statusesList',
-                'sortable': True,
+                'draggable': True,
                 'emptyText': 'No statuses',
                 'onDrag': 'onDragStatus',
                 'items': list_items

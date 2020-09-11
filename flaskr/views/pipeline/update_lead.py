@@ -51,6 +51,24 @@ class UpdateLead(View):
                     'text': field.name,
                     'value': field_value
                 }
+            elif field.value_type.name == 'long_string':
+                field_component = {
+                    '_com': 'Field.Input',
+                    'columnWidth': 12,
+                    'multiline': True,
+                    'key': field.id,
+                    'label': field.name,
+                    'value': field_value
+                }
+            elif field.value_type.name == 'number':
+                field_component = {
+                    '_com': 'Field.Input',
+                    'type': 'number',
+                    'columnWidth': 6,
+                    'key': field.id,
+                    'label': field.name,
+                    'value': field_value
+                }
             else:
                 field_component = {
                     '_com': 'Field.Input',

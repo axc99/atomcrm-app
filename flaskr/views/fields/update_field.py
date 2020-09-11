@@ -33,8 +33,8 @@ class UpdateField(View):
             # {'value': 'select', 'label': 'Select list'}
         ]
 
-        length_fields_vis = self.field.value_type in ['string', 'long_string']
-        num_fields_vis = self.field.value_type == 'number'
+        length_fields_vis = self.field.value_type.name in ('string', 'long_string')
+        num_fields_vis = self.field.value_type.name == 'number'
 
         return [
             {
@@ -83,7 +83,7 @@ class UpdateField(View):
                     {
                         '_com': 'Field.Input',
                         '_id': 'createFieldForm_maxLength',
-                        '_vis': num_fields_vis,
+                        '_vis': length_fields_vis,
                         'type': 'number',
                         'columnWidth': 6,
                         'value': self.field.max,
@@ -110,7 +110,7 @@ class UpdateField(View):
                     },
                     {
                         '_com': 'Field.Input',
-                        '_vis': False,
+                        '_vis': num_fields_vis,
                         '_id': 'createFieldForm_max',
                         'type': 'number',
                         'columnWidth': 6,

@@ -31,12 +31,3 @@ class Field(db.Model):
     index = db.Column(db.Integer, default=0, nullable=True)
 
     veokit_installation_id = db.Column(db.Integer, nullable=False, index=True)
-
-
-# Select option
-class FieldSelectOption(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-
-    label = db.Column(db.String(30), nullable=False)
-
-    field_id = db.Column(db.Integer, nullable=False, index=True)

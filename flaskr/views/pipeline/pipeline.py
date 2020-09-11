@@ -42,7 +42,7 @@ class Pipeline(View):
                 OFFSET 
                     0
                 LIMIT
-                    5""", {
+                    10""", {
                 'installation_id': request_data['installation_id'],
                 'status_id': status['id']
             })
@@ -93,12 +93,12 @@ class Pipeline(View):
             board_columns.append({
                 'key': status['id'],
                 'title': status['name'],
-                'count': status['lead_count'],
                 'color': get_hex_by_color(status['color']),
                 'items': board_column_items,
                 'showAdd': True,
                 'onAdd': 'addLead',
-                'showLoad': status['lead_count'] > 5,
+                'total': status['lead_count'],
+                'loadLimit': 10,
                 'onLoad': ['loadLeads', {
                     'statusId': status['id']
                 }]
@@ -108,7 +108,8 @@ class Pipeline(View):
             {
                 '_com': 'Board',
                 '_id': 'leadsBoard',
-                'draggable': True,
+                # 'draggable': True,
+                'draggableBetweenColumns': True,
                 'onDrag': 'onDragLead',
                 'columns': board_columns
             }
@@ -138,7 +139,7 @@ class Pipeline(View):
                                 .sendReq('getLeadComponents', {
                                     statusId: columnKey,
                                     offset: 0,
-                                    limit: 5
+                                    limit: 10
                                 })
                                 .then(result => {
                                     // Unset loading to add button
@@ -148,8 +149,8 @@ class Pipeline(View):
                                     if (result._res == 'ok') {
                                         const { leadComponents, leadTotal } = result
                                     
-                                        // Set count and set/append items
-                                        boardColumns[columnIndex].count = leadTotal
+                                        // Set total and set/append items
+                                        boardColumns[columnIndex].total = leadTotal
                                         boardColumns[columnIndex].items = leadComponents
                                         
                                         board.setAttr('columns', boardColumns)
@@ -169,32 +170,29 @@ class Pipeline(View):
                 const boardColumns = board.getAttr('columns')
                 
                 // Set loading to load button
-                boardColumns[columnIndex].loadLoading = true
+                boardColumns[columnIndex].loading = true
                 board.setAttr('columns', boardColumns)
                 
                 app
                     .sendReq('getLeadComponents', {
                         statusId,
                         offset: boardColumns[columnIndex].items.length,
-                        limit: 5
+                        limit: 10
                     })
                     .then(result => {
                         // Unset loading to load button
-                        boardColumns[columnIndex].loadLoading = false
+                        boardColumns[columnIndex].loading = false
                         board.setAttr('columns', boardColumns)
                             
                         if (result._res === 'ok') {
                             const { leadComponents, leadTotal } = result
                             
-                            // Set count and set/append items
-                            boardColumns[columnIndex].count = leadTotal
+                            // Set total and set/append items
+                            boardColumns[columnIndex].total = leadTotal
                             boardColumns[columnIndex].items = byAdd ? leadComponents : [
                                 ...boardColumns[columnIndex].items,
                                 ...leadComponents
                             ]
-                            
-                            // If there are no leads left then hide load button
-                            boardColumns[columnIndex].showLoad = boardColumns[columnIndex].items.length < leadTotal
                             
                             board.setAttr('columns', boardColumns)
                         }

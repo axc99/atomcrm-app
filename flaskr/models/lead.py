@@ -14,6 +14,7 @@ class Lead(db.Model):
     archived = db.Column(db.Boolean, default=False, nullable=False)
 
     veokit_installation_id = db.Column(db.Integer, nullable=False, index=True)
+    veokit_user_id = db.Column(db.Integer, nullable=False, index=True)
     status_id = db.Column(db.Integer, db.ForeignKey('status.id', ondelete='SET NULL'), nullable=False)
 
     # UTM marks
