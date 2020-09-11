@@ -88,13 +88,17 @@ class Lead(db.Model):
         db.session.commit()
 
     # Get fields
-    def get_fields(self, for_api=False):
+    @staticmethod
+    def get_fields(lead_id, for_api=False):
         res_fields = []
 
         fields = db.session.execute("""
             SELECT
                 lf.field_id,
                 lf.value,
+                f.value_type AS field_value_type,
+                f.as_title AS field_as_title,
+                f.primary AS field_primary,
                 f.name AS field_name
             FROM
                 public.lead_field AS lf
@@ -104,7 +108,7 @@ class Lead(db.Model):
                 lf.lead_id = :lead_id
             ORDER BY
                 f.id ASC""", {
-            'lead_id': self.id
+            'lead_id': lead_id
         })
         for field in fields:
             res_fields.append({
@@ -113,13 +117,17 @@ class Lead(db.Model):
                 'value': field.value
             } if for_api else {
                 'field_id': field.field_id,
-                'value': field.value
+                'value': field.value,
+                'field_as_title': field.field_as_title,
+                'field_primary': field.field_primary,
+                'field_value_type': field.field_value_type
             })
 
         return res_fields
 
     # Get tags
-    def get_tags(self, for_api=False):
+    @staticmethod
+    def get_tags(lead_id, for_api=False):
         res_tags = []
 
         tags = db.session.execute("""
@@ -134,7 +142,7 @@ class Lead(db.Model):
                 lt.lead_id = :lead_id
             ORDER BY
                 t.name ASC""", {
-            'lead_id': self.id
+            'lead_id': lead_id
         })
         for tag in tags:
             res_tags.append(tag.tag_name)

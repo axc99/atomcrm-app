@@ -2,6 +2,7 @@ from cerberus import Validator
 
 from flaskr import db
 from flaskr.models.lead import Lead
+from flaskr.models.status import Status
 from flaskr.views.pipeline.pipeline import get_lead_component
 
 
@@ -13,10 +14,11 @@ def get_lead_components(params, request_data):
         'statusId': {'type': 'number', 'required': True},
         'search': {'type': 'string', 'empty': True}
     })
+    vld.allow_unknown = True
     is_valid = vld.validate(params)
 
     if not is_valid:
-        return {'_res': 'err', 'message': 'Invalid params'}
+        return {'_res': 'err', 'message': 'Invalid params', 'errors': vld.errors}
 
     leads_q = db.session.execute("""  
         SELECT 
@@ -27,7 +29,7 @@ def get_lead_components(params, request_data):
             l.veokit_installation_id = :installation_id AND 
             l.status_id = :status_id
         ORDER BY 
-            l.add_date
+            l.add_date DESC
         LIMIT
             :limit
         OFFSET
@@ -43,14 +45,18 @@ def get_lead_components(params, request_data):
         lead_components.append(get_lead_component({
             'id': lead.id,
             'status_id': lead.status_id,
-            'fields': lead.get_fields(),
-            'tags': lead.get_tags()
+            'fields': Lead.get_fields(lead.id),
+            'tags': Lead.get_tags(lead.id)
         }))
+
+    status_count = Lead.query\
+        .filter_by(status_id=params['statusId'])\
+        .count()
 
     return {
         '_res': 'ok',
         'leadComponents': lead_components,
-        'leadTotal': 100
+        'leadTotal': status_count
     }
 
 
@@ -59,10 +65,11 @@ def create_lead(params, request_data):
     vld = Validator({
         'statusId': {'type': 'number', 'required': True}
     })
+    vld.allow_unknown = True
     is_valid = vld.validate(params)
 
     if not is_valid:
-        return {'_res': 'err', 'message': 'Invalid params'}
+        return {'_res': 'err', 'message': 'Invalid params', 'errors': vld.errors}
 
     # Create lead
     new_lead = Lead()
@@ -82,7 +89,7 @@ def create_lead(params, request_data):
 def update_lead(params, request_data):
     vld = Validator({
         'id': {'type': 'number', 'required': True},
-        'status_id': {'type': 'number', 'required': True},
+        'statusId': {'type': 'number', 'required': True},
         'archived': {'type': 'boolean'},
         'tags': {
             'type': 'list',
@@ -99,10 +106,11 @@ def update_lead(params, request_data):
             }
         }
     })
-    is_valid = vld.validate(data)
+    vld.allow_unknown = True
+    is_valid = vld.validate(params)
 
     if not is_valid:
-        return {'_res': 'err', 'message': 'Invalid params'}
+        return {'_res': 'err', 'message': 'Invalid params', 'errors': vld.errors}
 
     # Get lead by id
     lead = Lead.query \
@@ -113,17 +121,17 @@ def update_lead(params, request_data):
         return {'_res': 'err', 'message': 'Unknown lead'}
 
     # Update lead
-    lead.status_id = params['status_id']
-    if data.get('archived') is not None:
-        lead.archived = data['archived']
+    lead.status_id = params['statusId']
+    if params.get('archived') is not None:
+        lead.archived = params['archived']
 
     db.session.commit()
 
     # Set tags and fields
-    if data.get('tags'):
-        lead.set_tags(data['tags'])
-    if data.get('fields'):
-        lead.set_fields(data['fields'])
+    if params.get('tags'):
+        lead.set_tags(params['tags'])
+    if params.get('fields'):
+        lead.set_fields(params['fields'])
 
     return {
         '_res': 'ok'

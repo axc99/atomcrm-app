@@ -35,10 +35,16 @@ class Pipeline(View):
                 FROM 
                     public.lead AS l
                 WHERE
-                    l.veokit_installation_id = :installation_id
+                    l.veokit_installation_id = :installation_id AND
+                    l.status_id = :status_id
                 ORDER BY 
-                    l.add_date""", {
-                'installation_id': request_data['installation_id']
+                    l.add_date DESC
+                OFFSET 
+                    0
+                LIMIT
+                    5""", {
+                'installation_id': request_data['installation_id'],
+                'status_id': status['id']
             })
 
             status_leads = []
@@ -46,8 +52,8 @@ class Pipeline(View):
                 status_leads.append({
                     'id': lead.id,
                     'status_id': lead.status_id,
-                    'fields': lead.get_fields(),
-                    'tags': lead.get_tags()
+                    'fields': Lead.get_fields(lead.id),
+                    'tags': Lead.get_tags(lead.id)
                 })
 
             self.statuses.append({
@@ -130,7 +136,7 @@ class Pipeline(View):
                             // Update leads in column
                             app
                                 .sendReq('getLeadComponents', {
-                                    statusId,
+                                    statusId: columnKey,
                                     offset: 0,
                                     limit: 5
                                 })
@@ -169,12 +175,12 @@ class Pipeline(View):
                 app
                     .sendReq('getLeadComponents', {
                         statusId,
-                        offset: boardColumn.items.length - 1,
+                        offset: boardColumns[columnIndex].items.length,
                         limit: 5
                     })
                     .then(result => {
-                        // Unset loading to add button
-                        boardColumns[columnIndex].addLoading = false
+                        // Unset loading to load button
+                        boardColumns[columnIndex].loadLoading = false
                         board.setAttr('columns', boardColumns)
                             
                         if (result._res === 'ok') {
@@ -183,9 +189,12 @@ class Pipeline(View):
                             // Set count and set/append items
                             boardColumns[columnIndex].count = leadTotal
                             boardColumns[columnIndex].items = byAdd ? leadComponents : [
-                                ...boardColumn.items,
+                                ...boardColumns[columnIndex].items,
                                 ...leadComponents
                             ]
+                            
+                            // If there are no leads left then hide load button
+                            boardColumns[columnIndex].showLoad = boardColumns[columnIndex].items.length < leadTotal
                             
                             board.setAttr('columns', boardColumns)
                         }
@@ -204,10 +213,10 @@ class Pipeline(View):
                 const item = boardColumns[oldColumnIndex].items[oldItemIndex]
                 
                 // Add item new column
-                boardColumns[oldColumnIndex].splice(newItemIndex, 0, item)
+                // boardColumns[oldColumnIndex].items.slice(newItemIndex, 0, item)
                 
                 // Remove item from column
-                boardColumns[oldColumnIndex].splice(oldItemIndex, 1)
+                boardColumns[oldColumnIndex].items.slice(oldItemIndex, 1)
                 
                 // Update columns on board
                 board.setAttr('columns', boardColumns)
@@ -222,11 +231,21 @@ class Pipeline(View):
 
 # Get lead component
 def get_lead_component(lead):
+    title = ''
+    description = []
+    for field in lead['fields']:
+        if field['field_value_type'] in ('number', 'string'):
+            if field['field_as_title']:
+                title += field['value'] + ' '
+            elif field['field_primary']:
+                description.append(field['value'])
+    title = title.strip()
+
     return {
-        'key': lead.id,
-        'columnKey': status['id'],
-        'title': 'Lead title',
-        'description': 'Lead description...',
+        'key': lead['id'],
+        'columnKey': lead['status_id'],
+        'title': title if title else 'No name',
+        'description': description if len(description) > 0 else 'Empty lead',
         'extra': [
             'Added on 12 Jun at 11:34',
             {
@@ -238,6 +257,6 @@ def get_lead_component(lead):
             }
         ],
         'toWindow': ['updateLead', {
-            'id': lead.id
+            'id': lead['id']
         }]
     }

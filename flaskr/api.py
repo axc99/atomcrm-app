@@ -35,8 +35,8 @@ def get_leads(data, veokit_installation_id):
             'statusId': lead.status_id,
             'addDate': lead.add_date.strftime('%Y-%m-%d %H:%M:%S'),
             'updDate': lead.upd_date.strftime('%Y-%m-%d %H:%M:%S'),
-            'fields': lead.get_fields(for_api=True),
-            'tags': lead.get_tags(for_api=True)
+            'fields': Lead.get_fields(lead.id, for_api=True),
+            'tags': Lead.get_tags(lead.id, for_api=True)
         })
 
     return {
@@ -102,8 +102,8 @@ def create_lead(data, veokit_installation_id):
             'statusId': lead.status_id,
             'addDate': lead.add_date.strftime('%Y-%m-%d %H:%M:%S'),
             'updDate': lead.upd_date.strftime('%Y-%m-%d %H:%M:%S'),
-            'fields': lead.get_fields(for_api=True),
-            'tags': lead.get_tags(for_api=True)
+            'fields': Lead.get_fields(lead.id, for_api=True),
+            'tags': Lead.get_tags(lead.id, for_api=True)
         }
     }
 
@@ -169,8 +169,8 @@ def update_lead(data, veokit_installation_id):
             'statusId': lead.status_id,
             'addDate': lead.add_date.strftime('%Y-%m-%d %H:%M:%S'),
             'updDate': lead.upd_date.strftime('%Y-%m-%d %H:%M:%S'),
-            'fields': lead.get_fields(for_api=True),
-            'tags': lead.get_tags(for_api=True)
+            'fields': Lead.get_fields(lead.id, for_api=True),
+            'tags': Lead.get_tags(lead.id, for_api=True)
         }
     }
 

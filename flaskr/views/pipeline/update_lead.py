@@ -15,13 +15,11 @@ class UpdateLead(View):
             .filter_by(id=params['id']) \
             .first()
         self.fields = Field.query \
-            .filter_by(veokit_installation_id=request_data['installation_id'],
-                       lead_id=self.lead.id) \
+            .filter_by(veokit_installation_id=request_data['installation_id']) \
             .order_by(Field.index) \
             .all()
         self.statuses = Status.query \
-            .filter_by(veokit_installation_id=request_data['installation_id'],
-                       lead_id=self.lead.id) \
+            .filter_by(veokit_installation_id=request_data['installation_id']) \
             .order_by(Status.index) \
             .all()
 
@@ -38,10 +36,11 @@ class UpdateLead(View):
 
     def get_schema(self, params, request_data):
         form_fields = []
-        lead_fields = self.lead.get_fields()
+        lead_fields = Lead.get_fields(self.lead.id)
 
         for field in self.fields:
-            field_value = [f for f in lead_fields if f['field_id'] == field.id],
+            lead_field = next((f for f in lead_fields if f['field_id'] == field.id), None)
+            field_value = lead_field['value'] if lead_field else None
             field_component = {}
 
             if field.value_type.name == 'boolean':
@@ -95,7 +94,6 @@ class UpdateLead(View):
                                     {
                                         '_com': 'Button',
                                         'icon': 'delete',
-                                        'type': 'danger',
                                         'onClick': 'onClickArchive'
                                     } if not self.lead.archived else {
                                         '_com': 'Button',
@@ -113,7 +111,7 @@ class UpdateLead(View):
                         'content': [
                             {
                                 '_com': 'Area',
-                                'background': '#f5f5f5',
+                                'background': '#f9f9f9',
                                 'content': [
                                     {
                                         '_com': 'Field.Select',
@@ -126,8 +124,7 @@ class UpdateLead(View):
                                         '_com': 'Field.Input',
                                         '_id': 'createLeadForm_tags',
                                         'multiple': True,
-                                        'label': 'Tags',
-                                        'value': lead.get_tags(),
+                                        'value': Lead.get_tags(self.lead.id),
                                         'placeholder': 'Enter tags'
                                     },
                                     {
@@ -139,7 +136,7 @@ class UpdateLead(View):
                                                 'label': 'Creator',
                                                 'value': {
                                                     '_com': 'User',
-                                                    'userId': 2
+                                                    'userId': 3
                                                 }
                                             }
                                         ]
@@ -148,13 +145,19 @@ class UpdateLead(View):
                                         '_com': 'Details',
                                         'title': 'UTM marks',
                                         'items': [
-                                            {'label': 'utm_source', 'value': self.lead.utm_source},
-                                            {'label': 'utm_medium', 'value': self.lead.utm_medium},
-                                            {'label': 'utm_campaign', 'value': self.lead.utm_campaign},
-                                            {'label': 'utm_term', 'value': self.lead.utm_term},
-                                            {'label': 'utm_content', 'value': self.lead.utm_content}
+                                            {'label': 'utm_source', 'value': self.lead.utm_source} if self.lead.utm_source else None,
+                                            {'label': 'utm_medium', 'value': self.lead.utm_medium} if self.lead.utm_medium else None,
+                                            {'label': 'utm_campaign', 'value': self.lead.utm_campaign} if self.lead.utm_campaign else None,
+                                            {'label': 'utm_term', 'value': self.lead.utm_term} if self.lead.utm_term else None,
+                                            {'label': 'utm_content', 'value': self.lead.utm_content} if self.lead.utm_content else None
                                         ]
-                                    }
+                                    } if (
+                                        self.lead.utm_source or
+                                        self.lead.utm_medium or
+                                        self.lead.utm_campaign or
+                                        self.lead.utm_term or
+                                        self.lead.utm_content
+                                    ) else None
                                 ]
                             }
                         ]
@@ -175,9 +178,9 @@ class UpdateLead(View):
 
                     const fields = []
                     Object.entries(values).map(([key, value]) => {
-                        fields.append({
-                            fieldId: key,
-                            value
+                        fields.push({
+                            fieldId: +key,
+                            value: value
                         })
                     })
 
@@ -185,6 +188,8 @@ class UpdateLead(View):
 
                     app
                         .sendReq('updateLead', {
+                            id: """ + str(self.lead.id) + """,
+                            statusId: """ + str(self.lead.status_id) + """,
                             fields,
                             tags: [],
                             statusId
@@ -208,7 +213,7 @@ class UpdateLead(View):
                         onOk: modal => {
                             app
                                 .sendReq('updateLead', {
-                                    id: """ + self.lead.id + """,
+                                    id: """ + str(self.lead.id) + """,
                                     archived: true
                                 })
                                 .then(result => {
@@ -224,7 +229,7 @@ class UpdateLead(View):
                 """(app, params, event) => {
                     app
                         .sendReq('updateLead', {
-                            id: """ + self.lead.id + """,
+                            id: """ + str(self.lead.id) + """,
                             archived: false
                         })
                         .then(result => {
