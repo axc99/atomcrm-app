@@ -1,6 +1,6 @@
-from flaskr.requests.leads import get_lead_components, create_lead, update_lead
+from flaskr.requests.leads import get_lead_components, create_lead, update_lead, update_lead_status, archive_lead, restore_lead
 from flaskr.requests.statuses import create_status, update_status, update_status_index, delete_status
-from flaskr.requests.fields import create_field, update_field, delete_field
+from flaskr.requests.fields import create_field, update_field, update_field_index, delete_field
 from flaskr.requests.tokens import get_token
 
 
@@ -9,6 +9,9 @@ requests_map = {
     'getLeadComponents': get_lead_components,
     'createLead': create_lead,
     'updateLead': update_lead,
+    'updateLeadStatus': update_lead_status,
+    'archiveLead': archive_lead,
+    'restoreLead': restore_lead,
 
     # Statuses
     'createStatus': create_status,
@@ -19,6 +22,7 @@ requests_map = {
     # Fields
     'createField': create_field,
     'updateField': update_field,
+    'updateFieldIndex': update_field_index,
     'deleteField': delete_field,
 
     # API

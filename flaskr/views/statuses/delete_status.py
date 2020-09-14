@@ -13,22 +13,17 @@ class DeleteStatus(View):
     other_statuses = []
 
     def before(self, params, request_data):
-        id = params.get('id')
-
-        if not id:
-            raise Exception()
-
         self.deleted_status = Status.query \
-            .filter_by(id=id,
-                       veokit_installation_id=1) \
+            .filter_by(id=params['id'],
+                       veokit_installation_id=request_data['installation_id']) \
             .first()
         if not self.deleted_status:
             raise Exception()
 
         self.other_statuses = Status.query \
-            .filter(Status.veokit_installation_id==1,
-                    Status.id != id) \
-            .order_by(Status.id.asc()) \
+            .filter(Status.veokit_installation_id==request_data['installation_id'],
+                    Status.id != params['id']) \
+            .order_by(Status.index.asc()) \
             .all()
 
     def get_header(self, params, request_data):
@@ -60,6 +55,7 @@ class DeleteStatus(View):
                 'fields': [
                     {
                         '_com': 'Field.Select',
+                        'key': 'action',
                         'value': select_options[0]['key'] if len(select_options) > 0 else 'deleteLeads',
                         'options': select_options
                     }
@@ -93,17 +89,16 @@ class DeleteStatus(View):
                     }
                     
                     form.setAttr('loading', true)
-                    
                     app
                         .sendReq('deleteStatus', {
-                            statusId: """ + str(self.deleted_status.id) + """,
+                            id: """ + str(self.deleted_status.id) + """,
                             deleteLeads,
                             assignedStatusId
                         })
                         .then(result => {
                             form.setAttr('loading', false)
                             
-                            if (result._res == 'ok') {
+                            if (result.res == 'ok') {
                                 // Reload parent page
                                 app.getPage().reload()
                             }

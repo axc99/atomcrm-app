@@ -1,0 +1,26 @@
+image: docker:stable
+
+stages:
+  - deploy
+
+before_script:
+  # Check for ssh-agent + rsync and install if not present
+  - 'which ssh-agent || ( apk add openssh-client  )'
+  - 'which rsync || ( apk add rsync )'
+  - eval $(ssh-agent -s)
+  # Inject the remote's private key
+  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
+  # Append keyscan output into known hosts
+  - ssh-keyscan $SERVER_IP >> ~/.ssh/known_hosts
+  - chmod 644 ~/.ssh/known_hosts
+
+deploy:
+  stage: deploy
+  script:
+    - rsync -avuz $CI_PROJECT_DIR $SERVER_USER@$SERVER_IP:~
+    - ssh $SERVER_USER@$SERVER_IP '. /etc/profile; cd /root/backend/; docker-compose -f docker-compose.yml build; docker-compose run web flask db upgrade;'
+  only:
+    # Trigger deployments only from master branch
+    - master

@@ -7,7 +7,7 @@ from flask_migrate import Migrate
 app = Flask(__name__)
 
 app.debug = os.environ.get('FLASK_ENV') == 'production'
-app.secret_key = os.environ.get('SECRET_KEY')
+app.secret_key = os.environ.get('APP_SECRET_KEY')
 
 # Configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://{}:{}@db/{}'.format(os.environ.get('POSTGRES_USER'),

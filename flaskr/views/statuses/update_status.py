@@ -96,7 +96,7 @@ class UpdateStatus(View):
                         .then(result => {
                             form.setAttr('loading', false)
 
-                            if (result._res == 'ok') {
+                            if (result.res == 'ok') {
                                 // Reload parent page
                                 app.getPage().reload()
                             }

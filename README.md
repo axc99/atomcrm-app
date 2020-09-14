@@ -1,8 +1,8 @@
-# Atom CRM
+# AtomCRM
 
 Minimalistic CRM system with basic functionality.
 
-[Open on VeoKit Store](https://veokit.com/store/1-veokit-team/1-atomcrm)
+[App on VeoKit Store](https://veokit.com/store/1-veokit-team/1-atomcrm)
 
 ---
 

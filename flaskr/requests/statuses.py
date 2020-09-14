@@ -1,5 +1,6 @@
 from flaskr import db
 from flaskr.models.status import Status
+from flaskr.models.lead import Lead
 
 
 # Create status
@@ -16,7 +17,7 @@ def create_status(params, request_data):
     db.session.commit()
 
     return {
-        '_res': 'ok',
+        'res': 'ok',
         'status_id': 1
     }
 
@@ -33,7 +34,7 @@ def update_status(params, request_data):
     db.session.commit()
 
     return {
-        '_res': 'ok'
+        'res': 'ok'
     }
 
 
@@ -41,20 +42,43 @@ def update_status(params, request_data):
 def update_status_index(params, request_data):
     statuses = Status.query\
         .filter_by(veokit_installation_id=request_data['installation_id'])\
+        .order_by(Status.index.asc())\
         .all()
 
-    # TODO: update status indexes
+    status_current_index = next((i for i, s in enumerate(statuses) if s.id == params['id']), None)
+
+    statuses.insert(params['newIndex'], statuses.pop(status_current_index))
+
+    i = 0
+    for status in statuses:
+        status.index = i
+        i += 1
+    db.session.commit()
+
+    return {
+        'res': 'ok'
+    }
 
 
 # Delete status
 def delete_status(params, request_data):
-    if params.get('id'):
-        Status.query \
-            .filter_by(id=params.get('id')) \
+    if params.get('assignedStatusId'):
+        Lead.query \
+            .filter_by(veokit_installation_id=request_data['installation_id'],
+                       status_id=params['id']) \
+            .update({'status_id': params['assignedStatusId']})
+    else:
+        Lead.query\
+            .filter_by(veokit_installation_id=request_data['installation_id'],
+                       status_id=params['id'])\
             .delete()
 
-        db.session.commit()
+    Status.query \
+        .filter_by(id=params['id']) \
+        .delete()
+
+    db.session.commit()
 
     return {
-        '_res': 'ok'
+        'res': 'ok'
     }

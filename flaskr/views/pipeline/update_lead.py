@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from flaskr.views.view import View
 from flaskr.models.lead import Lead
 from flaskr.models.field import Field
@@ -148,8 +150,14 @@ class UpdateLead(View):
                                     {
                                         '_com': 'Details',
                                         'items': [
-                                            {'label': 'Add date', 'value': self.lead.add_date.strftime('%d.%m.%Y at %H:%M')},
-                                            {'label': 'Update date', 'value': self.lead.upd_date.strftime('%d.%m.%Y at %H:%M')},
+                                            {
+                                                'label': 'Add date',
+                                                'value': Lead.get_regular_date((self.lead.add_date + timedelta(minutes=request_data['timezone_offset'])).strftime('%Y-%m-%d %H:%M:%S'))
+                                            },
+                                            {
+                                                'label': 'Update date',
+                                                'value': Lead.get_regular_date((self.lead.upd_date + timedelta(minutes=request_data['timezone_offset'])).strftime('%Y-%m-%d %H:%M:%S'))
+                                            },
                                             {
                                                 'label': 'Creator',
                                                 'value': {
@@ -192,7 +200,9 @@ class UpdateLead(View):
 
                     const window = app.getView()
                     const form = window.getCom('createLeadForm')
+                    const originalStatusId = """ + str(self.lead.status_id) + """
                     const statusId = window.getCom('createLeadForm_status').getAttr('value')
+                    const tags = window.getCom('createLeadForm_tags').getAttr('value')
 
                     const fields = []
                     Object.entries(values).map(([key, value]) => {
@@ -207,37 +217,47 @@ class UpdateLead(View):
                     app
                         .sendReq('updateLead', {
                             id: """ + str(self.lead.id) + """,
-                            statusId: """ + str(self.lead.status_id) + """,
                             fields,
-                            tags: [],
+                            tags,
                             statusId
                         })
                         .then(result => {
                             form.setAttr('loading', false)
 
-                            if (result._res == 'ok') {
-                                // Reload parent page
-                                app.getPage().reload()
+                            if (result.res == 'ok') {
+                                if (statusId != originalStatusId) {
+                                    // Update status columns
+                                    app.getPage().callMethod('loadLeads', { statusId: originalStatusId })  
+                                    app.getPage().callMethod('loadLeads', { statusId })  
+                                } else {
+                                    // Update status column
+                                    app.getPage().callMethod('loadLeads', { statusId: originalStatusId })  
+                                } 
+                                
+                                window.close()
                             }
                         })
                 }""",
             'onClickArchive':
                 """(app, params, event) => {
-                     app.openModal({
-                        type: 'answer',
+                    app.openModal({
+                        type: 'confirm',
                         title: 'Delete lead?',
-                        content: 'Are you sure you want to move this lead to the archive? You can restore it at any time.',
+                        text: 'Are you sure you want to move this lead to the archive? You can restore it at any time.',
                         okText: 'Delete',
                         onOk: modal => {
                             app
-                                .sendReq('updateLead', {
+                                .sendReq('archiveLead', {
                                     id: """ + str(self.lead.id) + """,
                                     archived: true
                                 })
                                 .then(result => {
-                                    if (result._res == 'ok') {
-                                        // Reload parent page
+                                    if (result.res == 'ok') {
+                                        // Reload parent window
                                         app.getWindow().reload()
+                                        
+                                        // Reload leads on page
+                                        app.getPage().callMethod('loadLeads', { statusId: """ + str(self.lead.status_id) + """ })
                                     }
                                 })
                             }
@@ -246,14 +266,17 @@ class UpdateLead(View):
             'onClickRestore':
                 """(app, params, event) => {
                     app
-                        .sendReq('updateLead', {
+                        .sendReq('restoreLead', {
                             id: """ + str(self.lead.id) + """,
                             archived: false
                         })
                         .then(result => {
-                            if (result._res == 'ok') {
-                                // Reload parent page
+                            if (result.res == 'ok') {
+                                // Reload parent window
                                 app.getWindow().reload()
+                                
+                                // Reload leads on page
+                                app.getPage().callMethod('loadLeads', { statusId: """ + str(self.lead.status_id) + """ })
                             }
                         })     
                 }"""

@@ -17,7 +17,7 @@ def create_field(params, request_data):
     is_valid = vld.validate(params)
 
     if not is_valid:
-        return {'_res': 'err', 'message': 'Invalid params', 'errors': vld.errors}
+        return {'res': 'err', 'message': 'Invalid params', 'errors': vld.errors}
 
     new_field = Field()
     new_field.veokit_installation_id = request_data['installation_id']
@@ -35,7 +35,7 @@ def create_field(params, request_data):
     db.session.commit()
 
     return {
-        '_res': 'ok',
+        'res': 'ok',
         'status_id': 1
     }
 
@@ -56,20 +56,29 @@ def update_field(params, request_data):
     db.session.commit()
 
     return {
-        '_res': 'ok'
+        'res': 'ok'
     }
 
 
 # Update field index
 def update_field_index(params, request_data):
-    fields = Field.query\
-        .filter_by(veokit_installation_id=request_data['installation_id'])\
+    fields = Field.query \
+        .filter_by(veokit_installation_id=request_data['installation_id']) \
+        .order_by(Field.index.asc()) \
         .all()
 
-    # TODO: update field indexes
+    field_current_index = next((i for i, s in enumerate(fields) if s.id == params['id']), None)
+
+    fields.insert(params['newIndex'], fields.pop(field_current_index))
+
+    i = 0
+    for field in fields:
+        field.index = i
+        i += 1
+    db.session.commit()
 
     return {
-        '_res': 'ok'
+        'res': 'ok'
     }
 
 
@@ -83,5 +92,5 @@ def delete_field(params, request_data):
         db.session.commit()
 
     return {
-        '_res': 'ok'
+        'res': 'ok'
     }

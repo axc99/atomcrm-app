@@ -16,7 +16,7 @@ class Statuses(View):
         self.statuses = db.session.execute("""
             SELECT 
                 s.*,
-                (SELECT COUNT(*) FROM public.lead AS l WHERE l.status_id = s.id) AS lead_count,
+                (SELECT COUNT(*) FROM public.lead AS l WHERE l.status_id = s.id AND l.archived = false) AS lead_count,
                 COUNT(*) OVER () AS total
             FROM 
                 public.status AS s
@@ -104,8 +104,7 @@ class Statuses(View):
                 
                 app.sendReq('updateStatusIndex', {
                     id: key,
-                    newIndex,
-                    oldIndex
+                    newIndex
                 })
             }""",
         'deleteStatus':
@@ -130,7 +129,7 @@ class Statuses(View):
                         item.actions[1].loading = false
                         list.setAttr('items', items)
                         
-                        if (result._res == 'ok') {
+                        if (result.res == 'ok') {
                             // Reload parent page
                             app.getPage().reload()
                         }

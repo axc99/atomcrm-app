@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flaskr.models.lead import Lead
 from flaskr.models.status import Status
 from flaskr.models.field import Field
@@ -61,7 +63,12 @@ def create_lead(data, veokit_installation_id):
                     'value': {'type': ['number', 'string', 'boolean', 'list'], 'required': True}
                 }
             }
-        }
+        },
+        'utmSource': {'type': 'string'},
+        'utmMedium': {'type': 'string'},
+        'utmCampaign': {'type': 'string'},
+        'utmTerm': {'type': 'string'},
+        'utmContent': {'type': 'string'}
     })
     is_valid = vld.validate(data)
 
@@ -80,12 +87,12 @@ def create_lead(data, veokit_installation_id):
     # Create lead
     lead = Lead()
     lead.veokit_installation_id = veokit_installation_id
-    lead.status_id = data['status_id']
-    lead.urm_source = data.get('utm_source', None)
-    lead.utm_medium = data.get('utm_medium', None)
-    lead.utm_campaign = data.get('utm_campaign', None)
-    lead.utm_term = data.get('utm_term', None)
-    lead.utm_content = data.get('utm_content', None)
+    lead.status_id = data['statusId']
+    lead.utm_source = data.get('utmSource', None)
+    lead.utm_medium = data.get('utmMedium', None)
+    lead.utm_campaign = data.get('utmCampaign', None)
+    lead.utm_term = data.get('utmTerm', None)
+    lead.utm_content = data.get('utmContent', None)
 
     db.session.add(lead)
     db.session.commit()
@@ -154,7 +161,7 @@ def update_lead(data, veokit_installation_id):
 
     # Update lead
     lead.status_id = data['status_id']
-    lead.upd_date = datetime.utcnow
+    lead.upd_date = datetime.utcnow()
     db.session.commit()
 
     # Set tags and fields

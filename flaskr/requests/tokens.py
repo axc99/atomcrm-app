@@ -5,6 +5,6 @@ def get_token(params, request_data):
     token = get_api_token(request_data['installation_id'])
 
     return {
-        '_res': 'ok',
+        'res': 'ok',
         'token': token
     }

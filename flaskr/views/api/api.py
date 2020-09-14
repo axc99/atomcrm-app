@@ -65,14 +65,3 @@ class Api(View):
                 'content': content
             }
         ]
-
-    methods = {
-        'onSortFields':
-            """(app, params) => {
-
-            }""",
-        'deleteField':
-            """(app, params) => {
-
-            }"""
-    }

@@ -1,5 +1,5 @@
 from flaskr import db
-from datetime import datetime, date
+from datetime import datetime, timedelta
 from flaskr.models.tag import Tag
 from flaskr.models.field import Field
 
@@ -35,9 +35,9 @@ class Lead(db.Model):
         for tag_name in tags:
             # Search tag by name
             exist_tag = Tag.query \
-                    .filter_by(name=tag_name,
-                               veokit_installation_id=self.veokit_installation_id) \
-                    .first()
+                .filter_by(name=tag_name,
+                           veokit_installation_id=self.veokit_installation_id) \
+                .first()
 
             # If tag with such name already exist
             if not exist_tag:
@@ -45,12 +45,12 @@ class Lead(db.Model):
                 new_tag = Tag()
                 new_tag.name = tag_name
                 new_tag.veokit_installation_id = self.veokit_installation_id
-                db.session.add(tag)
+                db.session.add(new_tag)
                 db.session.commit()
 
                 # Add tag to lead
                 new_lead_tag = LeadTag()
-                new_lead_tag.tag_id = tag.id
+                new_lead_tag.tag_id = new_tag.id
                 new_lead_tag.lead_id = self.id
 
                 db.session.add(new_lead_tag)
@@ -113,10 +113,10 @@ class Lead(db.Model):
         })
         for field in fields:
             res_fields.append({
-                'field_id': field.field_id,
-                'field_name': field.field_name,
-                'value': field.value
-            } if for_api else {
+                                  'field_id': field.field_id,
+                                  'field_name': field.field_name,
+                                  'value': field.value
+                              } if for_api else {
                 'field_id': field.field_id,
                 'value': field.value,
                 'field_as_title': field.field_as_title,
@@ -149,6 +149,94 @@ class Lead(db.Model):
             res_tags.append(tag.tag_name)
 
         return res_tags
+
+    @staticmethod
+    def get_regular_date(src_date):
+        [date, time] = src_date.split(' ')
+        [year, month, day] = date.split('-')
+        [hours, minutes, seconds] = time.split(':')
+
+        date_obj = datetime.strptime(src_date, '%Y-%m-%d %H:%M:%S')
+
+        if date_obj.date() == datetime.today().date():
+            return "Today at {}:{}".format(hours, minutes)
+        elif date_obj.date() == datetime.today().date() - timedelta(days=1):
+            return 'Yesterday at {}:{}'.format(hours, minutes)
+        else:
+            if date_obj.year == datetime.today().year:
+                return '{} {} at {}:{}'.format(day, date_obj.strftime("%b"), hours, minutes)
+            elif date_obj.year == datetime.today().year:
+                return '{} {} {} at {}:{}'.format(day, date_obj.strftime("%b"), year, hours, minutes)
+
+        return date
+
+    # Filter leads
+    @staticmethod
+    def get_with_filter(installation_id, status_id, search, period_from, period_to, offset, limit):
+        search = search.strip() if search else None
+        search_exp = 'l.archived = false'
+        join_exp = ''
+        search_value = None
+
+        if search:
+            if search.startswith('id='):
+                search_exp = 'l.id = :search_value'
+                search_value = search.split('=').pop(1)
+            elif search.startswith('archived=true') or search.startswith('archived=1'):
+                search_exp = "l.archived = TRUE"
+            elif search.startswith('utm_source=') or search.startswith('utmSource='):
+                search_exp = 'l.utm_source LIKE :search_value'
+            elif search.startswith('utm_medium=') or search.startswith('utmMedium='):
+                search_exp = 'l.utm_medium LIKE :search_value'
+            elif search.startswith('utm_campaign=') or search.startswith('utmCampaign='):
+                search_exp = 'l.utm_campaign LIKE :search_value'
+            elif search.startswith('utm_term=') or search.startswith('utmTerm='):
+                search_exp = 'l.utm_term LIKE :search_value'
+            elif search.startswith('utm_content=') or search.startswith('utmContent='):
+                search_exp = 'l.utm_content LIKE :search_value'
+            else:
+                search_value = '%' + search.lower() + '%'
+                search_exp = """(lf.value != '' AND LOWER(lf.value) LIKE :search_value) OR 
+                                (LOWER(t.name) LIKE :search_value)"""
+
+                join_exp = """
+                    LEFT JOIN 
+                        public.lead_field AS lf ON lf.lead_id = l.id
+                    LEFT JOIN 
+                        public.lead_tag AS lt ON lt.lead_id = l.id
+                    LEFT JOIN 
+                        public.tag AS t ON t.id = lt.tag_id"""
+
+        return db.session.execute("""  
+            SELECT 
+                l.*,
+                COUNT(*) OVER () AS total
+            FROM 
+                public.lead AS l
+            {}
+            WHERE
+                l.veokit_installation_id = :installation_id AND
+                l.status_id = :status_id AND
+                (:period_from is null OR l.add_date > :period_from) AND 
+                (:period_to is null OR l.add_date < :period_to) AND 
+                ({})
+            GROUP BY
+                l.id
+            ORDER BY 
+                l.add_date DESC
+            OFFSET 
+                :offset
+            LIMIT
+                :limit""".format(join_exp, search_exp), {
+            'offset': 0 if offset is None else offset,
+            'limit': 10 if limit is None else limit,
+            'installation_id': installation_id,
+            'status_id': status_id,
+            'search_exp': search_exp,
+            'search_value': search_value if search_value else None,
+            'period_from': "{} 00:00:00".format(period_from) if period_from else None,
+            'period_to': "{} 23:59:59".format(period_to) if period_to else None
+        })
 
 
 # Lead field

@@ -47,7 +47,7 @@ class GetToken(View):
                 app
                     .sendReq('getToken', {})
                     .then(result => {
-                        if (result._res == 'ok') {
+                        if (result.res == 'ok') {
                             tokenInput.setAttrs({
                                 _vis: true,
                                 value: result.token

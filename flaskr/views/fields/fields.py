@@ -110,8 +110,7 @@ class Fields(View):
                 
                 app.sendReq('updateFieldIndex', {
                     id: key,
-                    newIndex,
-                    oldIndex
+                    newIndex
                 })
             }""",
         'deleteField':
@@ -132,7 +131,7 @@ class Fields(View):
                         item.actions[1].loading = false
                         list.setAttr('items', items)
                         
-                        if (result._res == 'ok') {
+                        if (result.res == 'ok') {
                             // Reload parent page
                             app.getPage().reload()
                         }

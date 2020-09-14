@@ -8,11 +8,16 @@ content = """
 ### Search by ID:
 ```id=1```
 
-### Show only archived leads
+### Show only archived leads:
 ```archived=true```
 
-### Search lead by specific field
-```First name=John``` """
+### Search lead by UTM marks"
+- ```utm_source=google```
+- ```utm_medium=cpc```
+- ```utm_campaign=spring_sale```
+- ```utm_term=running+shoes```
+- ```utm_content=textlink```
+"""
 
 # Window: Search info
 class SearchInfo(View):
