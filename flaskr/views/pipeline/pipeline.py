@@ -138,14 +138,14 @@ class Pipeline(View):
 
                     app
                         .sendReq('createLead', {
-                            statusId: columnKey
+                            statusId: +columnKey
                         })
                         .then(result => {
                             if (result.res === 'ok') {
                                 // Update leads in column
                                 app
                                     .sendReq('getLeadComponents', {
-                                        statusId: columnKey,
+                                        statusId: +columnKey,
                                         offset: 0,
                                         limit: 10
                                     })
@@ -239,7 +239,7 @@ class Pipeline(View):
                     app
                         .sendReq('updateLeadStatus', {
                             id: key,
-                            statusId: newColumnKey
+                            statusId: +newColumnKey
                         })
                         .then(result => {
                             // Unset loading to both columns

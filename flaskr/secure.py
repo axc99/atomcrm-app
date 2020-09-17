@@ -7,7 +7,7 @@ from flaskr import db
 
 # Validate secret key
 def validate_secret_key(secret_key):
-    return secret_key == os.environ.get('SECRET_KEY')
+    return secret_key == os.environ.get('APP_SECRET_KEY')
 
 
 # Validate api token

@@ -1,5 +1,7 @@
 from datetime import timedelta
 
+from cerberus import Validator
+
 from flaskr.views.view import View
 from flaskr.models.lead import Lead
 from flaskr.models.field import Field
@@ -13,6 +15,14 @@ class UpdateLead(View):
     statuses = []
 
     def before(self, params, request_data):
+        vld = Validator({
+            'id': {'type': 'number', 'required': True}
+        })
+        is_valid = vld.validate(params)
+        if not is_valid:
+            raise Exception({'message': 'Invalid params',
+                             'errors': vld.errors})
+
         self.lead = Lead.query \
             .filter_by(id=params['id']) \
             .first()

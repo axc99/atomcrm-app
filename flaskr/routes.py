@@ -119,10 +119,10 @@ def webhook():
 
         # Add fields
         default_fields = [
-            {'index': 0, 'name': 'First name', 'value_type': 'string', 'max': 40},
-            {'index': 0, 'name': 'Last name', 'value_type': 'string', 'max': 60},
-            {'index': 0, 'name': 'Email', 'value_type': 'string', 'max': 260},
-            {'index': 0, 'name': 'Mobile phone', 'value_type': 'string', 'max': 30}
+            {'index': 0, 'name': 'First name', 'value_type': 'string', 'max': 40, 'as_title': True, 'primary': False},
+            {'index': 0, 'name': 'Last name', 'value_type': 'string', 'max': 60, 'as_title': True, 'primary': False},
+            {'index': 0, 'name': 'Email', 'value_type': 'string', 'max': 260, 'as_title': False, 'primary': True},
+            {'index': 0, 'name': 'Mobile phone', 'value_type': 'string', 'max': 30, 'as_title': False, 'primary': True}
         ]
         for default_field in default_fields:
             new_field = Field()
@@ -130,6 +130,8 @@ def webhook():
             new_field.name = default_field['name']
             new_field.value_type = default_field['value_type']
             new_field.max = default_field['max']
+            new_field.as_title = default_field['as_title']
+            new_field.primary = default_field['primary']
             new_field.veokit_installation_id = data['installationId']
 
             db.session.add(new_field)

@@ -1,3 +1,5 @@
+from cerberus import Validator
+
 from flaskr.views.view import View
 from flaskr.models.status import Status
 
@@ -7,13 +9,19 @@ class UpdateStatus(View):
     status = None
 
     def before(self, params, request_data):
-        id = params.get('id')
+        vld = Validator({
+            'id': {'type': 'number', 'required': True}
+        })
+        is_valid = vld.validate(params)
+        if not is_valid:
+            raise Exception({'message': 'Invalid params',
+                             'errors': vld.errors})
 
         if not id:
             raise Exception()
 
         self.status = Status.query\
-                            .filter_by(id=id,
+                            .filter_by(id=params['id'],
                                        veokit_installation_id=request_data['installation_id'])\
                             .first()
         if not self.status:

@@ -13,11 +13,11 @@ def get_lead_components(params, request_data):
         'offset': {'type': 'number'},
         'limit': {'type': 'number'},
         'statusId': {'type': 'number', 'required': True},
-        'search': {'type': 'string', 'empty': True}
+        'search': {'type': 'string', 'empty': True},
+        'periodFrom': {'type': 'string', 'empty': True},
+        'periodTo': {'type': 'string', 'empty': True}
     })
-    vld.allow_unknown = True
     is_valid = vld.validate(params)
-
     if not is_valid:
         return {'res': 'err', 'message': 'Invalid params', 'errors': vld.errors}
 
@@ -56,9 +56,7 @@ def create_lead(params, request_data):
     vld = Validator({
         'statusId': {'type': 'number', 'required': True}
     })
-    vld.allow_unknown = True
     is_valid = vld.validate(params)
-
     if not is_valid:
         return {'res': 'err', 'message': 'Invalid params', 'errors': vld.errors}
 
@@ -97,9 +95,7 @@ def update_lead(params, request_data):
             }
         }
     })
-    vld.allow_unknown = True
     is_valid = vld.validate(params)
-
     if not is_valid:
         return {'res': 'err', 'message': 'Invalid params', 'errors': vld.errors}
 
@@ -132,9 +128,16 @@ def update_lead(params, request_data):
 
 # Upload lead status
 def update_lead_status(params, request_data):
-    print('params', params)
+    vld = Validator({
+        'id': {'type': 'number', 'required': True},
+        'statusId': {'type': 'number', 'required': True}
+    })
+    is_valid = vld.validate(params)
+    if not is_valid:
+        return {'res': 'err', 'message': 'Invalid params', 'errors': vld.errors}
+
     lead = Lead.query \
-        .filter_by(id=params.get('id')) \
+        .filter_by(id=params['id']) \
         .first()
     lead.upd_date = datetime.utcnow()
     lead.status_id = params['statusId']
@@ -148,8 +151,15 @@ def update_lead_status(params, request_data):
 
 # Archive lead
 def archive_lead(params, request_data):
+    vld = Validator({
+        'id': {'type': 'number', 'required': True}
+    })
+    is_valid = vld.validate(params)
+    if not is_valid:
+        return {'res': 'err', 'message': 'Invalid params', 'errors': vld.errors}
+
     lead = Lead.query \
-        .filter_by(id=params.get('id')) \
+        .filter_by(id=params['id']) \
         .first()
     lead.archived = True
 
@@ -162,8 +172,15 @@ def archive_lead(params, request_data):
 
 # Restore lead
 def restore_lead(params, request_data):
+    vld = Validator({
+        'id': {'type': 'number', 'required': True}
+    })
+    is_valid = vld.validate(params)
+    if not is_valid:
+        return {'res': 'err', 'message': 'Invalid params', 'errors': vld.errors}
+
     lead = Lead.query \
-        .filter_by(id=params.get('id')) \
+        .filter_by(id=params['id']) \
         .first()
     lead.archived = False
 

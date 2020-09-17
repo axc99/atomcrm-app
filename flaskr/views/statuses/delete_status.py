@@ -1,3 +1,5 @@
+from cerberus import Validator
+
 from flaskr.views.view import View
 from flaskr.models.status import Status, get_hex_by_color
 
@@ -13,6 +15,14 @@ class DeleteStatus(View):
     other_statuses = []
 
     def before(self, params, request_data):
+        vld = Validator({
+            'id': {'type': 'number', 'required': True}
+        })
+        is_valid = vld.validate(params)
+        if not is_valid:
+            raise Exception({'message': 'Invalid params',
+                             'errors': vld.errors})
+
         self.deleted_status = Status.query \
             .filter_by(id=params['id'],
                        veokit_installation_id=request_data['installation_id']) \
@@ -79,20 +89,12 @@ class DeleteStatus(View):
                     const form = window.getCom('deleteStatusForm')
                     const { values } = event
                     
-                    let deleteLeads = false
-                    let assignedStatusId = null
-                    
-                    if (values.action == 'deleteLeads') {
-                        deleteLeads = True
-                    } else {
-                        assignedStatusId = values.action
-                    }
+                    const assignedStatusId = values.action == 'deleteLeads' ? null : +values.action
                     
                     form.setAttr('loading', true)
                     app
                         .sendReq('deleteStatus', {
                             id: """ + str(self.deleted_status.id) + """,
-                            deleteLeads,
                             assignedStatusId
                         })
                         .then(result => {

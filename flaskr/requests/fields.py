@@ -13,9 +13,7 @@ def create_field(params, request_data):
         'asTitle': {'type': 'boolean', 'required': True},
         'primary': {'type': 'boolean', 'required': True}
     })
-    vld.allow_unknown = True
     is_valid = vld.validate(params)
-
     if not is_valid:
         return {'res': 'err', 'message': 'Invalid params', 'errors': vld.errors}
 
@@ -42,6 +40,19 @@ def create_field(params, request_data):
 
 # Update field
 def update_field(params, request_data):
+    vld = Validator({
+        'id': {'type': 'number', 'required': True},
+        'name': {'type': 'string', 'required': True},
+        'valueType': {'type': 'string', 'required': True},
+        'min': {'type': 'number', 'min': 0, 'required': True},
+        'max': {'type': 'number', 'max': 1000, 'required': True},
+        'asTitle': {'type': 'boolean', 'required': True},
+        'primary': {'type': 'boolean', 'required': True}
+    })
+    is_valid = vld.validate(params)
+    if not is_valid:
+        return {'res': 'err', 'message': 'Invalid params', 'errors': vld.errors}
+
     field = Field.query \
         .filter_by(id=params['id']) \
         .first()
@@ -62,6 +73,14 @@ def update_field(params, request_data):
 
 # Update field index
 def update_field_index(params, request_data):
+    vld = Validator({
+        'id': {'type': 'number', 'required': True},
+        'newIndex': {'type': 'number', 'required': True}
+    })
+    is_valid = vld.validate(params)
+    if not is_valid:
+        return {'res': 'err', 'message': 'Invalid params', 'errors': vld.errors}
+
     fields = Field.query \
         .filter_by(veokit_installation_id=request_data['installation_id']) \
         .order_by(Field.index.asc()) \
@@ -84,12 +103,18 @@ def update_field_index(params, request_data):
 
 # Delete field
 def delete_field(params, request_data):
-    if params.get('id'):
-        Field.query \
-            .filter_by(id=params.get('id')) \
-            .delete()
+    vld = Validator({
+        'id': {'type': 'number', 'required': True}
+    })
+    is_valid = vld.validate(params)
+    if not is_valid:
+        return {'res': 'err', 'message': 'Invalid params', 'errors': vld.errors}
 
-        db.session.commit()
+    Field.query \
+        .filter_by(id=params['id']) \
+        .delete()
+
+    db.session.commit()
 
     return {
         'res': 'ok'
