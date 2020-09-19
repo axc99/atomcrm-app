@@ -91,7 +91,7 @@ def update_status_index(params, request_data):
 def delete_status(params, request_data):
     vld = Validator({
         'id': {'type': 'number', 'required': True},
-        'assignedStatusId': {'type': 'number', 'required': True, 'nullable': True}
+        'assignedStatusId': {'type': 'number'}
     })
     is_valid = vld.validate(params)
     if not is_valid:

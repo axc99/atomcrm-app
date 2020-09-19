@@ -63,6 +63,7 @@ def create_lead(params, request_data):
     # Create lead
     new_lead = Lead()
     new_lead.status_id = params['statusId']
+    new_lead.veokit_user_id = request_data['user_id']
     new_lead.veokit_installation_id = request_data['installation_id']
 
     db.session.add(new_lead)
