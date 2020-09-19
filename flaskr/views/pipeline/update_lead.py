@@ -1,0 +1,293 @@
+from datetime import timedelta
+
+from cerberus import Validator
+
+from flaskr.views.view import View
+from flaskr.models.lead import Lead
+from flaskr.models.field import Field
+from flaskr.models.status import Status, StatusColor
+
+
+# Window: Update lead
+class UpdateLead(View):
+    lead = None
+    fields = []
+    statuses = []
+
+    def before(self, params, request_data):
+        vld = Validator({
+            'id': {'type': 'number', 'required': True}
+        })
+        is_valid = vld.validate(params)
+        if not is_valid:
+            raise Exception({'message': 'Invalid params',
+                             'errors': vld.errors})
+
+        self.lead = Lead.query \
+            .filter_by(id=params['id']) \
+            .first()
+        self.fields = Field.query \
+            .filter_by(veokit_installation_id=request_data['installation_id']) \
+            .order_by(Field.index) \
+            .all()
+        self.statuses = Status.query \
+            .filter_by(veokit_installation_id=request_data['installation_id']) \
+            .order_by(Status.index) \
+            .all()
+
+    def get_meta(self, params, request_data):
+        return {
+            'name': 'Lead #{}'.format(self.lead.id),
+            'size': 'medium'
+        }
+
+    def get_header(self, params, request_data):
+        return {
+            'title': self.meta.get('name')
+        }
+
+    def get_schema(self, params, request_data):
+        form_fields = []
+        lead_fields = Lead.get_fields(self.lead.id)
+
+        for field in self.fields:
+            lead_field = next((f for f in lead_fields if f['field_id'] == field.id), None)
+            field_value = lead_field['value'] if lead_field else None
+            field_component = {}
+
+            if field.value_type.name == 'boolean':
+                field_component = {
+                    '_com': 'Field.Checkbox',
+                    'columnWidth': 12,
+                    'key': field.id,
+                    'text': field.name,
+                    'value': field_value
+                }
+            elif field.value_type.name == 'long_string':
+                field_component = {
+                    '_com': 'Field.Input',
+                    'columnWidth': 12,
+                    'multiline': True,
+                    'key': field.id,
+                    'label': field.name,
+                    'value': field_value
+                }
+            elif field.value_type.name == 'number':
+                field_component = {
+                    '_com': 'Field.Input',
+                    'type': 'number',
+                    'columnWidth': 6,
+                    'key': field.id,
+                    'label': field.name,
+                    'value': field_value
+                }
+            else:
+                field_component = {
+                    '_com': 'Field.Input',
+                    'key': field.id,
+                    'type': 'text',
+                    'columnWidth': 12,
+                    'label': field.name,
+                    'value': field_value
+                }
+
+            form_fields.append(field_component)
+
+        status_options = []
+        for status in self.statuses:
+            status_options.append({
+                'value': status.id,
+                'label': status.name,
+                'color': status.color.name
+            })
+
+        return [
+            {
+                '_com': 'Grid',
+                'columns': [
+                    {
+                        'span': 7,
+                        'content': [
+                            {
+                                '_com': 'Form',
+                                '_id': 'createLeadForm',
+                                'onFinish': 'onFinish',
+                                'fields': form_fields,
+                                'buttons': [
+                                    {
+                                        '_com': 'Button',
+                                        'type': 'primary',
+                                        'submitForm': True,
+                                        'icon': 'save',
+                                        'label': 'Save'
+                                    },
+                                    {
+                                        '_com': 'Button',
+                                        'icon': 'delete',
+                                        'onClick': 'onClickArchive'
+                                    } if not self.lead.archived else {
+                                        '_com': 'Button',
+                                        'icon': 'reload',
+                                        'type': 'solid',
+                                        'label': 'Restore lead',
+                                        'onClick': 'onClickRestore'
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        'span': 5,
+                        'content': [
+                            {
+                                '_com': 'Area',
+                                'background': '#f9f9f9',
+                                'content': [
+                                    {
+                                        '_com': 'Field.Select',
+                                        '_id': 'createLeadForm_status',
+                                        'placeholder': 'Select status',
+                                        'value': self.lead.status_id,
+                                        'options': status_options
+                                    },
+                                    {
+                                        '_com': 'Field.Input',
+                                        '_id': 'createLeadForm_tags',
+                                        'multiple': True,
+                                        'value': Lead.get_tags(self.lead.id),
+                                        'placeholder': 'Enter tags'
+                                    },
+                                    {
+                                        '_com': 'Details',
+                                        'items': [
+                                            {
+                                                'label': 'Add date',
+                                                'value': Lead.get_regular_date((self.lead.add_date + timedelta(minutes=request_data['timezone_offset'])).strftime('%Y-%m-%d %H:%M:%S'))
+                                            },
+                                            {
+                                                'label': 'Update date',
+                                                'value': Lead.get_regular_date((self.lead.upd_date + timedelta(minutes=request_data['timezone_offset'])).strftime('%Y-%m-%d %H:%M:%S'))
+                                            },
+                                            {
+                                                'label': 'Creator',
+                                                'value': {
+                                                    '_com': 'User',
+                                                    'userId': 3
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        '_com': 'Details',
+                                        'title': 'UTM marks',
+                                        'items': [
+                                            {'label': 'utm_source', 'value': self.lead.utm_source} if self.lead.utm_source else None,
+                                            {'label': 'utm_medium', 'value': self.lead.utm_medium} if self.lead.utm_medium else None,
+                                            {'label': 'utm_campaign', 'value': self.lead.utm_campaign} if self.lead.utm_campaign else None,
+                                            {'label': 'utm_term', 'value': self.lead.utm_term} if self.lead.utm_term else None,
+                                            {'label': 'utm_content', 'value': self.lead.utm_content} if self.lead.utm_content else None
+                                        ]
+                                    } if (
+                                        self.lead.utm_source or
+                                        self.lead.utm_medium or
+                                        self.lead.utm_campaign or
+                                        self.lead.utm_term or
+                                        self.lead.utm_content
+                                    ) else None
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+
+    def get_methods(self, params, request_data):
+        return {
+            'onFinish':
+                """(app, params, event) => {
+                    const { values } = event
+
+                    const window = app.getView()
+                    const form = window.getCom('createLeadForm')
+                    const originalStatusId = """ + str(self.lead.status_id) + """
+                    const statusId = window.getCom('createLeadForm_status').getAttr('value')
+                    const tags = window.getCom('createLeadForm_tags').getAttr('value')
+
+                    const fields = []
+                    Object.entries(values).map(([key, value]) => {
+                        fields.push({
+                            fieldId: +key,
+                            value: value
+                        })
+                    })
+
+                    form.setAttr('loading', true)
+
+                    app
+                        .sendReq('updateLead', {
+                            id: """ + str(self.lead.id) + """,
+                            fields,
+                            tags,
+                            statusId
+                        })
+                        .then(result => {
+                            form.setAttr('loading', false)
+
+                            if (result.res == 'ok') {
+                                if (statusId != originalStatusId) {
+                                    // Update status columns
+                                    app.getPage().callMethod('loadLeads', { statusId: originalStatusId })  
+                                    app.getPage().callMethod('loadLeads', { statusId })  
+                                } else {
+                                    // Update status column
+                                    app.getPage().callMethod('loadLeads', { statusId: originalStatusId })  
+                                } 
+                                
+                                window.close()
+                            }
+                        })
+                }""",
+            'onClickArchive':
+                """(app, params, event) => {
+                    app.openModal({
+                        type: 'confirm',
+                        title: 'Delete lead?',
+                        text: 'Are you sure you want to move this lead to the archive? You can restore it at any time.',
+                        okText: 'Delete',
+                        onOk: modal => {
+                            app
+                                .sendReq('archiveLead', {
+                                    id: """ + str(self.lead.id) + """,
+                                    archived: true
+                                })
+                                .then(result => {
+                                    if (result.res == 'ok') {
+                                        // Reload parent window
+                                        app.getWindow().reload()
+                                        
+                                        // Reload leads on page
+                                        app.getPage().callMethod('loadLeads', { statusId: """ + str(self.lead.status_id) + """ })
+                                    }
+                                })
+                            }
+                         })
+                    }""",
+            'onClickRestore':
+                """(app, params, event) => {
+                    app
+                        .sendReq('restoreLead', {
+                            id: """ + str(self.lead.id) + """,
+                            archived: false
+                        })
+                        .then(result => {
+                            if (result.res == 'ok') {
+                                // Reload parent window
+                                app.getWindow().reload()
+                                
+                                // Reload leads on page
+                                app.getPage().callMethod('loadLeads', { statusId: """ + str(self.lead.status_id) + """ })
+                            }
+                        })     
+                }"""
+        }

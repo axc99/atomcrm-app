@@ -1,0 +1,255 @@
+from flaskr import db
+from datetime import datetime, timedelta
+from flaskr.models.tag import Tag
+from flaskr.models.field import Field
+
+
+# Lead
+class Lead(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+
+    add_date = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    upd_date = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+
+    archived = db.Column(db.Boolean, default=False, nullable=False)
+
+    veokit_installation_id = db.Column(db.Integer, nullable=False, index=True)
+    veokit_user_id = db.Column(db.Integer, nullable=False, index=True)
+    status_id = db.Column(db.Integer, db.ForeignKey('status.id', ondelete='SET NULL'), nullable=False)
+
+    # UTM marks
+    utm_source = db.Column(db.String(500))
+    utm_medium = db.Column(db.String(500))
+    utm_campaign = db.Column(db.String(500))
+    utm_term = db.Column(db.String(500))
+    utm_content = db.Column(db.String(500))
+
+    # Set tags
+    def set_tags(self, tags, new_lead=False):
+        if not new_lead:
+            # Delete all lead tags
+            LeadTag.query \
+                .filter_by(lead_id=self.id) \
+                .delete()
+
+        for tag_name in tags:
+            # Search tag by name
+            exist_tag = Tag.query \
+                .filter_by(name=tag_name,
+                           veokit_installation_id=self.veokit_installation_id) \
+                .first()
+
+            # If tag with such name already exist
+            if not exist_tag:
+                # Create tag
+                new_tag = Tag()
+                new_tag.name = tag_name
+                new_tag.veokit_installation_id = self.veokit_installation_id
+                db.session.add(new_tag)
+                db.session.commit()
+
+                # Add tag to lead
+                new_lead_tag = LeadTag()
+                new_lead_tag.tag_id = new_tag.id
+                new_lead_tag.lead_id = self.id
+
+                db.session.add(new_lead_tag)
+            else:
+                # Add tag to lead
+                new_lead_tag = LeadTag()
+                new_lead_tag.tag_id = exist_tag.id
+                new_lead_tag.lead_id = self.id
+
+                db.session.add(new_lead_tag)
+
+        db.session.commit()
+
+    # Set fields
+    def set_fields(self, fields, new_lead=False):
+        if not new_lead:
+            # Delete lead fields
+            LeadField.query \
+                .filter_by(lead_id=self.id) \
+                .delete()
+
+        for lead_field in fields:
+            field = Field.query \
+                .filter_by(id=lead_field['fieldId'],
+                           veokit_installation_id=self.veokit_installation_id) \
+                .first()
+
+            if field:
+                new_lead_field = LeadField()
+                new_lead_field.field_id = field.id
+                new_lead_field.lead_id = self.id
+                new_lead_field.value = lead_field['value']
+
+                db.session.add(new_lead_field)
+
+        db.session.commit()
+
+    # Get fields
+    @staticmethod
+    def get_fields(lead_id, for_api=False):
+        res_fields = []
+
+        fields = db.session.execute("""
+            SELECT
+                lf.field_id,
+                lf.value,
+                f.value_type AS field_value_type,
+                f.as_title AS field_as_title,
+                f.primary AS field_primary,
+                f.name AS field_name
+            FROM
+                public.lead_field AS lf
+            LEFT JOIN
+                public.field as f ON f.id = lf.field_id
+            WHERE
+                lf.lead_id = :lead_id
+            ORDER BY
+                f.id ASC""", {
+            'lead_id': lead_id
+        })
+        for field in fields:
+            res_fields.append({
+                                  'field_id': field.field_id,
+                                  'field_name': field.field_name,
+                                  'value': field.value
+                              } if for_api else {
+                'field_id': field.field_id,
+                'value': field.value,
+                'field_as_title': field.field_as_title,
+                'field_primary': field.field_primary,
+                'field_value_type': field.field_value_type
+            })
+
+        return res_fields
+
+    # Get tags
+    @staticmethod
+    def get_tags(lead_id, for_api=False):
+        res_tags = []
+
+        tags = db.session.execute("""
+            SELECT
+                lt.tag_id,
+                t.name AS tag_name
+            FROM
+                public.lead_tag AS lt
+            LEFT JOIN
+                public.tag as t ON t.id = lt.tag_id
+            WHERE
+                lt.lead_id = :lead_id
+            ORDER BY
+                t.name ASC""", {
+            'lead_id': lead_id
+        })
+        for tag in tags:
+            res_tags.append(tag.tag_name)
+
+        return res_tags
+
+    @staticmethod
+    def get_regular_date(src_date):
+        [date, time] = src_date.split(' ')
+        [year, month, day] = date.split('-')
+        [hours, minutes, seconds] = time.split(':')
+
+        date_obj = datetime.strptime(src_date, '%Y-%m-%d %H:%M:%S')
+
+        if date_obj.date() == datetime.today().date():
+            return "Today at {}:{}".format(hours, minutes)
+        elif date_obj.date() == datetime.today().date() - timedelta(days=1):
+            return 'Yesterday at {}:{}'.format(hours, minutes)
+        else:
+            if date_obj.year == datetime.today().year:
+                return '{} {} at {}:{}'.format(day, date_obj.strftime("%b"), hours, minutes)
+            elif date_obj.year == datetime.today().year:
+                return '{} {} {} at {}:{}'.format(day, date_obj.strftime("%b"), year, hours, minutes)
+
+        return date
+
+    # Filter leads
+    @staticmethod
+    def get_with_filter(installation_id, status_id, search, period_from, period_to, offset, limit):
+        search = search.strip() if search else None
+        search_exp = 'l.archived = false'
+        join_exp = ''
+        search_value = None
+
+        if search:
+            if search.startswith('id='):
+                search_exp = 'l.id = :search_value'
+                search_value = search.split('=').pop(1)
+            elif search.startswith('archived=true') or search.startswith('archived=1'):
+                search_exp = "l.archived = TRUE"
+            elif search.startswith('utm_source=') or search.startswith('utmSource='):
+                search_exp = 'l.utm_source LIKE :search_value'
+            elif search.startswith('utm_medium=') or search.startswith('utmMedium='):
+                search_exp = 'l.utm_medium LIKE :search_value'
+            elif search.startswith('utm_campaign=') or search.startswith('utmCampaign='):
+                search_exp = 'l.utm_campaign LIKE :search_value'
+            elif search.startswith('utm_term=') or search.startswith('utmTerm='):
+                search_exp = 'l.utm_term LIKE :search_value'
+            elif search.startswith('utm_content=') or search.startswith('utmContent='):
+                search_exp = 'l.utm_content LIKE :search_value'
+            else:
+                search_value = '%' + search.lower() + '%'
+                search_exp = """(lf.value != '' AND LOWER(lf.value) LIKE :search_value) OR 
+                                (LOWER(t.name) LIKE :search_value)"""
+
+                join_exp = """
+                    LEFT JOIN 
+                        public.lead_field AS lf ON lf.lead_id = l.id
+                    LEFT JOIN 
+                        public.lead_tag AS lt ON lt.lead_id = l.id
+                    LEFT JOIN 
+                        public.tag AS t ON t.id = lt.tag_id"""
+
+        return db.session.execute("""  
+            SELECT 
+                l.*,
+                COUNT(*) OVER () AS total
+            FROM 
+                public.lead AS l
+            {}
+            WHERE
+                l.veokit_installation_id = :installation_id AND
+                l.status_id = :status_id AND
+                (:period_from is null OR l.add_date > :period_from) AND 
+                (:period_to is null OR l.add_date < :period_to) AND 
+                ({})
+            GROUP BY
+                l.id
+            ORDER BY 
+                l.add_date DESC
+            OFFSET 
+                :offset
+            LIMIT
+                :limit""".format(join_exp, search_exp), {
+            'offset': 0 if offset is None else offset,
+            'limit': 10 if limit is None else limit,
+            'installation_id': installation_id,
+            'status_id': status_id,
+            'search_exp': search_exp,
+            'search_value': search_value if search_value else None,
+            'period_from': "{} 00:00:00".format(period_from) if period_from else None,
+            'period_to': "{} 23:59:59".format(period_to) if period_to else None
+        })
+
+
+# Lead field
+class LeadField(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    value = db.Column(db.String(1000), nullable=True)
+
+    lead_id = db.Column(db.Integer, db.ForeignKey('lead.id', ondelete='CASCADE'), nullable=False)
+    field_id = db.Column(db.Integer, db.ForeignKey('field.id', ondelete='CASCADE'), nullable=False)
+
+
+# Lead tag
+class LeadTag(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    lead_id = db.Column(db.Integer, db.ForeignKey('lead.id', ondelete='CASCADE'), nullable=False)
+    tag_id = db.Column(db.Integer, db.ForeignKey('tag.id', ondelete='CASCADE'), nullable=False)
