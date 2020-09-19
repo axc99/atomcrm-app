@@ -201,10 +201,10 @@ class UpdateField(View):
                             id: """ + str(self.field.id) + """,
                             name: values.name,
                             valueType: values.valueType,
-                            min: values.valueType === 'number' ? values.min : values.minLength,
-                            max: values.valueType === 'number' ? values.max : values.maxLength,
-                            asTitle: values.flags && values.flags.includes('asTitle'),
-                            primary: values.flags && values.flags.includes('primary')
+                            min: values.valueType === 'number' ? +values.min : +values.minLength,
+                            max: values.valueType === 'number' ? +values.max : +values.maxLength,
+                            asTitle: !!(values.flags && values.flags.includes('asTitle')),
+                            primary: !!(values.flags && values.flags.includes('primary'))
                         })
                         .then(result => {
                             form.setAttr('loading', false)
