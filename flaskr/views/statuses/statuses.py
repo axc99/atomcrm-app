@@ -66,7 +66,7 @@ class Statuses(View):
                 'key': status.id,
                 'color': get_hex_by_color(status.color),
                 'title': status.name,
-                'extra': "{} {}".format(status.lead_count, 'lead' if status.lead_count == 1 else 'leads'),
+                'extra': "{} {}".format(status.lead_count, _('v_statuses_schema_count_lead') if status.lead_count == 1 else _('v_statuses_schema_count_leads')),
                 'actions': [
                     {
                         '_com': 'Button',
