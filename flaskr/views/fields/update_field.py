@@ -1,12 +1,17 @@
+from flask_babel import _
 from cerberus import Validator
 
 from flaskr.views.view import View
-from flaskr.models.field import Field
+from flaskr.models.field import Field, get_field_types
 
 
 # Window: Update field
 class UpdateField(View):
-    field = None
+    def __init__(self):
+        self.meta = {
+            'name': _('v_updateField_meta_name')
+        }
+        self.field = None
 
     def before(self, params, request_data):
         vld = Validator({
@@ -26,17 +31,14 @@ class UpdateField(View):
 
     def get_header(self, params, request_data):
         return {
-            'title': 'Edit field'
+            'title': self.meta.get('name')
         }
 
     def get_schema(self, params, request_data):
-        value_type_options = [
-            {'value': 'string', 'label': 'Text'},
-            {'value': 'long_string', 'label': 'Long text'},
-            {'value': 'number', 'label': 'Number'},
-            {'value': 'boolean', 'label': 'Checkbox'},
-            # {'value': 'select', 'label': 'Select list'}
-        ]
+        field_types = get_field_types()
+        value_type_options = []
+        for t in field_types:
+            value_type_options.append({'value': t[1], 'label': t[2]})
 
         length_fields_vis = self.field.value_type.name in ('string', 'long_string')
         num_fields_vis = self.field.value_type.name == 'number'
@@ -51,23 +53,23 @@ class UpdateField(View):
                         '_com': 'Field.Input',
                         'type': 'text',
                         'key': 'name',
-                        'label': 'Field name',
-                        'placeholder': 'Ex: Promocode',
+                        'label': _('v_updateField_form_name'),
+                        'placeholder': _('v_updateField_form_placeholder'),
                         'maxLength': 20,
                         'value': self.field.name,
                         'rules': [
-                            {'min': 2, 'max': 20, 'message': 'Must contain 2 - 20 chars'},
-                            {'required': True, 'message': 'Name is required'}
+                            {'min': 2, 'max': 20, 'message': _('v_updateField_form_name_length')},
+                            {'required': True, 'message': _('v_updateField_form_name_required')}
                         ]
                     },
                     {
                         '_com': 'Field.Select',
                         'value': self.field.value_type.name,
                         'key': 'valueType',
-                        'label': 'Value type',
+                        'label': _('v_updateField_form_valueType'),
                         'options': value_type_options,
                         'rules': [
-                            {'required': True, 'message': 'Value type is required'}
+                            {'required': True, 'message': _('v_updateField_form_valueType_required')}
                         ],
                         'onChange': 'onChangeValueType'
                     },
@@ -80,9 +82,9 @@ class UpdateField(View):
                         'value': self.field.min,
                         'min': 0,
                         'key': 'minLength',
-                        'label': 'Min length',
+                        'label': _('v_updateField_form_minLength'),
                         'rules': [
-                            {'required': True, 'message': 'Min length is required'}
+                            {'required': True, 'message': _('v_updateField_form_minLength_required')}
                         ]
                     },
                     {
@@ -94,9 +96,9 @@ class UpdateField(View):
                         'value': self.field.max,
                         'max': 500,
                         'key': 'maxLength',
-                        'label': 'Max length',
+                        'label': _('v_updateField_form_maxLength'),
                         'rules': [
-                            {'required': True, 'message': 'Max length is required'}
+                            {'required': True, 'message': _('v_updateField_form_maxLength_required')}
                         ]
                     },
                     {
@@ -108,9 +110,9 @@ class UpdateField(View):
                         'value': self.field.min,
                         'min': 0,
                         'key': 'min',
-                        'label': 'Min',
+                        'label': _('v_updateField_form_min'),
                         'rules': [
-                            {'required': True, 'message': 'Min is required'}
+                            {'required': True, 'message': _('v_updateField_form_min_required')}
                         ]
                     },
                     {
@@ -122,9 +124,9 @@ class UpdateField(View):
                         'value': self.field.max,
                         'max': 2147483647,
                         'key': 'max',
-                        'label': 'Max',
+                        'label': _('v_updateField_form_max'),
                         'rules': [
-                            {'required': True, 'message': 'Max is required'}
+                            {'required': True, 'message': _('v_updateField_form_max_required')}
                         ]
                     },
                     {
@@ -137,11 +139,11 @@ class UpdateField(View):
                         'items': [
                             {
                                 'key': 'asTitle',
-                                'label': 'Field as title'
+                                'label': _('v_updateField_form_fieldAsTitle')
                             },
                             {
                                 'key': 'primary',
-                                'label': 'Primary field'
+                                'label': _('v_updateField_form_primaryField')
                             }
                         ]
                     }
@@ -152,7 +154,7 @@ class UpdateField(View):
                         'type': 'primary',
                         'submitForm': True,
                         'icon': 'save',
-                        'label': 'Save'
+                        'label': _('v_updateField_form_save')
                     }
                 ]
             }

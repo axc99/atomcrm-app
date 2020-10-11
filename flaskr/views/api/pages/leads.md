@@ -1,6 +1,6 @@
 # Create lead
 
-`POST` `https://atomcrm.herokuapp.com/api/<TOKEN HERE>/createLead`
+`POST https://atomcrm.herokuapp.com/api/<TOKEN HERE>/createLead`
 
 Sample request body:
 ```json
@@ -63,7 +63,7 @@ Sample response body:
 
 # Get leads
 
-`POST` `https://atomcrm.herokuapp.com/api/<TOKEN HERE>/getLeads`
+`POST https://atomcrm.herokuapp.com/api/<TOKEN HERE>/getLeads`
 
 Sample request body:
 ```json
@@ -109,7 +109,7 @@ Sample response body:
 
 # Update lead
 
-`POST` `https://atomcrm.herokuapp.com/api/<TOKEN HERE>/updateLead`
+`POST https://atomcrm.herokuapp.com/api/<TOKEN HERE>/updateLead`
 
 Sample request body:
 ```json

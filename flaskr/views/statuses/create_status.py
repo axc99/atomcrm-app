@@ -1,12 +1,15 @@
+from flask_babel import _
+
 from flaskr.views.view import View
-from flaskr.models.status import Status, Status
+from flaskr.models.status import Status, get_status_colors
 
 
 # Window: Create status
 class CreateStatus(View):
-    meta = {
-        'name': 'Create status'
-    }
+    def __init__(self):
+        self.meta = {
+            'name': _('v_createStatus_meta_name')
+        }
 
     def get_header(self, params, request_data):
         return {
@@ -14,14 +17,10 @@ class CreateStatus(View):
         }
 
     def get_schema(self, params, request_data):
-        color_options = [
-            {'value': 'red', 'label': 'Red', 'color': '#E57373'},
-            {'value': 'pink', 'label': 'Pink', 'color': '#F48FB1'},
-            {'value': 'purple', 'label': 'Purple', 'color': '#9575CD'},
-            {'value': 'blue', 'label': 'Blue', 'color': '#64B5F6'},
-            {'value': 'green', 'label': 'Green', 'color': '#81C784'},
-            {'value': 'orange', 'label': 'Orange', 'color': '#FFA726'}
-        ]
+        status_colors = get_status_colors()
+        color_options = []
+        for c in status_colors:
+            color_options.append({'value': c[1], 'label': c[3], 'color': c[2]})
 
         return [
             {
@@ -33,22 +32,22 @@ class CreateStatus(View):
                         '_com': 'Field.Input',
                         'type': 'text',
                         'key': 'name',
-                        'label': 'Status name',
-                        'placeholder': 'Ex: In Progress',
+                        'label': _('v_createStatus_form_name'),
+                        'placeholder': _('v_createStatus_form_name_placeholder'),
                         'maxLength': 20,
                         'rules': [
-                            { 'min': 2, 'max': 20, 'message': 'Must contain 2 - 20 chars' },
-                            { 'required': True, 'message': 'Name is required' }
+                            {'min': 2, 'max': 20, 'message': _('v_createStatus_name_length')},
+                            {'required': True, 'message': _('v_createStatus_name_required')}
                         ]
                     },
                     {
                         '_com': 'Field.Select',
                         'value': 'red',
                         'key': 'color',
-                        'label': 'Color',
+                        'label': _('v_createStatus_form_color'),
                         'options': color_options,
                         'rules': [
-                            {'required': True, 'message': 'Color is required'}
+                            {'required': True, 'message': _('v_createStatus_form_color_required')}
                         ]
                     }
                 ],
@@ -58,7 +57,7 @@ class CreateStatus(View):
                         'type': 'primary',
                         'submitForm': True,
                         'icon': 'plus',
-                        'label': 'Create'
+                        'label': _('v_createStatus_btn')
                     }
                 ]
             }

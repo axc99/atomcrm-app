@@ -1,16 +1,18 @@
+import enum
+from flask_babel import _
+
 from flaskr import db
 from flaskr.views.view import View
 from flaskr.models.status import Status, get_hex_by_color
-import enum
 
 
 # Page: Statuses
 class Statuses(View):
-    meta = {
-        'name': 'Statuses'
-    }
-
-    statuses = []
+    def __init__(self):
+        self.meta = {
+            'name': _('v_statuses_meta_name')
+        }
+        self.statuses = []
 
     def before(self, params, request_data):
         self.statuses = db.session.execute("""
@@ -33,7 +35,7 @@ class Statuses(View):
             'actions': [
                 {
                     '_com': 'Button',
-                    'label': 'Create status',
+                    'label': _('v_statuses_header_createStatus'),
                     'type': 'primary',
                     'icon': 'plus',
                     'toWindow': 'createStatus'
@@ -69,7 +71,7 @@ class Statuses(View):
                     {
                         '_com': 'Button',
                         'icon': 'edit',
-                        'label': 'Edit status',
+                        'label': _('v_statuses_schema_editStatus'),
                         'toWindow': ['updateStatus', {
                             'id': status.id
                         }]
@@ -83,7 +85,7 @@ class Statuses(View):
                 '_com': 'List',
                 '_id': 'statusesList',
                 'draggable': True,
-                'emptyText': 'No statuses',
+                'emptyText': _('v_statuses_schema_noStatuses'),
                 'onDrag': 'onDragStatus',
                 'items': list_items
             }

@@ -2,7 +2,7 @@
 
 For getting all statuses do not pass `id` field.
 
-`POST` `https://atomcrm.herokuapp.com/api/<TOKEN HERE>/getStatuses`
+`POST https://atomcrm.herokuapp.com/api/<TOKEN HERE>/getStatuses`
 
 Sample request body:
 ```json

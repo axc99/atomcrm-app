@@ -1,14 +1,16 @@
 import os
+from flask_babel import _
 
 from flaskr.views.view import View
 from flaskr.models.field import Field, FieldType
 
 
-# Page: Api
+# Page: API
 class Api(View):
-    meta = {
-        'name': 'API'
-    }
+    def __init__(self):
+        self.meta = {
+            'name': 'API'
+        }
 
     def get_header(self, params, request_data):
         return {
@@ -18,28 +20,28 @@ class Api(View):
                     '_com': 'Button',
                     'type': 'primary',
                     'icon': 'lock',
-                    'label': 'Get token',
+                    'label': _('v_api_header_getToken'),
                     'toWindow': 'getToken'
                 }
             ],
             'tabs': [
                 {
                     'key': 'leads',
-                    'text': 'Leads',
+                    'text': _('v_api_header_tabs_leads'),
                     'to': {
                         'tab': None
                     }
                 },
                 {
                     'key': 'statuses',
-                    'text': 'Statuses',
+                    'text': _('v_api_header_tabs_statuses'),
                     'to': {
                         'tab': 'statuses'
                     }
                 },
                 {
                     'key': 'fields',
-                    'text': 'Fields',
+                    'text': _('v_api_header_tabs_fields'),
                     'to': {
                         'tab': 'fields'
                     }

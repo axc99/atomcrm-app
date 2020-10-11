@@ -1,3 +1,5 @@
+from flask_babel import _
+from flask import request
 from flaskr import db
 from datetime import datetime, timedelta
 from flaskr.models.tag import Tag
@@ -82,7 +84,7 @@ class Lead(db.Model):
                 new_lead_field = LeadField()
                 new_lead_field.field_id = field.id
                 new_lead_field.lead_id = self.id
-                new_lead_field.value = lead_field['value']
+                new_lead_field.value = lead_field.get('value')
 
                 db.session.add(new_lead_field)
 
@@ -152,21 +154,41 @@ class Lead(db.Model):
 
     @staticmethod
     def get_regular_date(src_date):
-        [date, time] = src_date.split(' ')
+        data = request.get_json()
+        timezone_offset = data['timezoneOffset'] if data else 0
+
+        date_obj = datetime.strptime(src_date, '%Y-%m-%d %H:%M:%S') + timedelta(minutes=timezone_offset)
+        date_str = date_obj.strftime('%Y-%m-%d %H:%M:%S')
+
+        [date, time] = date_str.split(' ')
         [year, month, day] = date.split('-')
         [hours, minutes, seconds] = time.split(':')
 
-        date_obj = datetime.strptime(src_date, '%Y-%m-%d %H:%M:%S')
+        months = {
+            '01': _('m_lead_getRegularDate_jan'),
+            '02': _('m_lead_getRegularDate_feb'),
+            '03': _('m_lead_getRegularDate_mar'),
+            '04': _('m_lead_getRegularDate_apr'),
+            '05': _('m_lead_getRegularDate_may'),
+            '06': _('m_lead_getRegularDate_jun'),
+            '07': _('m_lead_getRegularDate_jul'),
+            '08': _('m_lead_getRegularDate_aug'),
+            '09': _('m_lead_getRegularDate_sep'),
+            '10': _('m_lead_getRegularDate_oct'),
+            '11': _('m_lead_getRegularDate_nov'),
+            '12': _('m_lead_getRegularDate_dec')
+        }
+        month_str = months[month]
 
-        if date_obj.date() == datetime.today().date():
-            return "Today at {}:{}".format(hours, minutes)
+        if date_obj.date() >= datetime.today().date():
+            return _('m_lead_getRegularDate_today', hours=hours, minutes=minutes)
         elif date_obj.date() == datetime.today().date() - timedelta(days=1):
-            return 'Yesterday at {}:{}'.format(hours, minutes)
+            return _('m_lead_getRegularDate_yesterday', hours=hours, minutes=minutes)
         else:
             if date_obj.year == datetime.today().year:
-                return '{} {} at {}:{}'.format(day, date_obj.strftime("%b"), hours, minutes)
+                return _('m_lead_getRegularDate_date', day=day, month=month_str, hours=hours, minutes=minutes)
             elif date_obj.year == datetime.today().year:
-                return '{} {} {} at {}:{}'.format(day, date_obj.strftime("%b"), year, hours, minutes)
+                return _('m_lead_getRegularDate_dateWithYear', day=day, month=month_str, year=year, hours=hours, minutes=minutes)
 
         return date
 

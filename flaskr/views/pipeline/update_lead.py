@@ -1,4 +1,5 @@
 from datetime import timedelta
+from flask_babel import _
 
 from cerberus import Validator
 
@@ -37,7 +38,7 @@ class UpdateLead(View):
 
     def get_meta(self, params, request_data):
         return {
-            'name': 'Lead #{}'.format(self.lead.id),
+            'name': _('v_updateLead_meta_name', id=self.lead.id),
             'size': 'medium'
         }
 
@@ -106,7 +107,8 @@ class UpdateLead(View):
                 '_com': 'Grid',
                 'columns': [
                     {
-                        'span': 7,
+                        'span': 12,
+                        'sm': 7,
                         'content': [
                             {
                                 '_com': 'Form',
@@ -119,7 +121,7 @@ class UpdateLead(View):
                                         'type': 'primary',
                                         'submitForm': True,
                                         'icon': 'save',
-                                        'label': 'Save'
+                                        'label': _('v_updateLead_save')
                                     },
                                     {
                                         '_com': 'Button',
@@ -129,7 +131,7 @@ class UpdateLead(View):
                                         '_com': 'Button',
                                         'icon': 'reload',
                                         'type': 'solid',
-                                        'label': 'Restore lead',
+                                        'label': _('v_updateLead_restoreLead'),
                                         'onClick': 'onClickRestore'
                                     }
                                 ]
@@ -137,7 +139,8 @@ class UpdateLead(View):
                         ]
                     },
                     {
-                        'span': 5,
+                        'span': 12,
+                        'sm': 5,
                         'content': [
                             {
                                 '_com': 'Area',
@@ -155,31 +158,31 @@ class UpdateLead(View):
                                         '_id': 'createLeadForm_tags',
                                         'multiple': True,
                                         'value': Lead.get_tags(self.lead.id),
-                                        'placeholder': 'Enter tags'
+                                        'placeholder': _('v_updateLead_enterTags')
                                     },
                                     {
                                         '_com': 'Details',
                                         'items': [
                                             {
-                                                'label': 'Add date',
+                                                'label': _('v_updateLead_addDate'),
                                                 'value': Lead.get_regular_date((self.lead.add_date + timedelta(minutes=request_data['timezone_offset'])).strftime('%Y-%m-%d %H:%M:%S'))
                                             },
                                             {
-                                                'label': 'Update date',
+                                                'label': _('v_updateLead_updateDate'),
                                                 'value': Lead.get_regular_date((self.lead.upd_date + timedelta(minutes=request_data['timezone_offset'])).strftime('%Y-%m-%d %H:%M:%S'))
                                             },
                                             {
-                                                'label': 'Creator',
+                                                'label': _('v_updateLead_creator'),
                                                 'value': {
                                                     '_com': 'User',
-                                                    'userId': 3
+                                                    'userId': self.lead.veokit_user_id
                                                 }
                                             }
                                         ]
                                     },
                                     {
                                         '_com': 'Details',
-                                        'title': 'UTM marks',
+                                        'title': _('v_updateLead_utmMarks'),
                                         'items': [
                                             {'label': 'utm_source', 'value': self.lead.utm_source} if self.lead.utm_source else None,
                                             {'label': 'utm_medium', 'value': self.lead.utm_medium} if self.lead.utm_medium else None,
@@ -252,14 +255,13 @@ class UpdateLead(View):
                 """(app, params, event) => {
                     app.openModal({
                         type: 'confirm',
-                        title: 'Delete lead?',
-                        text: 'Are you sure you want to move this lead to the archive? You can restore it at any time.',
-                        okText: 'Delete',
+                        title: '""" + _('v_updateLead_onClickArchive_title') + """',
+                        text: '""" + _('v_updateLead_onClickArchive_text') + """',
+                        okText: '""" + _('v_updateLead_onClickArchive_delete') + """',
                         onOk: modal => {
                             app
                                 .sendReq('archiveLead', {
-                                    id: """ + str(self.lead.id) + """,
-                                    archived: true
+                                    id: """ + str(self.lead.id) + """
                                 })
                                 .then(result => {
                                     if (result.res == 'ok') {
@@ -277,8 +279,7 @@ class UpdateLead(View):
                 """(app, params, event) => {
                     app
                         .sendReq('restoreLead', {
-                            id: """ + str(self.lead.id) + """,
-                            archived: false
+                            id: """ + str(self.lead.id) + """
                         })
                         .then(result => {
                             if (result.res == 'ok') {

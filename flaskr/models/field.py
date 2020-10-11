@@ -1,3 +1,4 @@
+from flask_babel import _
 from flaskr import db
 import enum
 from sqlalchemy import Integer, Enum, Column
@@ -32,3 +33,13 @@ class Field(db.Model):
     index = db.Column(db.Integer, default=0, nullable=False)
 
     veokit_installation_id = db.Column(db.Integer, nullable=False, index=True)
+
+
+def get_field_types():
+    return (
+        (1, 'string', _('m_status_getFieldTypes_string')),
+        (2, 'lang_string', _('m_status_getFieldTypes_longString')),
+        (3, 'number', _('m_status_getFieldTypes_number')),
+        (4, 'boolean', _('m_status_getFieldTypes_boolean')),
+        (5, 'select', _('m_status_getFieldTypes_select'))
+    )

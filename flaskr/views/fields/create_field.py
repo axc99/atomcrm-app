@@ -1,11 +1,14 @@
+from flask_babel import _
 from flaskr.views.view import View
+from flaskr.models.field import get_field_types
 
 
 # Window: Create Field
 class CreateField(View):
-    meta = {
-        'name': 'Create field'
-    }
+    def __init__(self):
+        self.meta = {
+            'name': _('v_createField_meta_name')
+        }
 
     def get_header(self, params, request_data):
         return {
@@ -13,13 +16,10 @@ class CreateField(View):
         }
 
     def get_schema(self, params, request_data):
-        value_type_options = [
-            {'value': 'string', 'label': 'Text'},
-            {'value': 'long_string', 'label': 'Long text'},
-            {'value': 'number', 'label': 'Number'},
-            {'value': 'boolean', 'label': 'Checkbox'},
-            # {'value': 'select', 'label': 'Select list'}
-        ]
+        field_types = get_field_types()
+        value_type_options = []
+        for t in field_types:
+            value_type_options.append({'value': t[1], 'label': t[2]})
 
         return [
             {
@@ -31,22 +31,22 @@ class CreateField(View):
                         '_com': 'Field.Input',
                         'type': 'text',
                         'key': 'name',
-                        'label': 'Field name',
-                        'placeholder': 'Ex: Promocode',
+                        'label': _('v_createField_form_name'),
+                        'placeholder': _('v_createField_form_name_placeholder'),
                         'maxLength': 20,
                         'rules': [
-                            {'min': 2, 'max': 20, 'message': 'Must contain 2 - 20 chars'},
-                            {'required': True, 'message': 'Name is required'}
+                            {'min': 2, 'max': 20, 'message': _('v_createField_form_name_length')},
+                            {'required': True, 'message': _('v_createField_form_name_required')}
                         ]
                     },
                     {
                         '_com': 'Field.Select',
                         'value': 'string',
                         'key': 'valueType',
-                        'label': 'Value type',
+                        'label': _('v_createField_form_valueType'),
                         'options': value_type_options,
                         'rules': [
-                            {'required': True, 'message': 'Value type is required'}
+                            {'required': True, 'message': _('v_createField_form_valueType_required')}
                         ],
                         'onChange': 'onChangeValueType'
                     },
@@ -58,9 +58,9 @@ class CreateField(View):
                         'value': '0',
                         'min': 0,
                         'key': 'minLength',
-                        'label': 'Min length',
+                        'label': _('v_createField_form_minLength'),
                         'rules': [
-                            {'required': True, 'message': 'Min length is required'}
+                            {'required': True, 'message': _('v_createField_form_minLength_required')}
                         ]
                     },
                     {
@@ -71,9 +71,9 @@ class CreateField(View):
                         'value': '100',
                         'max': 500,
                         'key': 'maxLength',
-                        'label': 'Max length',
+                        'label': _('v_createField_form_maxLength'),
                         'rules': [
-                            {'required': True, 'message': 'Max length is required'}
+                            {'required': True, 'message': _('v_createField_form_maxLength_required')}
                         ]
                     },
                     {
@@ -85,9 +85,9 @@ class CreateField(View):
                         'value': '0',
                         'min': 0,
                         'key': 'min',
-                        'label': 'Min',
+                        'label': _('v_createField_form_min'),
                         'rules': [
-                            {'required': True, 'message': 'Min is required'}
+                            {'required': True, 'message': _('v_createField_form_min_required')}
                         ]
                     },
                     {
@@ -99,9 +99,9 @@ class CreateField(View):
                         'value': '100',
                         'max': 2147483647,
                         'key': 'max',
-                        'label': 'Max',
+                        'label': _('v_createField_form_max'),
                         'rules': [
-                            {'required': True, 'message': 'Max is required'}
+                            {'required': True, 'message': _('v_createField_form_max_required')}
                         ]
                     },
                     {
@@ -110,11 +110,11 @@ class CreateField(View):
                         'items': [
                             {
                                 'key': 'asTitle',
-                                'label': 'Field as title'
+                                'label': _('v_createField_form_fieldAsTitle')
                             },
                             {
                                 'key': 'primary',
-                                'label': 'Primary field'
+                                'label': _('v_createField_form_primaryField')
                             }
                         ]
                     }
@@ -125,7 +125,7 @@ class CreateField(View):
                         'type': 'primary',
                         'submitForm': True,
                         'icon': 'plus',
-                        'label': 'Create'
+                        'label': _('v_createField_form_create')  # 'Create'
                     }
                 ]
             }

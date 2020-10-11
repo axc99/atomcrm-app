@@ -1,3 +1,4 @@
+from flask_babel import _
 from cerberus import Validator
 
 from flaskr.views.view import View
@@ -7,12 +8,12 @@ from flaskr.models.status import Status, get_hex_by_color
 # Window: Delete status
 # If leads with deleted status exist
 class DeleteStatus(View):
-    meta = {
-        'name': 'Delete status'
-    }
-
-    deleted_status = None
-    other_statuses = []
+    def __init__(self):
+        self.meta = {
+            'name': _('v_deleteStatus_meta_name')
+        }
+        self.deleted_status = None
+        self.other_statuses = []
 
     def before(self, params, request_data):
         vld = Validator({
@@ -39,14 +40,14 @@ class DeleteStatus(View):
     def get_header(self, params, request_data):
         return {
             'title': self.meta.get('name'),
-            'subtitle': 'Leads with a deleted status exist. What to do with leads with the status «{}»?'.format(self.deleted_status.name)
+            'subtitle': _('v_deleteStatus_header_subtitle', status_name=self.deleted_status.name)
         }
 
     def get_schema(self, params, request_data):
         select_options = [
             {
                 'key': 'deleteLeads',
-                'label': 'Delete leads'
+                'label': _('v_deleteStatus_schema_form_action_deleteLeads')
             }
         ]
 
@@ -54,7 +55,7 @@ class DeleteStatus(View):
             select_options.append({
                 'key': status.id,
                 'color': get_hex_by_color(status.color.name),
-                'label': "Move leads to «{}»".format(status.name)
+                'label': _('v_deleteStatus_schema_form_action_moveLeads', status_name=status.name)
             })
 
         return [
@@ -75,7 +76,7 @@ class DeleteStatus(View):
                         '_com': 'Button',
                         'type': 'danger',
                         'submitForm': True,
-                        'label': 'Delete status'
+                        'label': _('v_deleteStatus_schema_form_btn')
                     }
                 ]
             }
