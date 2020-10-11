@@ -1,4 +1,5 @@
 from datetime import timedelta
+from flask_babel import _
 
 from flaskr import db
 from flaskr.views.view import View
@@ -8,12 +9,12 @@ from flaskr.models.status import Status, get_hex_by_color
 
 # Page: Pipeline
 class Pipeline(View):
-    meta = {
-        'name': 'Leads'
-    }
-
-    leads = []
-    statuses = []
+    def __init__(self):
+        self.leads = []
+        self.statuses = []
+        self.meta = {
+            'name': _('v_pipeline_meta_name')
+        }
 
     def before(self, params, request_data):
         statuses_q = db.session.execute("""  
@@ -81,7 +82,7 @@ class Pipeline(View):
                 }
             ],
             'search': {
-                'placeholder': 'Search...',
+                'placeholder': _('v_pipeline_header_search'),
                 'onSearch': 'onSearchLeads'
             }
         }
@@ -115,7 +116,6 @@ class Pipeline(View):
             {
                 '_com': 'Board',
                 '_id': 'leadsBoard',
-                # 'draggable': True,
                 'draggableBetweenColumns': True,
                 'onDrag': 'onDragLead',
                 'columns': board_columns
@@ -220,10 +220,10 @@ class Pipeline(View):
 
                     // Get item from old column
                     const item = boardColumns[oldColumnIndex].items[oldItemIndex]
-                    // Add item new column
-                    boardColumns[newColumnIndex].items.splice(newItemIndex, 0, item)
                     // Remove item from column
                     boardColumns[oldColumnIndex].items.splice(oldItemIndex, 1)
+                    // Add item new column
+                    boardColumns[newColumnIndex].items.splice(newItemIndex, 0, item)
 
                     // Set loading to both columns
                     boardColumns[newColumnIndex].loading = true
@@ -284,8 +284,8 @@ def get_lead_component(lead):
     return {
         'key': lead['id'],
         'columnKey': lead['status_id'],
-        'title': title if title else 'No name',
-        'description': ';'.join(description) if len(description) > 0 else 'Empty lead',
+        'title': title if title else '#{}'.format(lead['id']),
+        'description': ';'.join(description) if len(description) > 0 else _('v_pipeline_lead_empty'),
         'extra': 'Archived' if lead['archived'] else Lead.get_regular_date(lead['add_date']),
         'addDate': lead['id'],
         'toWindow': ['updateLead', {

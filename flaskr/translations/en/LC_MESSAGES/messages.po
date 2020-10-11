@@ -1,0 +1,517 @@
+# English translations for PROJECT.
+# Copyright (C) 2020 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2020-10-11 22:19+0000\n"
+"PO-Revision-Date: 2020-10-10 19:41+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.8.0\n"
+
+#: flaskr/models/field.py:40
+msgid "m_status_getFieldTypes_string"
+msgstr "Text"
+
+#: flaskr/models/field.py:41
+msgid "m_status_getFieldTypes_longString"
+msgstr "Long text"
+
+#: flaskr/models/field.py:42
+msgid "m_status_getFieldTypes_number"
+msgstr "Number"
+
+#: flaskr/models/field.py:43
+msgid "m_status_getFieldTypes_boolean"
+msgstr "Checkbox"
+
+#: flaskr/models/field.py:44
+msgid "m_status_getFieldTypes_select"
+msgstr "Dropdown select"
+
+#: flaskr/models/lead.py:168
+msgid "m_lead_getRegularDate_jan"
+msgstr "Jan"
+
+#: flaskr/models/lead.py:169
+msgid "m_lead_getRegularDate_feb"
+msgstr "Feb"
+
+#: flaskr/models/lead.py:170
+msgid "m_lead_getRegularDate_mar"
+msgstr "Mar"
+
+#: flaskr/models/lead.py:171
+msgid "m_lead_getRegularDate_apr"
+msgstr "Apr"
+
+#: flaskr/models/lead.py:172
+msgid "m_lead_getRegularDate_may"
+msgstr "May"
+
+#: flaskr/models/lead.py:173
+msgid "m_lead_getRegularDate_jun"
+msgstr "Jun"
+
+#: flaskr/models/lead.py:174
+msgid "m_lead_getRegularDate_jul"
+msgstr "Jul"
+
+#: flaskr/models/lead.py:175
+msgid "m_lead_getRegularDate_aug"
+msgstr "Aug"
+
+#: flaskr/models/lead.py:176
+msgid "m_lead_getRegularDate_sep"
+msgstr "Sep"
+
+#: flaskr/models/lead.py:177
+msgid "m_lead_getRegularDate_oct"
+msgstr "Oct"
+
+#: flaskr/models/lead.py:178
+msgid "m_lead_getRegularDate_nov"
+msgstr "Nov"
+
+#: flaskr/models/lead.py:179
+msgid "m_lead_getRegularDate_dec"
+msgstr "Dec"
+
+#: flaskr/models/lead.py:184
+msgid "m_lead_getRegularDate_today"
+msgstr "Today at %(hours)s:%(minutes)s"
+
+#: flaskr/models/lead.py:186
+msgid "m_lead_getRegularDate_yesterday"
+msgstr "Yesterday at %(hours)s:%(minutes)s"
+
+#: flaskr/models/lead.py:189
+msgid "m_lead_getRegularDate_date"
+msgstr "%(day)s %(month)s at %(hours)s:%(minutes)s"
+
+#: flaskr/models/lead.py:191
+msgid "m_lead_getRegularDate_dateWithYear"
+msgstr "%(day)s %(month)s %(year)s at %(hours)s:%(minutes)s"
+
+#: flaskr/models/status.py:38
+msgid "m_status_getStatusColors_red"
+msgstr "Red"
+
+#: flaskr/models/status.py:39
+msgid "m_status_getStatusColors_pink"
+msgstr "Pink"
+
+#: flaskr/models/status.py:40
+msgid "m_status_getStatusColors_purple"
+msgstr "Purple"
+
+#: flaskr/models/status.py:41
+msgid "m_status_getStatusColors_blue"
+msgstr "Blue"
+
+#: flaskr/models/status.py:42
+msgid "m_status_getStatusColors_green"
+msgstr "Green"
+
+#: flaskr/models/status.py:43
+msgid "m_status_getStatusColors_orange"
+msgstr "Orange"
+
+#: flaskr/views/api/api.py:23
+msgid "v_api_header_getToken"
+msgstr "Get token"
+
+#: flaskr/views/api/api.py:30
+msgid "v_api_header_tabs_leads"
+msgstr "Leads"
+
+#: flaskr/views/api/api.py:37
+msgid "v_api_header_tabs_statuses"
+msgstr "Statuses"
+
+#: flaskr/views/api/api.py:44
+msgid "v_api_header_tabs_fields"
+msgstr "Fields"
+
+#: flaskr/views/api/getToken.py:10
+msgid "v_getToken_meta_name"
+msgstr "Get token"
+
+#: flaskr/views/api/getToken.py:16
+msgid "v_getToken_meta_header_subtitle"
+msgstr "Your current token will be deactivated."
+
+#: flaskr/views/api/getToken.py:25
+msgid "v_getToken_schema_btn"
+msgstr "Generate new token"
+
+#: flaskr/views/api/getToken.py:32
+msgid "v_getToken_schema_token"
+msgstr "New token"
+
+#: flaskr/views/fields/create_field.py:10
+msgid "v_createField_meta_name"
+msgstr "Create field"
+
+#: flaskr/views/fields/create_field.py:34
+msgid "v_createField_form_name"
+msgstr "Field name"
+
+#: flaskr/views/fields/create_field.py:35
+msgid "v_createField_form_name_placeholder"
+msgstr "Ex: Promocode"
+
+#: flaskr/views/fields/create_field.py:38
+msgid "v_createField_form_name_length"
+msgstr "Must contain 2 - 20 chars"
+
+#: flaskr/views/fields/create_field.py:39
+msgid "v_createField_form_name_required"
+msgstr "Name is required"
+
+#: flaskr/views/fields/create_field.py:46
+msgid "v_createField_form_valueType"
+msgstr "Value type"
+
+#: flaskr/views/fields/create_field.py:49
+msgid "v_createField_form_valueType_required"
+msgstr "Value type is required"
+
+#: flaskr/views/fields/create_field.py:61
+msgid "v_createField_form_minLength"
+msgstr "Min length"
+
+#: flaskr/views/fields/create_field.py:63
+msgid "v_createField_form_minLength_required"
+msgstr "Min length is required"
+
+#: flaskr/views/fields/create_field.py:74
+msgid "v_createField_form_maxLength"
+msgstr "Max length"
+
+#: flaskr/views/fields/create_field.py:76
+msgid "v_createField_form_maxLength_required"
+msgstr "Max length is required"
+
+#: flaskr/views/fields/create_field.py:88
+msgid "v_createField_form_min"
+msgstr "Min"
+
+#: flaskr/views/fields/create_field.py:90
+msgid "v_createField_form_min_required"
+msgstr "Min is required"
+
+#: flaskr/views/fields/create_field.py:102
+msgid "v_createField_form_max"
+msgstr "Max"
+
+#: flaskr/views/fields/create_field.py:104
+msgid "v_createField_form_max_required"
+msgstr "Max is required"
+
+#: flaskr/views/fields/create_field.py:113
+msgid "v_createField_form_fieldAsTitle"
+msgstr "Field as title"
+
+#: flaskr/views/fields/create_field.py:117
+msgid "v_createField_form_primaryField"
+msgstr "Primary field"
+
+#: flaskr/views/fields/create_field.py:128
+msgid "v_createField_form_create"
+msgstr "Create"
+
+#: flaskr/views/fields/fields.py:10
+msgid "v_fields_meta_name"
+msgstr "Fields"
+
+#: flaskr/views/fields/fields.py:26
+msgid "v_fields_header_createField"
+msgstr "Create field"
+
+#: flaskr/views/fields/fields.py:48
+msgid "v_fields_schema_showInTitle"
+msgstr "Show in title"
+
+#: flaskr/views/fields/fields.py:52
+msgid "v_fields_schema_primary"
+msgstr "Primary field"
+
+#: flaskr/views/fields/fields.py:64
+msgid "v_fields_schema_editField"
+msgstr "Edit field"
+
+#: flaskr/views/fields/fields.py:84
+msgid "v_fields_schema_noFields"
+msgstr "No fields"
+
+#: flaskr/views/fields/update_field.py:12
+msgid "v_updateField_meta_name"
+msgstr "Update field"
+
+#: flaskr/views/fields/update_field.py:56
+msgid "v_updateField_form_name"
+msgstr "Field name"
+
+#: flaskr/views/fields/update_field.py:57
+msgid "v_updateField_form_placeholder"
+msgstr "Ex: Promocode"
+
+#: flaskr/views/fields/update_field.py:61
+msgid "v_updateField_form_name_length"
+msgstr "Must contain 2 - 20 chars"
+
+#: flaskr/views/fields/update_field.py:62
+msgid "v_updateField_form_name_required"
+msgstr "Name is required"
+
+#: flaskr/views/fields/update_field.py:69
+msgid "v_updateField_form_valueType"
+msgstr "Value type"
+
+#: flaskr/views/fields/update_field.py:72
+msgid "v_updateField_form_valueType_required"
+msgstr "Value type is required"
+
+#: flaskr/views/fields/update_field.py:85
+msgid "v_updateField_form_minLength"
+msgstr "Min length"
+
+#: flaskr/views/fields/update_field.py:87
+msgid "v_updateField_form_minLength_required"
+msgstr "Min length is required"
+
+#: flaskr/views/fields/update_field.py:99
+msgid "v_updateField_form_maxLength"
+msgstr "Max length"
+
+#: flaskr/views/fields/update_field.py:101
+msgid "v_updateField_form_maxLength_required"
+msgstr "Max length is required"
+
+#: flaskr/views/fields/update_field.py:113
+msgid "v_updateField_form_min"
+msgstr "Min"
+
+#: flaskr/views/fields/update_field.py:115
+msgid "v_updateField_form_min_required"
+msgstr "Min is required"
+
+#: flaskr/views/fields/update_field.py:127
+msgid "v_updateField_form_max"
+msgstr "Max"
+
+#: flaskr/views/fields/update_field.py:129
+msgid "v_updateField_form_max_required"
+msgstr "Max is required"
+
+#: flaskr/views/fields/update_field.py:142
+msgid "v_updateField_form_fieldAsTitle"
+msgstr "Field as title"
+
+#: flaskr/views/fields/update_field.py:146
+msgid "v_updateField_form_primaryField"
+msgstr "Primary field"
+
+#: flaskr/views/fields/update_field.py:157
+msgid "v_updateField_form_save"
+msgstr "Save"
+
+#: flaskr/views/pipeline/pipeline.py:16
+msgid "v_pipeline_meta_name"
+msgstr "Leads"
+
+#: flaskr/views/pipeline/pipeline.py:85
+msgid "v_pipeline_header_search"
+msgstr "Search..."
+
+#: flaskr/views/pipeline/pipeline.py:288
+msgid "v_pipeline_lead_empty"
+msgstr "Empty lead"
+
+#: flaskr/views/pipeline/search_info.py:12
+msgid "v_searchInfo_meta_name"
+msgstr "Search information"
+
+#: flaskr/views/pipeline/search_info.py:14
+msgid "v_searchInfo_content"
+msgstr ""
+"### Search by ID: \r"
+"\r"
+" ```id=1``` \r"
+"\r"
+"\r"
+" ### Show only archived leads: \r"
+"\r"
+" ```archived=true``` \r"
+"\r"
+"\r"
+" ### Search lead by UTM marks: \r"
+"\r"
+" - ```utm_source=google``` \r"
+"\r"
+" - ```utm_medium=cpc``` \r"
+"\r"
+" - ```utm_campaign=spring_sale``` \r"
+"\r"
+" - ```utm_term=running+shoes``` \r"
+"\r"
+" - ```utm_content=textlink```"
+
+#: flaskr/views/pipeline/update_lead.py:41
+msgid "v_updateLead_meta_name"
+msgstr "Lead #%(id)s"
+
+#: flaskr/views/pipeline/update_lead.py:124
+msgid "v_updateLead_save"
+msgstr "Save"
+
+#: flaskr/views/pipeline/update_lead.py:134
+msgid "v_updateLead_restoreLead"
+msgstr "Restore lead"
+
+#: flaskr/views/pipeline/update_lead.py:161
+msgid "v_updateLead_enterTags"
+msgstr "Enter tags"
+
+#: flaskr/views/pipeline/update_lead.py:167
+msgid "v_updateLead_addDate"
+msgstr "Add date"
+
+#: flaskr/views/pipeline/update_lead.py:171
+msgid "v_updateLead_updateDate"
+msgstr "Update date"
+
+#: flaskr/views/pipeline/update_lead.py:175
+msgid "v_updateLead_creator"
+msgstr "Added by"
+
+#: flaskr/views/pipeline/update_lead.py:185
+msgid "v_updateLead_utmMarks"
+msgstr "UTM marks"
+
+#: flaskr/views/pipeline/update_lead.py:258
+msgid "v_updateLead_onClickArchive_title"
+msgstr "Delete lead?"
+
+#: flaskr/views/pipeline/update_lead.py:259
+msgid "v_updateLead_onClickArchive_text"
+msgstr ""
+"Are you sure you want to move this lead to the archive? You can restore "
+"it at any time."
+
+#: flaskr/views/pipeline/update_lead.py:260
+msgid "v_updateLead_onClickArchive_delete"
+msgstr "Delete"
+
+#: flaskr/views/statuses/create_status.py:11
+msgid "v_createStatus_meta_name"
+msgstr "Create status"
+
+#: flaskr/views/statuses/create_status.py:35
+msgid "v_createStatus_form_name"
+msgstr "Name"
+
+#: flaskr/views/statuses/create_status.py:36
+msgid "v_createStatus_form_name_placeholder"
+msgstr "Ex: In Process"
+
+#: flaskr/views/statuses/create_status.py:39
+msgid "v_createStatus_name_length"
+msgstr "Must contain 2 - 20 chars"
+
+#: flaskr/views/statuses/create_status.py:40
+msgid "v_createStatus_name_required"
+msgstr "Name is required"
+
+#: flaskr/views/statuses/create_status.py:47
+msgid "v_createStatus_form_color"
+msgstr "Color"
+
+#: flaskr/views/statuses/create_status.py:50
+msgid "v_createStatus_form_color_required"
+msgstr "Color is required"
+
+#: flaskr/views/statuses/create_status.py:60
+msgid "v_createStatus_btn"
+msgstr "Create"
+
+#: flaskr/views/statuses/delete_status.py:13
+msgid "v_deleteStatus_meta_name"
+msgstr "Update status"
+
+#: flaskr/views/statuses/delete_status.py:43
+msgid "v_deleteStatus_header_subtitle"
+msgstr ""
+"Leads with a deleted status exist. What to do with leads with the status "
+"«%(status_name)s»?"
+
+#: flaskr/views/statuses/delete_status.py:50
+msgid "v_deleteStatus_schema_form_action_deleteLeads"
+msgstr "Delete"
+
+#: flaskr/views/statuses/delete_status.py:58
+msgid "v_deleteStatus_schema_form_action_moveLeads"
+msgstr "Move leads to «%(status_name)s»"
+
+#: flaskr/views/statuses/delete_status.py:79
+msgid "v_deleteStatus_schema_form_btn"
+msgstr "Delete"
+
+#: flaskr/views/statuses/statuses.py:13
+msgid "v_statuses_meta_name"
+msgstr "Statuses"
+
+#: flaskr/views/statuses/statuses.py:38
+msgid "v_statuses_header_createStatus"
+msgstr "Create status"
+
+#: flaskr/views/statuses/statuses.py:74
+msgid "v_statuses_schema_editStatus"
+msgstr "Edit status"
+
+#: flaskr/views/statuses/statuses.py:88
+msgid "v_statuses_schema_noStatuses"
+msgstr "No statuses"
+
+#: flaskr/views/statuses/update_status.py:12
+msgid "v_updateStatus_meta_name"
+msgstr "Edit status"
+
+#: flaskr/views/statuses/update_status.py:53
+msgid "v_updateStatus_form_name"
+msgstr "Name"
+
+#: flaskr/views/statuses/update_status.py:54
+msgid "v_updateStatus_form_name_placeholder"
+msgstr "Ex: In Progress"
+
+#: flaskr/views/statuses/update_status.py:57
+msgid "v_updateStatus_name_length"
+msgstr "Must contain 2 - 20 chars"
+
+#: flaskr/views/statuses/update_status.py:58
+msgid "v_updateStatus_name_required"
+msgstr "Name is required"
+
+#: flaskr/views/statuses/update_status.py:66
+msgid "v_updateStatus_form_color"
+msgstr "Color"
+
+#: flaskr/views/statuses/update_status.py:70
+msgid "v_updateStatus_form_color_required"
+msgstr "Color is required"
+
+#: flaskr/views/statuses/update_status.py:80
+msgid "v_updateStatus_btn"
+msgstr "Save"
+

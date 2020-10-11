@@ -1,14 +1,15 @@
+from flask_babel import _
 from flaskr.views.view import View
-from flaskr.models.field import Field, FieldType
+from flaskr.models.field import Field, FieldType, get_field_types
 
 
 # Page: Fields
 class Fields(View):
-    meta = {
-        'name': 'Lead fields'
-    }
-
-    fields = []
+    def __init__(self):
+        self.meta = {
+            'name': _('v_fields_meta_name')
+        }
+        self.fields = []
 
     def before(self, params, request_data):
         self.fields = Field.query \
@@ -22,7 +23,7 @@ class Fields(View):
             'actions': [
                 {
                     '_com': 'Button',
-                    'label': 'Create field',
+                    'label': _('v_fields_header_createField'),
                     'type': 'primary',
                     'icon': 'plus',
                     'toWindow': 'createField'
@@ -32,19 +33,10 @@ class Fields(View):
 
     def get_schema(self, params, request_data):
         list_items = []
+        field_types = get_field_types()
 
         for field in self.fields:
-
-            # Description with field type, min and max values
-            field_description = ''
-            if field.value_type == FieldType.string:
-                field_description = 'String ({} - {} length)'.format(field.min, field.max)
-            elif field.value_type == FieldType.number:
-                field_description = 'Number ({} - {})'.format(field.min, field.max)
-            elif field.value_type == FieldType.boolean:
-                field_description = 'Checkbox'
-            elif field.value_type == FieldType.select:
-                field_description = 'Dropdown select ({} options)'.format(23)
+            field_description = next((t[2] for t in field_types if t[1] == field.value_type.name), None)
 
             # Extra with flags
             field_extra = {
@@ -53,11 +45,11 @@ class Fields(View):
             }
             if field.as_title:
                 field_extra['items'].append({
-                    'label': 'Show in title'
+                    'label': _('v_fields_schema_showInTitle')
                 })
             if field.primary:
                 field_extra['items'].append({
-                    'label': 'Primary field'
+                    'label': _('v_fields_schema_primary')
                 })
 
             list_items.append({
@@ -69,7 +61,7 @@ class Fields(View):
                     {
                         '_com': 'Button',
                         'icon': 'edit',
-                        'label': 'Edit field',
+                        'label': _('v_fields_schema_editField'),
                         'toWindow': ['updateField', {
                             'id': field.id
                         }]
@@ -89,7 +81,7 @@ class Fields(View):
                 '_com': 'List',
                 '_id': 'fieldsList',
                 'draggable': True,
-                'emptyText': 'No fields',
+                'emptyText': _('v_fields_schema_noFields'),
                 'onDrag': 'onDragFields',
                 'items': list_items
             }

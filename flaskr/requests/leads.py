@@ -91,7 +91,7 @@ def update_lead(params, request_data):
                 'type': 'dict',
                 'schema': {
                     'fieldId': {'type': 'number', 'required': True, 'nullable': False},
-                    'value': {'type': ['number', 'string', 'boolean', 'list'], 'required': True, 'nullable': True}
+                    'value': {'type': ['number', 'string', 'boolean', 'list'], 'required': False, 'nullable': True}
                 }
             }
         }

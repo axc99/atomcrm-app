@@ -1,17 +1,19 @@
+from flask_babel import _
 from flaskr.views.view import View
 from flaskr.models.field import Field, FieldType
 
 
 # Window: Get token
 class GetToken(View):
-    meta = {
-        'name': 'Get token'
-    }
+    def __init__(self):
+        self.meta = {
+            'name': _('v_getToken_meta_name')  # 'Get token'
+        }
 
     def get_header(self, params, request_data):
         return {
             'title': self.meta.get('name'),
-            'subtitle': 'Your current token will be deactivated.'
+            'subtitle': _('v_getToken_meta_header_subtitle')  # 'Your current token will be deactivated.'
         }
 
     def get_schema(self, params, request_data):
@@ -20,14 +22,14 @@ class GetToken(View):
                 '_id': 'getTokenBtn',
                 '_com': 'Button',
                 'type': 'primary',
-                'label': 'Generate new token',
+                'label': _('v_getToken_schema_btn'),  # 'Generate new token',
                 'onClick': 'getToken'
             },
             {
                 '_id': 'tokenInput',
                 '_com': 'Field.Input',
                 '_vis': False,
-                'label': 'New token',
+                'label': _('v_getToken_schema_token'),  # 'New token',
                 'multiline': True,
                 'type': 'text',
                 'readOnly': True
@@ -60,17 +62,4 @@ class GetToken(View):
                         }
                     })
             }"""
-
-        # const getTokenBtn = app.getById('getTokenBtn')
-        # const tokenInput = app.getById('tokenInput')
-        #
-        # tokenInput.setAttrs('loading', true)
-        #
-        # const res = await app.sendReq('getToken')
-        # tokenInput.setAttrs({
-        #     value: res.token,
-        #     _vis: true
-        # })
-        #
-        # tokenInput.setAttr('loading', false)
     }
