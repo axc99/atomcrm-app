@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-10-11 22:19+0000\n"
+"POT-Creation-Date: 2020-10-11 22:46+0000\n"
 "PO-Revision-Date: 2020-10-10 19:41+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -477,6 +477,14 @@ msgstr "Статусы"
 #: flaskr/views/statuses/statuses.py:38
 msgid "v_statuses_header_createStatus"
 msgstr "Создать статус"
+
+#: flaskr/views/statuses/statuses.py:69
+msgid "v_statuses_schema_count_lead"
+msgstr "лид"
+
+#: flaskr/views/statuses/statuses.py:69
+msgid "v_statuses_schema_count_leads"
+msgstr "лиды"
 
 #: flaskr/views/statuses/statuses.py:74
 msgid "v_statuses_schema_editStatus"
