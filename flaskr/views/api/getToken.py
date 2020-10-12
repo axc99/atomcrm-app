@@ -7,13 +7,13 @@ from flaskr.models.field import Field, FieldType
 class GetToken(View):
     def __init__(self):
         self.meta = {
-            'name': _('v_getToken_meta_name')  # 'Get token'
+            'name': _('v_getToken_meta_name')
         }
 
     def get_header(self, params, request_data):
         return {
             'title': self.meta.get('name'),
-            'subtitle': _('v_getToken_meta_header_subtitle')  # 'Your current token will be deactivated.'
+            'subtitle': _('v_getToken_meta_header_subtitle')
         }
 
     def get_schema(self, params, request_data):
@@ -22,14 +22,14 @@ class GetToken(View):
                 '_id': 'getTokenBtn',
                 '_com': 'Button',
                 'type': 'primary',
-                'label': _('v_getToken_schema_btn'),  # 'Generate new token',
+                'label': _('v_getToken_schema_btn'),
                 'onClick': 'getToken'
             },
             {
                 '_id': 'tokenInput',
                 '_com': 'Field.Input',
                 '_vis': False,
-                'label': _('v_getToken_schema_token'),  # 'New token',
+                'label': _('v_getToken_schema_token'),
                 'multiline': True,
                 'type': 'text',
                 'readOnly': True

@@ -484,7 +484,7 @@ msgstr "лид"
 
 #: flaskr/views/statuses/statuses.py:69
 msgid "v_statuses_schema_count_leads"
-msgstr "лиды"
+msgstr "лид."
 
 #: flaskr/views/statuses/statuses.py:74
 msgid "v_statuses_schema_editStatus"

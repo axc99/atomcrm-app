@@ -38,7 +38,7 @@ class Field(db.Model):
 def get_field_types():
     return (
         (1, 'string', _('m_status_getFieldTypes_string')),
-        (2, 'lang_string', _('m_status_getFieldTypes_longString')),
+        (2, 'long_string', _('m_status_getFieldTypes_longString')),
         (3, 'number', _('m_status_getFieldTypes_number')),
         (4, 'boolean', _('m_status_getFieldTypes_boolean')),
         (5, 'select', _('m_status_getFieldTypes_select'))

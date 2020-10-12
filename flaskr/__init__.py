@@ -10,7 +10,6 @@ app = Flask(__name__)
 app.debug = os.environ.get('FLASK_ENV') == 'production'
 app.secret_key = os.environ.get('APP_SECRET_KEY')
 
-babel = Babel(app)
 
 # Configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://{}:{}@db/{}'.format(os.environ.get('POSTGRES_USER'),
@@ -25,16 +24,19 @@ migrate = Migrate(app, db)
 db.create_all()
 
 
+# Babel
+babel = Babel(app)
 @babel.localeselector
 def get_locale():
+    supported_langs = ('en', 'ru')
+
     data = request.get_json()
     lang_key = data['langKey'] if data else None
-    langs = ('en', 'ru')
 
-    if not lang_key or lang_key not in langs:
-        lang_key = 'en'
-
-    return lang_key
+    if not lang_key or lang_key not in supported_langs:
+        return 'en'
+    else:
+        return lang_key
 
 
 # Routing
