@@ -125,7 +125,7 @@ class CreateField(View):
                         'type': 'primary',
                         'submitForm': True,
                         'icon': 'plus',
-                        'label': _('v_createField_form_create')  # 'Create'
+                        'label': _('v_createField_form_create')
                     }
                 ]
             }

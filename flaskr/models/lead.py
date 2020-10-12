@@ -157,10 +157,8 @@ class Lead(db.Model):
         data = request.get_json()
         timezone_offset = data['timezoneOffset'] if data else 0
 
-        date_obj = datetime.strptime(src_date, '%Y-%m-%d %H:%M:%S') + timedelta(minutes=timezone_offset)
-        date_str = date_obj.strftime('%Y-%m-%d %H:%M:%S')
-
-        [date, time] = date_str.split(' ')
+        date_obj = datetime.strptime(src_date, '%Y-%m-%d %H:%M:%S')
+        [date, time] = src_date.split(' ')
         [year, month, day] = date.split('-')
         [hours, minutes, seconds] = time.split(':')
 
