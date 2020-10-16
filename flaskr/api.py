@@ -10,7 +10,7 @@ from cerberus import Validator
 # Get leads
 def get_leads(data, veokit_installation_id):
     vld = Validator({
-        'id': {'type': ['number', 'list'], 'nullable': True}
+        'uid': {'type': ['string', 'list'], 'nullable': True}
     })
     is_valid = vld.validate(data)
 
@@ -21,11 +21,11 @@ def get_leads(data, veokit_installation_id):
 
     leads_q = Lead.query.filter_by(veokit_installation_id=veokit_installation_id)
 
-    if data.get('id'):
-        if isinstance(data['id'], list):
-            leads_q = leads_q.filter(Lead.id.in_(data['id']))
+    if data.get('uid'):
+        if isinstance(data['uid'], list):
+            leads_q = leads_q.filter(Lead.uid.in_(data['uid']))
         else:
-            leads_q = leads_q.filter_by(id=data['id'])
+            leads_q = leads_q.filter_by(uid=data['uid'])
     else:
         leads_q = leads_q.limit(500)
 
@@ -33,7 +33,7 @@ def get_leads(data, veokit_installation_id):
 
     for lead in leads:
         res_leads.append({
-            'id': lead.id,
+            'uid': lead.uid,
             'statusId': lead.status_id,
             'addDate': lead.add_date.strftime('%Y-%m-%d %H:%M:%S'),
             'updDate': lead.upd_date.strftime('%Y-%m-%d %H:%M:%S'),
@@ -105,7 +105,7 @@ def create_lead(data, veokit_installation_id):
 
     return {
         'lead': {
-            'id': lead.id,
+            'uid': lead.uid,
             'statusId': lead.status_id,
             'addDate': lead.add_date.strftime('%Y-%m-%d %H:%M:%S'),
             'updDate': lead.upd_date.strftime('%Y-%m-%d %H:%M:%S'),
@@ -118,7 +118,7 @@ def create_lead(data, veokit_installation_id):
 # Update lead
 def update_lead(data, veokit_installation_id):
     vld = Validator({
-        'id': {'type': 'number', 'required': True},
+        'uid': {'type': 'string', 'required': True},
         'statusId': {'type': 'number', 'required': True},
         'tags': {
             'type': 'list',
@@ -142,12 +142,12 @@ def update_lead(data, veokit_installation_id):
 
     # Get lead by id
     lead = Lead.query \
-        .filter_by(id=data['id'],
+        .filter_by(id=data['uid'],
                    veokit_installation_id=veokit_installation_id) \
         .first()
 
     if not lead:
-        return {"message": "Lead (id={}) does not exist".format(data['id'])}, 400
+        return {"message": "Lead (uid={}) does not exist".format(data['uid'])}, 400
 
     if lead.status_id != data['status_id']:
         # Check status id
@@ -172,7 +172,7 @@ def update_lead(data, veokit_installation_id):
 
     return {
         'lead': {
-            'id': lead.id,
+            'uid': lead.uid,
             'statusId': lead.status_id,
             'addDate': lead.add_date.strftime('%Y-%m-%d %H:%M:%S'),
             'updDate': lead.upd_date.strftime('%Y-%m-%d %H:%M:%S'),

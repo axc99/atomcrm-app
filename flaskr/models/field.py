@@ -10,7 +10,15 @@ class FieldType(enum.Enum):
     long_string = 2
     number = 3
     boolean = 4
-    select = 5
+    date = 5
+    # select = 6
+
+
+# Field board visibility
+class FieldBoardVisibility(enum.Enum):
+    none = 1
+    title = 2
+    subtitle = 3
 
 
 # Field
@@ -18,17 +26,8 @@ class Field(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(20), nullable=False)
 
-    value_type = Column(Enum(FieldType), nullable=False)
-
-    # Add lead field to lead title (ex: first_name, last_name, middle_name)
-    as_title = db.Column(db.Boolean, default=False, nullable=False)
-
-    # Primary field
-    primary = db.Column(db.Boolean, default=False, nullable=False)
-
-    # Min/max for string length and number
-    min = db.Column(db.Integer, default=1, nullable=True)
-    max = db.Column(db.Integer, nullable=True)
+    value_type = Column(Enum(FieldType), nullable=False, server_default='string')
+    board_visibility = Column(Enum(FieldBoardVisibility), nullable=False, server_default='none')
 
     index = db.Column(db.Integer, default=0, nullable=False)
 
@@ -41,5 +40,13 @@ def get_field_types():
         (2, 'long_string', _('m_status_getFieldTypes_longString')),
         (3, 'number', _('m_status_getFieldTypes_number')),
         (4, 'boolean', _('m_status_getFieldTypes_boolean')),
-        (5, 'select', _('m_status_getFieldTypes_select'))
+        (5, 'date', _('m_status_getFieldTypes_date')),
+        # (6, 'date', _('m_status_getFieldTypes_select'))
+    )
+
+def get_board_visibility():
+    return (
+        (1, 'none', _('m_status_getBoardVisibility_none')),
+        (2, 'title', _('m_status_getBoardVisibility_title')),
+        (3, 'subtitle', _('m_status_getBoardVisibility_subtitle'))
     )

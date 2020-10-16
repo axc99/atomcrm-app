@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-10-11 22:46+0000\n"
+"POT-Creation-Date: 2020-10-16 00:37+0000\n"
 "PO-Revision-Date: 2020-10-10 19:41+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,87 +18,139 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-#: flaskr/models/field.py:40
+#: flaskr/routes.py:108
+msgid "r_webhook_defaultStatuses_lead"
+msgstr "Lead"
+
+#: flaskr/routes.py:109
+msgid "r_webhook_defaultStatuses_contacted"
+msgstr "Contacted"
+
+#: flaskr/routes.py:110
+msgid "r_webhook_defaultStatuses_qualified"
+msgstr "Qualified"
+
+#: flaskr/routes.py:111
+msgid "r_webhook_defaultStatuses_proposalMade"
+msgstr "Proposal made"
+
+#: flaskr/routes.py:112
+msgid "r_webhook_defaultStatuses_win"
+msgstr "Win"
+
+#: flaskr/routes.py:113
+msgid "r_webhook_defaultStatuses_lost"
+msgstr "Lost"
+
+#: flaskr/routes.py:132
+msgid "r_webhook_defaultStatuses_firstName"
+msgstr "First name"
+
+#: flaskr/routes.py:133
+msgid "r_webhook_defaultStatuses_lastName"
+msgstr "Last name"
+
+#: flaskr/routes.py:134
+msgid "r_webhook_defaultStatuses_email"
+msgstr "Email"
+
+#: flaskr/routes.py:135
+msgid "r_webhook_defaultStatuses_mobilePhone"
+msgstr "Mobile phone"
+
+#: flaskr/models/field.py:49
 msgid "m_status_getFieldTypes_string"
 msgstr "Text"
 
-#: flaskr/models/field.py:41
+#: flaskr/models/field.py:50
 msgid "m_status_getFieldTypes_longString"
 msgstr "Long text"
 
-#: flaskr/models/field.py:42
+#: flaskr/models/field.py:51
 msgid "m_status_getFieldTypes_number"
 msgstr "Number"
 
-#: flaskr/models/field.py:43
+#: flaskr/models/field.py:52
 msgid "m_status_getFieldTypes_boolean"
 msgstr "Checkbox"
 
-#: flaskr/models/field.py:44
-msgid "m_status_getFieldTypes_select"
-msgstr "Dropdown select"
+#: flaskr/models/field.py:53
+msgid "m_status_getFieldTypes_date"
+msgstr "Date"
 
-#: flaskr/models/lead.py:168
+#: flaskr/models/field.py:59
+msgid "m_status_getBoardVisibility_none"
+msgstr "Do not show"
+
+#: flaskr/models/field.py:60
+msgid "m_status_getBoardVisibility_title"
+msgstr "In title"
+
+#: flaskr/models/field.py:61
+msgid "m_status_getBoardVisibility_subtitle"
+msgstr "In description"
+
+#: flaskr/models/lead.py:187
 msgid "m_lead_getRegularDate_jan"
 msgstr "Jan"
 
-#: flaskr/models/lead.py:169
+#: flaskr/models/lead.py:188
 msgid "m_lead_getRegularDate_feb"
 msgstr "Feb"
 
-#: flaskr/models/lead.py:170
+#: flaskr/models/lead.py:189
 msgid "m_lead_getRegularDate_mar"
 msgstr "Mar"
 
-#: flaskr/models/lead.py:171
+#: flaskr/models/lead.py:190
 msgid "m_lead_getRegularDate_apr"
 msgstr "Apr"
 
-#: flaskr/models/lead.py:172
+#: flaskr/models/lead.py:191
 msgid "m_lead_getRegularDate_may"
 msgstr "May"
 
-#: flaskr/models/lead.py:173
+#: flaskr/models/lead.py:192
 msgid "m_lead_getRegularDate_jun"
 msgstr "Jun"
 
-#: flaskr/models/lead.py:174
+#: flaskr/models/lead.py:193
 msgid "m_lead_getRegularDate_jul"
 msgstr "Jul"
 
-#: flaskr/models/lead.py:175
+#: flaskr/models/lead.py:194
 msgid "m_lead_getRegularDate_aug"
 msgstr "Aug"
 
-#: flaskr/models/lead.py:176
+#: flaskr/models/lead.py:195
 msgid "m_lead_getRegularDate_sep"
 msgstr "Sep"
 
-#: flaskr/models/lead.py:177
+#: flaskr/models/lead.py:196
 msgid "m_lead_getRegularDate_oct"
 msgstr "Oct"
 
-#: flaskr/models/lead.py:178
+#: flaskr/models/lead.py:197
 msgid "m_lead_getRegularDate_nov"
 msgstr "Nov"
 
-#: flaskr/models/lead.py:179
+#: flaskr/models/lead.py:198
 msgid "m_lead_getRegularDate_dec"
 msgstr "Dec"
 
-#: flaskr/models/lead.py:184
+#: flaskr/models/lead.py:203
 msgid "m_lead_getRegularDate_today"
 msgstr "Today at %(hours)s:%(minutes)s"
 
-#: flaskr/models/lead.py:186
+#: flaskr/models/lead.py:205
 msgid "m_lead_getRegularDate_yesterday"
 msgstr "Yesterday at %(hours)s:%(minutes)s"
 
-#: flaskr/models/lead.py:189
+#: flaskr/models/lead.py:208
 msgid "m_lead_getRegularDate_date"
 msgstr "%(day)s %(month)s at %(hours)s:%(minutes)s"
 
-#: flaskr/models/lead.py:191
+#: flaskr/models/lead.py:210
 msgid "m_lead_getRegularDate_dateWithYear"
 msgstr "%(day)s %(month)s %(year)s at %(hours)s:%(minutes)s"
 
@@ -158,6 +210,46 @@ msgstr "Generate new token"
 msgid "v_getToken_schema_token"
 msgstr "New token"
 
+#: flaskr/views/card/card.py:12
+msgid "v_card_meta_name"
+msgstr "Card settings"
+
+#: flaskr/views/card/card.py:92
+msgid "v_card_scheme_form_leadAmount"
+msgstr "Lead amount"
+
+#: flaskr/views/card/card.py:101
+msgid "v_card_scheme_form_amountCurrency"
+msgstr "Amount currency"
+
+#: flaskr/views/card/card.py:109
+msgid "v_card_scheme_form_fields"
+msgstr "Fields"
+
+#: flaskr/views/card/card.py:115
+msgid "v_card_scheme_form_fields_table_noFields"
+msgstr "No fields"
+
+#: flaskr/views/card/card.py:121
+msgid "v_card_scheme_form_fields_table_field"
+msgstr "Field"
+
+#: flaskr/views/card/card.py:126
+msgid "v_card_scheme_form_fields_table_valueType"
+msgstr "Value type"
+
+#: flaskr/views/card/card.py:131
+msgid "v_card_scheme_form_fields_table_boardVisibility"
+msgstr "Board visibility"
+
+#: flaskr/views/card/card.py:139
+msgid "v_card_scheme_form_fields_addField"
+msgstr "Add field"
+
+#: flaskr/views/card/card.py:153
+msgid "v_card_scheme_form_save"
+msgstr "Save"
+
 #: flaskr/views/fields/create_field.py:10
 msgid "v_createField_meta_name"
 msgstr "Create field"
@@ -186,47 +278,7 @@ msgstr "Value type"
 msgid "v_createField_form_valueType_required"
 msgstr "Value type is required"
 
-#: flaskr/views/fields/create_field.py:61
-msgid "v_createField_form_minLength"
-msgstr "Min length"
-
-#: flaskr/views/fields/create_field.py:63
-msgid "v_createField_form_minLength_required"
-msgstr "Min length is required"
-
-#: flaskr/views/fields/create_field.py:74
-msgid "v_createField_form_maxLength"
-msgstr "Max length"
-
-#: flaskr/views/fields/create_field.py:76
-msgid "v_createField_form_maxLength_required"
-msgstr "Max length is required"
-
-#: flaskr/views/fields/create_field.py:88
-msgid "v_createField_form_min"
-msgstr "Min"
-
-#: flaskr/views/fields/create_field.py:90
-msgid "v_createField_form_min_required"
-msgstr "Min is required"
-
-#: flaskr/views/fields/create_field.py:102
-msgid "v_createField_form_max"
-msgstr "Max"
-
-#: flaskr/views/fields/create_field.py:104
-msgid "v_createField_form_max_required"
-msgstr "Max is required"
-
-#: flaskr/views/fields/create_field.py:113
-msgid "v_createField_form_fieldAsTitle"
-msgstr "Field as title"
-
-#: flaskr/views/fields/create_field.py:117
-msgid "v_createField_form_primaryField"
-msgstr "Primary field"
-
-#: flaskr/views/fields/create_field.py:128
+#: flaskr/views/fields/create_field.py:71
 msgid "v_createField_form_create"
 msgstr "Create"
 
@@ -238,19 +290,11 @@ msgstr "Fields"
 msgid "v_fields_header_createField"
 msgstr "Create field"
 
-#: flaskr/views/fields/fields.py:48
-msgid "v_fields_schema_showInTitle"
-msgstr "Show in title"
-
-#: flaskr/views/fields/fields.py:52
-msgid "v_fields_schema_primary"
-msgstr "Primary field"
-
-#: flaskr/views/fields/fields.py:64
+#: flaskr/views/fields/fields.py:56
 msgid "v_fields_schema_editField"
 msgstr "Edit field"
 
-#: flaskr/views/fields/fields.py:84
+#: flaskr/views/fields/fields.py:76
 msgid "v_fields_schema_noFields"
 msgstr "No fields"
 
@@ -258,85 +302,49 @@ msgstr "No fields"
 msgid "v_updateField_meta_name"
 msgstr "Update field"
 
-#: flaskr/views/fields/update_field.py:56
+#: flaskr/views/fields/update_field.py:53
 msgid "v_updateField_form_name"
 msgstr "Field name"
 
-#: flaskr/views/fields/update_field.py:57
+#: flaskr/views/fields/update_field.py:54
 msgid "v_updateField_form_placeholder"
 msgstr "Ex: Promocode"
 
-#: flaskr/views/fields/update_field.py:61
+#: flaskr/views/fields/update_field.py:58
 msgid "v_updateField_form_name_length"
 msgstr "Must contain 2 - 20 chars"
 
-#: flaskr/views/fields/update_field.py:62
+#: flaskr/views/fields/update_field.py:59
 msgid "v_updateField_form_name_required"
 msgstr "Name is required"
 
-#: flaskr/views/fields/update_field.py:69
+#: flaskr/views/fields/update_field.py:66
 msgid "v_updateField_form_valueType"
 msgstr "Value type"
 
-#: flaskr/views/fields/update_field.py:72
+#: flaskr/views/fields/update_field.py:69
 msgid "v_updateField_form_valueType_required"
 msgstr "Value type is required"
 
-#: flaskr/views/fields/update_field.py:85
-msgid "v_updateField_form_minLength"
-msgstr "Min length"
-
-#: flaskr/views/fields/update_field.py:87
-msgid "v_updateField_form_minLength_required"
-msgstr "Min length is required"
-
-#: flaskr/views/fields/update_field.py:99
-msgid "v_updateField_form_maxLength"
-msgstr "Max length"
-
-#: flaskr/views/fields/update_field.py:101
-msgid "v_updateField_form_maxLength_required"
-msgstr "Max length is required"
-
-#: flaskr/views/fields/update_field.py:113
-msgid "v_updateField_form_min"
-msgstr "Min"
-
-#: flaskr/views/fields/update_field.py:115
-msgid "v_updateField_form_min_required"
-msgstr "Min is required"
-
-#: flaskr/views/fields/update_field.py:127
-msgid "v_updateField_form_max"
-msgstr "Max"
-
-#: flaskr/views/fields/update_field.py:129
-msgid "v_updateField_form_max_required"
-msgstr "Max is required"
-
-#: flaskr/views/fields/update_field.py:142
+#: flaskr/views/fields/update_field.py:83
 msgid "v_updateField_form_fieldAsTitle"
 msgstr "Field as title"
 
-#: flaskr/views/fields/update_field.py:146
+#: flaskr/views/fields/update_field.py:87
 msgid "v_updateField_form_primaryField"
 msgstr "Primary field"
 
-#: flaskr/views/fields/update_field.py:157
+#: flaskr/views/fields/update_field.py:98
 msgid "v_updateField_form_save"
 msgstr "Save"
 
-#: flaskr/views/pipeline/pipeline.py:16
+#: flaskr/views/pipeline/pipeline.py:17
 msgid "v_pipeline_meta_name"
 msgstr "Leads"
 
-#: flaskr/views/pipeline/pipeline.py:85
+#: flaskr/views/pipeline/pipeline.py:99
 msgid "v_pipeline_header_search"
 msgstr "Search..."
-
-#: flaskr/views/pipeline/pipeline.py:288
-msgid "v_pipeline_lead_empty"
-msgstr "Empty lead"
 
 #: flaskr/views/pipeline/search_info.py:12
 msgid "v_searchInfo_meta_name"
@@ -367,49 +375,49 @@ msgstr ""
 "\r"
 " - ```utm_content=textlink```"
 
-#: flaskr/views/pipeline/update_lead.py:41
+#: flaskr/views/pipeline/update_lead.py:48
 msgid "v_updateLead_meta_name"
 msgstr "Lead #%(id)s"
 
-#: flaskr/views/pipeline/update_lead.py:124
+#: flaskr/views/pipeline/update_lead.py:144
 msgid "v_updateLead_save"
 msgstr "Save"
 
-#: flaskr/views/pipeline/update_lead.py:134
+#: flaskr/views/pipeline/update_lead.py:154
 msgid "v_updateLead_restoreLead"
 msgstr "Restore lead"
 
-#: flaskr/views/pipeline/update_lead.py:161
+#: flaskr/views/pipeline/update_lead.py:193
 msgid "v_updateLead_enterTags"
 msgstr "Enter tags"
 
-#: flaskr/views/pipeline/update_lead.py:167
+#: flaskr/views/pipeline/update_lead.py:199
 msgid "v_updateLead_addDate"
 msgstr "Add date"
 
-#: flaskr/views/pipeline/update_lead.py:171
+#: flaskr/views/pipeline/update_lead.py:203
 msgid "v_updateLead_updateDate"
 msgstr "Update date"
 
-#: flaskr/views/pipeline/update_lead.py:175
+#: flaskr/views/pipeline/update_lead.py:207
 msgid "v_updateLead_creator"
 msgstr "Added by"
 
-#: flaskr/views/pipeline/update_lead.py:185
+#: flaskr/views/pipeline/update_lead.py:217
 msgid "v_updateLead_utmMarks"
 msgstr "UTM marks"
 
-#: flaskr/views/pipeline/update_lead.py:258
+#: flaskr/views/pipeline/update_lead.py:292
 msgid "v_updateLead_onClickArchive_title"
 msgstr "Delete lead?"
 
-#: flaskr/views/pipeline/update_lead.py:259
+#: flaskr/views/pipeline/update_lead.py:293
 msgid "v_updateLead_onClickArchive_text"
 msgstr ""
 "Are you sure you want to move this lead to the archive? You can restore "
 "it at any time."
 
-#: flaskr/views/pipeline/update_lead.py:260
+#: flaskr/views/pipeline/update_lead.py:294
 msgid "v_updateLead_onClickArchive_delete"
 msgstr "Delete"
 
@@ -522,4 +530,70 @@ msgstr "Color is required"
 #: flaskr/views/statuses/update_status.py:80
 msgid "v_updateStatus_btn"
 msgstr "Save"
+
+#~ msgid "m_status_getFieldTypes_select"
+#~ msgstr "Dropdown select"
+
+#~ msgid "v_createField_form_minLength"
+#~ msgstr "Min length"
+
+#~ msgid "v_createField_form_minLength_required"
+#~ msgstr "Min length is required"
+
+#~ msgid "v_createField_form_maxLength"
+#~ msgstr "Max length"
+
+#~ msgid "v_createField_form_maxLength_required"
+#~ msgstr "Max length is required"
+
+#~ msgid "v_createField_form_min"
+#~ msgstr "Min"
+
+#~ msgid "v_createField_form_min_required"
+#~ msgstr "Min is required"
+
+#~ msgid "v_createField_form_max"
+#~ msgstr "Max"
+
+#~ msgid "v_createField_form_max_required"
+#~ msgstr "Max is required"
+
+#~ msgid "v_createField_form_fieldAsTitle"
+#~ msgstr "Field as title"
+
+#~ msgid "v_createField_form_primaryField"
+#~ msgstr "Primary field"
+
+#~ msgid "v_fields_schema_showInTitle"
+#~ msgstr "Show in title"
+
+#~ msgid "v_fields_schema_primary"
+#~ msgstr "Primary field"
+
+#~ msgid "v_updateField_form_minLength"
+#~ msgstr "Min length"
+
+#~ msgid "v_updateField_form_minLength_required"
+#~ msgstr "Min length is required"
+
+#~ msgid "v_updateField_form_maxLength"
+#~ msgstr "Max length"
+
+#~ msgid "v_updateField_form_maxLength_required"
+#~ msgstr "Max length is required"
+
+#~ msgid "v_updateField_form_min"
+#~ msgstr "Min"
+
+#~ msgid "v_updateField_form_min_required"
+#~ msgstr "Min is required"
+
+#~ msgid "v_updateField_form_max"
+#~ msgstr "Max"
+
+#~ msgid "v_updateField_form_max_required"
+#~ msgstr "Max is required"
+
+#~ msgid "v_pipeline_lead_empty"
+#~ msgstr "Empty lead"
 

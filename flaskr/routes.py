@@ -1,5 +1,6 @@
 import os
 from flask import request
+from flask_babel import _
 from flaskr import db
 from flaskr import app
 from flaskr.views import views_map
@@ -10,6 +11,7 @@ from flaskr.models.status import Status
 from flaskr.models.field import Field
 from flaskr.models.tag import Tag
 from flaskr.models.token import Token
+from flaskr.models.installation_card_settings import InstallationCardSettings
 from flaskr.secure import validate_api_token, validate_secret_key
 
 
@@ -92,6 +94,8 @@ def webhook():
     data = request.get_json()
     is_secret_key_valid = validate_secret_key(data['appSecretKey'])
 
+    lang_key = data['langKey']
+
     # Check secret key
     if not is_secret_key_valid:
         return {
@@ -101,12 +105,12 @@ def webhook():
     if data['event'] == 'installApp':
         # Add statuses
         default_statuses = [
-            {'index': 0, 'color': 'blue', 'name': 'Lead'},
-            {'index': 1, 'color': 'blue', 'name': 'Contacted'},
-            {'index': 2, 'color': 'pink', 'name': 'Qualified'},
-            {'index': 3, 'color': 'green', 'name': 'Proposal made'},
-            {'index': 4, 'color': 'green', 'name': 'Win'},
-            {'index': 5, 'color': 'red', 'name': 'Lost'}
+            {'index': 0, 'color': 'blue', 'name': _('r_webhook_defaultStatuses_lead')},
+            {'index': 1, 'color': 'blue', 'name': _('r_webhook_defaultStatuses_contacted')},
+            {'index': 2, 'color': 'pink', 'name': _('r_webhook_defaultStatuses_qualified')},
+            {'index': 3, 'color': 'green', 'name': _('r_webhook_defaultStatuses_proposalMade')},
+            {'index': 4, 'color': 'green', 'name': _('r_webhook_defaultStatuses_win')},
+            {'index': 5, 'color': 'red', 'name': _('r_webhook_defaultStatuses_lost')}
         ]
         for default_status in default_statuses:
             new_status = Status()
@@ -119,10 +123,10 @@ def webhook():
 
         # Add fields
         default_fields = [
-            {'index': 0, 'name': 'First name', 'value_type': 'string', 'max': 40, 'as_title': True, 'primary': False},
-            {'index': 0, 'name': 'Last name', 'value_type': 'string', 'max': 60, 'as_title': True, 'primary': False},
-            {'index': 0, 'name': 'Email', 'value_type': 'string', 'max': 260, 'as_title': False, 'primary': True},
-            {'index': 0, 'name': 'Mobile phone', 'value_type': 'string', 'max': 30, 'as_title': False, 'primary': True}
+            {'index': 0, 'name': _('r_webhook_defaultStatuses_firstName'), 'value_type': 'string', 'max': 40, 'as_title': True, 'primary': False},
+            {'index': 0, 'name': _('r_webhook_defaultStatuses_lastName'), 'value_type': 'string', 'max': 60, 'as_title': True, 'primary': False},
+            {'index': 0, 'name': _('r_webhook_defaultStatuses_email'), 'value_type': 'string', 'max': 260, 'as_title': False, 'primary': True},
+            {'index': 0, 'name': _('r_webhook_defaultStatuses_mobilePhone'), 'value_type': 'string', 'max': 30, 'as_title': False, 'primary': True}
         ]
         for default_field in default_fields:
             new_field = Field()
@@ -136,6 +140,14 @@ def webhook():
 
             db.session.add(new_field)
 
+        # Create card settings
+        new_card_settings = InstallationCardSettings()
+        new_card_settings.amount_enabled = False
+        new_card_settings.currency = 'usd'
+        new_card_settings.veokit_installation_id = data['installationId']
+
+        db.session.add(new_card_settings)
+
         db.session.commit()
 
     elif data['event'] == 'uninstallApp':
@@ -145,6 +157,7 @@ def webhook():
         Field.query.filter_by(veokit_installation_id=data['installationId']).delete()
         Tag.query.filter_by(veokit_installation_id=data['installationId']).delete()
         Token.query.filter_by(veokit_installation_id=data['installationId']).delete()
+        InstallationCardSettings.query.filter_by(veokit_installation_id=data['installationId']).delete()
 
         db.session.commit()
 

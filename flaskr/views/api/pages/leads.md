@@ -1,6 +1,6 @@
 # Create lead
 
-`POST https://atomcrm.herokuapp.com/api/<TOKEN HERE>/createLead`
+`POST https://atomcrm.veokit.com/api/<TOKEN HERE>/createLead`
 
 Sample request body:
 ```json
@@ -32,7 +32,7 @@ Sample response body:
 ```json
 {
    "lead": {
-      "id": 1,
+      "uid": "A1B2C345",
       "statusId": 1,
       "addDate": "2020-08-29 13:47:12",
       "updDate": "2020-08-29 13:47:12",
@@ -63,12 +63,12 @@ Sample response body:
 
 # Get leads
 
-`POST https://atomcrm.herokuapp.com/api/<TOKEN HERE>/getLeads`
+`POST https://atomcrm.veokit.com/api/<TOKEN HERE>/getLeads`
 
 Sample request body:
 ```json
 {
-   "id": [1]
+   "uid": ["A1B2C345"]
 }
 ```
 
@@ -77,7 +77,7 @@ Sample response body:
 {
    "leads": [
       {
-         "id": 1,
+         "uid": "A1B2C345",
          "statusId": 1,
          "addDate": "2020-08-29 13:47:12",
          "updDate": "2020-08-30 14:23:00",
@@ -109,12 +109,12 @@ Sample response body:
 
 # Update lead
 
-`POST https://atomcrm.herokuapp.com/api/<TOKEN HERE>/updateLead`
+`POST https://atomcrm.veokit.com/api/<TOKEN HERE>/updateLead`
 
 Sample request body:
 ```json
 {
-   "id": 1,
+   "uid": "A1B2C345",
    "statusId": 2,
    "tags": [],
    "fields": [
@@ -135,7 +135,7 @@ Sample response body:
 {
    "leads": [
       {
-         "id": 1,
+         "uid": "A1B2C345",
          "statusId": 2,
          "addDate": "2020-08-29 13:47:12",
          "updDate": "2020-08-30 14:23:00",

@@ -7,6 +7,7 @@ from flaskr.views.view import View
 from flaskr.models.lead import Lead
 from flaskr.models.field import Field
 from flaskr.models.status import Status, StatusColor
+from flaskr.models.installation_card_settings import InstallationCardSettings
 
 
 # Window: Update lead
@@ -14,6 +15,9 @@ class UpdateLead(View):
     lead = None
     fields = []
     statuses = []
+
+    def __init__(self):
+        self.installation_card_settings = None
 
     def before(self, params, request_data):
         vld = Validator({
@@ -24,6 +28,9 @@ class UpdateLead(View):
             raise Exception({'message': 'Invalid params',
                              'errors': vld.errors})
 
+        self.installation_card_settings = InstallationCardSettings.query \
+            .filter_by(veokit_installation_id=request_data['installation_id']) \
+            .first()
         self.lead = Lead.query \
             .filter_by(id=params['id']) \
             .first()
@@ -38,7 +45,7 @@ class UpdateLead(View):
 
     def get_meta(self, params, request_data):
         return {
-            'name': _('v_updateLead_meta_name', id=self.lead.id),
+            'name': _('v_updateLead_meta_name', id=self.lead.uid),
             'size': 'medium'
         }
 
@@ -82,6 +89,15 @@ class UpdateLead(View):
                     'label': field.name,
                     'value': field_value
                 }
+            elif field.value_type.name == 'date':
+                field_component = {
+                    '_com': 'Field.DatePicker',
+                    'key': field.id,
+                    'format': 'YYYY.MM.DD',
+                    'label': field.name,
+                    'value': field_value,
+                    'allowClear': True
+                }
             else:
                 field_component = {
                     '_com': 'Field.Input',
@@ -101,6 +117,10 @@ class UpdateLead(View):
                 'label': status.name,
                 'color': status.color.name
             })
+
+        currency = self.installation_card_settings.getCurrency()
+        amount_prefix = currency['format_string'].split('{}')[0]
+        amount_suffix = currency['format_string'].split('{}')[1]
 
         return [
             {
@@ -152,6 +172,18 @@ class UpdateLead(View):
                                         'placeholder': 'Select status',
                                         'value': self.lead.status_id,
                                         'options': status_options
+                                    },
+                                    {
+                                        '_com': 'Field.Input',
+                                        '_id': 'createLeadForm_amount',
+                                        '_vis': self.installation_card_settings.amount_enabled,
+                                        'type': 'number',
+                                        'prefix': amount_prefix,
+                                        'suffix': amount_suffix,
+                                        'min': 0,
+                                        'max': 10000000000,
+                                        'placeholder': '0',
+                                        'value': self.lead.amount
                                     },
                                     {
                                         '_com': 'Field.Input',
@@ -214,6 +246,7 @@ class UpdateLead(View):
                     const window = app.getView()
                     const form = window.getCom('createLeadForm')
                     const originalStatusId = """ + str(self.lead.status_id) + """
+                    const amount = +window.getCom('createLeadForm_amount').getAttr('value')
                     const statusId = window.getCom('createLeadForm_status').getAttr('value')
                     const tags = window.getCom('createLeadForm_tags').getAttr('value')
 
@@ -230,6 +263,7 @@ class UpdateLead(View):
                     app
                         .sendReq('updateLead', {
                             id: """ + str(self.lead.id) + """,
+                            amount,
                             fields,
                             tags,
                             statusId
