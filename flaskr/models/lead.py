@@ -4,14 +4,21 @@ from flaskr import db
 from datetime import datetime, timedelta
 from flaskr.models.tag import Tag
 from flaskr.models.field import Field
+import random
+import string
 
 
 # Lead
 class Lead(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
+    # User friendly ID (for API, search)
+    uid = db.Column(db.String(8))
+
     add_date = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     upd_date = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+
+    amount = db.Column(db.Float, nullable=True)
 
     archived = db.Column(db.Boolean, default=False, nullable=False)
 
@@ -25,6 +32,22 @@ class Lead(db.Model):
     utm_campaign = db.Column(db.String(500))
     utm_term = db.Column(db.String(500))
     utm_content = db.Column(db.String(500))
+
+    # Get unique uid
+    @staticmethod
+    def get_uid():
+        uid = Lead.generate_uid()
+
+        is_not_unique = Lead.query.filter_by(uid=uid).count() >= 1
+        if is_not_unique:
+            return Lead.get_uid()
+
+        return uid
+
+    # Generate uid
+    @staticmethod
+    def generate_uid():
+        return ''.join(random.choice('ABCD' + string.digits) for _ in range(8))
 
     # Set tags
     def set_tags(self, tags, new_lead=False):
@@ -100,8 +123,7 @@ class Lead(db.Model):
                 lf.field_id,
                 lf.value,
                 f.value_type AS field_value_type,
-                f.as_title AS field_as_title,
-                f.primary AS field_primary,
+                f.board_visibility AS field_board_visibility,
                 f.name AS field_name
             FROM
                 public.lead_field AS lf
@@ -121,8 +143,7 @@ class Lead(db.Model):
                               } if for_api else {
                 'field_id': field.field_id,
                 'value': field.value,
-                'field_as_title': field.field_as_title,
-                'field_primary': field.field_primary,
+                'field_board_visibility': field.field_board_visibility,
                 'field_value_type': field.field_value_type
             })
 
@@ -199,8 +220,8 @@ class Lead(db.Model):
         search_value = None
 
         if search:
-            if search.startswith('id='):
-                search_exp = 'l.id = :search_value'
+            if search.startswith('uid='):
+                search_exp = 'l.uid = :search_value'
                 search_value = search.split('=').pop(1)
             elif search.startswith('archived=true') or search.startswith('archived=1'):
                 search_exp = "l.archived = TRUE"
@@ -230,7 +251,8 @@ class Lead(db.Model):
         return db.session.execute("""  
             SELECT 
                 l.*,
-                COUNT(*) OVER () AS total
+                COUNT(*) OVER () AS total,
+                SUM(l.amount) OVER () AS amount_sum
             FROM 
                 public.lead AS l
             {}

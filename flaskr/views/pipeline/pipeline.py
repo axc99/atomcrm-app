@@ -5,6 +5,7 @@ from flaskr import db
 from flaskr.views.view import View
 from flaskr.models.lead import Lead
 from flaskr.models.status import Status, get_hex_by_color
+from flaskr.models.installation_card_settings import InstallationCardSettings
 
 
 # Page: Pipeline
@@ -15,19 +16,26 @@ class Pipeline(View):
         self.meta = {
             'name': _('v_pipeline_meta_name')
         }
+        self.installation_card_settings = None
 
     def before(self, params, request_data):
+        self.installation_card_settings = InstallationCardSettings.query \
+            .filter_by(veokit_installation_id=request_data['installation_id']) \
+            .first()
+
         statuses_q = db.session.execute("""  
             SELECT 
                 s.*,
-                (SELECT COUNT(*) FROM public.lead AS l WHERE l.status_id = s.id AND l.archived = false) AS lead_count
+                (SELECT COUNT(*) FROM public.lead AS l WHERE l.status_id = s.id AND l.archived = false) AS lead_count,
+                123456 AS lead_amount_sum
             FROM 
                 public.status AS s
             WHERE
                 s.veokit_installation_id = :installation_id
             ORDER BY 
                 s.index""", {
-            'installation_id': request_data['installation_id']
+            'installation_id': request_data['installation_id'],
+            'amount_enabled': self.installation_card_settings.amount_enabled
         })
 
         self.statuses = []
@@ -42,14 +50,19 @@ class Pipeline(View):
 
             status_leads = []
             status_lead_total = 0
+            status_lead_amount_sum = 0
 
             for lead in leads_q:
                 if status_lead_total == 0:
                     status_lead_total = lead.total
+                if status_lead_amount_sum == 0:
+                    status_lead_amount_sum = lead.amount_sum
 
                 status_leads.append({
                     'id': lead.id,
+                    'uid': lead.uid,
                     'status_id': lead.status_id,
+                    'amount': lead.amount,
                     'archived': lead.archived,
                     'add_date': (lead.add_date + timedelta(minutes=request_data['timezone_offset'])).strftime('%Y-%m-%d %H:%M:%S'),
                     'fields': Lead.get_fields(lead.id),
@@ -60,6 +73,7 @@ class Pipeline(View):
                 'id': status['id'],
                 'name': status['name'],
                 'lead_count': status_lead_total,
+                'lead_amount_sum': status_lead_amount_sum,
                 'color': status['color'],
                 'leads': status_leads
             })
@@ -94,11 +108,14 @@ class Pipeline(View):
             board_column_items = []
 
             for lead in status['leads']:
-                board_column_items.append(get_lead_component(lead))
+                lead_component = get_lead_component(lead,
+                                                    installation_card_settings=self.installation_card_settings)
+                board_column_items.append(lead_component)
 
             board_columns.append({
                 'key': status['id'],
                 'title': status['name'],
+                'subtitle': self.installation_card_settings.format_amount(status['lead_amount_sum']) if self.installation_card_settings.amount_enabled else None,
                 'color': get_hex_by_color(status['color']),
                 'items': board_column_items,
                 'showAdd': False if (
@@ -196,10 +213,11 @@ class Pipeline(View):
                             board.setAttr('columns', boardColumns)
 
                             if (result.res === 'ok') {
-                                const { leadComponents, leadTotal } = result
+                                const { leadComponents, leadTotal, leadAmountSumStr } = result
 
                                 // Set total and set/append items
                                 boardColumns[columnIndex].total = leadTotal
+                                boardColumns[columnIndex].subtitle = leadAmountSumStr
                                 boardColumns[columnIndex].items = !addToEnd ? leadComponents : [
                                     ...boardColumns[columnIndex].items,
                                     ...leadComponents
@@ -224,14 +242,8 @@ class Pipeline(View):
                     boardColumns[oldColumnIndex].items.splice(oldItemIndex, 1)
                     // Add item new column
                     boardColumns[newColumnIndex].items.splice(newItemIndex, 0, item)
-
-                    // Set loading to both columns
-                    boardColumns[newColumnIndex].loading = true
-                    boardColumns[oldColumnIndex].loading = true
-
-                    // Change totals to both columns
-                    boardColumns[newColumnIndex].total++
-                    boardColumns[oldColumnIndex].total--
+                    // Sort by add date
+                    boardColumns[newColumnIndex].items.sort((a, b) => a.order < b.order)
 
                     // Update columns on board
                     board.setAttr('columns', boardColumns)
@@ -243,9 +255,8 @@ class Pipeline(View):
                         })
                         .then(result => {
                             // Unset loading to both columns
-                            boardColumns[newColumnIndex].loading = false
-                            boardColumns[oldColumnIndex].loading = false
-                            board.setAttr('columns', boardColumns)
+                            app.getPage().callMethod('loadLeads', { statusId: boardColumns[oldColumnIndex].key })  
+                            app.getPage().callMethod('loadLeads', { statusId: boardColumns[newColumnIndex].key })  
                         })
                 }""",
 
@@ -270,24 +281,28 @@ class Pipeline(View):
 
 
 # Get lead component
-def get_lead_component(lead):
+def get_lead_component(lead, installation_card_settings):
     title = ''
     description = []
     for field in lead['fields']:
-        if field['field_value_type'] in ('number', 'string'):
-            if field['field_as_title'] and field['value']:
+        if field['value']:
+            if field['field_board_visibility'] == 'title':
                 title += field['value'] + ' '
-            elif field['field_primary'] and field['value']:
+            elif field['field_board_visibility'] == 'subtitle':
                 description.append(field['value'])
     title = title.strip()
+
+    extra = ['Archived' if lead['archived'] else Lead.get_regular_date(lead['add_date'])]
+    if installation_card_settings.amount_enabled and lead['amount'] and lead['amount'] > 0:
+        extra.insert(0, installation_card_settings.format_amount(lead['amount']))
 
     return {
         'key': lead['id'],
         'columnKey': lead['status_id'],
-        'title': title if title else '#{}'.format(lead['id']),
-        'description': ';'.join(description) if len(description) > 0 else _('v_pipeline_lead_empty'),
-        'extra': 'Archived' if lead['archived'] else Lead.get_regular_date(lead['add_date']),
-        'addDate': lead['id'],
+        'title': title if title else '#{}'.format(lead['uid']),
+        'description': description if len(description) > 0 else None,
+        'extra': extra,
+        'order': lead['id'],
         'toWindow': ['updateLead', {
             'id': lead['id']
         }]

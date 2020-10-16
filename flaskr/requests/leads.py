@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 
 from cerberus import Validator
 from flaskr import db
+from flaskr.models.installation_card_settings import InstallationCardSettings
 from flaskr.models.lead import Lead
 from flaskr.models.status import Status
 from flaskr.views.pipeline.pipeline import get_lead_component
@@ -9,6 +10,10 @@ from flaskr.views.pipeline.pipeline import get_lead_component
 
 # Get lead components for status
 def get_lead_components(params, request_data):
+    installation_card_settings = InstallationCardSettings.query \
+        .filter_by(veokit_installation_id=request_data['installation_id']) \
+        .first()
+
     vld = Validator({
         'offset': {'type': 'number'},
         'limit': {'type': 'number'},
@@ -31,23 +36,31 @@ def get_lead_components(params, request_data):
 
     lead_components = []
     lead_total = 0
+    lead_amount_sum = 0
+
     for lead in leads_q:
         if lead_total == 0:
             lead_total = lead.total
+        if lead_amount_sum == 0:
+            lead_amount_sum = lead.amount_sum
 
-        lead_components.append(get_lead_component({
+        lead_component = get_lead_component({
             'id': lead.id,
+            'uid': lead.uid,
+            'amount': lead.amount,
             'status_id': lead.status_id,
             'archived': lead.archived,
             'add_date': (lead.add_date + timedelta(minutes=request_data['timezone_offset'])).strftime('%Y-%m-%d %H:%M:%S'),
             'fields': Lead.get_fields(lead.id),
             'tags': Lead.get_tags(lead.id)
-        }))
+        }, installation_card_settings=installation_card_settings)
+        lead_components.append(lead_component)
 
     return {
         'res': 'ok',
         'leadComponents': lead_components,
-        'leadTotal': lead_total
+        'leadTotal': lead_total,
+        'leadAmountSumStr': installation_card_settings.format_amount(lead_amount_sum)
     }
 
 
@@ -62,6 +75,7 @@ def create_lead(params, request_data):
 
     # Create lead
     new_lead = Lead()
+    new_lead.uid = Lead.get_uid()
     new_lead.status_id = params['statusId']
     new_lead.veokit_user_id = request_data['user_id']
     new_lead.veokit_installation_id = request_data['installation_id']
@@ -79,6 +93,7 @@ def create_lead(params, request_data):
 def update_lead(params, request_data):
     vld = Validator({
         'id': {'type': 'number', 'required': True},
+        'amount': {'type': 'number', 'required': False, 'nullable': True, 'min': 0},
         'statusId': {'type': 'number', 'required': True},
         'archived': {'type': 'boolean'},
         'tags': {
@@ -111,6 +126,7 @@ def update_lead(params, request_data):
     # Update lead
     lead.upd_date = datetime.utcnow()
     lead.status_id = params['statusId']
+    lead.amount = params['amount'] if params.get('amount') else 0
     if params.get('archived') is not None:
         lead.archived = params['archived']
 
