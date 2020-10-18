@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from cerberus import Validator
 from flaskr import db
 from flaskr.models.installation_card_settings import InstallationCardSettings
-from flaskr.models.lead import Lead
+from flaskr.models.lead import Lead, LeadAction, LeadActionType
 from flaskr.models.status import Status
 from flaskr.views.pipeline.pipeline import get_lead_component
 
@@ -19,8 +19,7 @@ def get_lead_components(params, request_data):
         'limit': {'type': 'number'},
         'statusId': {'type': 'number', 'required': True},
         'search': {'type': 'string', 'empty': True},
-        'periodFrom': {'type': 'string', 'empty': True},
-        'periodTo': {'type': 'string', 'empty': True}
+        'filter': {'type': 'dict', 'required': False, 'nullable': True}
     })
     is_valid = vld.validate(params)
     if not is_valid:
@@ -31,8 +30,7 @@ def get_lead_components(params, request_data):
                                    offset=params['offset'],
                                    limit=params['limit'],
                                    search=params.get('search'),
-                                   period_from=params.get('periodFrom'),
-                                   period_to=params.get('periodTo'))
+                                   filter=params.get('filter'))
 
     lead_components = []
     lead_total = 0
@@ -60,7 +58,7 @@ def get_lead_components(params, request_data):
         'res': 'ok',
         'leadComponents': lead_components,
         'leadTotal': lead_total,
-        'leadAmountSumStr': installation_card_settings.format_amount(lead_amount_sum)
+        'leadAmountSumStr': installation_card_settings.format_amount(lead_amount_sum) if installation_card_settings.amount_enabled else None
     }
 
 
@@ -79,8 +77,16 @@ def create_lead(params, request_data):
     new_lead.status_id = params['statusId']
     new_lead.veokit_user_id = request_data['user_id']
     new_lead.veokit_installation_id = request_data['installation_id']
-
     db.session.add(new_lead)
+    db.session.commit()
+
+    # Log action
+    new_action = LeadAction()
+    new_action.type = LeadActionType.create_lead
+    new_action.lead_id = new_lead.id
+    new_action.new_status_id = new_lead.status_id
+    new_action.veokit_user_id = request_data['user_id']
+    db.session.add(new_action)
     db.session.commit()
 
     return {
@@ -123,12 +129,31 @@ def update_lead(params, request_data):
     if not lead:
         return {'res': 'err', 'message': 'Unknown lead'}
 
+    old_status_id = lead.status_id
+
     # Update lead
     lead.upd_date = datetime.utcnow()
     lead.status_id = params['statusId']
     lead.amount = params['amount'] if params.get('amount') else 0
     if params.get('archived') is not None:
         lead.archived = params['archived']
+
+    # Log action
+    new_action = LeadAction()
+    new_action.type = LeadActionType.update_lead
+    new_action.lead_id = lead.id
+    new_action.veokit_user_id = request_data['user_id']
+    db.session.add(new_action)
+
+    if old_status_id != lead.status_id:
+        # Log change_status action
+        new_action = LeadAction()
+        new_action.type = LeadActionType.update_lead_status
+        new_action.old_status_id = old_status_id
+        new_action.new_status_id = lead.status_id
+        new_action.lead_id = lead.id
+        new_action.veokit_user_id = request_data['user_id']
+        db.session.add(new_action)
 
     db.session.commit()
 
@@ -180,6 +205,13 @@ def archive_lead(params, request_data):
         .first()
     lead.archived = True
 
+    # Log action
+    new_action = LeadAction()
+    new_action.type = LeadActionType.archive_lead
+    new_action.lead_id = lead.id
+    new_action.veokit_user_id = request_data['user_id']
+    db.session.add(new_action)
+
     db.session.commit()
 
     return {
@@ -200,6 +232,13 @@ def restore_lead(params, request_data):
         .filter_by(id=params['id']) \
         .first()
     lead.archived = False
+
+    # Log action
+    new_action = LeadAction()
+    new_action.type = LeadActionType.restore_lead
+    new_action.lead_id = lead.id
+    new_action.veokit_user_id = request_data['user_id']
+    db.session.add(new_action)
 
     db.session.commit()
 

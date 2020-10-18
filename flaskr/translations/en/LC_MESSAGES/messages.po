@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-10-16 00:37+0000\n"
+"POT-Creation-Date: 2020-10-17 18:50+0000\n"
 "PO-Revision-Date: 2020-10-10 19:41+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -42,117 +42,137 @@ msgstr "Win"
 msgid "r_webhook_defaultStatuses_lost"
 msgstr "Lost"
 
-#: flaskr/routes.py:132
+#: flaskr/routes.py:126
 msgid "r_webhook_defaultStatuses_firstName"
 msgstr "First name"
 
-#: flaskr/routes.py:133
+#: flaskr/routes.py:127
 msgid "r_webhook_defaultStatuses_lastName"
 msgstr "Last name"
 
-#: flaskr/routes.py:134
+#: flaskr/routes.py:128
 msgid "r_webhook_defaultStatuses_email"
 msgstr "Email"
 
-#: flaskr/routes.py:135
+#: flaskr/routes.py:129
 msgid "r_webhook_defaultStatuses_mobilePhone"
 msgstr "Mobile phone"
 
-#: flaskr/models/field.py:49
+#: flaskr/models/field.py:39
 msgid "m_status_getFieldTypes_string"
 msgstr "Text"
 
-#: flaskr/models/field.py:50
+#: flaskr/models/field.py:40
 msgid "m_status_getFieldTypes_longString"
 msgstr "Long text"
 
-#: flaskr/models/field.py:51
+#: flaskr/models/field.py:41
 msgid "m_status_getFieldTypes_number"
 msgstr "Number"
 
-#: flaskr/models/field.py:52
+#: flaskr/models/field.py:42
 msgid "m_status_getFieldTypes_boolean"
 msgstr "Checkbox"
 
-#: flaskr/models/field.py:53
+#: flaskr/models/field.py:43
 msgid "m_status_getFieldTypes_date"
 msgstr "Date"
 
-#: flaskr/models/field.py:59
+#: flaskr/models/field.py:49
 msgid "m_status_getBoardVisibility_none"
 msgstr "Do not show"
 
-#: flaskr/models/field.py:60
+#: flaskr/models/field.py:50
 msgid "m_status_getBoardVisibility_title"
 msgstr "In title"
 
-#: flaskr/models/field.py:61
+#: flaskr/models/field.py:51
 msgid "m_status_getBoardVisibility_subtitle"
 msgstr "In description"
 
-#: flaskr/models/lead.py:187
+#: flaskr/models/lead.py:189
 msgid "m_lead_getRegularDate_jan"
 msgstr "Jan"
 
-#: flaskr/models/lead.py:188
+#: flaskr/models/lead.py:190
 msgid "m_lead_getRegularDate_feb"
 msgstr "Feb"
 
-#: flaskr/models/lead.py:189
+#: flaskr/models/lead.py:191
 msgid "m_lead_getRegularDate_mar"
 msgstr "Mar"
 
-#: flaskr/models/lead.py:190
+#: flaskr/models/lead.py:192
 msgid "m_lead_getRegularDate_apr"
 msgstr "Apr"
 
-#: flaskr/models/lead.py:191
+#: flaskr/models/lead.py:193
 msgid "m_lead_getRegularDate_may"
 msgstr "May"
 
-#: flaskr/models/lead.py:192
+#: flaskr/models/lead.py:194
 msgid "m_lead_getRegularDate_jun"
 msgstr "Jun"
 
-#: flaskr/models/lead.py:193
+#: flaskr/models/lead.py:195
 msgid "m_lead_getRegularDate_jul"
 msgstr "Jul"
 
-#: flaskr/models/lead.py:194
+#: flaskr/models/lead.py:196
 msgid "m_lead_getRegularDate_aug"
 msgstr "Aug"
 
-#: flaskr/models/lead.py:195
+#: flaskr/models/lead.py:197
 msgid "m_lead_getRegularDate_sep"
 msgstr "Sep"
 
-#: flaskr/models/lead.py:196
+#: flaskr/models/lead.py:198
 msgid "m_lead_getRegularDate_oct"
 msgstr "Oct"
 
-#: flaskr/models/lead.py:197
+#: flaskr/models/lead.py:199
 msgid "m_lead_getRegularDate_nov"
 msgstr "Nov"
 
-#: flaskr/models/lead.py:198
+#: flaskr/models/lead.py:200
 msgid "m_lead_getRegularDate_dec"
 msgstr "Dec"
 
-#: flaskr/models/lead.py:203
+#: flaskr/models/lead.py:205
 msgid "m_lead_getRegularDate_today"
 msgstr "Today at %(hours)s:%(minutes)s"
 
-#: flaskr/models/lead.py:205
+#: flaskr/models/lead.py:207
 msgid "m_lead_getRegularDate_yesterday"
 msgstr "Yesterday at %(hours)s:%(minutes)s"
 
-#: flaskr/models/lead.py:208
+#: flaskr/models/lead.py:210
 msgid "m_lead_getRegularDate_date"
 msgstr "%(day)s %(month)s at %(hours)s:%(minutes)s"
 
-#: flaskr/models/lead.py:210
+#: flaskr/models/lead.py:212
 msgid "m_lead_getRegularDate_dateWithYear"
 msgstr "%(day)s %(month)s %(year)s at %(hours)s:%(minutes)s"
+
+#: flaskr/models/lead.py:344
+msgid "m_lead_leadAction_getItemData_createLead"
+msgstr "Add lead on «%(new_status_name)s»"
+
+#: flaskr/models/lead.py:350
+msgid "m_lead_leadAction_getItemData_updateLead"
+msgstr "Edit lead"
+
+#: flaskr/models/lead.py:355
+msgid "m_lead_leadAction_getItemData_updateLeadStatus"
+msgstr "Change lead status from «%(old_status_name)s» to «%(new_status_name)s»"
+
+#: flaskr/models/lead.py:364
+msgid "m_lead_leadAction_getItemData_archiveLead"
+msgstr "Archive lead"
+
+#: flaskr/models/lead.py:368
+msgid "m_lead_leadAction_getItemData_restoreLead"
+msgstr "Update lead"
 
 #: flaskr/models/status.py:38
 msgid "m_status_getStatusColors_red"
@@ -200,11 +220,11 @@ msgstr "Get token"
 
 #: flaskr/views/api/getToken.py:16
 msgid "v_getToken_meta_header_subtitle"
-msgstr "Your current token will be deactivated."
+msgstr "=After clicking on the "Create token" button, your current token will be deactivated!"
 
 #: flaskr/views/api/getToken.py:25
 msgid "v_getToken_schema_btn"
-msgstr "Generate new token"
+msgstr "Create token"
 
 #: flaskr/views/api/getToken.py:32
 msgid "v_getToken_schema_token"
@@ -250,174 +270,89 @@ msgstr "Add field"
 msgid "v_card_scheme_form_save"
 msgstr "Save"
 
-#: flaskr/views/fields/create_field.py:10
-msgid "v_createField_meta_name"
-msgstr "Create field"
+#: flaskr/views/pipeline/filter.py:9
+msgid "v_filter_meta_name"
+msgstr "Filter"
 
-#: flaskr/views/fields/create_field.py:34
-msgid "v_createField_form_name"
-msgstr "Field name"
+#: flaskr/views/pipeline/filter.py:26
+msgid "v_filter_schema_form_period"
+msgstr "Period"
 
-#: flaskr/views/fields/create_field.py:35
-msgid "v_createField_form_name_placeholder"
-msgstr "Ex: Promocode"
+#: flaskr/views/pipeline/filter.py:75
+msgid "v_filter_schema_form_archivedLeads"
+msgstr "Archived leads"
 
-#: flaskr/views/fields/create_field.py:38
-msgid "v_createField_form_name_length"
-msgstr "Must contain 2 - 20 chars"
+#: flaskr/views/pipeline/filter.py:84
+msgid "v_filter_schema_form_apply"
+msgstr "Apply"
 
-#: flaskr/views/fields/create_field.py:39
-msgid "v_createField_form_name_required"
-msgstr "Name is required"
+#: flaskr/views/pipeline/filter.py:88
+msgid "v_filter_schema_form_clear"
+msgstr "Clear"
 
-#: flaskr/views/fields/create_field.py:46
-msgid "v_createField_form_valueType"
-msgstr "Value type"
-
-#: flaskr/views/fields/create_field.py:49
-msgid "v_createField_form_valueType_required"
-msgstr "Value type is required"
-
-#: flaskr/views/fields/create_field.py:71
-msgid "v_createField_form_create"
-msgstr "Create"
-
-#: flaskr/views/fields/fields.py:10
-msgid "v_fields_meta_name"
-msgstr "Fields"
-
-#: flaskr/views/fields/fields.py:26
-msgid "v_fields_header_createField"
-msgstr "Create field"
-
-#: flaskr/views/fields/fields.py:56
-msgid "v_fields_schema_editField"
-msgstr "Edit field"
-
-#: flaskr/views/fields/fields.py:76
-msgid "v_fields_schema_noFields"
-msgstr "No fields"
-
-#: flaskr/views/fields/update_field.py:12
-msgid "v_updateField_meta_name"
-msgstr "Update field"
-
-#: flaskr/views/fields/update_field.py:53
-msgid "v_updateField_form_name"
-msgstr "Field name"
-
-#: flaskr/views/fields/update_field.py:54
-msgid "v_updateField_form_placeholder"
-msgstr "Ex: Promocode"
-
-#: flaskr/views/fields/update_field.py:58
-msgid "v_updateField_form_name_length"
-msgstr "Must contain 2 - 20 chars"
-
-#: flaskr/views/fields/update_field.py:59
-msgid "v_updateField_form_name_required"
-msgstr "Name is required"
-
-#: flaskr/views/fields/update_field.py:66
-msgid "v_updateField_form_valueType"
-msgstr "Value type"
-
-#: flaskr/views/fields/update_field.py:69
-msgid "v_updateField_form_valueType_required"
-msgstr "Value type is required"
-
-#: flaskr/views/fields/update_field.py:83
-msgid "v_updateField_form_fieldAsTitle"
-msgstr "Field as title"
-
-#: flaskr/views/fields/update_field.py:87
-msgid "v_updateField_form_primaryField"
-msgstr "Primary field"
-
-#: flaskr/views/fields/update_field.py:98
-msgid "v_updateField_form_save"
-msgstr "Save"
-
-#: flaskr/views/pipeline/pipeline.py:17
+#: flaskr/views/pipeline/pipeline.py:18
 msgid "v_pipeline_meta_name"
 msgstr "Leads"
 
-#: flaskr/views/pipeline/pipeline.py:99
+#: flaskr/views/pipeline/pipeline.py:103
+msgid "v_pipeline_header_filter"
+msgstr "Filter"
+
+#: flaskr/views/pipeline/pipeline.py:118
 msgid "v_pipeline_header_search"
 msgstr "Search..."
 
-#: flaskr/views/pipeline/search_info.py:12
-msgid "v_searchInfo_meta_name"
-msgstr "Search information"
-
-#: flaskr/views/pipeline/search_info.py:14
-msgid "v_searchInfo_content"
-msgstr ""
-"### Search by ID: \r"
-"\r"
-" ```id=1``` \r"
-"\r"
-"\r"
-" ### Show only archived leads: \r"
-"\r"
-" ```archived=true``` \r"
-"\r"
-"\r"
-" ### Search lead by UTM marks: \r"
-"\r"
-" - ```utm_source=google``` \r"
-"\r"
-" - ```utm_medium=cpc``` \r"
-"\r"
-" - ```utm_campaign=spring_sale``` \r"
-"\r"
-" - ```utm_term=running+shoes``` \r"
-"\r"
-" - ```utm_content=textlink```"
-
-#: flaskr/views/pipeline/update_lead.py:48
+#: flaskr/views/pipeline/update_lead.py:84
 msgid "v_updateLead_meta_name"
 msgstr "Lead #%(id)s"
 
-#: flaskr/views/pipeline/update_lead.py:144
+#: flaskr/views/pipeline/update_lead.py:93
+msgid "v_updateLead_header_information"
+msgstr "Information"
+
+#: flaskr/views/pipeline/update_lead.py:94
+msgid "v_updateLead_header_activity"
+msgstr "Activity"
+
+#: flaskr/views/pipeline/update_lead.py:191
 msgid "v_updateLead_save"
 msgstr "Save"
 
-#: flaskr/views/pipeline/update_lead.py:154
+#: flaskr/views/pipeline/update_lead.py:201
 msgid "v_updateLead_restoreLead"
 msgstr "Restore lead"
 
-#: flaskr/views/pipeline/update_lead.py:193
+#: flaskr/views/pipeline/update_lead.py:240
 msgid "v_updateLead_enterTags"
 msgstr "Enter tags"
 
-#: flaskr/views/pipeline/update_lead.py:199
+#: flaskr/views/pipeline/update_lead.py:246
 msgid "v_updateLead_addDate"
 msgstr "Add date"
 
-#: flaskr/views/pipeline/update_lead.py:203
+#: flaskr/views/pipeline/update_lead.py:250
 msgid "v_updateLead_updateDate"
 msgstr "Update date"
 
-#: flaskr/views/pipeline/update_lead.py:207
+#: flaskr/views/pipeline/update_lead.py:254
 msgid "v_updateLead_creator"
 msgstr "Added by"
 
-#: flaskr/views/pipeline/update_lead.py:217
+#: flaskr/views/pipeline/update_lead.py:264
 msgid "v_updateLead_utmMarks"
 msgstr "UTM marks"
 
-#: flaskr/views/pipeline/update_lead.py:292
+#: flaskr/views/pipeline/update_lead.py:366
 msgid "v_updateLead_onClickArchive_title"
 msgstr "Delete lead?"
 
-#: flaskr/views/pipeline/update_lead.py:293
+#: flaskr/views/pipeline/update_lead.py:367
 msgid "v_updateLead_onClickArchive_text"
 msgstr ""
 "Are you sure you want to move this lead to the archive? You can restore "
 "it at any time."
 
-#: flaskr/views/pipeline/update_lead.py:294
+#: flaskr/views/pipeline/update_lead.py:368
 msgid "v_updateLead_onClickArchive_delete"
 msgstr "Delete"
 
@@ -596,4 +531,97 @@ msgstr "Save"
 
 #~ msgid "v_pipeline_lead_empty"
 #~ msgstr "Empty lead"
+
+#~ msgid "v_createField_meta_name"
+#~ msgstr "Create field"
+
+#~ msgid "v_createField_form_name"
+#~ msgstr "Field name"
+
+#~ msgid "v_createField_form_name_placeholder"
+#~ msgstr "Ex: Promocode"
+
+#~ msgid "v_createField_form_name_length"
+#~ msgstr "Must contain 2 - 20 chars"
+
+#~ msgid "v_createField_form_name_required"
+#~ msgstr "Name is required"
+
+#~ msgid "v_createField_form_valueType"
+#~ msgstr "Value type"
+
+#~ msgid "v_createField_form_valueType_required"
+#~ msgstr "Value type is required"
+
+#~ msgid "v_createField_form_create"
+#~ msgstr "Create"
+
+#~ msgid "v_fields_meta_name"
+#~ msgstr "Fields"
+
+#~ msgid "v_fields_header_createField"
+#~ msgstr "Create field"
+
+#~ msgid "v_fields_schema_editField"
+#~ msgstr "Edit field"
+
+#~ msgid "v_fields_schema_noFields"
+#~ msgstr "No fields"
+
+#~ msgid "v_updateField_meta_name"
+#~ msgstr "Update field"
+
+#~ msgid "v_updateField_form_name"
+#~ msgstr "Field name"
+
+#~ msgid "v_updateField_form_placeholder"
+#~ msgstr "Ex: Promocode"
+
+#~ msgid "v_updateField_form_name_length"
+#~ msgstr "Must contain 2 - 20 chars"
+
+#~ msgid "v_updateField_form_name_required"
+#~ msgstr "Name is required"
+
+#~ msgid "v_updateField_form_valueType"
+#~ msgstr "Value type"
+
+#~ msgid "v_updateField_form_valueType_required"
+#~ msgstr "Value type is required"
+
+#~ msgid "v_updateField_form_fieldAsTitle"
+#~ msgstr "Field as title"
+
+#~ msgid "v_updateField_form_primaryField"
+#~ msgstr "Primary field"
+
+#~ msgid "v_updateField_form_save"
+#~ msgstr "Save"
+
+#~ msgid "v_searchInfo_meta_name"
+#~ msgstr "Search information"
+
+#~ msgid "v_searchInfo_content"
+#~ msgstr ""
+#~ "### Search by ID: \r"
+#~ "\r"
+#~ " ```id=1``` \r"
+#~ "\r"
+#~ "\r"
+#~ " ### Show only archived leads: \r"
+#~ "\r"
+#~ " ```archived=true``` \r"
+#~ "\r"
+#~ "\r"
+#~ " ### Search lead by UTM marks: \r"
+#~ "\r"
+#~ " - ```utm_source=google``` \r"
+#~ "\r"
+#~ " - ```utm_medium=cpc``` \r"
+#~ "\r"
+#~ " - ```utm_campaign=spring_sale``` \r"
+#~ "\r"
+#~ " - ```utm_term=running+shoes``` \r"
+#~ "\r"
+#~ " - ```utm_content=textlink```"
 

@@ -1,3 +1,4 @@
+import enum
 from flask_babel import _
 from flask import request
 from flaskr import db
@@ -6,6 +7,7 @@ from flaskr.models.tag import Tag
 from flaskr.models.field import Field
 import random
 import string
+from sqlalchemy import Enum
 
 
 # Lead
@@ -207,15 +209,16 @@ class Lead(db.Model):
             if date_obj.year == datetime.today().year:
                 return _('m_lead_getRegularDate_date', day=day, month=month_str, hours=hours, minutes=minutes)
             elif date_obj.year == datetime.today().year:
-                return _('m_lead_getRegularDate_dateWithYear', day=day, month=month_str, year=year, hours=hours, minutes=minutes)
+                return _('m_lead_getRegularDate_dateWithYear', day=day, month=month_str, year=year, hours=hours,
+                         minutes=minutes)
 
         return date
 
     # Filter leads
     @staticmethod
-    def get_with_filter(installation_id, status_id, search, period_from, period_to, offset, limit):
+    def get_with_filter(installation_id, status_id, search, offset, limit, filter):
         search = search.strip() if search else None
-        search_exp = 'l.archived = false'
+        search_exp = 'true'
         join_exp = ''
         search_value = None
 
@@ -223,18 +226,18 @@ class Lead(db.Model):
             if search.startswith('uid='):
                 search_exp = 'l.uid = :search_value'
                 search_value = search.split('=').pop(1)
-            elif search.startswith('archived=true') or search.startswith('archived=1'):
-                search_exp = "l.archived = TRUE"
-            elif search.startswith('utm_source=') or search.startswith('utmSource='):
-                search_exp = 'l.utm_source LIKE :search_value'
-            elif search.startswith('utm_medium=') or search.startswith('utmMedium='):
-                search_exp = 'l.utm_medium LIKE :search_value'
-            elif search.startswith('utm_campaign=') or search.startswith('utmCampaign='):
-                search_exp = 'l.utm_campaign LIKE :search_value'
-            elif search.startswith('utm_term=') or search.startswith('utmTerm='):
-                search_exp = 'l.utm_term LIKE :search_value'
-            elif search.startswith('utm_content=') or search.startswith('utmContent='):
-                search_exp = 'l.utm_content LIKE :search_value'
+            # elif search.startswith('archived=true') or search.startswith('archived=1'):
+            #     search_exp = "l.archived = TRUE"
+            # elif search.startswith('utm_source=') or search.startswith('utmSource='):
+            #     search_exp = 'l.utm_source LIKE :search_value'
+            # elif search.startswith('utm_medium=') or search.startswith('utmMedium='):
+            #     search_exp = 'l.utm_medium LIKE :search_value'
+            # elif search.startswith('utm_campaign=') or search.startswith('utmCampaign='):
+            #     search_exp = 'l.utm_campaign LIKE :search_value'
+            # elif search.startswith('utm_term=') or search.startswith('utmTerm='):
+            #     search_exp = 'l.utm_term LIKE :search_value'
+            # elif search.startswith('utm_content=') or search.startswith('utmContent='):
+            #     search_exp = 'l.utm_content LIKE :search_value'
             else:
                 search_value = '%' + search.lower() + '%'
                 search_exp = """(lf.value != '' AND LOWER(lf.value) LIKE :search_value) OR 
@@ -259,6 +262,12 @@ class Lead(db.Model):
             WHERE
                 l.veokit_installation_id = :installation_id AND
                 l.status_id = :status_id AND
+                l.archived = :archived AND
+                (:utm_source is null OR l.utm_source = :utm_source) AND
+                (:utm_medium is null OR l.utm_medium = :utm_medium) AND
+                (:utm_campaign is null OR l.utm_campaign = :utm_campaign) AND
+                (:utm_term is null OR l.utm_term = :utm_term) AND
+                (:utm_content is null OR l.utm_content = :utm_content) AND
                 (:period_from is null OR l.add_date > :period_from) AND 
                 (:period_to is null OR l.add_date < :period_to) AND 
                 ({})
@@ -276,8 +285,14 @@ class Lead(db.Model):
             'status_id': status_id,
             'search_exp': search_exp,
             'search_value': search_value if search_value else None,
-            'period_from': "{} 00:00:00".format(period_from) if period_from else None,
-            'period_to': "{} 23:59:59".format(period_to) if period_to else None
+            'archived': filter['archived'] if filter.get('archived') else False,
+            'utm_source': filter.get('utm_source'),
+            'utm_medium': filter.get('utm_medium'),
+            'utm_campaign': filter.get('utm_campaign'),
+            'utm_term': filter.get('utm_term'),
+            'utm_content': filter.get('utm_content'),
+            'period_from': "{} 00:00:00".format(filter['period_from']) if filter.get('period_from') else None,
+            'period_to': "{} 23:59:59".format(filter['period_to']) if filter.get('period_to') else None
         })
 
 
@@ -295,3 +310,63 @@ class LeadTag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     lead_id = db.Column(db.Integer, db.ForeignKey('lead.id', ondelete='CASCADE'), nullable=False)
     tag_id = db.Column(db.Integer, db.ForeignKey('tag.id', ondelete='CASCADE'), nullable=False)
+
+
+# Lead action type
+class LeadActionType(enum.Enum):
+    create_lead = 1
+    update_lead = 2
+    update_lead_status = 3
+    archive_lead = 4
+    restore_lead = 5
+
+
+# Lead action
+class LeadAction(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+
+    type = db.Column(Enum(LeadActionType), nullable=False)
+
+    # Update task status
+    old_status_id = db.Column(db.Integer, db.ForeignKey('status.id', ondelete='CASCADE'), nullable=True)
+    new_status_id = db.Column(db.Integer, db.ForeignKey('status.id', ondelete='CASCADE'), nullable=True)
+
+    log_date = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+
+    veokit_user_id = db.Column(db.Integer, nullable=False, index=True)
+    lead_id = db.Column(db.Integer, db.ForeignKey('lead.id', ondelete='CASCADE'), nullable=False)
+
+    @staticmethod
+    def get_item_data(action):
+        types_date = {
+            'create_lead': {
+                'color': 'green',
+                'title': _('m_lead_leadAction_getItemData_createLead',
+                           new_status_name=action['new_status_name'] if action['new_status_name'] else '...')
+                # 'Create lead in {}'.format()
+            },
+            'update_lead': {
+                'color': 'blue',
+                'title': _('m_lead_leadAction_getItemData_updateLead'),
+                # 'title': 'Update lead'
+            },
+            'update_lead_status': {
+                'color': 'blue',
+                'title': _('m_lead_leadAction_getItemData_updateLeadStatus',
+                           old_status_name=action['old_status_name'] if action['old_status_name'] else '...',
+                           new_status_name=action['new_status_name'] if action['new_status_name'] else '...')
+                # 'title': 'Change status from {} to {}'.format(
+                #     action['old_status_name'] if action['old_status_name'] else '...',
+                #     action['new_status_name'] if action['new_status_name'] else '...')
+            },
+            'archive_lead': {
+                'color': 'red',
+                'title': _('m_lead_leadAction_getItemData_archiveLead')  # 'Archive lead'
+            },
+            'restore_lead': {
+                'color': 'green',
+                'title': _('m_lead_leadAction_getItemData_restoreLead')  # 'Restore lead'
+            }
+        }
+
+        return types_date[action.type]

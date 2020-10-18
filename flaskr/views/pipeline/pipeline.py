@@ -1,5 +1,6 @@
 from datetime import timedelta
 from flask_babel import _
+import json
 
 from flaskr import db
 from flaskr.views.view import View
@@ -17,11 +18,26 @@ class Pipeline(View):
             'name': _('v_pipeline_meta_name')
         }
         self.installation_card_settings = None
+        self.filter_used = False
+        self.filter_params = {}
 
     def before(self, params, request_data):
         self.installation_card_settings = InstallationCardSettings.query \
             .filter_by(veokit_installation_id=request_data['installation_id']) \
             .first()
+
+        self.filter_params = {
+            'period_from': params['periodFrom'].replace('.', '-') if params.get('periodFrom') else None,
+            'period_to': params['periodTo'].replace('.', '-') if params.get('periodTo') else None,
+            'archived': True if params.get('archived') == 'true' else False,
+            'utm_source': params['utmSource'] if params.get('utmSource') else None,
+            'utm_medium': params['utmMedium'] if params.get('utmMedium') else None,
+            'utm_campaign': params['utmCampaign'] if params.get('utmCampaign') else None,
+            'utm_term': params['utmTerm'] if params.get('utmTerm') else None,
+            'utm_content': params['utmContent'] if params.get('utmContent') else None,
+        }
+        self.filter_used = any(self.filter_params.values())
+        print('archived', params.get('archived'))
 
         statuses_q = db.session.execute("""  
             SELECT 
@@ -45,8 +61,7 @@ class Pipeline(View):
                                            search=params.get('search'),
                                            offset=0,
                                            limit=10,
-                                           period_from=params.get('periodFrom'),
-                                           period_to=params.get('periodTo'))
+                                           filter=self.filter_params)
 
             status_leads = []
             status_lead_total = 0
@@ -84,15 +99,19 @@ class Pipeline(View):
             'actions': [
                 {
                     '_com': 'Button',
-                    'icon': 'infoCircle',
-                    'toWindow': 'searchInfo'
-                },
-                {
-                    '_com': 'Field.DatePicker',
-                    'range': True,
-                    'allowClear': True,
-                    'format': 'YYYY.MM.DD',
-                    'onChange': 'onChangePeriod'
+                    'icon': 'filter',
+                    'label': _('v_pipeline_header_filter'),   # 'Filter',
+                    'toWindow': ['filter', {
+                        'periodFrom': self.filter_params.get('period_from'),
+                        'periodTo': self.filter_params.get('period_to'),
+                        'archived': self.filter_params.get('archived'),
+                        'utmSource': self.filter_params.get('utm_source'),
+                        'utmMedium': self.filter_params.get('utm_medium'),
+                        'utmCampaign': self.filter_params.get('utm_campaign'),
+                        'utmTerm': self.filter_params.get('utm_term'),
+                        'utmContent': self.filter_params.get('utm_content')
+                    }],
+                    'dot': self.filter_used
                 }
             ],
             'search': {
@@ -119,7 +138,7 @@ class Pipeline(View):
                 'color': get_hex_by_color(status['color']),
                 'items': board_column_items,
                 'showAdd': False if (
-                            params.get('search') or params.get('periodFrom') or params.get('periodTo')) else True,
+                            params.get('search') or self.filter_used) else True,
                 'onAdd': 'addLead',
                 'total': status['lead_count'],
                 'loadLimit': 10,
@@ -164,7 +183,9 @@ class Pipeline(View):
                                     .sendReq('getLeadComponents', {
                                         statusId: +columnKey,
                                         offset: 0,
-                                        limit: 10
+                                        limit: 10,
+                                        search: '""" + str(params['search'] if params.get('search') else '') + """',
+                                        filter: """ + json.dumps(self.filter_params) + """
                                     })
                                     .then(result => {
                                         // Unset loading to add button
@@ -204,8 +225,7 @@ class Pipeline(View):
                             offset: addToEnd ? boardColumns[columnIndex].items.length : 0,
                             limit: addToEnd ? 10 : boardColumns[columnIndex].items.length,
                             search: '""" + str(params['search'] if params.get('search') else '') + """',
-                            periodFrom: '""" + str(params['periodFrom'] if params.get('periodFrom') else '') + """',
-                            periodTo: '""" + str(params['periodFrom'] if params.get('periodTo') else '') + """'
+                            filter: """ + json.dumps(self.filter_params) + """
                         })
                         .then(result => {
                             // Unset loading to load button
@@ -217,7 +237,9 @@ class Pipeline(View):
 
                                 // Set total and set/append items
                                 boardColumns[columnIndex].total = leadTotal
-                                boardColumns[columnIndex].subtitle = leadAmountSumStr
+                                if (leadAmountSumStr) {
+                                    boardColumns[columnIndex].subtitle = leadAmountSumStr
+                                }
                                 boardColumns[columnIndex].items = !addToEnd ? leadComponents : [
                                     ...boardColumns[columnIndex].items,
                                     ...leadComponents

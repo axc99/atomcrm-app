@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-10-16 00:37+0000\n"
+"POT-Creation-Date: 2020-10-17 18:50+0000\n"
 "PO-Revision-Date: 2020-10-10 19:41+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -43,117 +43,137 @@ msgstr "Победы"
 msgid "r_webhook_defaultStatuses_lost"
 msgstr "Проигрыш"
 
-#: flaskr/routes.py:132
+#: flaskr/routes.py:126
 msgid "r_webhook_defaultStatuses_firstName"
 msgstr "Имя"
 
-#: flaskr/routes.py:133
+#: flaskr/routes.py:127
 msgid "r_webhook_defaultStatuses_lastName"
 msgstr "Фамилия"
 
-#: flaskr/routes.py:134
+#: flaskr/routes.py:128
 msgid "r_webhook_defaultStatuses_email"
 msgstr "Email"
 
-#: flaskr/routes.py:135
+#: flaskr/routes.py:129
 msgid "r_webhook_defaultStatuses_mobilePhone"
 msgstr "Телефон"
 
-#: flaskr/models/field.py:49
+#: flaskr/models/field.py:39
 msgid "m_status_getFieldTypes_string"
 msgstr "Текст"
 
-#: flaskr/models/field.py:50
+#: flaskr/models/field.py:40
 msgid "m_status_getFieldTypes_longString"
 msgstr "Большой текст"
 
-#: flaskr/models/field.py:51
+#: flaskr/models/field.py:41
 msgid "m_status_getFieldTypes_number"
 msgstr "Число"
 
-#: flaskr/models/field.py:52
+#: flaskr/models/field.py:42
 msgid "m_status_getFieldTypes_boolean"
 msgstr "Чекбокс"
 
-#: flaskr/models/field.py:53
+#: flaskr/models/field.py:43
 msgid "m_status_getFieldTypes_date"
 msgstr "Дата"
 
-#: flaskr/models/field.py:59
+#: flaskr/models/field.py:49
 msgid "m_status_getBoardVisibility_none"
 msgstr "Не отображать"
 
-#: flaskr/models/field.py:60
+#: flaskr/models/field.py:50
 msgid "m_status_getBoardVisibility_title"
 msgstr "В заголовке"
 
-#: flaskr/models/field.py:61
+#: flaskr/models/field.py:51
 msgid "m_status_getBoardVisibility_subtitle"
 msgstr "В описании"
 
-#: flaskr/models/lead.py:187
+#: flaskr/models/lead.py:189
 msgid "m_lead_getRegularDate_jan"
 msgstr "Янв."
 
-#: flaskr/models/lead.py:188
+#: flaskr/models/lead.py:190
 msgid "m_lead_getRegularDate_feb"
 msgstr "Фев."
 
-#: flaskr/models/lead.py:189
+#: flaskr/models/lead.py:191
 msgid "m_lead_getRegularDate_mar"
 msgstr "Мар."
 
-#: flaskr/models/lead.py:190
+#: flaskr/models/lead.py:192
 msgid "m_lead_getRegularDate_apr"
 msgstr "Апр."
 
-#: flaskr/models/lead.py:191
+#: flaskr/models/lead.py:193
 msgid "m_lead_getRegularDate_may"
 msgstr "Мая"
 
-#: flaskr/models/lead.py:192
+#: flaskr/models/lead.py:194
 msgid "m_lead_getRegularDate_jun"
 msgstr "Июн."
 
-#: flaskr/models/lead.py:193
+#: flaskr/models/lead.py:195
 msgid "m_lead_getRegularDate_jul"
 msgstr "Июл."
 
-#: flaskr/models/lead.py:194
+#: flaskr/models/lead.py:196
 msgid "m_lead_getRegularDate_aug"
 msgstr "Авг."
 
-#: flaskr/models/lead.py:195
+#: flaskr/models/lead.py:197
 msgid "m_lead_getRegularDate_sep"
 msgstr "Сен."
 
-#: flaskr/models/lead.py:196
+#: flaskr/models/lead.py:198
 msgid "m_lead_getRegularDate_oct"
 msgstr "Окт."
 
-#: flaskr/models/lead.py:197
+#: flaskr/models/lead.py:199
 msgid "m_lead_getRegularDate_nov"
 msgstr "Нояб."
 
-#: flaskr/models/lead.py:198
+#: flaskr/models/lead.py:200
 msgid "m_lead_getRegularDate_dec"
 msgstr "Дек."
 
-#: flaskr/models/lead.py:203
+#: flaskr/models/lead.py:205
 msgid "m_lead_getRegularDate_today"
 msgstr "Сегодня в %(hours)s:%(minutes)s"
 
-#: flaskr/models/lead.py:205
+#: flaskr/models/lead.py:207
 msgid "m_lead_getRegularDate_yesterday"
 msgstr "Вчера в %(hours)s:%(minutes)s"
 
-#: flaskr/models/lead.py:208
+#: flaskr/models/lead.py:210
 msgid "m_lead_getRegularDate_date"
 msgstr "%(day)s %(month)s в %(hours)s:%(minutes)s"
 
-#: flaskr/models/lead.py:210
+#: flaskr/models/lead.py:212
 msgid "m_lead_getRegularDate_dateWithYear"
 msgstr "%(day)s %(month)s %(year)s в %(hours)s:%(minutes)s"
+
+#: flaskr/models/lead.py:344
+msgid "m_lead_leadAction_getItemData_createLead"
+msgstr "Добавление лида в «%(new_status_name)s»"
+
+#: flaskr/models/lead.py:350
+msgid "m_lead_leadAction_getItemData_updateLead"
+msgstr "Обновление лида"
+
+#: flaskr/models/lead.py:355
+msgid "m_lead_leadAction_getItemData_updateLeadStatus"
+msgstr "Смена статуса лида с «%(old_status_name)s» на «%(new_status_name)s»"
+
+#: flaskr/models/lead.py:364
+msgid "m_lead_leadAction_getItemData_archiveLead"
+msgstr "Архивация лида"
+
+#: flaskr/models/lead.py:368
+msgid "m_lead_leadAction_getItemData_restoreLead"
+msgstr "Восстановление лида"
 
 #: flaskr/models/status.py:38
 msgid "m_status_getStatusColors_red"
@@ -202,12 +222,11 @@ msgstr "Получить токен"
 #: flaskr/views/api/getToken.py:16
 msgid "v_getToken_meta_header_subtitle"
 msgstr ""
-"Токен сгенерированный ранее будет деактивирован после получения нового "
-"токена."
+"Внимание! После нажатия на кнопку «Создать токен» ваш текущий токен будет деактивирован."
 
 #: flaskr/views/api/getToken.py:25
 msgid "v_getToken_schema_btn"
-msgstr "Получить токен"
+msgstr "Создать токен"
 
 #: flaskr/views/api/getToken.py:32
 msgid "v_getToken_schema_token"
@@ -223,7 +242,7 @@ msgstr "Стоимость лида"
 
 #: flaskr/views/card/card.py:101
 msgid "v_card_scheme_form_amountCurrency"
-msgstr "Валюта для стоимости"
+msgstr "Валюта стоимости"
 
 #: flaskr/views/card/card.py:109
 msgid "v_card_scheme_form_fields"
@@ -253,174 +272,89 @@ msgstr "Добавить поле"
 msgid "v_card_scheme_form_save"
 msgstr "Сохранить"
 
-#: flaskr/views/fields/create_field.py:10
-msgid "v_createField_meta_name"
-msgstr "Изменить поле"
+#: flaskr/views/pipeline/filter.py:9
+msgid "v_filter_meta_name"
+msgstr "Фильтр"
 
-#: flaskr/views/fields/create_field.py:34
-msgid "v_createField_form_name"
-msgstr "Название поле"
+#: flaskr/views/pipeline/filter.py:26
+msgid "v_filter_schema_form_period"
+msgstr "Период"
 
-#: flaskr/views/fields/create_field.py:35
-msgid "v_createField_form_name_placeholder"
-msgstr "Например: Промокод"
+#: flaskr/views/pipeline/filter.py:75
+msgid "v_filter_schema_form_archivedLeads"
+msgstr "Архивные лида"
 
-#: flaskr/views/fields/create_field.py:38
-msgid "v_createField_form_name_length"
-msgstr "Должен содержать от 2 до 20 симв."
+#: flaskr/views/pipeline/filter.py:84
+msgid "v_filter_schema_form_apply"
+msgstr "Применить"
 
-#: flaskr/views/fields/create_field.py:39
-msgid "v_createField_form_name_required"
-msgstr "Название обязательно для заполнения"
+#: flaskr/views/pipeline/filter.py:88
+msgid "v_filter_schema_form_clear"
+msgstr "Сбросить"
 
-#: flaskr/views/fields/create_field.py:46
-msgid "v_createField_form_valueType"
-msgstr "Тип поля"
-
-#: flaskr/views/fields/create_field.py:49
-msgid "v_createField_form_valueType_required"
-msgstr "Тип обязателен для заполнения"
-
-#: flaskr/views/fields/create_field.py:71
-msgid "v_createField_form_create"
-msgstr "Создать"
-
-#: flaskr/views/fields/fields.py:10
-msgid "v_fields_meta_name"
-msgstr "Поля данных"
-
-#: flaskr/views/fields/fields.py:26
-msgid "v_fields_header_createField"
-msgstr "Создать поле"
-
-#: flaskr/views/fields/fields.py:56
-msgid "v_fields_schema_editField"
-msgstr "Изменить"
-
-#: flaskr/views/fields/fields.py:76
-msgid "v_fields_schema_noFields"
-msgstr "Поля отсутствуют"
-
-#: flaskr/views/fields/update_field.py:12
-msgid "v_updateField_meta_name"
-msgstr "Изменить поля"
-
-#: flaskr/views/fields/update_field.py:53
-msgid "v_updateField_form_name"
-msgstr "Нзвание поле"
-
-#: flaskr/views/fields/update_field.py:54
-msgid "v_updateField_form_placeholder"
-msgstr "Например: Промокод"
-
-#: flaskr/views/fields/update_field.py:58
-msgid "v_updateField_form_name_length"
-msgstr "Мин. длинна"
-
-#: flaskr/views/fields/update_field.py:59
-msgid "v_updateField_form_name_required"
-msgstr "Мин. длинна обязательна для заполнения"
-
-#: flaskr/views/fields/update_field.py:66
-msgid "v_updateField_form_valueType"
-msgstr "Тип поля"
-
-#: flaskr/views/fields/update_field.py:69
-msgid "v_updateField_form_valueType_required"
-msgstr "Тип поля обязателен для заполнения"
-
-#: flaskr/views/fields/update_field.py:83
-msgid "v_updateField_form_fieldAsTitle"
-msgstr "Поле как заголовок"
-
-#: flaskr/views/fields/update_field.py:87
-msgid "v_updateField_form_primaryField"
-msgstr "Основное поле"
-
-#: flaskr/views/fields/update_field.py:98
-msgid "v_updateField_form_save"
-msgstr "Сохранить"
-
-#: flaskr/views/pipeline/pipeline.py:17
+#: flaskr/views/pipeline/pipeline.py:18
 msgid "v_pipeline_meta_name"
 msgstr "Лиды"
 
-#: flaskr/views/pipeline/pipeline.py:99
+#: flaskr/views/pipeline/pipeline.py:103
+msgid "v_pipeline_header_filter"
+msgstr "Фильтр"
+
+#: flaskr/views/pipeline/pipeline.py:118
 msgid "v_pipeline_header_search"
 msgstr "Поиск..."
 
-#: flaskr/views/pipeline/search_info.py:12
-msgid "v_searchInfo_meta_name"
-msgstr "Информация по поиску"
-
-#: flaskr/views/pipeline/search_info.py:14
-msgid "v_searchInfo_content"
-msgstr ""
-"### Поиск по ID: \r"
-"\r"
-" ```id=1``` \r"
-"\r"
-"\r"
-" ### Показать только лиды в архиве: \r"
-"\r"
-" ```archived=true``` \r"
-"\r"
-"\r"
-" ### Поиск лидов по UTM меткам: \r"
-"\r"
-" - ```utm_source=google``` \r"
-"\r"
-" - ```utm_medium=cpc``` \r"
-"\r"
-" - ```utm_campaign=spring_sale``` \r"
-"\r"
-" - ```utm_term=running+shoes``` \r"
-"\r"
-" - ```utm_content=textlink```"
-
-#: flaskr/views/pipeline/update_lead.py:48
+#: flaskr/views/pipeline/update_lead.py:84
 msgid "v_updateLead_meta_name"
 msgstr "Лид #%(id)s"
 
-#: flaskr/views/pipeline/update_lead.py:144
+#: flaskr/views/pipeline/update_lead.py:93
+msgid "v_updateLead_header_information"
+msgstr "Информация"
+
+#: flaskr/views/pipeline/update_lead.py:94
+msgid "v_updateLead_header_activity"
+msgstr "Активность"
+
+#: flaskr/views/pipeline/update_lead.py:191
 msgid "v_updateLead_save"
 msgstr "Сохранить"
 
-#: flaskr/views/pipeline/update_lead.py:154
+#: flaskr/views/pipeline/update_lead.py:201
 msgid "v_updateLead_restoreLead"
 msgstr "Восстановить лид"
 
-#: flaskr/views/pipeline/update_lead.py:193
+#: flaskr/views/pipeline/update_lead.py:240
 msgid "v_updateLead_enterTags"
 msgstr "Введите теги"
 
-#: flaskr/views/pipeline/update_lead.py:199
+#: flaskr/views/pipeline/update_lead.py:246
 msgid "v_updateLead_addDate"
 msgstr "Добавлено"
 
-#: flaskr/views/pipeline/update_lead.py:203
+#: flaskr/views/pipeline/update_lead.py:250
 msgid "v_updateLead_updateDate"
 msgstr "Обновлено"
 
-#: flaskr/views/pipeline/update_lead.py:207
+#: flaskr/views/pipeline/update_lead.py:254
 msgid "v_updateLead_creator"
 msgstr "Пользователь"
 
-#: flaskr/views/pipeline/update_lead.py:217
+#: flaskr/views/pipeline/update_lead.py:264
 msgid "v_updateLead_utmMarks"
 msgstr "UTM метки"
 
-#: flaskr/views/pipeline/update_lead.py:292
+#: flaskr/views/pipeline/update_lead.py:366
 msgid "v_updateLead_onClickArchive_title"
 msgstr "Удалить лид?"
 
-#: flaskr/views/pipeline/update_lead.py:293
+#: flaskr/views/pipeline/update_lead.py:367
 msgid "v_updateLead_onClickArchive_text"
 msgstr ""
 "Вы уверены, что хотите переместить этот лид в архив? Вы можете "
 "восстановить его в любой момент."
 
-#: flaskr/views/pipeline/update_lead.py:294
+#: flaskr/views/pipeline/update_lead.py:368
 msgid "v_updateLead_onClickArchive_delete"
 msgstr "Удалить"
 
@@ -599,4 +533,97 @@ msgstr "Сохранить"
 
 #~ msgid "v_pipeline_lead_empty"
 #~ msgstr "Пустой лид"
+
+#~ msgid "v_createField_meta_name"
+#~ msgstr "Изменить поле"
+
+#~ msgid "v_createField_form_name"
+#~ msgstr "Название поле"
+
+#~ msgid "v_createField_form_name_placeholder"
+#~ msgstr "Например: Промокод"
+
+#~ msgid "v_createField_form_name_length"
+#~ msgstr "Должен содержать от 2 до 20 симв."
+
+#~ msgid "v_createField_form_name_required"
+#~ msgstr "Название обязательно для заполнения"
+
+#~ msgid "v_createField_form_valueType"
+#~ msgstr "Тип поля"
+
+#~ msgid "v_createField_form_valueType_required"
+#~ msgstr "Тип обязателен для заполнения"
+
+#~ msgid "v_createField_form_create"
+#~ msgstr "Создать"
+
+#~ msgid "v_fields_meta_name"
+#~ msgstr "Поля данных"
+
+#~ msgid "v_fields_header_createField"
+#~ msgstr "Создать поле"
+
+#~ msgid "v_fields_schema_editField"
+#~ msgstr "Изменить"
+
+#~ msgid "v_fields_schema_noFields"
+#~ msgstr "Поля отсутствуют"
+
+#~ msgid "v_updateField_meta_name"
+#~ msgstr "Изменить поля"
+
+#~ msgid "v_updateField_form_name"
+#~ msgstr "Нзвание поле"
+
+#~ msgid "v_updateField_form_placeholder"
+#~ msgstr "Например: Промокод"
+
+#~ msgid "v_updateField_form_name_length"
+#~ msgstr "Мин. длинна"
+
+#~ msgid "v_updateField_form_name_required"
+#~ msgstr "Мин. длинна обязательна для заполнения"
+
+#~ msgid "v_updateField_form_valueType"
+#~ msgstr "Тип поля"
+
+#~ msgid "v_updateField_form_valueType_required"
+#~ msgstr "Тип поля обязателен для заполнения"
+
+#~ msgid "v_updateField_form_fieldAsTitle"
+#~ msgstr "Поле как заголовок"
+
+#~ msgid "v_updateField_form_primaryField"
+#~ msgstr "Основное поле"
+
+#~ msgid "v_updateField_form_save"
+#~ msgstr "Сохранить"
+
+#~ msgid "v_searchInfo_meta_name"
+#~ msgstr "Информация по поиску"
+
+#~ msgid "v_searchInfo_content"
+#~ msgstr ""
+#~ "### Поиск по ID: \r"
+#~ "\r"
+#~ " ```id=1``` \r"
+#~ "\r"
+#~ "\r"
+#~ " ### Показать только лиды в архиве: \r"
+#~ "\r"
+#~ " ```archived=true``` \r"
+#~ "\r"
+#~ "\r"
+#~ " ### Поиск лидов по UTM меткам: \r"
+#~ "\r"
+#~ " - ```utm_source=google``` \r"
+#~ "\r"
+#~ " - ```utm_medium=cpc``` \r"
+#~ "\r"
+#~ " - ```utm_campaign=spring_sale``` \r"
+#~ "\r"
+#~ " - ```utm_term=running+shoes``` \r"
+#~ "\r"
+#~ " - ```utm_content=textlink```"
 

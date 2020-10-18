@@ -2,7 +2,7 @@
 
 For getting all fields do not pass `id` field.
 
-`POST https://atomcrm.veokit.com/api/<TOKEN HERE>/getFields`
+`POST https://veokit.team/atomcrm/api/<TOKEN HERE>/getFields`
 
 Sample request body:
 ```json
