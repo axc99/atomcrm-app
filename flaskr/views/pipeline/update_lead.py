@@ -3,8 +3,9 @@ from flask_babel import _
 
 from cerberus import Validator
 
+from flaskr import db
 from flaskr.views.view import View
-from flaskr.models.lead import Lead
+from flaskr.models.lead import Lead, LeadAction, LeadActionType
 from flaskr.models.field import Field
 from flaskr.models.status import Status, StatusColor
 from flaskr.models.installation_card_settings import InstallationCardSettings
@@ -12,36 +13,71 @@ from flaskr.models.installation_card_settings import InstallationCardSettings
 
 # Window: Update lead
 class UpdateLead(View):
-    lead = None
-    fields = []
-    statuses = []
-
     def __init__(self):
+        self.tab = 'index'
+        self.lead = None
+        self.fields = []
+        self.statuses = []
         self.installation_card_settings = None
+        self.actions = []
+        self.activity_page_size = 15
 
     def before(self, params, request_data):
         vld = Validator({
-            'id': {'type': 'number', 'required': True}
+            'id': {'type': ['number', 'string'], 'required': True},
+            'tab': {'type': 'string', 'nullable': True},
+            'page': {'type': 'number', 'nullable': True}
         })
         is_valid = vld.validate(params)
         if not is_valid:
             raise Exception({'message': 'Invalid params',
                              'errors': vld.errors})
 
-        self.installation_card_settings = InstallationCardSettings.query \
-            .filter_by(veokit_installation_id=request_data['installation_id']) \
-            .first()
+        self.tab = params['tab'] if params.get('tab') else 'index'
         self.lead = Lead.query \
             .filter_by(id=params['id']) \
             .first()
-        self.fields = Field.query \
-            .filter_by(veokit_installation_id=request_data['installation_id']) \
-            .order_by(Field.index) \
-            .all()
-        self.statuses = Status.query \
-            .filter_by(veokit_installation_id=request_data['installation_id']) \
-            .order_by(Status.index) \
-            .all()
+
+        if self.tab == 'index':
+            self.installation_card_settings = InstallationCardSettings.query \
+                .filter_by(veokit_installation_id=request_data['installation_id']) \
+                .first()
+            self.fields = Field.query \
+                .filter_by(veokit_installation_id=request_data['installation_id']) \
+                .order_by(Field.index) \
+                .all()
+            self.statuses = Status.query \
+                .filter_by(veokit_installation_id=request_data['installation_id']) \
+                .order_by(Status.index) \
+                .all()
+        elif self.tab == 'activity':
+            offset = (int(params['page']) - 1) * self.activity_page_size if params.get('page') else 0
+
+            self.actions = db.session.execute("""
+                SELECT
+                    la.*,
+                    old_s.name AS OLD_status_name,
+                    new_s.name AS new_status_name,
+                    COUNT(*) OVER () AS total
+                FROM
+                    public.lead_action AS la
+                LEFT JOIN 
+                    public.status AS old_s ON old_s.id = la.old_status_id
+                LEFT JOIN  
+                    public.status AS new_s ON new_s.id = la.new_status_id
+                WHERE
+                    la.lead_id = :lead_id
+                ORDER BY 
+                    la.log_date DESC
+                LIMIT :limit OFFSET :offset""", {
+                'lead_id': self.lead.id,
+                'offset': offset,
+                'limit': self.activity_page_size
+            })
+            # self.actions = LeadAction.query \
+            #     .filter_by(lead_id=self.lead.id) \
+            #     .order_by(LeadAction.log_date) \
+            #     .all()
 
     def get_meta(self, params, request_data):
         return {
@@ -51,10 +87,21 @@ class UpdateLead(View):
 
     def get_header(self, params, request_data):
         return {
-            'title': self.meta.get('name')
+            'title': self.meta.get('name'),
+            'activeTab': self.tab,
+            'tabs': [
+                {'text': _('v_updateLead_header_information'), 'to': {'id': params['id']}, 'key': 'information'},
+                {'text': _('v_updateLead_header_activity'), 'to': {'id': params['id'], 'tab': 'activity'}, 'key': 'activity'}
+            ]
         }
 
     def get_schema(self, params, request_data):
+        if self.tab == 'index':
+            return self.get_schema_for_index(params, request_data)
+        elif self.tab == 'activity':
+            return self.get_schema_for_activity(params, request_data)
+
+    def get_schema_for_index(self, params, request_data):
         form_fields = []
         lead_fields = Lead.get_fields(self.lead.id)
 
@@ -237,6 +284,33 @@ class UpdateLead(View):
             }
         ]
 
+    def get_schema_for_activity(self, params, request_data):
+        total = 0
+        items = []
+
+        for action in self.actions:
+            if total == 0:
+                total = action.total
+
+            action_data = LeadAction.get_item_data(action)
+
+            items.append({
+                'title': action_data['title'],
+                'color': action_data['color'],
+                'extra': Lead.get_regular_date((action.log_date + timedelta(minutes=request_data['timezone_offset'])).strftime('%Y-%m-%d %H:%M:%S'))
+            })
+
+        return [
+            {
+                '_com': 'Timeline',
+                'page': params['page'] if params.get('page') else 1,
+                'total': total,
+                'onChangePage': 'onChangeTimelinePage',
+                'pageSize': self.activity_page_size,
+                'items': items
+            }
+        ]
+
     def get_methods(self, params, request_data):
         return {
             'onFinish':
@@ -324,5 +398,13 @@ class UpdateLead(View):
                                 app.getPage().callMethod('loadLeads', { statusId: """ + str(self.lead.status_id) + """ })
                             }
                         })     
+                }""",
+            'onChangeTimelinePage':
+                """(app, params, event) => {
+                    app.getWindow().to({
+                        id: '""" + str(self.lead.id) + """',
+                        tab: '""" + self.tab + """',
+                        page: event.page
+                    })
                 }"""
         }

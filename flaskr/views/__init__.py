@@ -1,6 +1,6 @@
 from flaskr.views.pipeline.pipeline import Pipeline
 from flaskr.views.pipeline.update_lead import UpdateLead
-from flaskr.views.pipeline.search_info import SearchInfo
+from flaskr.views.pipeline.filter import Filter
 from flaskr.views.statuses.statuses import Statuses
 from flaskr.views.statuses.create_status import CreateStatus
 from flaskr.views.statuses.update_status import UpdateStatus
@@ -13,7 +13,7 @@ views_map = {
     # Pipeline
     'pipeline': Pipeline,
     'updateLead': UpdateLead,
-    'searchInfo': SearchInfo,
+    'filter': Filter,
 
     # Statuses
     'statuses': Statuses,
