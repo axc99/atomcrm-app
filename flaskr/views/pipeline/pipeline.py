@@ -37,7 +37,6 @@ class Pipeline(View):
             'utm_content': params['utmContent'] if params.get('utmContent') else None,
         }
         self.filter_used = any(self.filter_params.values())
-        print('archived', params.get('archived'))
 
         statuses_q = db.session.execute("""  
             SELECT 

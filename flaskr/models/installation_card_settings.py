@@ -147,7 +147,10 @@ class InstallationCardSettings(db.Model):
 
         currency = self.getCurrency()
 
-        amount = int(amount) if amount % 1 == 0 else amount
+        if amount is None:
+            amount = 0
+        else:
+            amount = int(amount) if amount % 1 == 0 else amount
         fmt_amount = '{:,}'.format(amount) if amount else '0'
 
         return currency['format_string'].format(fmt_amount)
