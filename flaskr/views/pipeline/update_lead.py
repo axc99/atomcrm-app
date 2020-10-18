@@ -230,7 +230,7 @@ class UpdateLead(View):
                                         'min': 0,
                                         'max': 10000000000,
                                         'placeholder': '0',
-                                        'value': self.lead.amount
+                                        'value': 0 if self.lead.amount is None else self.lead.amount
                                     },
                                     {
                                         '_com': 'Field.Input',
