@@ -7,7 +7,12 @@ from flask_babel import Babel
 
 app = Flask(__name__)
 
-app.debug = os.environ.get('FLASK_ENV') == 'production'
+if os.environ.get('FLASK_ENV') == 'production':
+    app = Flask(__name__)
+    app.debug = False
+else:
+    app = Flask(__name__, static_url_path='/static/', static_folder='./public/static')
+    app.debug = True
 app.secret_key = os.environ.get('APP_SECRET_KEY')
 
 
@@ -31,7 +36,7 @@ def get_locale():
     supported_langs = ('en', 'ru')
 
     data = request.get_json()
-    lang_key = data['langKey'] if data else None
+    lang_key = data.get('langKey') if data else None
 
     if not lang_key or lang_key not in supported_langs:
         return 'en'

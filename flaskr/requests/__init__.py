@@ -2,6 +2,7 @@ from flaskr.requests.leads import get_lead_components, create_lead, update_lead,
 from flaskr.requests.statuses import create_status, update_status, update_status_index, delete_status
 from flaskr.requests.tokens import get_token
 from flaskr.requests.card_settings import update_card_settings
+from flaskr.requests.extensions import update_extension_settings
 
 
 requests_map = {
@@ -23,5 +24,8 @@ requests_map = {
     'updateCardSettings': update_card_settings,
 
     # API
-    'getToken': get_token
+    'getToken': get_token,
+
+    # Extensions
+    'updateExtensionSettings': update_extension_settings
 }

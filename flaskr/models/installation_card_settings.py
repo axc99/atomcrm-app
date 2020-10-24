@@ -151,7 +151,7 @@ class InstallationCardSettings(db.Model):
             amount = 0
         else:
             amount = int(amount) if amount % 1 == 0 else amount
-        fmt_amount = '{:,}'.format(amount) if amount else '0'
+        fmt_amount = '{:,}'.format(round(amount, 2)) if amount else '0'
 
         return currency['format_string'].format(fmt_amount)
 

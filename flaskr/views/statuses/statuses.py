@@ -52,7 +52,7 @@ class Statuses(View):
                 'icon': 'delete'
             }
 
-            # If leads with deleted status exist
+            # If leads with this status exist
             if status.lead_count > 0:
                 deleteButton['toWindow'] = ['deleteStatus', {
                     'id': status.id
