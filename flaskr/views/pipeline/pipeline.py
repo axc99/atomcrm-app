@@ -263,7 +263,7 @@ class Pipeline(View):
                     boardColumns[oldColumnIndex].items.splice(oldItemIndex, 1)
                     // Add item new column
                     boardColumns[newColumnIndex].items.splice(newItemIndex, 0, item)
-                    // Sort by add date
+                    // Sort by order attr
                     boardColumns[newColumnIndex].items.sort((a, b) => a.order < b.order)
 
                     // Update columns on board
@@ -283,20 +283,24 @@ class Pipeline(View):
 
             # On search
             'onSearchLeads': """(app, params, event) => {
-                    app.getPage().to({
-                        search: event.value,
-                        periodFrom: '""" + str(params['periodFrom'] if params.get('periodFrom') else '') + """',
-                        periodTo: '""" + str(params['periodFrom'] if params.get('periodTo') else '') + """'
-                    })
+                    app
+                        .getPage()
+                        .to({
+                            search: event.value,
+                            periodFrom: '""" + str(params['periodFrom'] if params.get('periodFrom') else '') + """',
+                            periodTo: '""" + str(params['periodFrom'] if params.get('periodTo') else '') + """'
+                        })
                 }""",
 
             # On change period
             'onChangePeriod': """(app, params, event) => {
-                    app.getPage().to({ 
-                        search: '""" + str(params['search'] if params.get('search') else '') + """',
-                        periodFrom: event.value[0],
-                        periodTo: event.value[1] 
-                    })
+                    app
+                        .getPage()
+                        .to({ 
+                            search: '""" + str(params['search'] if params.get('search') else '') + """',
+                            periodFrom: event.value[0],
+                            periodTo: event.value[1] 
+                        })
                 }"""
         }
 

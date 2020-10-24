@@ -1,4 +1,4 @@
-# Get statuses
+## Get statuses
 
 For getting all statuses do not pass `id` field.
 

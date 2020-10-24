@@ -18,6 +18,12 @@ class Api(View):
             'actions': [
                 {
                     '_com': 'Button',
+                    'icon': 'appstoreAdd',
+                    'label': _('v_api_header_extensions'),
+                    'to': ['control', {'tab': 'extensions'}]
+                },
+                {
+                    '_com': 'Button',
                     'type': 'primary',
                     'icon': 'lock',
                     'label': _('v_api_header_getToken'),

@@ -8,6 +8,7 @@ from flaskr.views.statuses.delete_status import DeleteStatus
 from flaskr.views.card.card import Card
 from flaskr.views.api.api import Api
 from flaskr.views.api.getToken import GetToken
+from flaskr.views.extensions.extension import Extension
 
 views_map = {
     # Pipeline
@@ -26,5 +27,8 @@ views_map = {
 
     # Api
     'api': Api,
-    'getToken': GetToken
+    'getToken': GetToken,
+
+    # Extension
+    'extension': Extension
 }

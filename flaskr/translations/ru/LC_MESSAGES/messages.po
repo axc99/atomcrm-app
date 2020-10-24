@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-10-17 18:50+0000\n"
+"POT-Creation-Date: 2020-10-24 18:54+0000\n"
 "PO-Revision-Date: 2020-10-10 19:41+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -19,43 +19,43 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-#: flaskr/routes.py:108
+#: flaskr/routes.py:113
 msgid "r_webhook_defaultStatuses_lead"
 msgstr "Новый"
 
-#: flaskr/routes.py:109
+#: flaskr/routes.py:114
 msgid "r_webhook_defaultStatuses_contacted"
 msgstr "Первый контакт"
 
-#: flaskr/routes.py:110
+#: flaskr/routes.py:115
 msgid "r_webhook_defaultStatuses_qualified"
 msgstr "Принимают решение"
 
-#: flaskr/routes.py:111
+#: flaskr/routes.py:116
 msgid "r_webhook_defaultStatuses_proposalMade"
 msgstr "Переговоры"
 
-#: flaskr/routes.py:112
+#: flaskr/routes.py:117
 msgid "r_webhook_defaultStatuses_win"
 msgstr "Победы"
 
-#: flaskr/routes.py:113
+#: flaskr/routes.py:118
 msgid "r_webhook_defaultStatuses_lost"
 msgstr "Проигрыш"
 
-#: flaskr/routes.py:126
+#: flaskr/routes.py:131
 msgid "r_webhook_defaultStatuses_firstName"
 msgstr "Имя"
 
-#: flaskr/routes.py:127
+#: flaskr/routes.py:132
 msgid "r_webhook_defaultStatuses_lastName"
 msgstr "Фамилия"
 
-#: flaskr/routes.py:128
+#: flaskr/routes.py:133
 msgid "r_webhook_defaultStatuses_email"
 msgstr "Email"
 
-#: flaskr/routes.py:129
+#: flaskr/routes.py:134
 msgid "r_webhook_defaultStatuses_mobilePhone"
 msgstr "Телефон"
 
@@ -199,19 +199,23 @@ msgstr "Зеленый"
 msgid "m_status_getStatusColors_orange"
 msgstr "Оранджевый"
 
-#: flaskr/views/api/api.py:23
+#: flaskr/views/api/api.py:22
+msgid "v_api_header_extensions"
+msgstr "Расширения"
+
+#: flaskr/views/api/api.py:29
 msgid "v_api_header_getToken"
 msgstr "Получить токен"
 
-#: flaskr/views/api/api.py:30
+#: flaskr/views/api/api.py:36
 msgid "v_api_header_tabs_leads"
 msgstr "Лиды"
 
-#: flaskr/views/api/api.py:37
+#: flaskr/views/api/api.py:43
 msgid "v_api_header_tabs_statuses"
 msgstr "Статусы"
 
-#: flaskr/views/api/api.py:44
+#: flaskr/views/api/api.py:50
 msgid "v_api_header_tabs_fields"
 msgstr "Поля данных"
 
@@ -222,7 +226,8 @@ msgstr "Получить токен"
 #: flaskr/views/api/getToken.py:16
 msgid "v_getToken_meta_header_subtitle"
 msgstr ""
-"Внимание! После нажатия на кнопку «Создать токен» ваш текущий токен будет деактивирован."
+"Внимание! После нажатия на кнопку «Создать токен» ваш текущий токен будет"
+" деактивирован."
 
 #: flaskr/views/api/getToken.py:25
 msgid "v_getToken_schema_btn"
@@ -272,6 +277,193 @@ msgstr "Добавить поле"
 msgid "v_card_scheme_form_save"
 msgstr "Сохранить"
 
+#: flaskr/views/extensions/extension.py:38
+msgid "v_extension_meta_name"
+msgstr "Интеграция с %(name)s"
+
+#: flaskr/views/extensions/extension.py:46
+msgid "v_extension_header_tab_extensions"
+msgstr "Расширения"
+
+#: flaskr/views/extensions/extension.py:55
+msgid "v_extension_header_information"
+msgstr "Информация"
+
+#: flaskr/views/extensions/extension.py:60
+msgid "v_extension_header_settings"
+msgstr "Настройки"
+
+#: flaskr/views/extensions/extensions/mottor.py:47
+msgid "v_extension_mottor_information_content"
+msgstr ""
+"## Подключение формы в Mottor\r"
+"\r"
+"1. Откройте редактор сайта.\r"
+"\r"
+"![](%(STATIC_URL)simages/mottor/1-ru.png) \r"
+"\r"
+"2. Перейдите в редактирование формы.\r"
+"\r"
+"![](%(STATIC_URL)simages/mottor/2-ru.png) \r"
+"\r"
+"3. В разделе **«Действия»** включите отправку данных POST-запросом.\r"
+"\r"
+"![](%(STATIC_URL)simages/mottor/3-ru.png) \r"
+"\r"
+"4. В поле **«Ссылка»** необходимо указать ссылку: `%(webhook_url)s`.\r"
+"\r"
+"![](%(STATIC_URL)simages/mottor/4-ru.png) \r"
+"\r"
+"5. В поле **«Данные»** необходимо сопоставить поля из Mottor с полями в "
+"AtomCRM. \r"
+"\r"
+"![](%(STATIC_URL)simages/mottor/5-ru.png) \r"
+"\r"
+"Соотношение объявляется через знак `=`, где слева указывается переменная,"
+" а справа ключ вашего поля в AtomCRM. Все соотношения должны быть "
+"разделены знаком `&`. \r"
+"\r"
+"**Доступные переменные:** \r"
+"- `id_lead` - номер заявки \r"
+"- `frm_title` - название (заголовок) формы \r"
+"- `name` - значение поля \"Имя\" в форме \r"
+"- `phone` - значения поля \"Телефон\" в форме \r"
+"- `email` - значение поля Email в форме \r"
+"- `extra` - значение всех остальных полей формы \r"
+"- `roistat` - значение Cookie посетителя, для передачи данных в Roistat \r"
+"Для каждой переменной, которую вы хотите добавить в лид, нужно указать "
+"ключ вашего поля в AtomCRM. \r"
+"\r"
+"**Поля и их ключи:** \r"
+"%(field_keys_list)s\r"
+"6. Сохраните действия."
+
+#: flaskr/views/extensions/extensions/mottor.py:67
+msgid "v_extension_mottor_information_settings_status_alwaysFirst"
+msgstr "Первый статус"
+
+#: flaskr/views/extensions/extensions/mottor.py:85
+msgid "v_extension_mottor_information_settings_status"
+msgstr "Статус по умолчанию"
+
+#: flaskr/views/extensions/extensions/mottor.py:90
+msgid "v_extension_mottor_information_settings_primary_rules_required"
+msgstr "Статус обязателен для заполнения"
+
+#: flaskr/views/extensions/extensions/mottor.py:100
+msgid "v_extension_mottor_information_settings_save"
+msgstr "Сохранить"
+
+#: flaskr/views/extensions/extensions/tilda.py:47
+msgid "v_extension_tilda_information_content"
+msgstr ""
+"## Подключение формы в Tilda\r"
+"\r"
+"1. Перейдите на сайт сервиса **Tilda** и произведите действия, описанные "
+"по ссылке https://help-ru.tilda.ws/formswebhook\r"
+"\r"
+"2. В поле **Webhook URL** вставьте следующую ссылку: `%(webhook_url)s`\r"
+"\r"
+"## Настройка полей\r"
+"Теперь необходимо сопоставить поля из Tilda с полями в AtomCRM. Это "
+"позволит автоматически распределять данные из формы по добавляемому лиду."
+"\r"
+"\r"
+"1. Перейдите на сайт, в блоке с формой нажмите на кнопку **Контент**.\r"
+"\r"
+"![](%(STATIC_URL)simages/tilda/1-ru.png) \r"
+"\r"
+"2. Перейдите в раздел с настройками полей для ввода.\r"
+"\r"
+"![](%(STATIC_URL)simages/tilda/2-ru.png) \r"
+"\r"
+"3. Для каждого поля для ввода в **«Имя переменной»** укажите "
+"соответствующий ключ поля в AtomCRM.\r"
+"\r"
+"![](%(STATIC_URL)simages/tilda/3-ru.png) \r"
+"\r"
+"**Поля и их ключи:**\r"
+"%(field_keys_list)s\r"
+"\r"
+"4. Сохраните действия."
+
+#: flaskr/views/extensions/extensions/tilda.py:67
+msgid "v_extension_tilda_information_settings_status_alwaysFirst"
+msgstr "Первый статус"
+
+#: flaskr/views/extensions/extensions/tilda.py:85
+msgid "v_extension_tilda_information_settings_status"
+msgstr "Статус лида по умолчанию"
+
+#: flaskr/views/extensions/extensions/tilda.py:90
+msgid "v_extension_tilda_information_settings_primary_rules_required"
+msgstr "Статус обязателен для заполнения"
+
+#: flaskr/views/extensions/extensions/tilda.py:100
+msgid "v_extension_tilda_information_settings_save"
+msgstr "Сохранить"
+
+#: flaskr/views/extensions/extensions/wix.py:47
+msgid "v_extension_wix_information_content"
+msgstr ""
+"## Подключение формы в Wix\r"
+"\r"
+"1. Откройте управление сайтом.\r"
+"\r"
+"![](%(STATIC_URL)simages/wix/1-ru.png) \r"
+"\r"
+"2. В левом меню перейдите сначала в **«Настройки»**, а затем в **«Доп. "
+"настройка»** перейдите на страницу **«Настройка записи»**.\r"
+"\r"
+"![](%(STATIC_URL)simages/wix/2-ru.png) \r"
+"\r"
+"3. В блоке **«Уведомления и автопроцессы»** перейдите в редактирование "
+"автопроцессов.\r"
+"\r"
+"![](%(STATIC_URL)simages/wix/3-ru.png) \r"
+"\r"
+"4. Откройте добавление нового автопроцесса. \r"
+"\r"
+"![](%(STATIC_URL)simages/wix/4-ru.png) \r"
+"\r"
+"5. Выберите **триггер** - Wix Формы. \r"
+"\r"
+"![](%(STATIC_URL)simages/wix/5-ru.png) \r"
+"\r"
+"6. Выберите **реакцию** - подключить WebHook. \r"
+"\r"
+"![](%(STATIC_URL)simages/wix/6-ru.png) \r"
+"\r"
+"7. Укажите в качестве целевого URL ссылку: `%(webhook_url)s`. \r"
+"\r"
+"![](%(STATIC_URL)simages/wix/7-ru.png) \r"
+"\r"
+"8. Включите автопроцесс. \r"
+"\r"
+"## Настройка полей\r"
+"Перейдите в настройки текущего расширения и сопоставьте поля из Wix с "
+"полями в AtomCRM."
+
+#: flaskr/views/extensions/extensions/wix.py:53
+msgid "v_extension_wix_openSettings"
+msgstr "Перейти в настройки"
+
+#: flaskr/views/extensions/extensions/wix.py:73
+msgid "v_extension_wix_information_settings_status_alwaysFirst"
+msgstr "Первый статус"
+
+#: flaskr/views/extensions/extensions/wix.py:91
+msgid "v_extension_wix_information_settings_status"
+msgstr "Статус по умолчанию"
+
+#: flaskr/views/extensions/extensions/wix.py:96
+msgid "v_extension_wix_information_settings_primary_rules_required"
+msgstr "Статус обязателен для заполнения"
+
+#: flaskr/views/extensions/extensions/wix.py:106
+msgid "v_extension_wix_information_settings_save"
+msgstr "Сохранить"
+
 #: flaskr/views/pipeline/filter.py:9
 msgid "v_filter_meta_name"
 msgstr "Фильтр"
@@ -296,11 +488,11 @@ msgstr "Сбросить"
 msgid "v_pipeline_meta_name"
 msgstr "Лиды"
 
-#: flaskr/views/pipeline/pipeline.py:103
+#: flaskr/views/pipeline/pipeline.py:102
 msgid "v_pipeline_header_filter"
 msgstr "Фильтр"
 
-#: flaskr/views/pipeline/pipeline.py:118
+#: flaskr/views/pipeline/pipeline.py:117
 msgid "v_pipeline_header_search"
 msgstr "Поиск..."
 
@@ -467,163 +659,4 @@ msgstr "Цвет обязателен для заполнения"
 #: flaskr/views/statuses/update_status.py:80
 msgid "v_updateStatus_btn"
 msgstr "Сохранить"
-
-#~ msgid "m_status_getFieldTypes_select"
-#~ msgstr "Выпадающий список"
-
-#~ msgid "v_createField_form_minLength"
-#~ msgstr "Мин. длинна"
-
-#~ msgid "v_createField_form_minLength_required"
-#~ msgstr "Мин. длинна обязательна для заполнения"
-
-#~ msgid "v_createField_form_maxLength"
-#~ msgstr "Макс. длинна"
-
-#~ msgid "v_createField_form_maxLength_required"
-#~ msgstr "Макс. длинна обязательная для заполнения"
-
-#~ msgid "v_createField_form_min"
-#~ msgstr "Мин. число"
-
-#~ msgid "v_createField_form_min_required"
-#~ msgstr "Мин. число обязательно для заполнения"
-
-#~ msgid "v_createField_form_max"
-#~ msgstr "Макс. число"
-
-#~ msgid "v_createField_form_max_required"
-#~ msgstr "Макс. число обязательно для заполнения"
-
-#~ msgid "v_createField_form_fieldAsTitle"
-#~ msgstr "Поле как заголовок"
-
-#~ msgid "v_createField_form_primaryField"
-#~ msgstr "Основное поле"
-
-#~ msgid "v_fields_schema_showInTitle"
-#~ msgstr "Поле как заголовок"
-
-#~ msgid "v_fields_schema_primary"
-#~ msgstr "Основное поле"
-
-#~ msgid "v_updateField_form_minLength"
-#~ msgstr "Мин. длинна"
-
-#~ msgid "v_updateField_form_minLength_required"
-#~ msgstr "Мин. длинна обязательна для заполнения"
-
-#~ msgid "v_updateField_form_maxLength"
-#~ msgstr "Макс. длинна"
-
-#~ msgid "v_updateField_form_maxLength_required"
-#~ msgstr "Макс. длинна обязательна для заполнения"
-
-#~ msgid "v_updateField_form_min"
-#~ msgstr "Мин. число"
-
-#~ msgid "v_updateField_form_min_required"
-#~ msgstr "Мин. число обязательно для заполнения"
-
-#~ msgid "v_updateField_form_max"
-#~ msgstr "Макс. число"
-
-#~ msgid "v_updateField_form_max_required"
-#~ msgstr "Макс. число обязательно для заполнения"
-
-#~ msgid "v_pipeline_lead_empty"
-#~ msgstr "Пустой лид"
-
-#~ msgid "v_createField_meta_name"
-#~ msgstr "Изменить поле"
-
-#~ msgid "v_createField_form_name"
-#~ msgstr "Название поле"
-
-#~ msgid "v_createField_form_name_placeholder"
-#~ msgstr "Например: Промокод"
-
-#~ msgid "v_createField_form_name_length"
-#~ msgstr "Должен содержать от 2 до 20 симв."
-
-#~ msgid "v_createField_form_name_required"
-#~ msgstr "Название обязательно для заполнения"
-
-#~ msgid "v_createField_form_valueType"
-#~ msgstr "Тип поля"
-
-#~ msgid "v_createField_form_valueType_required"
-#~ msgstr "Тип обязателен для заполнения"
-
-#~ msgid "v_createField_form_create"
-#~ msgstr "Создать"
-
-#~ msgid "v_fields_meta_name"
-#~ msgstr "Поля данных"
-
-#~ msgid "v_fields_header_createField"
-#~ msgstr "Создать поле"
-
-#~ msgid "v_fields_schema_editField"
-#~ msgstr "Изменить"
-
-#~ msgid "v_fields_schema_noFields"
-#~ msgstr "Поля отсутствуют"
-
-#~ msgid "v_updateField_meta_name"
-#~ msgstr "Изменить поля"
-
-#~ msgid "v_updateField_form_name"
-#~ msgstr "Нзвание поле"
-
-#~ msgid "v_updateField_form_placeholder"
-#~ msgstr "Например: Промокод"
-
-#~ msgid "v_updateField_form_name_length"
-#~ msgstr "Мин. длинна"
-
-#~ msgid "v_updateField_form_name_required"
-#~ msgstr "Мин. длинна обязательна для заполнения"
-
-#~ msgid "v_updateField_form_valueType"
-#~ msgstr "Тип поля"
-
-#~ msgid "v_updateField_form_valueType_required"
-#~ msgstr "Тип поля обязателен для заполнения"
-
-#~ msgid "v_updateField_form_fieldAsTitle"
-#~ msgstr "Поле как заголовок"
-
-#~ msgid "v_updateField_form_primaryField"
-#~ msgstr "Основное поле"
-
-#~ msgid "v_updateField_form_save"
-#~ msgstr "Сохранить"
-
-#~ msgid "v_searchInfo_meta_name"
-#~ msgstr "Информация по поиску"
-
-#~ msgid "v_searchInfo_content"
-#~ msgstr ""
-#~ "### Поиск по ID: \r"
-#~ "\r"
-#~ " ```id=1``` \r"
-#~ "\r"
-#~ "\r"
-#~ " ### Показать только лиды в архиве: \r"
-#~ "\r"
-#~ " ```archived=true``` \r"
-#~ "\r"
-#~ "\r"
-#~ " ### Поиск лидов по UTM меткам: \r"
-#~ "\r"
-#~ " - ```utm_source=google``` \r"
-#~ "\r"
-#~ " - ```utm_medium=cpc``` \r"
-#~ "\r"
-#~ " - ```utm_campaign=spring_sale``` \r"
-#~ "\r"
-#~ " - ```utm_term=running+shoes``` \r"
-#~ "\r"
-#~ " - ```utm_content=textlink```"
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-10-17 18:50+0000\n"
+"POT-Creation-Date: 2020-10-24 18:54+0000\n"
 "PO-Revision-Date: 2020-10-10 19:41+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,43 +18,43 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-#: flaskr/routes.py:108
+#: flaskr/routes.py:113
 msgid "r_webhook_defaultStatuses_lead"
 msgstr "Lead"
 
-#: flaskr/routes.py:109
+#: flaskr/routes.py:114
 msgid "r_webhook_defaultStatuses_contacted"
 msgstr "Contacted"
 
-#: flaskr/routes.py:110
+#: flaskr/routes.py:115
 msgid "r_webhook_defaultStatuses_qualified"
 msgstr "Qualified"
 
-#: flaskr/routes.py:111
+#: flaskr/routes.py:116
 msgid "r_webhook_defaultStatuses_proposalMade"
 msgstr "Proposal made"
 
-#: flaskr/routes.py:112
+#: flaskr/routes.py:117
 msgid "r_webhook_defaultStatuses_win"
 msgstr "Win"
 
-#: flaskr/routes.py:113
+#: flaskr/routes.py:118
 msgid "r_webhook_defaultStatuses_lost"
 msgstr "Lost"
 
-#: flaskr/routes.py:126
+#: flaskr/routes.py:131
 msgid "r_webhook_defaultStatuses_firstName"
 msgstr "First name"
 
-#: flaskr/routes.py:127
+#: flaskr/routes.py:132
 msgid "r_webhook_defaultStatuses_lastName"
 msgstr "Last name"
 
-#: flaskr/routes.py:128
+#: flaskr/routes.py:133
 msgid "r_webhook_defaultStatuses_email"
 msgstr "Email"
 
-#: flaskr/routes.py:129
+#: flaskr/routes.py:134
 msgid "r_webhook_defaultStatuses_mobilePhone"
 msgstr "Mobile phone"
 
@@ -198,19 +198,23 @@ msgstr "Green"
 msgid "m_status_getStatusColors_orange"
 msgstr "Orange"
 
-#: flaskr/views/api/api.py:23
+#: flaskr/views/api/api.py:22
+msgid "v_api_header_extensions"
+msgstr "Extensions"
+
+#: flaskr/views/api/api.py:29
 msgid "v_api_header_getToken"
 msgstr "Get token"
 
-#: flaskr/views/api/api.py:30
+#: flaskr/views/api/api.py:36
 msgid "v_api_header_tabs_leads"
 msgstr "Leads"
 
-#: flaskr/views/api/api.py:37
+#: flaskr/views/api/api.py:43
 msgid "v_api_header_tabs_statuses"
 msgstr "Statuses"
 
-#: flaskr/views/api/api.py:44
+#: flaskr/views/api/api.py:50
 msgid "v_api_header_tabs_fields"
 msgstr "Fields"
 
@@ -220,7 +224,9 @@ msgstr "Get token"
 
 #: flaskr/views/api/getToken.py:16
 msgid "v_getToken_meta_header_subtitle"
-msgstr "=After clicking on the "Create token" button, your current token will be deactivated!"
+msgstr ""
+"=After clicking on the \"Create token\" button, your current token will "
+"be deactivated!"
 
 #: flaskr/views/api/getToken.py:25
 msgid "v_getToken_schema_btn"
@@ -270,6 +276,144 @@ msgstr "Add field"
 msgid "v_card_scheme_form_save"
 msgstr "Save"
 
+#: flaskr/views/extensions/extension.py:38
+msgid "v_extension_meta_name"
+msgstr "Extension with %(name)s"
+
+#: flaskr/views/extensions/extension.py:46
+msgid "v_extension_header_tab_extensions"
+msgstr "Extensions"
+
+#: flaskr/views/extensions/extension.py:55
+msgid "v_extension_header_information"
+msgstr "Information"
+
+#: flaskr/views/extensions/extension.py:60
+msgid "v_extension_header_settings"
+msgstr "Settings"
+
+#: flaskr/views/extensions/extensions/mottor.py:47
+msgid "v_extension_mottor_information_content"
+msgstr ""
+"## Form connection in Mottor\r"
+"\r"
+"1. Open the website editor.\r"
+"\r"
+"2. Go to form editing.\r"
+"\r"
+"3. In the **«Actions»** section, enable sending data by POST request.\r"
+"\r"
+"4. In the form that appears, indicate the link: `%(webhook_url)s`.\r"
+"\r"
+"5. In the **«Data»** field, you must indicate the ratio of the parameters"
+" of the form fields to the fields in the card. `\r"
+
+#: flaskr/views/extensions/extensions/mottor.py:67
+msgid "v_extension_mottor_information_settings_status_alwaysFirst"
+msgstr "First status"
+
+#: flaskr/views/extensions/extensions/mottor.py:85
+msgid "v_extension_mottor_information_settings_status"
+msgstr "Default status"
+
+#: flaskr/views/extensions/extensions/mottor.py:90
+msgid "v_extension_mottor_information_settings_primary_rules_required"
+msgstr "Status is required"
+
+#: flaskr/views/extensions/extensions/mottor.py:100
+msgid "v_extension_mottor_information_settings_save"
+msgstr "Save"
+
+#: flaskr/views/extensions/extensions/tilda.py:47
+msgid "v_extension_tilda_information_content"
+msgstr ""
+"## Connecting a Tilda form\r"
+"\r"
+"1. Go to the Tilda service website and follow the link: "
+"https://help.tilda.ws/formswebhook\r"
+"\r"
+"2. In the Webhook URL field, paste the following link: `%(webhook_url)s`\r"
+"\r"
+"## Setting fields\r"
+"Now you need to map the fields from Tilda to the fields in AtomCRM. This "
+"will automatically distribute the data from the form to the added lead.\r"
+"\r"
+"1. Go to the site, in the block with the form, click on the Content "
+"button.\r"
+"\r"
+"2. Go to the section with settings for input fields.\r"
+"\r"
+"3. For each field in the form in the \"Variable name\" specify the "
+"corresponding field key in the card.\r"
+"\r"
+"**Fields and keys:**\r"
+"\r"
+"%(field_keys_list)s\r"
+"\r"
+"4. Save actions."
+
+#: flaskr/views/extensions/extensions/tilda.py:67
+msgid "v_extension_tilda_information_settings_status_alwaysFirst"
+msgstr "Always first"
+
+#: flaskr/views/extensions/extensions/tilda.py:85
+msgid "v_extension_tilda_information_settings_status"
+msgstr "Default lead status"
+
+#: flaskr/views/extensions/extensions/tilda.py:90
+msgid "v_extension_tilda_information_settings_primary_rules_required"
+msgstr "Default lead status is required"
+
+#: flaskr/views/extensions/extensions/tilda.py:100
+msgid "v_extension_tilda_information_settings_save"
+msgstr "Save"
+
+#: flaskr/views/extensions/extensions/wix.py:47
+msgid "v_extension_wix_information_content"
+msgstr ""
+"## Connecting a form in Wix\r"
+"\r"
+"1. Open website management.\\\r"
+"2. In the left menu, go first to «Settings», and then to «Additional "
+"setup», go to the\" Record setup \"page.\r"
+"\r"
+"3. In the \"Notifications and automatic processes\" block, go to editing "
+"automatic processes.\r"
+"\r"
+"4. Open Add New AutoProcess. \r"
+"\r"
+"5. Select Trigger - Wix Forms. \r"
+"\r"
+"6. Select reaction - connect WebHook.\r"
+"\r"
+"7. Enter a link as the target URL: `%(webhook_url)s`. \r"
+"\r"
+"8. Turn on auto-process. \r"
+"\r"
+"## Setting fields\r"
+"Go to settings and match the fields from the form to the fields in the "
+"card."
+
+#: flaskr/views/extensions/extensions/wix.py:53
+msgid "v_extension_wix_openSettings"
+msgstr "Open settings"
+
+#: flaskr/views/extensions/extensions/wix.py:73
+msgid "v_extension_wix_information_settings_status_alwaysFirst"
+msgstr "First status"
+
+#: flaskr/views/extensions/extensions/wix.py:91
+msgid "v_extension_wix_information_settings_status"
+msgstr "Default status"
+
+#: flaskr/views/extensions/extensions/wix.py:96
+msgid "v_extension_wix_information_settings_primary_rules_required"
+msgstr "Status is required"
+
+#: flaskr/views/extensions/extensions/wix.py:106
+msgid "v_extension_wix_information_settings_save"
+msgstr "Save"
+
 #: flaskr/views/pipeline/filter.py:9
 msgid "v_filter_meta_name"
 msgstr "Filter"
@@ -294,11 +438,11 @@ msgstr "Clear"
 msgid "v_pipeline_meta_name"
 msgstr "Leads"
 
-#: flaskr/views/pipeline/pipeline.py:103
+#: flaskr/views/pipeline/pipeline.py:102
 msgid "v_pipeline_header_filter"
 msgstr "Filter"
 
-#: flaskr/views/pipeline/pipeline.py:118
+#: flaskr/views/pipeline/pipeline.py:117
 msgid "v_pipeline_header_search"
 msgstr "Search..."
 
@@ -465,163 +609,4 @@ msgstr "Color is required"
 #: flaskr/views/statuses/update_status.py:80
 msgid "v_updateStatus_btn"
 msgstr "Save"
-
-#~ msgid "m_status_getFieldTypes_select"
-#~ msgstr "Dropdown select"
-
-#~ msgid "v_createField_form_minLength"
-#~ msgstr "Min length"
-
-#~ msgid "v_createField_form_minLength_required"
-#~ msgstr "Min length is required"
-
-#~ msgid "v_createField_form_maxLength"
-#~ msgstr "Max length"
-
-#~ msgid "v_createField_form_maxLength_required"
-#~ msgstr "Max length is required"
-
-#~ msgid "v_createField_form_min"
-#~ msgstr "Min"
-
-#~ msgid "v_createField_form_min_required"
-#~ msgstr "Min is required"
-
-#~ msgid "v_createField_form_max"
-#~ msgstr "Max"
-
-#~ msgid "v_createField_form_max_required"
-#~ msgstr "Max is required"
-
-#~ msgid "v_createField_form_fieldAsTitle"
-#~ msgstr "Field as title"
-
-#~ msgid "v_createField_form_primaryField"
-#~ msgstr "Primary field"
-
-#~ msgid "v_fields_schema_showInTitle"
-#~ msgstr "Show in title"
-
-#~ msgid "v_fields_schema_primary"
-#~ msgstr "Primary field"
-
-#~ msgid "v_updateField_form_minLength"
-#~ msgstr "Min length"
-
-#~ msgid "v_updateField_form_minLength_required"
-#~ msgstr "Min length is required"
-
-#~ msgid "v_updateField_form_maxLength"
-#~ msgstr "Max length"
-
-#~ msgid "v_updateField_form_maxLength_required"
-#~ msgstr "Max length is required"
-
-#~ msgid "v_updateField_form_min"
-#~ msgstr "Min"
-
-#~ msgid "v_updateField_form_min_required"
-#~ msgstr "Min is required"
-
-#~ msgid "v_updateField_form_max"
-#~ msgstr "Max"
-
-#~ msgid "v_updateField_form_max_required"
-#~ msgstr "Max is required"
-
-#~ msgid "v_pipeline_lead_empty"
-#~ msgstr "Empty lead"
-
-#~ msgid "v_createField_meta_name"
-#~ msgstr "Create field"
-
-#~ msgid "v_createField_form_name"
-#~ msgstr "Field name"
-
-#~ msgid "v_createField_form_name_placeholder"
-#~ msgstr "Ex: Promocode"
-
-#~ msgid "v_createField_form_name_length"
-#~ msgstr "Must contain 2 - 20 chars"
-
-#~ msgid "v_createField_form_name_required"
-#~ msgstr "Name is required"
-
-#~ msgid "v_createField_form_valueType"
-#~ msgstr "Value type"
-
-#~ msgid "v_createField_form_valueType_required"
-#~ msgstr "Value type is required"
-
-#~ msgid "v_createField_form_create"
-#~ msgstr "Create"
-
-#~ msgid "v_fields_meta_name"
-#~ msgstr "Fields"
-
-#~ msgid "v_fields_header_createField"
-#~ msgstr "Create field"
-
-#~ msgid "v_fields_schema_editField"
-#~ msgstr "Edit field"
-
-#~ msgid "v_fields_schema_noFields"
-#~ msgstr "No fields"
-
-#~ msgid "v_updateField_meta_name"
-#~ msgstr "Update field"
-
-#~ msgid "v_updateField_form_name"
-#~ msgstr "Field name"
-
-#~ msgid "v_updateField_form_placeholder"
-#~ msgstr "Ex: Promocode"
-
-#~ msgid "v_updateField_form_name_length"
-#~ msgstr "Must contain 2 - 20 chars"
-
-#~ msgid "v_updateField_form_name_required"
-#~ msgstr "Name is required"
-
-#~ msgid "v_updateField_form_valueType"
-#~ msgstr "Value type"
-
-#~ msgid "v_updateField_form_valueType_required"
-#~ msgstr "Value type is required"
-
-#~ msgid "v_updateField_form_fieldAsTitle"
-#~ msgstr "Field as title"
-
-#~ msgid "v_updateField_form_primaryField"
-#~ msgstr "Primary field"
-
-#~ msgid "v_updateField_form_save"
-#~ msgstr "Save"
-
-#~ msgid "v_searchInfo_meta_name"
-#~ msgstr "Search information"
-
-#~ msgid "v_searchInfo_content"
-#~ msgstr ""
-#~ "### Search by ID: \r"
-#~ "\r"
-#~ " ```id=1``` \r"
-#~ "\r"
-#~ "\r"
-#~ " ### Show only archived leads: \r"
-#~ "\r"
-#~ " ```archived=true``` \r"
-#~ "\r"
-#~ "\r"
-#~ " ### Search lead by UTM marks: \r"
-#~ "\r"
-#~ " - ```utm_source=google``` \r"
-#~ "\r"
-#~ " - ```utm_medium=cpc``` \r"
-#~ "\r"
-#~ " - ```utm_campaign=spring_sale``` \r"
-#~ "\r"
-#~ " - ```utm_term=running+shoes``` \r"
-#~ "\r"
-#~ " - ```utm_content=textlink```"
 

@@ -1,4 +1,4 @@
-# Create lead
+## Create lead
 
 `POST https://veokit.team/atomcrm/api/<TOKEN HERE>/createLead`
 
@@ -61,7 +61,7 @@ Sample response body:
 }
 ```
 
-# Get leads
+## Get leads
 
 `POST https://veokit.team/atomcrm/api/<TOKEN HERE>/getLeads`
 
@@ -107,7 +107,7 @@ Sample response body:
 }
 ```
 
-# Update lead
+## Update lead
 
 `POST https://veokit.team/atomcrm/api/<TOKEN HERE>/updateLead`
 

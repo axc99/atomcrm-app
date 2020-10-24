@@ -1,4 +1,4 @@
-# Get fields
+## Get fields
 
 For getting all fields do not pass `id` field.
 
