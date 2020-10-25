@@ -75,6 +75,14 @@ def create_lead(data, veokit_installation_id):
     if not is_valid:
         return vld.errors, 400
 
+    # Parse fields
+    fields = []
+    for field in data['fields']:
+        fields.append({
+            'field_id': field['fieldId'],
+            'value': field.get('value')
+        })
+
     # Check status id
     is_status_exist = Status.query \
                           .filter_by(id=data['statusId'],
@@ -86,6 +94,7 @@ def create_lead(data, veokit_installation_id):
 
     # Create lead
     lead = Lead()
+    lead.uid = Lead.get_uid()
     lead.veokit_installation_id = veokit_installation_id
     lead.status_id = data['statusId']
     lead.utm_source = data.get('utmSource', None)
@@ -100,8 +109,8 @@ def create_lead(data, veokit_installation_id):
     # Add tags and fields
     if data.get('tags'):
         lead.set_tags(data['tags'], new_lead=True)
-    if data.get('fields'):
-        lead.set_fields(data['fields'], new_lead=True)
+    if len(fields) > 0:
+        lead.set_fields(fields, new_lead=True)
 
     return {
         'lead': {
@@ -140,6 +149,14 @@ def update_lead(data, veokit_installation_id):
     if not is_valid:
         return vld.errors, 400
 
+    # Parse fields
+    fields = []
+    for field in data['fields']:
+        fields.append({
+            'field_id': field['fieldId'],
+            'value': field.get('value')
+        })
+
     # Get lead by id
     lead = Lead.query \
         .filter_by(id=data['uid'],
@@ -167,8 +184,8 @@ def update_lead(data, veokit_installation_id):
     # Set tags and fields
     if data.get('tags'):
         lead.set_tags(data['tags'])
-    if data.get('fields'):
-        lead.set_fields(data['fields'])
+    if len(fields) > 0:
+        lead.set_fields(fields)
 
     return {
         'lead': {

@@ -27,8 +27,10 @@ class Extension(View):
             raise Exception({'message': 'Invalid params',
                              'errors': vld.errors})
 
+        veokit_extension_id = extensions_map[params['key']].id
+
         self.installation_extension_settings = InstallationExtensionSettings.query \
-            .filter_by(extension=params['key'],
+            .filter_by(veokit_extension_id=veokit_extension_id,
                        veokit_installation_id=request_data['installation_id']) \
             .first()
 

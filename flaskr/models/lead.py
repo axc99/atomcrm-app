@@ -25,7 +25,7 @@ class Lead(db.Model):
     archived = db.Column(db.Boolean, default=False, nullable=False)
 
     veokit_installation_id = db.Column(db.Integer, nullable=False, index=True)
-    veokit_user_id = db.Column(db.Integer, nullable=False, index=True)
+    veokit_user_id = db.Column(db.Integer, nullable=True, index=True)
     status_id = db.Column(db.Integer, db.ForeignKey('status.id', ondelete='SET NULL'), nullable=False)
 
     # UTM marks
@@ -101,7 +101,7 @@ class Lead(db.Model):
 
         for lead_field in fields:
             field = Field.query \
-                .filter_by(id=lead_field['fieldId'],
+                .filter_by(id=lead_field['field_id'],
                            veokit_installation_id=self.veokit_installation_id) \
                 .first()
 
@@ -112,6 +112,8 @@ class Lead(db.Model):
                 new_lead_field.value = lead_field.get('value')
 
                 db.session.add(new_lead_field)
+            else:
+                print('Unknown field #{}'.format(lead_field['field_id']))
 
         db.session.commit()
 
@@ -333,7 +335,8 @@ class LeadAction(db.Model):
 
     log_date = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
-    veokit_user_id = db.Column(db.Integer, nullable=False, index=True)
+    veokit_user_id = db.Column(db.Integer, nullable=True, index=True)
+    # extension_id = db.Column(db.Integer, nullable=True, index=True)
     lead_id = db.Column(db.Integer, db.ForeignKey('lead.id', ondelete='CASCADE'), nullable=False)
 
     @staticmethod
