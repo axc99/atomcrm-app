@@ -256,7 +256,7 @@ class UpdateLead(View):
                                                     '_com': 'User',
                                                     'userId': self.lead.veokit_user_id
                                                 }
-                                            }
+                                            } if self.lead.veokit_user_id else None
                                         ]
                                     },
                                     {

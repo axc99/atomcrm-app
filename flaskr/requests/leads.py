@@ -121,6 +121,14 @@ def update_lead(params, request_data):
     if not is_valid:
         return {'res': 'err', 'message': 'Invalid params', 'errors': vld.errors}
 
+    # Parse fields
+    fields = []
+    for field in params['fields']:
+        fields.append({
+            'field_id': field['fieldId'],
+            'value': field.get('value')
+        })
+
     # Get lead by id
     lead = Lead.query \
         .filter_by(id=params['id'],
@@ -160,8 +168,8 @@ def update_lead(params, request_data):
     # Set tags and fields
     if params.get('tags'):
         lead.set_tags(params['tags'])
-    if params.get('fields'):
-        lead.set_fields(params['fields'])
+    if len(fields) > 0:
+        lead.set_fields(fields)
 
     return {
         'res': 'ok'

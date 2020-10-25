@@ -1,6 +1,12 @@
 import os
 from flaskr import db
+from flask import request
 from flask_babel import _
+import urllib.parse as urlparse
+from urllib.parse import parse_qs
+
+from flaskr.models.lead import Lead, LeadAction, LeadActionType
+from flaskr.models.status import Status
 from flaskr.views.extensions.extensions.extension import Extension
 
 
@@ -37,7 +43,7 @@ class MottorExtension(Extension):
         # Create markdown field-key list
         field_keys_list = ''
         for field in fields:
-            field_keys_list += '- {}: `f{}` \r'.format(field['name'], field['id'])
+            field_keys_list += '- `f{}` - {} \r'.format(field['id'], field['name'])
 
         return [
             {
@@ -124,5 +130,68 @@ class MottorExtension(Extension):
                 }"""
         }
 
-    def webhook_process(self, params):
-        return {'params': params}
+    @staticmethod
+    def catch_webhook(installation_extension_settings, webhook_key=None):
+        data = request.form
+        referer = request.headers.get('Referer')
+
+        utm_marks = {}
+        if referer:
+            search_params = parse_qs(urlparse.urlparse(referer).query)
+            for key, value in search_params.items():
+                utm_marks[key] = value[0]
+
+        fields = []
+        for field_key, field_value in data.items():
+            # Detect field with key f + id
+            if field_key[0] == 'f' and field_key[1:].isnumeric():
+                field_id = field_key[1:]
+                fields.append({
+                    'field_id': field_id,
+                    'value': field_value
+                })
+            elif field_key[:4] == 'utm_':
+                utm_marks[field_key] = field_value
+
+        # Get first status and status by settings
+        status = None
+        if installation_extension_settings.data.get('default_status') != 'first':
+            status = Status.query \
+                .with_entities(Status.id) \
+                .filter_by(veokit_installation_id=installation_extension_settings.veokit_installation_id,
+                           id=installation_extension_settings.data.get('default_status')) \
+                .first()
+        if installation_extension_settings.data.get('default_status') == 'first' or not status:
+            status = Status.query \
+                .with_entities(Status.id) \
+                .filter_by(veokit_installation_id=installation_extension_settings.veokit_installation_id) \
+                .order_by(Status.index.asc()) \
+                .first()
+
+        # Create lead
+        lead = Lead()
+        lead.uid = Lead.get_uid()
+        lead.veokit_installation_id = installation_extension_settings.veokit_installation_id
+        lead.status_id = status.id
+        # UTM marks
+        lead.utm_source = utm_marks.get('utm_source', None)
+        lead.utm_medium = utm_marks.get('utm_medium', None)
+        lead.utm_campaign = utm_marks.get('utm_campaign', None)
+        lead.utm_term = utm_marks.get('utm_term', None)
+        lead.utm_content = utm_marks.get('utm_content', None)
+
+        db.session.add(lead)
+        db.session.commit()
+
+        if len(fields) > 0:
+            lead.set_fields(fields, new_lead=True)
+
+        # Log action
+        new_action = LeadAction()
+        new_action.type = LeadActionType.create_lead
+        new_action.lead_id = lead.id
+        new_action.new_status_id = lead.status_id
+        db.session.add(new_action)
+        db.session.commit()
+
+        return '#{}'.format(lead.uid)

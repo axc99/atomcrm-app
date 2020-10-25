@@ -13,7 +13,7 @@ class InstallationExtensionSettings(db.Model):
 
     token = db.Column(db.String(32), nullable=False)
     veokit_installation_id = db.Column(db.Integer, nullable=False, index=True)
-    extension = db.Column(db.String(32), nullable=False)
+    veokit_extension_id = db.Column(db.Integer, nullable=False, index=True)
 
     data = db.Column(JSONB, nullable=False)
 

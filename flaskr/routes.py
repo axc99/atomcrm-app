@@ -14,10 +14,7 @@ from flaskr.models.token import Token
 from flaskr.models.installation_card_settings import InstallationCardSettings
 from flaskr.models.installation_extension_settings import InstallationExtensionSettings
 from flaskr.secure import validate_api_token, validate_secret_key
-
-
-# Index page
-from flaskr.views.extensions.extensions import get_extension_by_id
+from flaskr.views.extensions.extensions import get_extension_by_id, extensions_map
 
 
 @app.route('/')
@@ -171,8 +168,8 @@ def webhook():
         new_extension_settings = InstallationExtensionSettings()
         new_extension_settings.token = InstallationExtensionSettings.generate_token()
         new_extension_settings.veokit_installation_id = data['installationId']
+        new_extension_settings.veokit_extension_id = data['extensionId']
         new_extension_settings.data = extension_class.get_default_data()
-        new_extension_settings.extension = extension_class.key
         db.session.add(new_extension_settings)
         db.session.commit()
 
@@ -182,7 +179,7 @@ def webhook():
         # Disable extension
         InstallationExtensionSettings.query\
             .filter_by(veokit_installation_id=data['installationId'],
-                       extension=extension_class.key)\
+                       veokit_extension_id=data['extensionId'])\
             .delete()
         db.session.commit()
 
@@ -228,4 +225,17 @@ def api_method(token, method):
 @app.route('/ext/<extension_key>/wh/<webhook_token>', methods=['POST'])
 @app.route('/ext/<extension_key>/wh/<webhook_token>/<webhook_key>', methods=['POST'])
 def extension_webhook(extension_key, webhook_token, webhook_key=None):
-    return 'ext wh catch'
+    extension_class = extensions_map[extension_key]
+
+    installation_extension_id, installation_extension_token = webhook_token.split('_')
+    installation_extension_settings = InstallationExtensionSettings.query\
+                                .filter_by(id=installation_extension_id,
+                                           token=installation_extension_token)\
+                                .first()
+
+    if not installation_extension_settings or not extension_class:
+        return {
+           'message': 'Wrong request data'
+        }, 401
+
+    return extension_class.catch_webhook(installation_extension_settings, webhook_key)

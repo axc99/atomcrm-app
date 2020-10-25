@@ -1,6 +1,12 @@
 import os
+from flask import request
+
+from flaskr.models.lead import Lead
 from flaskr import db
 from flask_babel import _
+
+from flaskr.models.lead import LeadAction, LeadActionType
+from flaskr.models.status import Status
 from flaskr.views.extensions.extensions.extension import Extension
 
 
@@ -18,7 +24,8 @@ class WixExtension(Extension):
     @staticmethod
     def get_default_data():
         return {
-            'default_status': 'first'
+            'default_status': 'first',
+            'mapping': []
         }
 
     def get_schema_for_information(self, installation_extension_settings, params, request_data):
@@ -214,3 +221,63 @@ class WixExtension(Extension):
                         })
                 }"""
         }
+
+    @staticmethod
+    def catch_webhook(installation_extension_settings, webhook_key=None):
+        data = request.get_json(force=True).get('data')
+
+        fields = []
+        mapping = installation_extension_settings.data['mapping']
+        for mapping_field in mapping:
+            field_key = mapping_field.get('key')
+            field_id = mapping_field.get('field')
+            field_value = data.get(field_key) if field_key else None
+
+            if field_id and field_value:
+                fields.append({
+                    'field_id': field_id,
+                    'value': field_value
+                })
+
+        # Get first status and status by settings
+        status = None
+        if installation_extension_settings.data.get('default_status') != 'first':
+            status = Status.query \
+                .with_entities(Status.id) \
+                .filter_by(veokit_installation_id=installation_extension_settings.veokit_installation_id,
+                           id=installation_extension_settings.data.get('default_status')) \
+                .first()
+        if installation_extension_settings.data.get('default_status') == 'first' or not status:
+            status = Status.query \
+                .with_entities(Status.id) \
+                .filter_by(veokit_installation_id=installation_extension_settings.veokit_installation_id) \
+                .order_by(Status.index.asc()) \
+                .first()
+
+        # Create lead
+        lead = Lead()
+        lead.uid = Lead.get_uid()
+        lead.veokit_installation_id = installation_extension_settings.veokit_installation_id
+        lead.status_id = status.id
+        # UTM marks
+        # lead.utm_source = utm_marks.get('utm_source', None)
+        # lead.utm_medium = utm_marks.get('utm_medium', None)
+        # lead.utm_campaign = utm_marks.get('utm_campaign', None)
+        # lead.utm_term = utm_marks.get('utm_term', None)
+        # lead.utm_content = utm_marks.get('utm_content', None)
+
+        db.session.add(lead)
+        db.session.commit()
+
+        if len(fields) > 0:
+            lead.set_fields(fields, new_lead=True)
+
+        # Log action
+        new_action = LeadAction()
+        new_action.type = LeadActionType.create_lead
+        new_action.lead_id = lead.id
+        new_action.new_status_id = lead.status_id
+        db.session.add(new_action)
+        db.session.commit()
+
+        return '#{}'.format(lead.uid)
