@@ -125,10 +125,10 @@ def webhook():
 
         # Add fields
         default_fields = [
-            {'index': 0, 'name': _('r_webhook_defaultStatuses_firstName'), 'value_type': 'string', 'max': 40, 'as_title': True, 'primary': False},
-            {'index': 0, 'name': _('r_webhook_defaultStatuses_lastName'), 'value_type': 'string', 'max': 60, 'as_title': True, 'primary': False},
-            {'index': 0, 'name': _('r_webhook_defaultStatuses_email'), 'value_type': 'string', 'max': 260, 'as_title': False, 'primary': True},
-            {'index': 0, 'name': _('r_webhook_defaultStatuses_mobilePhone'), 'value_type': 'string', 'max': 30, 'as_title': False, 'primary': True}
+            {'index': 0, 'name': _('r_webhook_defaultStatuses_firstName'), 'value_type': 'string', 'max': 40, 'board_visibility': 'title', 'primary': False},
+            {'index': 0, 'name': _('r_webhook_defaultStatuses_lastName'), 'value_type': 'string', 'max': 60, 'board_visibility': 'title', 'primary': False},
+            {'index': 0, 'name': _('r_webhook_defaultStatuses_email'), 'value_type': 'string', 'max': 260, 'board_visibility': 'subtitle', 'primary': True},
+            {'index': 0, 'name': _('r_webhook_defaultStatuses_mobilePhone'), 'value_type': 'string', 'max': 30, 'board_visibility': 'subtitle', 'primary': True}
         ]
         for default_field in default_fields:
             new_field = Field()
@@ -136,7 +136,7 @@ def webhook():
             new_field.name = default_field['name']
             new_field.value_type = default_field['value_type']
             new_field.max = default_field['max']
-            new_field.as_title = default_field['as_title']
+            new_field.board_visibility = default_field['board_visibility']
             new_field.primary = default_field['primary']
             new_field.veokit_installation_id = data['installationId']
 

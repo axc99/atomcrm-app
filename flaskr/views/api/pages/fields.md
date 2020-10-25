@@ -17,18 +17,12 @@ Sample response body:
   {
     "id": 1,
     "name": "First name",
-    "min": 0,
-    "max": 30,
-    "asTitle": true,
-    "primary": false
+    "valueType": "string"
   },
   {
     "id": 2,
     "name": "Mobile phone",
-    "min": 0,
-    "max": 50,
-    "asTitle": false,
-    "primary": false
+    "valueType": "number"
   }
 ]
 ```
