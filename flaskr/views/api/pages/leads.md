@@ -20,11 +20,11 @@ Sample request body:
          "value": "john@gmail.com"
       }
    ],
-   "utm_source": "google",
-   "utm_medium": "cpc",
-   "utm_campaign": "spring_sale",
-   "utm_term": "running+shoes",
-   "utm_content": "textlink"
+   "utmSource": "google",
+   "utmMedium": "cpc",
+   "utmCampaign": "spring_sale",
+   "utmTerm": "running+shoes",
+   "utmContent": "textlink"
 }
 ```
 
@@ -53,11 +53,11 @@ Sample response body:
          }
       ]
    },
-   "utm_source": "google",
-   "utm_medium": "cpc",
-   "utm_campaign": "spring_sale",
-   "utm_term": "running+shoes",
-   "utm_content": "textlink"
+   "utmSource": "google",
+   "utmMedium": "cpc",
+   "utmCampaign": "spring_sale",
+   "utmTerm": "running+shoes",
+   "utmContent": "textlink"
 }
 ```
 
@@ -97,11 +97,11 @@ Sample response body:
                "value": "john@gmail.com"
             }
          ],
-         "utm_source": "google",
-         "utm_medium": "cpc",
-         "utm_campaign": "spring_sale",
-         "utm_term": "running+shoes",
-         "utm_content": "textlink"
+         "utmSource": "google",
+         "utmMedium": "cpc",
+         "utmCampaign": "spring_sale",
+         "utmTerm": "running+shoes",
+         "utmContent": "textlink"
       }
    ]
 }

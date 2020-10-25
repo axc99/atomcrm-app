@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from flaskr.models.lead import Lead
+from flaskr.models.lead import Lead, LeadAction, LeadActionType
 from flaskr.models.status import Status
 from flaskr.models.field import Field
 from flaskr import db
@@ -112,6 +112,14 @@ def create_lead(data, veokit_installation_id):
     if len(fields) > 0:
         lead.set_fields(fields, new_lead=True)
 
+    # Log action
+    new_action = LeadAction()
+    new_action.type = LeadActionType.create_lead
+    new_action.lead_id = lead.id
+    new_action.new_status_id = lead.status_id
+    db.session.add(new_action)
+    db.session.commit()
+
     return {
         'lead': {
             'uid': lead.uid,
@@ -159,25 +167,27 @@ def update_lead(data, veokit_installation_id):
 
     # Get lead by id
     lead = Lead.query \
-        .filter_by(id=data['uid'],
+        .filter_by(uid=data['uid'],
                    veokit_installation_id=veokit_installation_id) \
         .first()
 
     if not lead:
         return {"message": "Lead (uid={}) does not exist".format(data['uid'])}, 400
 
-    if lead.status_id != data['status_id']:
+    if lead.status_id != data['statusId']:
         # Check status id
         is_status_exist = Status.query \
-                              .filter_by(id=data['status_id'],
+                              .filter_by(id=data['statusId'],
                                          veokit_installation_id=veokit_installation_id) \
                               .count() != 0
         if not is_status_exist:
             return {'message': 'Status (id={}) does not exist'.format(data['status_id'])}, \
                    400
 
+    old_status_id = lead.status_id
+
     # Update lead
-    lead.status_id = data['status_id']
+    lead.status_id = data['statusId']
     lead.upd_date = datetime.utcnow()
     db.session.commit()
 
@@ -186,6 +196,23 @@ def update_lead(data, veokit_installation_id):
         lead.set_tags(data['tags'])
     if len(fields) > 0:
         lead.set_fields(fields)
+
+    # Log update action
+    new_action = LeadAction()
+    new_action.type = LeadActionType.update_lead
+    new_action.lead_id = lead.id
+    db.session.add(new_action)
+    db.session.commit()
+
+    if old_status_id != lead.status_id:
+        # Log change_status action
+        new_action = LeadAction()
+        new_action.type = LeadActionType.update_lead_status
+        new_action.old_status_id = old_status_id
+        new_action.new_status_id = lead.status_id
+        new_action.lead_id = lead.id
+        db.session.add(new_action)
+        db.session.commit()
 
     return {
         'lead': {
@@ -246,9 +273,7 @@ def get_fields(data, veokit_installation_id):
         res_fields.append({
             'id': field.id,
             'valueType': field.value_type.name,
-            'name': field.name,
-            'min': field.min,
-            'max': field.max
+            'name': field.name
         })
 
     return {
