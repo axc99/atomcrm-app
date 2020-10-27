@@ -187,7 +187,8 @@ def update_lead_status(params, request_data):
         return {'res': 'err', 'message': 'Invalid params', 'errors': vld.errors}
 
     lead = Lead.query \
-        .filter_by(id=params['id']) \
+        .filter_by(id=params['id'],
+                   veokit_installation_id=request_data['installation_id']) \
         .first()
     lead.upd_date = datetime.utcnow()
     lead.status_id = params['statusId']
@@ -209,7 +210,8 @@ def archive_lead(params, request_data):
         return {'res': 'err', 'message': 'Invalid params', 'errors': vld.errors}
 
     lead = Lead.query \
-        .filter_by(id=params['id']) \
+        .filter_by(id=params['id'],
+                   veokit_installation_id=request_data['installation_id']) \
         .first()
     lead.archived = True
 
@@ -237,7 +239,8 @@ def restore_lead(params, request_data):
         return {'res': 'err', 'message': 'Invalid params', 'errors': vld.errors}
 
     lead = Lead.query \
-        .filter_by(id=params['id']) \
+        .filter_by(id=params['id'],
+                   veokit_installation_id=request_data['installation_id']) \
         .first()
     lead.archived = False
 
