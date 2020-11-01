@@ -222,7 +222,7 @@ class Pipeline(View):
                         .sendReq('getLeadComponents', {
                             statusId,
                             offset: addToEnd ? boardColumns[columnIndex].items.length : 0,
-                            limit: addToEnd ? 10 : boardColumns[columnIndex].items.length,
+                            limit: (addToEnd || boardColumns[columnIndex].items.length < 10) ? 10 : boardColumns[columnIndex].items.length,
                             search: '""" + str(params['search'] if params.get('search') else '') + """',
                             filter: """ + json.dumps(self.filter_params) + """
                         })
