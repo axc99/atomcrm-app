@@ -52,6 +52,7 @@ def update_card_settings(params, request_data):
                 else:
                     # Create new field
                     new_field = Field()
+                    new_field.index = i
                     new_field.name = field['name']
                     new_field.value_type = field['valueType']
                     new_field.board_visibility = field['boardVisibility']

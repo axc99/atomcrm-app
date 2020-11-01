@@ -29,7 +29,7 @@ msgstr "Первый контакт"
 
 #: flaskr/routes.py:115
 msgid "r_webhook_defaultStatuses_qualified"
-msgstr "Принимают решение"
+msgstr "Принимает решение"
 
 #: flaskr/routes.py:116
 msgid "r_webhook_defaultStatuses_proposalMade"
@@ -37,7 +37,7 @@ msgstr "Переговоры"
 
 #: flaskr/routes.py:117
 msgid "r_webhook_defaultStatuses_win"
-msgstr "Победы"
+msgstr "Победа"
 
 #: flaskr/routes.py:118
 msgid "r_webhook_defaultStatuses_lost"

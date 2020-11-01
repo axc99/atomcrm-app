@@ -142,10 +142,15 @@ def webhook():
 
             db.session.add(new_field)
 
+        # Get currency by lang
+        currency_by_lang = {'en': 'usd',
+                            'ru': 'rub'}
+        currency = currency_by_lang[lang_key] if lang_key in currency_by_lang else 'en'
+
         # Create card settings
         new_card_settings = InstallationCardSettings()
         new_card_settings.amount_enabled = False
-        new_card_settings.currency = 'usd'
+        new_card_settings.currency = currency
         new_card_settings.veokit_installation_id = data['installationId']
         db.session.add(new_card_settings)
         db.session.commit()

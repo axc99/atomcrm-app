@@ -187,11 +187,7 @@ class Card(View):
                         boardVisibility: {
                             '_com': 'Field.Select',
                             'value': 'subtitle',
-                            'options': [
-                                {'value': 'none', 'label': 'Do not show'},
-                                {'value': 'title', 'label': 'Show in title'},
-                                {'value': 'subtitle', 'label': 'Show in description'}
-                            ]
+                            'options': """ + str(self.board_visibility_options) + """
                         },
                         actions: [
                             {
