@@ -51,6 +51,47 @@ class Lead(db.Model):
     def generate_uid():
         return ''.join(random.choice('ABCD' + string.digits) for _ in range(8))
 
+    def complete_tasks(self, completed_task_ids, user_id):
+        current_completed_tasks = LeadCompletedTask.query \
+            .filter_by(lead_id=self.id) \
+            .all()
+        current_completed_tasks_ids = [t.task_id for t in current_completed_tasks]
+        deleted_tasks_ids = [id for id in current_completed_tasks_ids if id not in completed_task_ids]
+        new_completed_tasks_ids = [id for id in completed_task_ids if id not in current_completed_tasks_ids]
+
+        # Delete tasks
+        LeadCompletedTask.query \
+            .filter(LeadCompletedTask.task_id.in_(deleted_tasks_ids),
+                    LeadCompletedTask.lead_id == self.id) \
+            .delete(synchronize_session=False)
+        db.session.commit()
+
+        for task_id in deleted_tasks_ids:
+            # Log action
+            new_action = LeadAction()
+            new_action.type = LeadActionType.revert_complete_task
+            new_action.lead_id = self.id
+            new_action.completed_task_id = task_id
+            new_action.veokit_user_id = user_id
+            db.session.add(new_action)
+
+        # Create new task
+        for task_id in new_completed_tasks_ids:
+            lead_task = LeadCompletedTask()
+            lead_task.task_id = task_id
+            lead_task.lead_id = self.id
+            db.session.add(lead_task)
+
+            # Log action
+            new_action = LeadAction()
+            new_action.type = LeadActionType.complete_task
+            new_action.lead_id = self.id
+            new_action.completed_task_id = task_id
+            new_action.veokit_user_id = user_id
+            db.session.add(new_action)
+
+        db.session.commit()
+
     # Set tags
     def set_tags(self, tags, new_lead=False):
         if not new_lead:
@@ -307,6 +348,18 @@ class LeadField(db.Model):
     field_id = db.Column(db.Integer, db.ForeignKey('field.id', ondelete='CASCADE'), nullable=False)
 
 
+# Lead completed task
+class LeadCompletedTask(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+
+    add_date = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+
+    lead_id = db.Column(db.Integer, db.ForeignKey('lead.id', ondelete='CASCADE'), nullable=False)
+    task_id = db.Column(db.Integer, db.ForeignKey('task.id', ondelete='CASCADE'), nullable=True)
+    task_id = db.Column(db.Integer, db.ForeignKey('task.id', ondelete='CASCADE'), nullable=True)
+    veokit_user_id = db.Column(db.Integer, nullable=True, index=True)
+
+
 # Lead tag
 class LeadTag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -321,6 +374,8 @@ class LeadActionType(enum.Enum):
     update_lead_status = 3
     archive_lead = 4
     restore_lead = 5
+    complete_task = 10
+    revert_complete_task = 11
 
 
 # Lead action
@@ -329,9 +384,12 @@ class LeadAction(db.Model):
 
     type = db.Column(Enum(LeadActionType), nullable=False)
 
-    # Update task status
+    # Update lead status
     old_status_id = db.Column(db.Integer, db.ForeignKey('status.id', ondelete='CASCADE'), nullable=True)
     new_status_id = db.Column(db.Integer, db.ForeignKey('status.id', ondelete='CASCADE'), nullable=True)
+
+    # Complete task
+    completed_task_id = db.Column(db.Integer, db.ForeignKey('task.id', ondelete='CASCADE'), nullable=True)
 
     log_date = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
@@ -369,6 +427,14 @@ class LeadAction(db.Model):
             'restore_lead': {
                 'color': 'green',
                 'title': _('m_lead_leadAction_getItemData_restoreLead')  # 'Restore lead'
+            },
+            'complete_task': {
+                'color': 'green',
+                'title': _('m_lead_leadAction_getItemData_completeTask', task_name=action['task_name'])
+            },
+            'revert_complete_task': {
+                'color': 'red',
+                'title': _('m_lead_leadAction_getItemData_revertCompleteTask', task_name=action['task_name'])
             }
         }
 

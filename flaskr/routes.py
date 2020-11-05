@@ -10,11 +10,12 @@ from flaskr.models.lead import Lead
 from flaskr.models.status import Status
 from flaskr.models.field import Field
 from flaskr.models.tag import Tag
+from flaskr.models.task import Task
 from flaskr.models.token import Token
 from flaskr.models.installation_card_settings import InstallationCardSettings
 from flaskr.models.installation_extension_settings import InstallationExtensionSettings
 from flaskr.secure import validate_api_token, validate_secret_key
-from flaskr.views.extensions.extensions import get_extension_by_id, extensions_map
+from flaskr.extensions import get_extension_by_id, extensions_map
 
 
 @app.route('/')
@@ -126,9 +127,9 @@ def webhook():
         # Add fields
         default_fields = [
             {'index': 0, 'name': _('r_webhook_defaultStatuses_firstName'), 'value_type': 'string', 'max': 40, 'board_visibility': 'title', 'primary': False},
-            {'index': 0, 'name': _('r_webhook_defaultStatuses_lastName'), 'value_type': 'string', 'max': 60, 'board_visibility': 'title', 'primary': False},
-            {'index': 0, 'name': _('r_webhook_defaultStatuses_email'), 'value_type': 'string', 'max': 260, 'board_visibility': 'subtitle', 'primary': True},
-            {'index': 0, 'name': _('r_webhook_defaultStatuses_mobilePhone'), 'value_type': 'string', 'max': 30, 'board_visibility': 'subtitle', 'primary': True}
+            {'index': 1, 'name': _('r_webhook_defaultStatuses_lastName'), 'value_type': 'string', 'max': 60, 'board_visibility': 'title', 'primary': False},
+            {'index': 2, 'name': _('r_webhook_defaultStatuses_email'), 'value_type': 'string', 'max': 260, 'board_visibility': 'subtitle', 'primary': True},
+            {'index': 3, 'name': _('r_webhook_defaultStatuses_mobilePhone'), 'value_type': 'string', 'max': 30, 'board_visibility': 'subtitle', 'primary': True}
         ]
         for default_field in default_fields:
             new_field = Field()
@@ -141,6 +142,19 @@ def webhook():
             new_field.veokit_installation_id = data['installationId']
 
             db.session.add(new_field)
+
+        # Add tasks
+        default_tasks = [
+            {'index': 0, 'name': _('r_webhook_defaultTasks_sendLetter')},
+            {'index': 1, 'name': _('r_webhook_defaultTasks_makeCall')}
+        ]
+        for default_task in default_tasks:
+            new_task = Task()
+            new_task.index = default_task['index']
+            new_task.name = default_task['name']
+            new_task.veokit_installation_id = data['installationId']
+
+            db.session.add(new_task)
 
         # Get currency by lang
         currency_by_lang = {'en': 'usd',

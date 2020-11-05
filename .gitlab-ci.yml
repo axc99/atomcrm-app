@@ -20,7 +20,7 @@ deploy:
   stage: deploy
   script:
     - rsync -avuz $CI_PROJECT_DIR $SERVER_USER@$SERVER_IP:~
-    - ssh $SERVER_USER@$SERVER_IP '. /etc/profile; cd /root/atomcrm-app/; docker-compose -f docker-compose.yml build; docker-compose run web pybabel compile -d flaskr/translations; docker-compose run web flask db upgrade; docker-compose up -d;'
+    - ssh $SERVER_USER@$SERVER_IP '. /etc/profile; cd /root/atomcrm-app/; docker-compose -f docker-compose.yml build; docker-compose run web pybabel compile -d flaskr/translations; docker-compose run web python manage.py compile; docker-compose run web flask db upgrade; docker-compose restart;'
   only:
     # Trigger deployments only from master branch
     - master

@@ -5,8 +5,7 @@ from flask_migrate import Migrate
 from flask_babel import Babel
 
 
-app = Flask(__name__)
-
+app = None
 if os.environ.get('FLASK_ENV') == 'production':
     app = Flask(__name__)
     app.debug = False
@@ -22,11 +21,13 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://{}:{}@db/{}'.format(os.envir
                                                                         os.environ.get('POSTGRES_DB'))
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
-
 # DB and migrations
 db = SQLAlchemy(app)
-migrate = Migrate(app, db)
-db.create_all()
+migrate = Migrate(app, db, compare_type=True)
+
+
+def init_db():
+    db.create_all()
 
 
 # Babel

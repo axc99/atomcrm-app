@@ -5,7 +5,7 @@ from flaskr import db
 from flaskr.models.installation_card_settings import InstallationCardSettings
 from flaskr.models.lead import Lead, LeadAction, LeadActionType
 from flaskr.models.status import Status
-from flaskr.views.pipeline.pipeline import get_lead_component
+from flaskr.views.leads.pipeline import get_lead_component
 
 
 # Get lead components for status
@@ -194,6 +194,32 @@ def update_lead_status(params, request_data):
     lead.status_id = params['statusId']
 
     db.session.commit()
+
+    return {
+        'res': 'ok'
+    }
+
+
+# Complete lead tasks
+def complete_lead_tasks(params, request_data):
+    vld = Validator({
+        'id': {'type': 'number', 'required': True},
+        'task_ids': {'type': 'list', 'required': True}
+    })
+    is_valid = vld.validate(params)
+    if not is_valid:
+        return {'res': 'err', 'message': 'Invalid params', 'errors': vld.errors}
+
+    # Get lead by id
+    lead = Lead.query \
+        .filter_by(id=params['id'],
+                   veokit_installation_id=request_data['installation_id']) \
+        .first()
+    if not lead:
+        return {'res': 'err', 'message': 'Unknown lead'}
+
+    lead.complete_tasks(params['task_ids'],
+                        user_id=request_data['user_id'])
 
     return {
         'res': 'ok'

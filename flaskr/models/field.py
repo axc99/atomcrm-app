@@ -24,7 +24,7 @@ class FieldBoardVisibility(enum.Enum):
 # Field
 class Field(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(20), nullable=False)
+    name = db.Column(db.String(40), nullable=False)
 
     value_type = Column(Enum(FieldType), nullable=False, server_default='string')
     board_visibility = Column(Enum(FieldBoardVisibility), nullable=False, server_default='none')
