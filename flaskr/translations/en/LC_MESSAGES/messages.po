@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-10-24 18:54+0000\n"
+"POT-Creation-Date: 2020-11-05 00:12+0000\n"
 "PO-Revision-Date: 2020-10-10 19:41+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,45 +18,175 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-#: flaskr/routes.py:113
+#: flaskr/routes.py:110
 msgid "r_webhook_defaultStatuses_lead"
 msgstr "Lead"
 
-#: flaskr/routes.py:114
+#: flaskr/routes.py:111
 msgid "r_webhook_defaultStatuses_contacted"
 msgstr "Contacted"
 
-#: flaskr/routes.py:115
+#: flaskr/routes.py:112
 msgid "r_webhook_defaultStatuses_qualified"
 msgstr "Qualified"
 
-#: flaskr/routes.py:116
+#: flaskr/routes.py:113
 msgid "r_webhook_defaultStatuses_proposalMade"
 msgstr "Proposal made"
 
-#: flaskr/routes.py:117
+#: flaskr/routes.py:114
 msgid "r_webhook_defaultStatuses_win"
 msgstr "Win"
 
-#: flaskr/routes.py:118
+#: flaskr/routes.py:115
 msgid "r_webhook_defaultStatuses_lost"
 msgstr "Lost"
 
-#: flaskr/routes.py:131
+#: flaskr/routes.py:128
 msgid "r_webhook_defaultStatuses_firstName"
 msgstr "First name"
 
-#: flaskr/routes.py:132
+#: flaskr/routes.py:129
 msgid "r_webhook_defaultStatuses_lastName"
 msgstr "Last name"
 
-#: flaskr/routes.py:133
+#: flaskr/routes.py:130
 msgid "r_webhook_defaultStatuses_email"
 msgstr "Email"
 
-#: flaskr/routes.py:134
+#: flaskr/routes.py:131
 msgid "r_webhook_defaultStatuses_mobilePhone"
 msgstr "Mobile phone"
+
+#: flaskr/routes.py:147
+msgid "r_webhook_defaultTasks_sendLetter"
+msgstr "Send an email"
+
+#: flaskr/routes.py:148
+msgid "r_webhook_defaultTasks_makeCall"
+msgstr "Make a call"
+
+#: flaskr/extensions/mottor/__init__.py:58
+msgid "v_extension_mottor_information_content"
+msgstr ""
+"## Form connection in Mottor\r"
+"\r"
+"1. Open the website editor.\r"
+"\r"
+"2. Go to form editing.\r"
+"\r"
+"3. In the **«Actions»** section, enable sending data by POST request.\r"
+"\r"
+"4. In the form that appears, indicate the link: `%(webhook_url)s`.\r"
+"\r"
+"5. In the **«Data»** field, you must indicate the ratio of the parameters"
+" of the form fields to the fields in the card. `\r"
+
+#: flaskr/extensions/mottor/__init__.py:78
+msgid "v_extension_mottor_information_settings_status_alwaysFirst"
+msgstr "First status"
+
+#: flaskr/extensions/mottor/__init__.py:96
+msgid "v_extension_mottor_information_settings_status"
+msgstr "Default status"
+
+#: flaskr/extensions/mottor/__init__.py:101
+msgid "v_extension_mottor_information_settings_primary_rules_required"
+msgstr "Status is required"
+
+#: flaskr/extensions/mottor/__init__.py:111
+msgid "v_extension_mottor_information_settings_save"
+msgstr "Save"
+
+#: flaskr/extensions/tilda/__init__.py:56
+msgid "v_extension_tilda_information_content"
+msgstr ""
+"## Connecting a Tilda form\r"
+"\r"
+"1. Go to the Tilda service website and follow the link: "
+"https://help.tilda.ws/formswebhook\r"
+"\r"
+"2. In the Webhook URL field, paste the following link: `%(webhook_url)s`\r"
+"\r"
+"## Setting fields\r"
+"Now you need to map the fields from Tilda to the fields in AtomCRM. This "
+"will automatically distribute the data from the form to the added lead.\r"
+"\r"
+"1. Go to the site, in the block with the form, click on the Content "
+"button.\r"
+"\r"
+"2. Go to the section with settings for input fields.\r"
+"\r"
+"3. For each field in the form in the \"Variable name\" specify the "
+"corresponding field key in the card.\r"
+"\r"
+"**Fields and keys:**\r"
+"\r"
+"%(field_keys_list)s\r"
+"\r"
+"4. Save actions."
+
+#: flaskr/extensions/tilda/__init__.py:76
+msgid "v_extension_tilda_information_settings_status_alwaysFirst"
+msgstr "Always first"
+
+#: flaskr/extensions/tilda/__init__.py:94
+msgid "v_extension_tilda_information_settings_status"
+msgstr "Default lead status"
+
+#: flaskr/extensions/tilda/__init__.py:99
+msgid "v_extension_tilda_information_settings_primary_rules_required"
+msgstr "Default lead status is required"
+
+#: flaskr/extensions/tilda/__init__.py:109
+msgid "v_extension_tilda_information_settings_save"
+msgstr "Save"
+
+#: flaskr/extensions/wix/__init__.py:60
+msgid "v_extension_wix_information_content"
+msgstr ""
+"## Connecting a form in Wix\r"
+"\r"
+"1. Open website management.\\\r"
+"2. In the left menu, go first to «Settings», and then to «Additional "
+"setup», go to the\" Record setup \"page.\r"
+"\r"
+"3. In the \"Notifications and automatic processes\" block, go to editing "
+"automatic processes.\r"
+"\r"
+"4. Open Add New AutoProcess. \r"
+"\r"
+"5. Select Trigger - Wix Forms. \r"
+"\r"
+"6. Select reaction - connect WebHook.\r"
+"\r"
+"7. Enter a link as the target URL: `%(webhook_url)s`. \r"
+"\r"
+"8. Turn on auto-process. \r"
+"\r"
+"## Setting fields\r"
+"Go to settings and match the fields from the form to the fields in the "
+"card."
+
+#: flaskr/extensions/wix/__init__.py:66
+msgid "v_extension_wix_openSettings"
+msgstr "Open settings"
+
+#: flaskr/extensions/wix/__init__.py:86
+msgid "v_extension_wix_information_settings_status_alwaysFirst"
+msgstr "First status"
+
+#: flaskr/extensions/wix/__init__.py:153
+msgid "v_extension_wix_information_settings_status"
+msgstr "Default status"
+
+#: flaskr/extensions/wix/__init__.py:158
+msgid "v_extension_wix_information_settings_primary_rules_required"
+msgstr "Status is required"
+
+#: flaskr/extensions/wix/__init__.py:192
+msgid "v_extension_wix_information_settings_save"
+msgstr "Save"
 
 #: flaskr/models/field.py:39
 msgid "m_status_getFieldTypes_string"
@@ -90,89 +220,97 @@ msgstr "In title"
 msgid "m_status_getBoardVisibility_subtitle"
 msgstr "In description"
 
-#: flaskr/models/lead.py:189
+#: flaskr/models/lead.py:232
 msgid "m_lead_getRegularDate_jan"
 msgstr "Jan"
 
-#: flaskr/models/lead.py:190
+#: flaskr/models/lead.py:233
 msgid "m_lead_getRegularDate_feb"
 msgstr "Feb"
 
-#: flaskr/models/lead.py:191
+#: flaskr/models/lead.py:234
 msgid "m_lead_getRegularDate_mar"
 msgstr "Mar"
 
-#: flaskr/models/lead.py:192
+#: flaskr/models/lead.py:235
 msgid "m_lead_getRegularDate_apr"
 msgstr "Apr"
 
-#: flaskr/models/lead.py:193
+#: flaskr/models/lead.py:236
 msgid "m_lead_getRegularDate_may"
 msgstr "May"
 
-#: flaskr/models/lead.py:194
+#: flaskr/models/lead.py:237
 msgid "m_lead_getRegularDate_jun"
 msgstr "Jun"
 
-#: flaskr/models/lead.py:195
+#: flaskr/models/lead.py:238
 msgid "m_lead_getRegularDate_jul"
 msgstr "Jul"
 
-#: flaskr/models/lead.py:196
+#: flaskr/models/lead.py:239
 msgid "m_lead_getRegularDate_aug"
 msgstr "Aug"
 
-#: flaskr/models/lead.py:197
+#: flaskr/models/lead.py:240
 msgid "m_lead_getRegularDate_sep"
 msgstr "Sep"
 
-#: flaskr/models/lead.py:198
+#: flaskr/models/lead.py:241
 msgid "m_lead_getRegularDate_oct"
 msgstr "Oct"
 
-#: flaskr/models/lead.py:199
+#: flaskr/models/lead.py:242
 msgid "m_lead_getRegularDate_nov"
 msgstr "Nov"
 
-#: flaskr/models/lead.py:200
+#: flaskr/models/lead.py:243
 msgid "m_lead_getRegularDate_dec"
 msgstr "Dec"
 
-#: flaskr/models/lead.py:205
+#: flaskr/models/lead.py:248
 msgid "m_lead_getRegularDate_today"
 msgstr "Today at %(hours)s:%(minutes)s"
 
-#: flaskr/models/lead.py:207
+#: flaskr/models/lead.py:250
 msgid "m_lead_getRegularDate_yesterday"
 msgstr "Yesterday at %(hours)s:%(minutes)s"
 
-#: flaskr/models/lead.py:210
+#: flaskr/models/lead.py:253
 msgid "m_lead_getRegularDate_date"
 msgstr "%(day)s %(month)s at %(hours)s:%(minutes)s"
 
-#: flaskr/models/lead.py:212
+#: flaskr/models/lead.py:255
 msgid "m_lead_getRegularDate_dateWithYear"
 msgstr "%(day)s %(month)s %(year)s at %(hours)s:%(minutes)s"
 
-#: flaskr/models/lead.py:344
+#: flaskr/models/lead.py:405
 msgid "m_lead_leadAction_getItemData_createLead"
 msgstr "Add lead on «%(new_status_name)s»"
 
-#: flaskr/models/lead.py:350
+#: flaskr/models/lead.py:411
 msgid "m_lead_leadAction_getItemData_updateLead"
 msgstr "Edit lead"
 
-#: flaskr/models/lead.py:355
+#: flaskr/models/lead.py:416
 msgid "m_lead_leadAction_getItemData_updateLeadStatus"
 msgstr "Change lead status from «%(old_status_name)s» to «%(new_status_name)s»"
 
-#: flaskr/models/lead.py:364
+#: flaskr/models/lead.py:425
 msgid "m_lead_leadAction_getItemData_archiveLead"
 msgstr "Archive lead"
 
-#: flaskr/models/lead.py:368
+#: flaskr/models/lead.py:429
 msgid "m_lead_leadAction_getItemData_restoreLead"
 msgstr "Update lead"
+
+#: flaskr/models/lead.py:433
+msgid "m_lead_leadAction_getItemData_completeTask"
+msgstr "Complete task «%(task_name)s»"
+
+#: flaskr/models/lead.py:437
+msgid "m_lead_leadAction_getItemData_revertCompleteTask"
+msgstr "Revert complete task «%(task_name)s»"
 
 #: flaskr/models/status.py:38
 msgid "m_status_getStatusColors_red"
@@ -198,415 +336,393 @@ msgstr "Green"
 msgid "m_status_getStatusColors_orange"
 msgstr "Orange"
 
-#: flaskr/views/api/api.py:22
+#: flaskr/views/api/api/__init__.py:22
 msgid "v_api_header_extensions"
 msgstr "Extensions"
 
-#: flaskr/views/api/api.py:29
+#: flaskr/views/api/api/__init__.py:29
 msgid "v_api_header_getToken"
 msgstr "Get token"
 
-#: flaskr/views/api/api.py:36
+#: flaskr/views/api/api/__init__.py:36
 msgid "v_api_header_tabs_leads"
 msgstr "Leads"
 
-#: flaskr/views/api/api.py:43
+#: flaskr/views/api/api/__init__.py:43
 msgid "v_api_header_tabs_statuses"
 msgstr "Statuses"
 
-#: flaskr/views/api/api.py:50
+#: flaskr/views/api/api/__init__.py:50
 msgid "v_api_header_tabs_fields"
 msgstr "Fields"
 
-#: flaskr/views/api/getToken.py:10
+#: flaskr/views/api/get_token/__init__.py:14
 msgid "v_getToken_meta_name"
 msgstr "Get token"
 
-#: flaskr/views/api/getToken.py:16
+#: flaskr/views/api/get_token/__init__.py:20
 msgid "v_getToken_meta_header_subtitle"
 msgstr ""
 "=After clicking on the \"Create token\" button, your current token will "
 "be deactivated!"
 
-#: flaskr/views/api/getToken.py:25
+#: flaskr/views/api/get_token/__init__.py:29
 msgid "v_getToken_schema_btn"
 msgstr "Create token"
 
-#: flaskr/views/api/getToken.py:32
+#: flaskr/views/api/get_token/__init__.py:36
 msgid "v_getToken_schema_token"
 msgstr "New token"
 
-#: flaskr/views/card/card.py:12
+#: flaskr/views/card/card/__init__.py:20
 msgid "v_card_meta_name"
 msgstr "Card settings"
 
-#: flaskr/views/card/card.py:92
+#: flaskr/views/card/card/__init__.py:100
 msgid "v_card_scheme_form_leadAmount"
 msgstr "Lead amount"
 
-#: flaskr/views/card/card.py:101
+#: flaskr/views/card/card/__init__.py:109
 msgid "v_card_scheme_form_amountCurrency"
 msgstr "Amount currency"
 
-#: flaskr/views/card/card.py:109
+#: flaskr/views/card/card/__init__.py:117
 msgid "v_card_scheme_form_fields"
 msgstr "Fields"
 
-#: flaskr/views/card/card.py:115
+#: flaskr/views/card/card/__init__.py:123
 msgid "v_card_scheme_form_fields_table_noFields"
 msgstr "No fields"
 
-#: flaskr/views/card/card.py:121
+#: flaskr/views/card/card/__init__.py:129
 msgid "v_card_scheme_form_fields_table_field"
 msgstr "Field"
 
-#: flaskr/views/card/card.py:126
+#: flaskr/views/card/card/__init__.py:134
 msgid "v_card_scheme_form_fields_table_valueType"
 msgstr "Value type"
 
-#: flaskr/views/card/card.py:131
+#: flaskr/views/card/card/__init__.py:139
 msgid "v_card_scheme_form_fields_table_boardVisibility"
 msgstr "Board visibility"
 
-#: flaskr/views/card/card.py:139
+#: flaskr/views/card/card/__init__.py:147
 msgid "v_card_scheme_form_fields_addField"
 msgstr "Add field"
 
-#: flaskr/views/card/card.py:153
+#: flaskr/views/card/card/__init__.py:161
 msgid "v_card_scheme_form_save"
 msgstr "Save"
 
-#: flaskr/views/extensions/extension.py:38
+#: flaskr/views/extensions/extension/__init__.py:41
 msgid "v_extension_meta_name"
 msgstr "Extension with %(name)s"
 
-#: flaskr/views/extensions/extension.py:46
+#: flaskr/views/extensions/extension/__init__.py:49
 msgid "v_extension_header_tab_extensions"
 msgstr "Extensions"
 
-#: flaskr/views/extensions/extension.py:55
+#: flaskr/views/extensions/extension/__init__.py:58
 msgid "v_extension_header_information"
 msgstr "Information"
 
-#: flaskr/views/extensions/extension.py:60
+#: flaskr/views/extensions/extension/__init__.py:63
 msgid "v_extension_header_settings"
 msgstr "Settings"
 
-#: flaskr/views/extensions/extensions/mottor.py:47
-msgid "v_extension_mottor_information_content"
-msgstr ""
-"## Form connection in Mottor\r"
-"\r"
-"1. Open the website editor.\r"
-"\r"
-"2. Go to form editing.\r"
-"\r"
-"3. In the **«Actions»** section, enable sending data by POST request.\r"
-"\r"
-"4. In the form that appears, indicate the link: `%(webhook_url)s`.\r"
-"\r"
-"5. In the **«Data»** field, you must indicate the ratio of the parameters"
-" of the form fields to the fields in the card. `\r"
-
-#: flaskr/views/extensions/extensions/mottor.py:67
-msgid "v_extension_mottor_information_settings_status_alwaysFirst"
-msgstr "First status"
-
-#: flaskr/views/extensions/extensions/mottor.py:85
-msgid "v_extension_mottor_information_settings_status"
-msgstr "Default status"
-
-#: flaskr/views/extensions/extensions/mottor.py:90
-msgid "v_extension_mottor_information_settings_primary_rules_required"
-msgstr "Status is required"
-
-#: flaskr/views/extensions/extensions/mottor.py:100
-msgid "v_extension_mottor_information_settings_save"
-msgstr "Save"
-
-#: flaskr/views/extensions/extensions/tilda.py:47
-msgid "v_extension_tilda_information_content"
-msgstr ""
-"## Connecting a Tilda form\r"
-"\r"
-"1. Go to the Tilda service website and follow the link: "
-"https://help.tilda.ws/formswebhook\r"
-"\r"
-"2. In the Webhook URL field, paste the following link: `%(webhook_url)s`\r"
-"\r"
-"## Setting fields\r"
-"Now you need to map the fields from Tilda to the fields in AtomCRM. This "
-"will automatically distribute the data from the form to the added lead.\r"
-"\r"
-"1. Go to the site, in the block with the form, click on the Content "
-"button.\r"
-"\r"
-"2. Go to the section with settings for input fields.\r"
-"\r"
-"3. For each field in the form in the \"Variable name\" specify the "
-"corresponding field key in the card.\r"
-"\r"
-"**Fields and keys:**\r"
-"\r"
-"%(field_keys_list)s\r"
-"\r"
-"4. Save actions."
-
-#: flaskr/views/extensions/extensions/tilda.py:67
-msgid "v_extension_tilda_information_settings_status_alwaysFirst"
-msgstr "Always first"
-
-#: flaskr/views/extensions/extensions/tilda.py:85
-msgid "v_extension_tilda_information_settings_status"
-msgstr "Default lead status"
-
-#: flaskr/views/extensions/extensions/tilda.py:90
-msgid "v_extension_tilda_information_settings_primary_rules_required"
-msgstr "Default lead status is required"
-
-#: flaskr/views/extensions/extensions/tilda.py:100
-msgid "v_extension_tilda_information_settings_save"
-msgstr "Save"
-
-#: flaskr/views/extensions/extensions/wix.py:47
-msgid "v_extension_wix_information_content"
-msgstr ""
-"## Connecting a form in Wix\r"
-"\r"
-"1. Open website management.\\\r"
-"2. In the left menu, go first to «Settings», and then to «Additional "
-"setup», go to the\" Record setup \"page.\r"
-"\r"
-"3. In the \"Notifications and automatic processes\" block, go to editing "
-"automatic processes.\r"
-"\r"
-"4. Open Add New AutoProcess. \r"
-"\r"
-"5. Select Trigger - Wix Forms. \r"
-"\r"
-"6. Select reaction - connect WebHook.\r"
-"\r"
-"7. Enter a link as the target URL: `%(webhook_url)s`. \r"
-"\r"
-"8. Turn on auto-process. \r"
-"\r"
-"## Setting fields\r"
-"Go to settings and match the fields from the form to the fields in the "
-"card."
-
-#: flaskr/views/extensions/extensions/wix.py:53
-msgid "v_extension_wix_openSettings"
-msgstr "Open settings"
-
-#: flaskr/views/extensions/extensions/wix.py:73
-msgid "v_extension_wix_information_settings_status_alwaysFirst"
-msgstr "First status"
-
-#: flaskr/views/extensions/extensions/wix.py:91
-msgid "v_extension_wix_information_settings_status"
-msgstr "Default status"
-
-#: flaskr/views/extensions/extensions/wix.py:96
-msgid "v_extension_wix_information_settings_primary_rules_required"
-msgstr "Status is required"
-
-#: flaskr/views/extensions/extensions/wix.py:106
-msgid "v_extension_wix_information_settings_save"
-msgstr "Save"
-
-#: flaskr/views/pipeline/filter.py:9
+#: flaskr/views/leads/filter/__init__.py:14
 msgid "v_filter_meta_name"
 msgstr "Filter"
 
-#: flaskr/views/pipeline/filter.py:26
+#: flaskr/views/leads/filter/__init__.py:31
 msgid "v_filter_schema_form_period"
 msgstr "Period"
 
-#: flaskr/views/pipeline/filter.py:75
+#: flaskr/views/leads/filter/__init__.py:80
 msgid "v_filter_schema_form_archivedLeads"
 msgstr "Archived leads"
 
-#: flaskr/views/pipeline/filter.py:84
+#: flaskr/views/leads/filter/__init__.py:89
 msgid "v_filter_schema_form_apply"
 msgstr "Apply"
 
-#: flaskr/views/pipeline/filter.py:88
+#: flaskr/views/leads/filter/__init__.py:93
 msgid "v_filter_schema_form_clear"
 msgstr "Clear"
 
-#: flaskr/views/pipeline/pipeline.py:18
+#: flaskr/views/leads/pipeline/__init__.py:25
 msgid "v_pipeline_meta_name"
 msgstr "Leads"
 
-#: flaskr/views/pipeline/pipeline.py:102
+#: flaskr/views/leads/pipeline/__init__.py:109
 msgid "v_pipeline_header_filter"
 msgstr "Filter"
 
-#: flaskr/views/pipeline/pipeline.py:117
+#: flaskr/views/leads/pipeline/__init__.py:124
 msgid "v_pipeline_header_search"
 msgstr "Search..."
 
-#: flaskr/views/pipeline/update_lead.py:84
+#: flaskr/views/leads/update_lead/__init__.py:117
 msgid "v_updateLead_meta_name"
 msgstr "Lead #%(id)s"
 
-#: flaskr/views/pipeline/update_lead.py:93
+#: flaskr/views/leads/update_lead/__init__.py:126
 msgid "v_updateLead_header_information"
 msgstr "Information"
 
-#: flaskr/views/pipeline/update_lead.py:94
+#: flaskr/views/leads/update_lead/__init__.py:127
+msgid "v_updateLead_header_tasks"
+msgstr "Tasks"
+
+#: flaskr/views/leads/update_lead/__init__.py:128
 msgid "v_updateLead_header_activity"
 msgstr "Activity"
 
-#: flaskr/views/pipeline/update_lead.py:191
+#: flaskr/views/leads/update_lead/__init__.py:228
 msgid "v_updateLead_save"
 msgstr "Save"
 
-#: flaskr/views/pipeline/update_lead.py:201
+#: flaskr/views/leads/update_lead/__init__.py:238
 msgid "v_updateLead_restoreLead"
 msgstr "Restore lead"
 
-#: flaskr/views/pipeline/update_lead.py:240
+#: flaskr/views/leads/update_lead/__init__.py:277
 msgid "v_updateLead_enterTags"
 msgstr "Enter tags"
 
-#: flaskr/views/pipeline/update_lead.py:246
+#: flaskr/views/leads/update_lead/__init__.py:283
 msgid "v_updateLead_addDate"
 msgstr "Add date"
 
-#: flaskr/views/pipeline/update_lead.py:250
+#: flaskr/views/leads/update_lead/__init__.py:289
 msgid "v_updateLead_updateDate"
 msgstr "Update date"
 
-#: flaskr/views/pipeline/update_lead.py:254
+#: flaskr/views/leads/update_lead/__init__.py:295
 msgid "v_updateLead_creator"
 msgstr "Added by"
 
-#: flaskr/views/pipeline/update_lead.py:264
+#: flaskr/views/leads/update_lead/__init__.py:305
 msgid "v_updateLead_utmMarks"
 msgstr "UTM marks"
 
-#: flaskr/views/pipeline/update_lead.py:366
+#: flaskr/views/leads/update_lead/__init__.py:411
 msgid "v_updateLead_onClickArchive_title"
 msgstr "Delete lead?"
 
-#: flaskr/views/pipeline/update_lead.py:367
+#: flaskr/views/leads/update_lead/__init__.py:412
 msgid "v_updateLead_onClickArchive_text"
 msgstr ""
 "Are you sure you want to move this lead to the archive? You can restore "
 "it at any time."
 
-#: flaskr/views/pipeline/update_lead.py:368
+#: flaskr/views/leads/update_lead/__init__.py:413
 msgid "v_updateLead_onClickArchive_delete"
 msgstr "Delete"
 
-#: flaskr/views/statuses/create_status.py:11
+#: flaskr/views/statuses/create_status/__init__.py:15
 msgid "v_createStatus_meta_name"
 msgstr "Create status"
 
-#: flaskr/views/statuses/create_status.py:35
+#: flaskr/views/statuses/create_status/__init__.py:39
 msgid "v_createStatus_form_name"
 msgstr "Name"
 
-#: flaskr/views/statuses/create_status.py:36
+#: flaskr/views/statuses/create_status/__init__.py:40
 msgid "v_createStatus_form_name_placeholder"
 msgstr "Ex: In Process"
 
-#: flaskr/views/statuses/create_status.py:39
+#: flaskr/views/statuses/create_status/__init__.py:43
 msgid "v_createStatus_name_length"
-msgstr "Must contain 2 - 20 chars"
+msgstr "Must contain no more 30 chars"
 
-#: flaskr/views/statuses/create_status.py:40
+#: flaskr/views/statuses/create_status/__init__.py:44
 msgid "v_createStatus_name_required"
 msgstr "Name is required"
 
-#: flaskr/views/statuses/create_status.py:47
+#: flaskr/views/statuses/create_status/__init__.py:51
 msgid "v_createStatus_form_color"
 msgstr "Color"
 
-#: flaskr/views/statuses/create_status.py:50
+#: flaskr/views/statuses/create_status/__init__.py:54
 msgid "v_createStatus_form_color_required"
 msgstr "Color is required"
 
-#: flaskr/views/statuses/create_status.py:60
+#: flaskr/views/statuses/create_status/__init__.py:64
 msgid "v_createStatus_btn"
 msgstr "Create"
 
-#: flaskr/views/statuses/delete_status.py:13
+#: flaskr/views/statuses/delete_status/__init__.py:17
 msgid "v_deleteStatus_meta_name"
 msgstr "Update status"
 
-#: flaskr/views/statuses/delete_status.py:43
+#: flaskr/views/statuses/delete_status/__init__.py:47
 msgid "v_deleteStatus_header_subtitle"
 msgstr ""
 "Leads with a deleted status exist. What to do with leads with the status "
 "«%(status_name)s»?"
 
-#: flaskr/views/statuses/delete_status.py:50
+#: flaskr/views/statuses/delete_status/__init__.py:54
 msgid "v_deleteStatus_schema_form_action_deleteLeads"
 msgstr "Delete"
 
-#: flaskr/views/statuses/delete_status.py:58
+#: flaskr/views/statuses/delete_status/__init__.py:62
 msgid "v_deleteStatus_schema_form_action_moveLeads"
 msgstr "Move leads to «%(status_name)s»"
 
-#: flaskr/views/statuses/delete_status.py:79
+#: flaskr/views/statuses/delete_status/__init__.py:83
 msgid "v_deleteStatus_schema_form_btn"
 msgstr "Delete"
 
-#: flaskr/views/statuses/statuses.py:13
+#: flaskr/views/statuses/statuses/__init__.py:19
 msgid "v_statuses_meta_name"
 msgstr "Statuses"
 
-#: flaskr/views/statuses/statuses.py:38
+#: flaskr/views/statuses/statuses/__init__.py:44
 msgid "v_statuses_header_createStatus"
 msgstr "Create status"
 
-#: flaskr/views/statuses/statuses.py:69
+#: flaskr/views/statuses/statuses/__init__.py:77
 msgid "v_statuses_schema_count_lead"
 msgstr "lead"
 
-#: flaskr/views/statuses/statuses.py:69
+#: flaskr/views/statuses/statuses/__init__.py:77
 msgid "v_statuses_schema_count_leads"
 msgstr "leads"
 
-#: flaskr/views/statuses/statuses.py:74
+#: flaskr/views/statuses/statuses/__init__.py:83
 msgid "v_statuses_schema_editStatus"
 msgstr "Edit status"
 
-#: flaskr/views/statuses/statuses.py:88
+#: flaskr/views/statuses/statuses/__init__.py:97
 msgid "v_statuses_schema_noStatuses"
 msgstr "No statuses"
 
-#: flaskr/views/statuses/update_status.py:12
+#: flaskr/views/statuses/update_status/__init__.py:16
 msgid "v_updateStatus_meta_name"
 msgstr "Edit status"
 
-#: flaskr/views/statuses/update_status.py:53
+#: flaskr/views/statuses/update_status/__init__.py:57
 msgid "v_updateStatus_form_name"
 msgstr "Name"
 
-#: flaskr/views/statuses/update_status.py:54
+#: flaskr/views/statuses/update_status/__init__.py:58
 msgid "v_updateStatus_form_name_placeholder"
 msgstr "Ex: In Progress"
 
-#: flaskr/views/statuses/update_status.py:57
+#: flaskr/views/statuses/update_status/__init__.py:61
 msgid "v_updateStatus_name_length"
-msgstr "Must contain 2 - 20 chars"
+msgstr "Must contain no more 30 chars"
 
-#: flaskr/views/statuses/update_status.py:58
+#: flaskr/views/statuses/update_status/__init__.py:62
 msgid "v_updateStatus_name_required"
 msgstr "Name is required"
 
-#: flaskr/views/statuses/update_status.py:66
+#: flaskr/views/statuses/update_status/__init__.py:70
 msgid "v_updateStatus_form_color"
 msgstr "Color"
 
-#: flaskr/views/statuses/update_status.py:70
+#: flaskr/views/statuses/update_status/__init__.py:74
 msgid "v_updateStatus_form_color_required"
 msgstr "Color is required"
 
-#: flaskr/views/statuses/update_status.py:80
+#: flaskr/views/statuses/update_status/__init__.py:84
 msgid "v_updateStatus_btn"
 msgstr "Save"
+
+#: flaskr/views/tasks/create_task/__init__.py:18
+msgid "v_createTask_meta_name"
+msgstr "Create set"
+
+#: flaskr/views/tasks/create_task/__init__.py:37
+msgid "v_createTask_form_name"
+msgstr "Name"
+
+#: flaskr/views/tasks/create_task/__init__.py:38
+msgid "v_createTask_form_name_placeholder"
+msgstr "Ex: Contact customer"
+
+#: flaskr/views/tasks/create_task/__init__.py:41
+msgid "v_createTask_name_length"
+msgstr "Must contain no more 50 chars"
+
+#: flaskr/views/tasks/create_task/__init__.py:42
+msgid "v_createTask_name_required"
+msgstr "Name is required"
+
+#: flaskr/views/tasks/create_task/__init__.py:48
+msgid "v_createTask_form_subtasks"
+msgstr "Subtasks"
+
+#: flaskr/views/tasks/create_task/__init__.py:54
+#: flaskr/views/tasks/update_task/__init__.py:85
+msgid "v_updateTask_form_subtasks_table_noSubtasks"
+msgstr "No subtasks"
+
+#: flaskr/views/tasks/create_task/__init__.py:66
+msgid "v_createTask_form_subtasks_addSubtask"
+msgstr "Add subtask"
+
+#: flaskr/views/tasks/create_task/__init__.py:80
+msgid "v_createTask_btn"
+msgstr "Create"
+
+#: flaskr/views/tasks/tasks/__init__.py:18
+msgid "v_tasks_meta_name"
+msgstr "Tasks"
+
+#: flaskr/views/tasks/tasks/__init__.py:43
+msgid "v_tasks_header_createTask"
+msgstr "Create task"
+
+#: flaskr/views/tasks/tasks/__init__.py:59
+msgid "v_tasksSets_schema_count_subtask"
+msgstr "subtask"
+
+#: flaskr/views/tasks/tasks/__init__.py:59
+msgid "v_tasksSets_schema_count_subtasks"
+msgstr "subtasks"
+
+#: flaskr/views/tasks/tasks/__init__.py:65
+msgid "v_tasksSets_schema_edit"
+msgstr "Edit tas"
+
+#: flaskr/views/tasks/tasks/__init__.py:85
+msgid "v_tasks_schema_noTasks"
+msgstr "No tasks"
+
+#: flaskr/views/tasks/update_task/__init__.py:18
+msgid "v_updateTask_meta_name"
+msgstr "Edit task"
+
+#: flaskr/views/tasks/update_task/__init__.py:67
+msgid "v_updateTask_form_name"
+msgstr "Name"
+
+#: flaskr/views/tasks/update_task/__init__.py:69
+msgid "v_updateTask_form_name_placeholder"
+msgstr "Ex: Contact customer"
+
+#: flaskr/views/tasks/update_task/__init__.py:72
+msgid "v_updateTask_name_length"
+msgstr "Must contain no more 50 chars"
+
+#: flaskr/views/tasks/update_task/__init__.py:73
+msgid "v_updateTask_name_required"
+msgstr "Name is required"
+
+#: flaskr/views/tasks/update_task/__init__.py:79
+msgid "v_updateTask_form_subtasks"
+msgstr "Subtasks"
+
+#: flaskr/views/tasks/update_task/__init__.py:97
+msgid "v_updateTask_form_subtasks_addSubtask"
+msgstr "Add subtask"
+
+#: flaskr/views/tasks/update_task/__init__.py:111
+msgid "v_updateTask_btn"
+msgstr "Save"
+
+#~ msgid "v_updateTask_form_subtasks_addTask"
+#~ msgstr "Add subtask"
 

@@ -4,6 +4,13 @@ Minimalistic CRM system with basic functionality.
 
 [App on Veokit Store](https://veokit.com/store/1-veokit-team/1-atomcrm)
 
+```shell script
+python manage.py runserver
+
+# Compile JavaScript code with BabelJS (optional)
+python manage.py compile
+```
+
 ---
 
 ## Database
@@ -26,10 +33,6 @@ Extract texts:
 
 ```pybabel extract -F babel.cfg -k _l -o strings.pot .```
 
-Create catalog:
- 
-```pybabel init -i strings.pot -d flaskr/translations -l en```
-
 Update exist catalog:
 
 ```pybabel update -i strings.pot -d flaskr/translations```
@@ -37,3 +40,7 @@ Update exist catalog:
 Compile catalog:
 
 ```pybabel compile -d flaskr/translations```
+
+Create new catalog:
+ 
+```pybabel init -i strings.pot -d flaskr/translations -l <LANG CODE HERE>```

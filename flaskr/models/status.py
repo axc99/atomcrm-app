@@ -21,7 +21,7 @@ class Status(db.Model):
 
     color = Column(Enum(StatusColor), nullable=False)
 
-    name = db.Column(db.String(20), nullable=False)
+    name = db.Column(db.String(30), nullable=False)
     index = db.Column(db.Integer, default=0, nullable=False)
 
     veokit_installation_id = db.Column(db.Integer, nullable=False, index=True)

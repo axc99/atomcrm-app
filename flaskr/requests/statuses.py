@@ -15,13 +15,15 @@ def create_status(params, request_data):
     if not is_valid:
         return {'res': 'err', 'message': 'Invalid params', 'errors': vld.errors}
 
+    new_status_index = Status.query \
+                           .filter_by(veokit_installation_id=request_data['installation_id']) \
+                           .count() - 1
+
     new_status = Status()
     new_status.veokit_installation_id = request_data['installation_id']
     new_status.name = params['name']
     new_status.color = params['color']
-    new_status.index = Status.query \
-                           .filter_by(veokit_installation_id=request_data['installation_id']) \
-                           .count() - 1
+    new_status.index = new_status_index if new_status_index > 0 else 0
 
     db.session.add(new_status)
     db.session.commit()
@@ -91,7 +93,7 @@ def update_status_index(params, request_data):
 def delete_status(params, request_data):
     vld = Validator({
         'id': {'type': 'number', 'required': True},
-        'assignedStatusId': {'type': 'number'}
+        'assignedStatusId': {'type': 'number', 'nullable': True}
     })
     is_valid = vld.validate(params)
     if not is_valid:
@@ -109,7 +111,8 @@ def delete_status(params, request_data):
             .delete()
 
     Status.query \
-        .filter_by(id=params['id']) \
+        .filter_by(id=params['id'],
+                   veokit_installation_id=request_data['installation_id']) \
         .delete()
 
     db.session.commit()
