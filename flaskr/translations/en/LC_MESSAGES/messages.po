@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-11-05 00:12+0000\n"
+"POT-Creation-Date: 2020-11-05 23:42+0000\n"
 "PO-Revision-Date: 2020-10-10 19:41+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,51 +18,51 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-#: flaskr/routes.py:110
+#: flaskr/routes.py:111
 msgid "r_webhook_defaultStatuses_lead"
 msgstr "Lead"
 
-#: flaskr/routes.py:111
+#: flaskr/routes.py:112
 msgid "r_webhook_defaultStatuses_contacted"
 msgstr "Contacted"
 
-#: flaskr/routes.py:112
+#: flaskr/routes.py:113
 msgid "r_webhook_defaultStatuses_qualified"
 msgstr "Qualified"
 
-#: flaskr/routes.py:113
+#: flaskr/routes.py:114
 msgid "r_webhook_defaultStatuses_proposalMade"
 msgstr "Proposal made"
 
-#: flaskr/routes.py:114
+#: flaskr/routes.py:115
 msgid "r_webhook_defaultStatuses_win"
 msgstr "Win"
 
-#: flaskr/routes.py:115
+#: flaskr/routes.py:116
 msgid "r_webhook_defaultStatuses_lost"
 msgstr "Lost"
 
-#: flaskr/routes.py:128
+#: flaskr/routes.py:129
 msgid "r_webhook_defaultStatuses_firstName"
 msgstr "First name"
 
-#: flaskr/routes.py:129
+#: flaskr/routes.py:130
 msgid "r_webhook_defaultStatuses_lastName"
 msgstr "Last name"
 
-#: flaskr/routes.py:130
+#: flaskr/routes.py:131
 msgid "r_webhook_defaultStatuses_email"
 msgstr "Email"
 
-#: flaskr/routes.py:131
+#: flaskr/routes.py:132
 msgid "r_webhook_defaultStatuses_mobilePhone"
 msgstr "Mobile phone"
 
-#: flaskr/routes.py:147
+#: flaskr/routes.py:148
 msgid "r_webhook_defaultTasks_sendLetter"
 msgstr "Send an email"
 
-#: flaskr/routes.py:148
+#: flaskr/routes.py:149
 msgid "r_webhook_defaultTasks_makeCall"
 msgstr "Make a call"
 
@@ -378,39 +378,39 @@ msgstr "New token"
 msgid "v_card_meta_name"
 msgstr "Card settings"
 
-#: flaskr/views/card/card/__init__.py:100
+#: flaskr/views/card/card/__init__.py:101
 msgid "v_card_scheme_form_leadAmount"
 msgstr "Lead amount"
 
-#: flaskr/views/card/card/__init__.py:109
+#: flaskr/views/card/card/__init__.py:110
 msgid "v_card_scheme_form_amountCurrency"
 msgstr "Amount currency"
 
-#: flaskr/views/card/card/__init__.py:117
+#: flaskr/views/card/card/__init__.py:118
 msgid "v_card_scheme_form_fields"
 msgstr "Fields"
 
-#: flaskr/views/card/card/__init__.py:123
+#: flaskr/views/card/card/__init__.py:124
 msgid "v_card_scheme_form_fields_table_noFields"
 msgstr "No fields"
 
-#: flaskr/views/card/card/__init__.py:129
+#: flaskr/views/card/card/__init__.py:130
 msgid "v_card_scheme_form_fields_table_field"
 msgstr "Field"
 
-#: flaskr/views/card/card/__init__.py:134
+#: flaskr/views/card/card/__init__.py:135
 msgid "v_card_scheme_form_fields_table_valueType"
 msgstr "Value type"
 
-#: flaskr/views/card/card/__init__.py:139
+#: flaskr/views/card/card/__init__.py:140
 msgid "v_card_scheme_form_fields_table_boardVisibility"
 msgstr "Board visibility"
 
-#: flaskr/views/card/card/__init__.py:147
+#: flaskr/views/card/card/__init__.py:148
 msgid "v_card_scheme_form_fields_addField"
 msgstr "Add field"
 
-#: flaskr/views/card/card/__init__.py:161
+#: flaskr/views/card/card/__init__.py:162
 msgid "v_card_scheme_form_save"
 msgstr "Save"
 
@@ -506,19 +506,9 @@ msgstr "Added by"
 msgid "v_updateLead_utmMarks"
 msgstr "UTM marks"
 
-#: flaskr/views/leads/update_lead/__init__.py:411
-msgid "v_updateLead_onClickArchive_title"
-msgstr "Delete lead?"
-
-#: flaskr/views/leads/update_lead/__init__.py:412
-msgid "v_updateLead_onClickArchive_text"
-msgstr ""
-"Are you sure you want to move this lead to the archive? You can restore "
-"it at any time."
-
-#: flaskr/views/leads/update_lead/__init__.py:413
-msgid "v_updateLead_onClickArchive_delete"
-msgstr "Delete"
+#: flaskr/views/leads/update_lead/__init__.py:414
+msgid "v_updateLead_getMethods_changesSaved"
+msgstr Changes saved""
 
 #: flaskr/views/statuses/create_status/__init__.py:15
 msgid "v_createStatus_meta_name"
@@ -725,4 +715,16 @@ msgstr "Save"
 
 #~ msgid "v_updateTask_form_subtasks_addTask"
 #~ msgstr "Add subtask"
+
+#~ msgid "v_updateLead_onClickArchive_title"
+#~ msgstr "Delete lead?"
+
+#~ msgid "v_updateLead_onClickArchive_text"
+#~ msgstr ""
+#~ "Are you sure you want to move "
+#~ "this lead to the archive? You can"
+#~ " restore it at any time."
+
+#~ msgid "v_updateLead_onClickArchive_delete"
+#~ msgstr "Delete"
 
