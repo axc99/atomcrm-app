@@ -411,7 +411,8 @@ class UpdateLead(View):
                                                                                  'STATUS_ID': self.lead.status_id})
         methods['onClickRestore'] = method_with_vars(methods['onClickRestore'], {'LEAD_ID': self.lead.id,
                                                                                  'STATUS_ID': self.lead.status_id})
-        methods['onFinishForm'] = method_with_vars(methods['onFinishForm'], {'ORIGINAL_STATUS_ID': self.lead.status_id,
+        methods['onFinishForm'] = method_with_vars(methods['onFinishForm'], {'SAVING_NOTIFICATION_MESSAGE': _('v_updateLead_getMethods_changesSaved'),
+                                                                             'ORIGINAL_STATUS_ID': self.lead.status_id,
                                                                              'LEAD_ID': self.lead.id})
 
         return methods

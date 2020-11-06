@@ -38,6 +38,11 @@ const onFinishForm = (app, params, event) => {
                     // Update status column
                     app.getPage().callMethod('loadLeads', { statusId: originalStatusId })
                 }
+
+                app.showNotification({
+                    message: 'SAVING_NOTIFICATION_MESSAGE',
+                    duration: 1
+                })
             }
         })
 }
