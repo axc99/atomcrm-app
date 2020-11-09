@@ -31,7 +31,7 @@ class Field(db.Model):
 
     index = db.Column(db.Integer, default=0, nullable=False)
 
-    veokit_installation_id = db.Column(db.Integer, nullable=False, index=True)
+    nepkit_installation_id = db.Column(db.Integer, nullable=False, index=True)
 
 
 def get_field_types():

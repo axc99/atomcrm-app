@@ -49,19 +49,19 @@ class UpdateLead(View):
             .filter_by(id=params['id']) \
             .first()
         self.task_count = Task.query\
-            .filter_by(veokit_installation_id=request_data['installation_id'])\
+            .filter_by(nepkit_installation_id=request_data['installation_id'])\
             .count()
 
         if self.tab == 'index':
             self.installation_card_settings = InstallationCardSettings.query \
-                .filter_by(veokit_installation_id=request_data['installation_id']) \
+                .filter_by(nepkit_installation_id=request_data['installation_id']) \
                 .first()
             self.fields = Field.query \
-                .filter_by(veokit_installation_id=request_data['installation_id']) \
+                .filter_by(nepkit_installation_id=request_data['installation_id']) \
                 .order_by(Field.index) \
                 .all()
             self.statuses = Status.query \
-                .filter_by(veokit_installation_id=request_data['installation_id']) \
+                .filter_by(nepkit_installation_id=request_data['installation_id']) \
                 .order_by(Status.index) \
                 .all()
         elif self.tab == 'tasks':
@@ -78,10 +78,10 @@ class UpdateLead(View):
                     public.task AS t
                 WHERE
                     t.parent_task_id is null AND
-                    t.veokit_installation_id = :veokit_installation_id
+                    t.nepkit_installation_id = :nepkit_installation_id
                 ORDER BY
                     t.index""", {
-                'veokit_installation_id': request_data['installation_id'],
+                'nepkit_installation_id': request_data['installation_id'],
                 'lead_id': self.lead.id
             })
         elif self.tab == 'activity':
@@ -295,9 +295,9 @@ class UpdateLead(View):
                                                 'label': _('v_updateLead_creator'),
                                                 'value': {
                                                     '_com': 'User',
-                                                    'userId': self.lead.veokit_user_id
+                                                    'userId': self.lead.nepkit_user_id
                                                 }
-                                            } if self.lead.veokit_user_id else None
+                                            } if self.lead.nepkit_user_id else None
                                         ]
                                     },
                                     {

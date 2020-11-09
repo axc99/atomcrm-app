@@ -30,13 +30,13 @@ class DeleteStatus(View):
 
         self.deleted_status = Status.query \
             .filter_by(id=params['id'],
-                       veokit_installation_id=request_data['installation_id']) \
+                       nepkit_installation_id=request_data['installation_id']) \
             .first()
         if not self.deleted_status:
             raise Exception()
 
         self.other_statuses = Status.query \
-            .filter(Status.veokit_installation_id == request_data['installation_id'],
+            .filter(Status.nepkit_installation_id == request_data['installation_id'],
                     Status.id != params['id']) \
             .order_by(Status.index.asc()) \
             .all()

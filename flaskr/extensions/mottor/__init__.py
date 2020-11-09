@@ -39,10 +39,10 @@ class MottorExtension(Extension):
                     FROM 
                         public.field AS f
                     WHERE
-                        f.veokit_installation_id = :veokit_installation_id
+                        f.nepkit_installation_id = :nepkit_installation_id
                     ORDER BY 
                         f.index""", {
-            'veokit_installation_id': request_data['installation_id']
+            'nepkit_installation_id': request_data['installation_id']
         })
 
         # Create markdown field-key list
@@ -54,7 +54,7 @@ class MottorExtension(Extension):
             {
                 '_com': 'Information',
                 'content': _('v_extension_mottor_information_content',
-                             webhook_url='https://veokit.team/atomcrm/ext/mottor/wh/{}_{}'.format(installation_extension_settings.id, installation_extension_settings.token),
+                             webhook_url='https://nepkit.team/atomcrm/ext/mottor/wh/{}_{}'.format(installation_extension_settings.id, installation_extension_settings.token),
                              STATIC_URL=os.environ.get('STATIC_URL'),
                              field_keys_list=field_keys_list)
             }
@@ -68,10 +68,10 @@ class MottorExtension(Extension):
             FROM 
                 public.status AS s
             WHERE
-                s.veokit_installation_id = :veokit_installation_id
+                s.nepkit_installation_id = :nepkit_installation_id
             ORDER BY 
                 s.index""", {
-            'veokit_installation_id': request_data['installation_id']
+            'nepkit_installation_id': request_data['installation_id']
         })
 
         status_options = [
@@ -149,20 +149,20 @@ class MottorExtension(Extension):
         if installation_extension_settings.data.get('default_status') != 'first':
             status = Status.query \
                 .with_entities(Status.id) \
-                .filter_by(veokit_installation_id=installation_extension_settings.veokit_installation_id,
+                .filter_by(nepkit_installation_id=installation_extension_settings.nepkit_installation_id,
                            id=installation_extension_settings.data.get('default_status')) \
                 .first()
         if installation_extension_settings.data.get('default_status') == 'first' or not status:
             status = Status.query \
                 .with_entities(Status.id) \
-                .filter_by(veokit_installation_id=installation_extension_settings.veokit_installation_id) \
+                .filter_by(nepkit_installation_id=installation_extension_settings.nepkit_installation_id) \
                 .order_by(Status.index.asc()) \
                 .first()
 
         # Create lead
         lead = Lead()
         lead.uid = Lead.get_uid()
-        lead.veokit_installation_id = installation_extension_settings.veokit_installation_id
+        lead.nepkit_installation_id = installation_extension_settings.nepkit_installation_id
         lead.status_id = status.id
         # UTM marks
         lead.utm_source = utm_marks.get('utm_source', None)

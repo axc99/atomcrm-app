@@ -120,7 +120,7 @@ def webhook():
             new_status.index = default_status['index']
             new_status.color = default_status['color']
             new_status.name = default_status['name']
-            new_status.veokit_installation_id = data['installationId']
+            new_status.nepkit_installation_id = data['installationId']
 
             db.session.add(new_status)
 
@@ -139,7 +139,7 @@ def webhook():
             new_field.max = default_field['max']
             new_field.board_visibility = default_field['board_visibility']
             new_field.primary = default_field['primary']
-            new_field.veokit_installation_id = data['installationId']
+            new_field.nepkit_installation_id = data['installationId']
 
             db.session.add(new_field)
 
@@ -152,7 +152,7 @@ def webhook():
             new_task = Task()
             new_task.index = default_task['index']
             new_task.name = default_task['name']
-            new_task.veokit_installation_id = data['installationId']
+            new_task.nepkit_installation_id = data['installationId']
 
             db.session.add(new_task)
 
@@ -165,18 +165,18 @@ def webhook():
         new_card_settings = InstallationCardSettings()
         new_card_settings.amount_enabled = False
         new_card_settings.currency = currency
-        new_card_settings.veokit_installation_id = data['installationId']
+        new_card_settings.nepkit_installation_id = data['installationId']
         db.session.add(new_card_settings)
         db.session.commit()
 
     elif event == 'uninstallApp':
         # Delete all data
-        InstallationCardSettings.query.filter_by(veokit_installation_id=data['installationId']).delete()
-        Lead.query.filter_by(veokit_installation_id=data['installationId']).delete()
-        Status.query.filter_by(veokit_installation_id=data['installationId']).delete()
-        Field.query.filter_by(veokit_installation_id=data['installationId']).delete()
-        Tag.query.filter_by(veokit_installation_id=data['installationId']).delete()
-        Token.query.filter_by(veokit_installation_id=data['installationId']).delete()
+        InstallationCardSettings.query.filter_by(nepkit_installation_id=data['installationId']).delete()
+        Lead.query.filter_by(nepkit_installation_id=data['installationId']).delete()
+        Status.query.filter_by(nepkit_installation_id=data['installationId']).delete()
+        Field.query.filter_by(nepkit_installation_id=data['installationId']).delete()
+        Tag.query.filter_by(nepkit_installation_id=data['installationId']).delete()
+        Token.query.filter_by(nepkit_installation_id=data['installationId']).delete()
 
         db.session.commit()
 
@@ -186,8 +186,8 @@ def webhook():
         # Enable extension
         new_extension_settings = InstallationExtensionSettings()
         new_extension_settings.token = InstallationExtensionSettings.generate_token()
-        new_extension_settings.veokit_installation_id = data['installationId']
-        new_extension_settings.veokit_extension_id = data['extensionId']
+        new_extension_settings.nepkit_installation_id = data['installationId']
+        new_extension_settings.nepkit_extension_id = data['extensionId']
         new_extension_settings.data = extension_class.get_default_data()
         db.session.add(new_extension_settings)
         db.session.commit()
@@ -197,8 +197,8 @@ def webhook():
 
         # Disable extension
         InstallationExtensionSettings.query\
-            .filter_by(veokit_installation_id=data['installationId'],
-                       veokit_extension_id=data['extensionId'])\
+            .filter_by(nepkit_installation_id=data['installationId'],
+                       nepkit_extension_id=data['extensionId'])\
             .delete()
         db.session.commit()
 
@@ -208,7 +208,7 @@ def webhook():
 # API
 @app.route('/api/<token>/<method>', methods=['POST'])
 def api_method(token, method):
-    is_token_valid, veokit_installation_id = validate_api_token(token)
+    is_token_valid, nepkit_installation_id = validate_api_token(token)
 
     if not is_token_valid:
         return {
@@ -237,7 +237,7 @@ def api_method(token, method):
     else:
         method_func = getattr(api_methods, method_map[method])
 
-        return method_func(data, veokit_installation_id)
+        return method_func(data, nepkit_installation_id)
 
 
 # Extension web hook

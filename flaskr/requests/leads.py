@@ -11,7 +11,7 @@ from flaskr.views.leads.pipeline import get_lead_component
 # Get lead components for status
 def get_lead_components(params, request_data):
     installation_card_settings = InstallationCardSettings.query \
-        .filter_by(veokit_installation_id=request_data['installation_id']) \
+        .filter_by(nepkit_installation_id=request_data['installation_id']) \
         .first()
 
     vld = Validator({
@@ -75,8 +75,8 @@ def create_lead(params, request_data):
     new_lead = Lead()
     new_lead.uid = Lead.get_uid()
     new_lead.status_id = params['statusId']
-    new_lead.veokit_user_id = request_data['user_id']
-    new_lead.veokit_installation_id = request_data['installation_id']
+    new_lead.nepkit_user_id = request_data['user_id']
+    new_lead.nepkit_installation_id = request_data['installation_id']
     db.session.add(new_lead)
     db.session.commit()
 
@@ -85,7 +85,7 @@ def create_lead(params, request_data):
     new_action.type = LeadActionType.create_lead
     new_action.lead_id = new_lead.id
     new_action.new_status_id = new_lead.status_id
-    new_action.veokit_user_id = request_data['user_id']
+    new_action.nepkit_user_id = request_data['user_id']
     db.session.add(new_action)
     db.session.commit()
 
@@ -132,7 +132,7 @@ def update_lead(params, request_data):
     # Get lead by id
     lead = Lead.query \
         .filter_by(id=params['id'],
-                   veokit_installation_id=request_data['installation_id']) \
+                   nepkit_installation_id=request_data['installation_id']) \
         .first()
     if not lead:
         return {'res': 'err', 'message': 'Unknown lead'}
@@ -150,7 +150,7 @@ def update_lead(params, request_data):
     new_action = LeadAction()
     new_action.type = LeadActionType.update_lead
     new_action.lead_id = lead.id
-    new_action.veokit_user_id = request_data['user_id']
+    new_action.nepkit_user_id = request_data['user_id']
     db.session.add(new_action)
 
     if old_status_id != lead.status_id:
@@ -160,7 +160,7 @@ def update_lead(params, request_data):
         new_action.old_status_id = old_status_id
         new_action.new_status_id = lead.status_id
         new_action.lead_id = lead.id
-        new_action.veokit_user_id = request_data['user_id']
+        new_action.nepkit_user_id = request_data['user_id']
         db.session.add(new_action)
 
     db.session.commit()
@@ -188,7 +188,7 @@ def update_lead_status(params, request_data):
 
     lead = Lead.query \
         .filter_by(id=params['id'],
-                   veokit_installation_id=request_data['installation_id']) \
+                   nepkit_installation_id=request_data['installation_id']) \
         .first()
     lead.upd_date = datetime.utcnow()
     lead.status_id = params['statusId']
@@ -213,7 +213,7 @@ def complete_lead_tasks(params, request_data):
     # Get lead by id
     lead = Lead.query \
         .filter_by(id=params['id'],
-                   veokit_installation_id=request_data['installation_id']) \
+                   nepkit_installation_id=request_data['installation_id']) \
         .first()
     if not lead:
         return {'res': 'err', 'message': 'Unknown lead'}
@@ -237,7 +237,7 @@ def archive_lead(params, request_data):
 
     lead = Lead.query \
         .filter_by(id=params['id'],
-                   veokit_installation_id=request_data['installation_id']) \
+                   nepkit_installation_id=request_data['installation_id']) \
         .first()
     lead.archived = True
 
@@ -245,7 +245,7 @@ def archive_lead(params, request_data):
     new_action = LeadAction()
     new_action.type = LeadActionType.archive_lead
     new_action.lead_id = lead.id
-    new_action.veokit_user_id = request_data['user_id']
+    new_action.nepkit_user_id = request_data['user_id']
     db.session.add(new_action)
 
     db.session.commit()
@@ -266,7 +266,7 @@ def restore_lead(params, request_data):
 
     lead = Lead.query \
         .filter_by(id=params['id'],
-                   veokit_installation_id=request_data['installation_id']) \
+                   nepkit_installation_id=request_data['installation_id']) \
         .first()
     lead.archived = False
 
@@ -274,7 +274,7 @@ def restore_lead(params, request_data):
     new_action = LeadAction()
     new_action.type = LeadActionType.restore_lead
     new_action.lead_id = lead.id
-    new_action.veokit_user_id = request_data['user_id']
+    new_action.nepkit_user_id = request_data['user_id']
     db.session.add(new_action)
 
     db.session.commit()

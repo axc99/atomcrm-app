@@ -23,7 +23,7 @@ class UpdateTask(View):
     def before(self, params, request_data):
         self.task = Task.query \
             .filter_by(id=params['id'],
-                       veokit_installation_id=request_data['installation_id']) \
+                       nepkit_installation_id=request_data['installation_id']) \
             .first()
         self.tasks = self.task.get_subtasks()
 

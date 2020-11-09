@@ -13,7 +13,7 @@ class Task(db.Model):
     index = db.Column(db.Integer, default=0, nullable=False)
 
     parent_task_id = db.Column(db.Integer, db.ForeignKey('task.id', ondelete='SET NULL'), nullable=True)
-    veokit_installation_id = db.Column(db.Integer, nullable=False, index=True)
+    nepkit_installation_id = db.Column(db.Integer, nullable=False, index=True)
 
     # Set tasks
     def set_subtasks(self, tasks):
@@ -49,7 +49,7 @@ class Task(db.Model):
                     new_task.index = i
                     new_task.name = task['name']
                     new_task.parent_task_id = self.id
-                    new_task.veokit_installation_id = self.veokit_installation_id
+                    new_task.nepkit_installation_id = self.nepkit_installation_id
 
                     db.session.add(new_task)
             i += 1

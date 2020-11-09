@@ -27,10 +27,10 @@ class Card(View):
 
     def before(self, params, request_data):
         self.installation_card_settings = InstallationCardSettings.query \
-            .filter_by(veokit_installation_id=request_data['installation_id']) \
+            .filter_by(nepkit_installation_id=request_data['installation_id']) \
             .first()
         self.fields = Field.query \
-            .filter_by(veokit_installation_id=request_data['installation_id']) \
+            .filter_by(nepkit_installation_id=request_data['installation_id']) \
             .order_by(Field.index.asc()) \
             .all()
 

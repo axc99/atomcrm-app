@@ -28,7 +28,7 @@ class UpdateStatus(View):
 
         self.status = Status.query\
                             .filter_by(id=params['id'],
-                                       veokit_installation_id=request_data['installation_id'])\
+                                       nepkit_installation_id=request_data['installation_id'])\
                             .first()
         if not self.status:
             raise Exception()

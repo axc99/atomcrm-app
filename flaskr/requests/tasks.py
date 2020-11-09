@@ -16,10 +16,10 @@ def create_task(params, request_data):
         return {'res': 'err', 'message': 'Invalid params', 'errors': vld.errors}
 
     new_set = Task()
-    new_set.veokit_installation_id = request_data['installation_id']
+    new_set.nepkit_installation_id = request_data['installation_id']
     new_set.name = params['name']
     new_set.index = Task.query \
-                       .filter_by(veokit_installation_id=request_data['installation_id']) \
+                       .filter_by(nepkit_installation_id=request_data['installation_id']) \
                        .count() - 1
 
     db.session.add(new_set)
@@ -72,7 +72,7 @@ def update_task_index(params, request_data):
         return {'res': 'err', 'message': 'Invalid params', 'errors': vld.errors}
 
     tasks = Task.query \
-        .filter_by(veokit_installation_id=request_data['installation_id']) \
+        .filter_by(nepkit_installation_id=request_data['installation_id']) \
         .order_by(Task.index.asc()) \
         .all()
 
@@ -102,7 +102,7 @@ def delete_task(params, request_data):
 
     task = Task.query \
             .filter_by(id=params['id'],
-                       veokit_installation_id=request_data['installation_id']) \
+                       nepkit_installation_id=request_data['installation_id']) \
             .first()
     if not task:
         return {'res': 'err', 'message': 'Unknown tasks set'}
