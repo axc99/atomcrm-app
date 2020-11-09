@@ -28,10 +28,10 @@ class Tasks(View):
                 public.task AS t
             WHERE
                 t.parent_task_id is null AND
-                t.veokit_installation_id = :veokit_installation_id
+                t.nepkit_installation_id = :nepkit_installation_id
             ORDER BY
                 t.index""", {
-            'veokit_installation_id': request_data['installation_id']
+            'nepkit_installation_id': request_data['installation_id']
         })
 
     def get_header(self, params, request_data):

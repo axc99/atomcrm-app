@@ -24,8 +24,8 @@ class Lead(db.Model):
 
     archived = db.Column(db.Boolean, default=False, nullable=False)
 
-    veokit_installation_id = db.Column(db.Integer, nullable=False, index=True)
-    veokit_user_id = db.Column(db.Integer, nullable=True, index=True)
+    nepkit_installation_id = db.Column(db.Integer, nullable=False, index=True)
+    nepkit_user_id = db.Column(db.Integer, nullable=True, index=True)
     status_id = db.Column(db.Integer, db.ForeignKey('status.id', ondelete='SET NULL'), nullable=False)
 
     # UTM marks
@@ -72,7 +72,7 @@ class Lead(db.Model):
             new_action.type = LeadActionType.revert_complete_task
             new_action.lead_id = self.id
             new_action.completed_task_id = task_id
-            new_action.veokit_user_id = user_id
+            new_action.nepkit_user_id = user_id
             db.session.add(new_action)
 
         # Create new task
@@ -87,7 +87,7 @@ class Lead(db.Model):
             new_action.type = LeadActionType.complete_task
             new_action.lead_id = self.id
             new_action.completed_task_id = task_id
-            new_action.veokit_user_id = user_id
+            new_action.nepkit_user_id = user_id
             db.session.add(new_action)
 
         db.session.commit()
@@ -104,7 +104,7 @@ class Lead(db.Model):
             # Search tag by name
             exist_tag = Tag.query \
                 .filter_by(name=tag_name,
-                           veokit_installation_id=self.veokit_installation_id) \
+                           nepkit_installation_id=self.nepkit_installation_id) \
                 .first()
 
             # If tag with such name already exist
@@ -112,7 +112,7 @@ class Lead(db.Model):
                 # Create tag
                 new_tag = Tag()
                 new_tag.name = tag_name
-                new_tag.veokit_installation_id = self.veokit_installation_id
+                new_tag.nepkit_installation_id = self.nepkit_installation_id
                 db.session.add(new_tag)
                 db.session.commit()
 
@@ -143,7 +143,7 @@ class Lead(db.Model):
         for lead_field in fields:
             field = Field.query \
                 .filter_by(id=lead_field['field_id'],
-                           veokit_installation_id=self.veokit_installation_id) \
+                           nepkit_installation_id=self.nepkit_installation_id) \
                 .first()
 
             if field:
@@ -303,7 +303,7 @@ class Lead(db.Model):
                 public.lead AS l
             {}
             WHERE
-                l.veokit_installation_id = :installation_id AND
+                l.nepkit_installation_id = :installation_id AND
                 l.status_id = :status_id AND
                 l.archived = :archived AND
                 (:utm_source is null OR l.utm_source = :utm_source) AND
@@ -357,7 +357,7 @@ class LeadCompletedTask(db.Model):
     lead_id = db.Column(db.Integer, db.ForeignKey('lead.id', ondelete='CASCADE'), nullable=False)
     task_id = db.Column(db.Integer, db.ForeignKey('task.id', ondelete='CASCADE'), nullable=True)
     task_id = db.Column(db.Integer, db.ForeignKey('task.id', ondelete='CASCADE'), nullable=True)
-    veokit_user_id = db.Column(db.Integer, nullable=True, index=True)
+    nepkit_user_id = db.Column(db.Integer, nullable=True, index=True)
 
 
 # Lead tag
@@ -393,7 +393,7 @@ class LeadAction(db.Model):
 
     log_date = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
-    veokit_user_id = db.Column(db.Integer, nullable=True, index=True)
+    nepkit_user_id = db.Column(db.Integer, nullable=True, index=True)
     # extension_id = db.Column(db.Integer, nullable=True, index=True)
     lead_id = db.Column(db.Integer, db.ForeignKey('lead.id', ondelete='CASCADE'), nullable=False)
 

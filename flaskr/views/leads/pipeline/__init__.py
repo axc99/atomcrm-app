@@ -30,7 +30,7 @@ class Pipeline(View):
 
     def before(self, params, request_data):
         self.installation_card_settings = InstallationCardSettings.query \
-            .filter_by(veokit_installation_id=request_data['installation_id']) \
+            .filter_by(nepkit_installation_id=request_data['installation_id']) \
             .first()
 
         self.filter_params = {
@@ -53,7 +53,7 @@ class Pipeline(View):
             FROM 
                 public.status AS s
             WHERE
-                s.veokit_installation_id = :installation_id
+                s.nepkit_installation_id = :installation_id
             ORDER BY 
                 s.index""", {
             'installation_id': request_data['installation_id'],

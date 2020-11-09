@@ -2,7 +2,7 @@
 
 For getting all statuses do not pass `id` field.
 
-`POST https://veokit.team/atomcrm/api/<TOKEN HERE>/getStatuses`
+`POST https://nepkit.team/atomcrm/api/<TOKEN HERE>/getStatuses`
 
 Sample request body:
 ```json

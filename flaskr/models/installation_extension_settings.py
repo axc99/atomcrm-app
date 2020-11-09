@@ -12,8 +12,8 @@ class InstallationExtensionSettings(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
     token = db.Column(db.String(32), nullable=False)
-    veokit_installation_id = db.Column(db.Integer, nullable=False, index=True)
-    veokit_extension_id = db.Column(db.Integer, nullable=False, index=True)
+    nepkit_installation_id = db.Column(db.Integer, nullable=False, index=True)
+    nepkit_extension_id = db.Column(db.Integer, nullable=False, index=True)
 
     data = db.Column(JSONB, nullable=False)
 

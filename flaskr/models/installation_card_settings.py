@@ -138,7 +138,7 @@ class InstallationCardSettings(db.Model):
 
     currency = Column(Enum(CardCurrencies), nullable=False, default='string')
 
-    veokit_installation_id = db.Column(db.Integer, nullable=False, index=True)
+    nepkit_installation_id = db.Column(db.Integer, nullable=False, index=True)
 
     # Format amount
     def format_amount(self, amount):

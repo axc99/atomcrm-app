@@ -16,7 +16,7 @@ def update_card_settings(params, request_data):
         return {'res': 'err', 'message': 'Invalid params', 'errors': vld.errors}
 
     card_settings = InstallationCardSettings.query \
-        .filter_by(veokit_installation_id=request_data['installation_id']) \
+        .filter_by(nepkit_installation_id=request_data['installation_id']) \
         .first()
 
     card_settings.amount_enabled = params.get('amountEnabled')
@@ -29,7 +29,7 @@ def update_card_settings(params, request_data):
 
         # Get current fields
         exist_fields = Field.query \
-            .filter_by(veokit_installation_id=request_data['installation_id']) \
+            .filter_by(nepkit_installation_id=request_data['installation_id']) \
             .order_by(Field.index.asc()) \
             .all()
         for exist_field in exist_fields:
@@ -41,7 +41,7 @@ def update_card_settings(params, request_data):
                     # Update exist field
                     exist_field = Field.query \
                         .filter_by(id=field['id'],
-                                   veokit_installation_id=request_data['installation_id']) \
+                                   nepkit_installation_id=request_data['installation_id']) \
                         .first()
                     exist_field.index = i
                     exist_field.name = field['name']
@@ -56,7 +56,7 @@ def update_card_settings(params, request_data):
                     new_field.name = field['name']
                     new_field.value_type = field['valueType']
                     new_field.board_visibility = field['boardVisibility']
-                    new_field.veokit_installation_id = request_data['installation_id']
+                    new_field.nepkit_installation_id = request_data['installation_id']
 
                     db.session.add(new_field)
             i += 1

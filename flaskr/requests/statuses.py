@@ -16,11 +16,11 @@ def create_status(params, request_data):
         return {'res': 'err', 'message': 'Invalid params', 'errors': vld.errors}
 
     new_status_index = Status.query \
-                           .filter_by(veokit_installation_id=request_data['installation_id']) \
+                           .filter_by(nepkit_installation_id=request_data['installation_id']) \
                            .count() - 1
 
     new_status = Status()
-    new_status.veokit_installation_id = request_data['installation_id']
+    new_status.nepkit_installation_id = request_data['installation_id']
     new_status.name = params['name']
     new_status.color = params['color']
     new_status.index = new_status_index if new_status_index > 0 else 0
@@ -70,7 +70,7 @@ def update_status_index(params, request_data):
         return {'res': 'err', 'message': 'Invalid params', 'errors': vld.errors}
 
     statuses = Status.query \
-        .filter_by(veokit_installation_id=request_data['installation_id']) \
+        .filter_by(nepkit_installation_id=request_data['installation_id']) \
         .order_by(Status.index.asc()) \
         .all()
 
@@ -101,18 +101,18 @@ def delete_status(params, request_data):
 
     if params.get('assignedStatusId'):
         Lead.query \
-            .filter_by(veokit_installation_id=request_data['installation_id'],
+            .filter_by(nepkit_installation_id=request_data['installation_id'],
                        status_id=params['id']) \
             .update({'status_id': params['assignedStatusId']})
     else:
         Lead.query \
-            .filter_by(veokit_installation_id=request_data['installation_id'],
+            .filter_by(nepkit_installation_id=request_data['installation_id'],
                        status_id=params['id']) \
             .delete()
 
     Status.query \
         .filter_by(id=params['id'],
-                   veokit_installation_id=request_data['installation_id']) \
+                   nepkit_installation_id=request_data['installation_id']) \
         .delete()
 
     db.session.commit()

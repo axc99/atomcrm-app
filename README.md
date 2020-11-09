@@ -2,7 +2,7 @@
 
 Minimalistic CRM system with basic functionality.
 
-[App on Veokit Store](https://veokit.com/store/1-veokit-team/1-atomcrm)
+[App on Nepkit Store](https://nepkit.com/store/1-nepkit-team/1-atomcrm)
 
 ```shell script
 python manage.py runserver

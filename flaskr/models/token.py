@@ -10,4 +10,4 @@ class Token(db.Model):
 
     add_date = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
-    veokit_installation_id = db.Column(db.Integer, nullable=False)
+    nepkit_installation_id = db.Column(db.Integer, nullable=False)

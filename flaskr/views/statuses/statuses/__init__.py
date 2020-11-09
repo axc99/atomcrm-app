@@ -29,10 +29,10 @@ class Statuses(View):
             FROM 
                 public.status AS s
             WHERE
-                s.veokit_installation_id = :veokit_installation_id
+                s.nepkit_installation_id = :nepkit_installation_id
             ORDER BY 
                 s.index ASC""", {
-            'veokit_installation_id': request_data['installation_id']
+            'nepkit_installation_id': request_data['installation_id']
         })
 
     def get_header(self, params, request_data):
