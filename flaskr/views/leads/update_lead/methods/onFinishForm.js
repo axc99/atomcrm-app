@@ -7,6 +7,7 @@ const onFinishForm = (app, params, event) => {
     const amount = +window.getCom('updateLeadForm_amount').getAttr('value')
     const statusId = window.getCom('updateLeadForm_status').getAttr('value')
     const tags = window.getCom('updateLeadForm_tags').getAttr('value')
+    const comment = window.getCom('updateLeadForm_comment').getAttr('value')
 
     const fields = []
     Object.entries(values).map(([key, value]) => {
@@ -24,6 +25,7 @@ const onFinishForm = (app, params, event) => {
             amount,
             fields,
             tags,
+            comment,
             statusId
         })
         .then(result => {

@@ -277,6 +277,14 @@ class UpdateLead(View):
                                         'placeholder': _('v_updateLead_enterTags')
                                     },
                                     {
+                                        '_com': 'Field.Input',
+                                        '_id': 'updateLeadForm_comment',
+                                        'multiline': True,
+                                        'maxLength': 500,
+                                        'value': self.lead.comment,
+                                        'placeholder': _('v_updateLead_enterComment')
+                                    },
+                                    {
                                         '_com': 'Details',
                                         'items': [
                                             {

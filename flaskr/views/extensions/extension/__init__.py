@@ -42,6 +42,7 @@ class Extension(View):
         }
 
     def get_header(self, params, request_data):
+        print('self.extension', self.extension.with_settings)
         return {
             'title': self.meta['name'],
             'breadcrumb': [
@@ -64,7 +65,7 @@ class Extension(View):
                     'to': ['extension', {'key': params['key'], 'tab': 'settings'}],
                     'key': 'settings'
                 }
-            ],
+            ] if self.extension.with_settings else None,
             'activeTab': self.tab
         }
 

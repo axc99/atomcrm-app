@@ -100,6 +100,7 @@ def update_lead(params, request_data):
     vld = Validator({
         'id': {'type': 'number', 'required': True},
         'amount': {'type': 'number', 'required': False, 'nullable': True, 'min': 0},
+        'comment': {'type': 'string', 'required': False},
         'statusId': {'type': 'number', 'required': True},
         'archived': {'type': 'boolean'},
         'tags': {
@@ -143,6 +144,7 @@ def update_lead(params, request_data):
     lead.upd_date = datetime.utcnow()
     lead.status_id = params['statusId']
     lead.amount = params['amount'] if params.get('amount') else 0
+    lead.comment = params.get('comment')
     if params.get('archived') is not None:
         lead.archived = params['archived']
 

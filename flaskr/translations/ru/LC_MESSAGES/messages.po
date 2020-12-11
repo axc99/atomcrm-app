@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-11-05 23:42+0000\n"
+"POT-Creation-Date: 2020-12-11 13:30+0000\n"
 "PO-Revision-Date: 2020-10-10 19:41+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -240,6 +240,46 @@ msgstr "Статус обязателен для заполнения"
 msgid "v_extension_wix_information_settings_save"
 msgstr "Сохранить"
 
+#: flaskr/extensions/wordpress/__init__.py:57
+msgid "v_extension_wordpress_information_content"
+msgstr ""
+"## Подключение плагина\r"
+"\r"
+"1. Подключите плагин [Contact Form 7](https://wordpress.org/plugins/contact-form-7/).\r"
+"\r"
+"![](%(STATIC_URL)simages/wordpress/1-ru.png) \r"
+"\r"
+"2. Подключите плагин [CF7 to Webhook](https://wordpress.org/plugins/cf7-to-zapier/).\r"
+"\r"
+"![](%(STATIC_URL)simages/wordpress/2-ru.png) \r"
+"\r"
+"3. Перейдите в **«Настройки»** плагина **Contact Form 7**.\r"
+"\r"
+"![](%(STATIC_URL)simages/wordpress/3-ru.png) \r"
+"\r"
+"4. Откройте форму на редактирование и перейдите во вкладку **«Webhook»**.\r"
+"\r"
+"5. Включите чекбокс **«Send to Webhook»**, в поле **«Webhook URL»** необходимо указать ссылку: `%(webhook_url)s` и сохранить изменения.\r"
+"\r"
+"![](%(STATIC_URL)simages/wordpress/4-ru.png) \r"
+"\r"
+"6. Если вы планируете получать письма на почту, то необходимо перейти во вкладку **«Дополнительные настройки»**, добавить строчку `skip_mail: on` в текстовое поле и сохранить изменения.\r"
+"\r"
+"![](%(STATIC_URL)simages/wordpress/5-ru.png) \r"
+"\r"
+"## Настройка полей\r"
+"1. В разделе **«Шаблон формы»** необходимо сопоставить поля в AtomCRM с полями в форме."
+"\r"
+"2. Для каждого поля для ввода в **«Имя переменной»** укажите "
+"соответствующий ключ поля в AtomCRM.\r"
+"\r"
+"![](%(STATIC_URL)simages/wordpress/6-ru.png) \r"
+"\r"
+"**Поля и их ключи:**\r"
+"%(field_keys_list)s\r"
+"\r"
+"3. Сохраните действия."
+
 #: flaskr/models/field.py:39
 msgid "m_status_getFieldTypes_string"
 msgstr "Текст"
@@ -272,95 +312,95 @@ msgstr "В заголовке"
 msgid "m_status_getBoardVisibility_subtitle"
 msgstr "В описании"
 
-#: flaskr/models/lead.py:232
+#: flaskr/models/lead.py:233
 msgid "m_lead_getRegularDate_jan"
 msgstr "Янв."
 
-#: flaskr/models/lead.py:233
+#: flaskr/models/lead.py:234
 msgid "m_lead_getRegularDate_feb"
 msgstr "Фев."
 
-#: flaskr/models/lead.py:234
+#: flaskr/models/lead.py:235
 msgid "m_lead_getRegularDate_mar"
 msgstr "Мар."
 
-#: flaskr/models/lead.py:235
+#: flaskr/models/lead.py:236
 msgid "m_lead_getRegularDate_apr"
 msgstr "Апр."
 
-#: flaskr/models/lead.py:236
+#: flaskr/models/lead.py:237
 msgid "m_lead_getRegularDate_may"
 msgstr "Мая"
 
-#: flaskr/models/lead.py:237
+#: flaskr/models/lead.py:238
 msgid "m_lead_getRegularDate_jun"
 msgstr "Июн."
 
-#: flaskr/models/lead.py:238
+#: flaskr/models/lead.py:239
 msgid "m_lead_getRegularDate_jul"
 msgstr "Июл."
 
-#: flaskr/models/lead.py:239
+#: flaskr/models/lead.py:240
 msgid "m_lead_getRegularDate_aug"
 msgstr "Авг."
 
-#: flaskr/models/lead.py:240
+#: flaskr/models/lead.py:241
 msgid "m_lead_getRegularDate_sep"
 msgstr "Сен."
 
-#: flaskr/models/lead.py:241
+#: flaskr/models/lead.py:242
 msgid "m_lead_getRegularDate_oct"
 msgstr "Окт."
 
-#: flaskr/models/lead.py:242
+#: flaskr/models/lead.py:243
 msgid "m_lead_getRegularDate_nov"
 msgstr "Нояб."
 
-#: flaskr/models/lead.py:243
+#: flaskr/models/lead.py:244
 msgid "m_lead_getRegularDate_dec"
 msgstr "Дек."
 
-#: flaskr/models/lead.py:248
+#: flaskr/models/lead.py:249
 msgid "m_lead_getRegularDate_today"
 msgstr "Сегодня в %(hours)s:%(minutes)s"
 
-#: flaskr/models/lead.py:250
+#: flaskr/models/lead.py:251
 msgid "m_lead_getRegularDate_yesterday"
 msgstr "Вчера в %(hours)s:%(minutes)s"
 
-#: flaskr/models/lead.py:253
+#: flaskr/models/lead.py:254
 msgid "m_lead_getRegularDate_date"
 msgstr "%(day)s %(month)s в %(hours)s:%(minutes)s"
 
-#: flaskr/models/lead.py:255
+#: flaskr/models/lead.py:256
 msgid "m_lead_getRegularDate_dateWithYear"
 msgstr "%(day)s %(month)s %(year)s в %(hours)s:%(minutes)s"
 
-#: flaskr/models/lead.py:405
+#: flaskr/models/lead.py:406
 msgid "m_lead_leadAction_getItemData_createLead"
 msgstr "Добавление лида в «%(new_status_name)s»"
 
-#: flaskr/models/lead.py:411
+#: flaskr/models/lead.py:412
 msgid "m_lead_leadAction_getItemData_updateLead"
 msgstr "Обновление лида"
 
-#: flaskr/models/lead.py:416
+#: flaskr/models/lead.py:417
 msgid "m_lead_leadAction_getItemData_updateLeadStatus"
 msgstr "Смена статуса лида с «%(old_status_name)s» на «%(new_status_name)s»"
 
-#: flaskr/models/lead.py:425
+#: flaskr/models/lead.py:426
 msgid "m_lead_leadAction_getItemData_archiveLead"
 msgstr "Архивация лида"
 
-#: flaskr/models/lead.py:429
+#: flaskr/models/lead.py:430
 msgid "m_lead_leadAction_getItemData_restoreLead"
 msgstr "Восстановление лида"
 
-#: flaskr/models/lead.py:433
+#: flaskr/models/lead.py:434
 msgid "m_lead_leadAction_getItemData_completeTask"
 msgstr "Выполнение задачи «%(task_name)s»"
 
-#: flaskr/models/lead.py:437
+#: flaskr/models/lead.py:438
 msgid "m_lead_leadAction_getItemData_revertCompleteTask"
 msgstr "Отмены выполнения задачи «%(task_name)s»"
 
@@ -387,6 +427,46 @@ msgstr "Зеленый"
 #: flaskr/models/status.py:43
 msgid "m_status_getStatusColors_orange"
 msgstr "Оранджевый"
+
+#: flaskr/views/analytics/analytics/__init__.py:21
+msgid "v_analytics_meta_name"
+msgstr "Аналитика"
+
+#: flaskr/views/analytics/analytics/__init__.py:114
+msgid "v_analytics_header_periodType_currentMonth"
+msgstr "Текущий месяц"
+
+#: flaskr/views/analytics/analytics/__init__.py:115
+msgid "v_analytics_header_periodType_previousMonth"
+msgstr "Предыдущий месяц"
+
+#: flaskr/views/analytics/analytics/__init__.py:116
+msgid "v_analytics_header_periodType_last30days"
+msgstr "Посл. 30 дней"
+
+#: flaskr/views/analytics/analytics/__init__.py:117
+msgid "v_analytics_header_periodType_last3months"
+msgstr "Посл. 3 месяца"
+
+#: flaskr/views/analytics/analytics/__init__.py:118
+msgid "v_analytics_header_periodType_last6months"
+msgstr "Посл. 6 месяцев"
+
+#: flaskr/views/analytics/analytics/__init__.py:119
+msgid "v_analytics_header_periodType_allTime"
+msgstr "Все время"
+
+#: flaskr/views/analytics/analytics/__init__.py:120
+msgid "v_analytics_header_periodType_customPeriod"
+msgstr "Указать период"
+
+#: flaskr/views/analytics/analytics/__init__.py:141
+msgid "v_analytics_statistics_allLeads"
+msgstr "Все лиды"
+
+#: flaskr/views/analytics/analytics/__init__.py:149
+msgid "v_analytics_statistics_statisticsByDay"
+msgstr "Статистика по дням"
 
 #: flaskr/views/api/api/__init__.py:22
 msgid "v_api_header_extensions"
@@ -470,15 +550,15 @@ msgstr "Сохранить"
 msgid "v_extension_meta_name"
 msgstr "Интеграция с %(name)s"
 
-#: flaskr/views/extensions/extension/__init__.py:49
+#: flaskr/views/extensions/extension/__init__.py:50
 msgid "v_extension_header_tab_extensions"
 msgstr "Расширения"
 
-#: flaskr/views/extensions/extension/__init__.py:58
+#: flaskr/views/extensions/extension/__init__.py:59
 msgid "v_extension_header_information"
 msgstr "Информация"
 
-#: flaskr/views/extensions/extension/__init__.py:63
+#: flaskr/views/extensions/extension/__init__.py:64
 msgid "v_extension_header_settings"
 msgstr "Настройки"
 
@@ -502,17 +582,21 @@ msgstr "Применить"
 msgid "v_filter_schema_form_clear"
 msgstr "Сбросить"
 
-#: flaskr/views/leads/pipeline/__init__.py:25
+#: flaskr/views/leads/pipeline/__init__.py:27
 msgid "v_pipeline_meta_name"
 msgstr "Лиды"
 
-#: flaskr/views/leads/pipeline/__init__.py:109
+#: flaskr/views/leads/pipeline/__init__.py:117
 msgid "v_pipeline_header_filter"
 msgstr "Фильтр"
 
-#: flaskr/views/leads/pipeline/__init__.py:124
+#: flaskr/views/leads/pipeline/__init__.py:132
 msgid "v_pipeline_header_search"
 msgstr "Поиск..."
+
+#: flaskr/views/leads/pipeline/__init__.py:142
+msgid "v_pipeline_header_autoCreate"
+msgstr "Автодобавление"
 
 #: flaskr/views/leads/update_lead/__init__.py:117
 msgid "v_updateLead_meta_name"
@@ -540,25 +624,29 @@ msgstr "Восстановить"
 
 #: flaskr/views/leads/update_lead/__init__.py:277
 msgid "v_updateLead_enterTags"
-msgstr "Введите теги"
+msgstr "Укажите теги"
 
-#: flaskr/views/leads/update_lead/__init__.py:283
+#: flaskr/views/leads/update_lead/__init__.py:285
+msgid "v_updateLead_enterComment"
+msgstr "Комментарий"
+
+#: flaskr/views/leads/update_lead/__init__.py:291
 msgid "v_updateLead_addDate"
 msgstr "Добавлено"
 
-#: flaskr/views/leads/update_lead/__init__.py:289
+#: flaskr/views/leads/update_lead/__init__.py:297
 msgid "v_updateLead_updateDate"
 msgstr "Обновлено"
 
-#: flaskr/views/leads/update_lead/__init__.py:295
+#: flaskr/views/leads/update_lead/__init__.py:303
 msgid "v_updateLead_creator"
 msgstr "Пользователь"
 
-#: flaskr/views/leads/update_lead/__init__.py:305
+#: flaskr/views/leads/update_lead/__init__.py:313
 msgid "v_updateLead_utmMarks"
 msgstr "UTM метки"
 
-#: flaskr/views/leads/update_lead/__init__.py:414
+#: flaskr/views/leads/update_lead/__init__.py:422
 msgid "v_updateLead_getMethods_changesSaved"
 msgstr "Изменения сохранены"
 

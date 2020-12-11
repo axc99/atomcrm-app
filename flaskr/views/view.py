@@ -57,7 +57,7 @@ def get_method(location):
 
 
 # Interpolate VAR into compile js function
-def method_with_vars(code, vars):
+def method_with_vars(code, vars={}):
     for key in vars:
         code = code.replace(key, str(vars[key]))
 

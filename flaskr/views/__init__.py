@@ -12,6 +12,7 @@ from flaskr.views.card.card import Card
 from flaskr.views.api.api import Api
 from flaskr.views.api.get_token import GetToken
 from flaskr.views.extensions.extension import Extension
+from flaskr.views.analytics.analytics import Analytics
 
 views_map = {
     # Pipeline
@@ -38,5 +39,8 @@ views_map = {
     'getToken': GetToken,
 
     # Extension
-    'extension': Extension
+    'extension': Extension,
+
+    # Analytics
+    'analytics': Analytics
 }

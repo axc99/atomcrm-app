@@ -1,9 +1,8 @@
 class Extension:
-    def __init__(self):
-        self.id = None
-        self.key = None
-        self.name = ''
-        self.with_settings = False
+    id = None
+    key = None
+    name = ''
+    with_settings = False
 
     @staticmethod
     def get_default_data():
