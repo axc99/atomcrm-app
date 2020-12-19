@@ -12,7 +12,8 @@ const onFinishForm = (app, params, event) => {
         fields.push({
             id: row.key,
             name: row.name.value,
-            valueType: row.valueType.value,
+            valueType: row.valueType[0].value,
+            choiceOptions: row.valueType[1] && row.valueType[1].value,
             boardVisibility: row.boardVisibility.value
         })
     })
@@ -27,9 +28,10 @@ const onFinishForm = (app, params, event) => {
             form.setAttr('loading', false)
 
             if (result.res == 'ok') {
-                app
-                    .getPage()
-                    .to('pipeline')
+                app.showNotification({
+                    message: 'SAVING_NOTIFICATION_MESSAGE',
+                    duration: 1
+                })
             }
         })
 }

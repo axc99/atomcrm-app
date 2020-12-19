@@ -1,8 +1,10 @@
+import os
 from datetime import timedelta
 from flask_babel import _
 import json
 
 from flaskr import db
+from flaskr.models.installation_extension_settings import InstallationExtensionSettings
 from flaskr.views.view import View, get_method, method_with_vars
 from flaskr.models.lead import Lead
 from flaskr.models.status import Status, get_hex_by_color
@@ -27,6 +29,7 @@ class Pipeline(View):
         self.installation_card_settings = None
         self.filter_used = False
         self.filter_params = {}
+        self.has_any_integration = False
 
     def before(self, params, request_data):
         self.installation_card_settings = InstallationCardSettings.query \
@@ -59,6 +62,11 @@ class Pipeline(View):
             'installation_id': request_data['installation_id'],
             'amount_enabled': self.installation_card_settings.amount_enabled
         })
+
+        self.has_any_integration = InstallationExtensionSettings.query \
+            .filter_by(nepkit_installation_id=request_data['installation_id']) \
+            .count() > 0
+
 
         self.statuses = []
         for status in statuses_q:
@@ -100,7 +108,7 @@ class Pipeline(View):
             })
 
     def get_header(self, params, request_data):
-        return {
+        header = {
             'title': self.meta.get('name'),
             'actions': [
                 {
@@ -125,6 +133,20 @@ class Pipeline(View):
                 'onSearch': 'onSearchLeads'
             }
         }
+
+        if not self.has_any_integration:
+            header['actions'].append({
+                '_com': 'Button',
+                'type': 'solid',
+                'icon': 'plusCircle',
+                'label': _('v_pipeline_header_autoCreate'),
+                'to': ['control', {
+                    'tab': 'extensions',
+                    'category': os.environ.get('AUTOCREATE_CATEGORY_ID')
+                }]
+            })
+
+        return header
 
     def get_schema(self, params, request_data):
         board_columns = []
@@ -180,7 +202,7 @@ def get_lead_component(lead, installation_card_settings):
     title = ''
     description = []
     for field in lead['fields']:
-        if field['value']:
+        if field['value'] and field['field_value_type'] in ('string', 'number', 'date'):
             if field['field_board_visibility'] == 'title':
                 title += field['value'] + ' '
             elif field['field_board_visibility'] == 'subtitle':

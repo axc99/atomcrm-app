@@ -21,6 +21,7 @@ class Lead(db.Model):
     upd_date = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
     amount = db.Column(db.Float, nullable=True)
+    comment = db.Column(db.String(500))
 
     archived = db.Column(db.Boolean, default=False, nullable=False)
 

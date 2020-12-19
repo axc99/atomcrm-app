@@ -182,6 +182,23 @@ class UpdateLead(View):
                     'value': field_value,
                     'allowClear': True
                 }
+            elif field.value_type.name == 'choice':
+                choice_options = []
+
+                if field.choice_options:
+                    for option_key, option_value in field.choice_options.items():
+                        choice_options.append({
+                            'key': option_key,
+                            'label': option_value
+                        })
+
+                field_component = {
+                    '_com': 'Field.Select',
+                    'key': field.id,
+                    'label': field.name,
+                    'value': field_value,
+                    'options': choice_options
+                }
             else:
                 field_component = {
                     '_com': 'Field.Input',
@@ -275,6 +292,14 @@ class UpdateLead(View):
                                         'multiple': True,
                                         'value': Lead.get_tags(self.lead.id),
                                         'placeholder': _('v_updateLead_enterTags')
+                                    },
+                                    {
+                                        '_com': 'Field.Input',
+                                        '_id': 'updateLeadForm_comment',
+                                        'multiline': True,
+                                        'maxLength': 500,
+                                        'value': self.lead.comment,
+                                        'placeholder': _('v_updateLead_enterComment')
                                     },
                                     {
                                         '_com': 'Details',

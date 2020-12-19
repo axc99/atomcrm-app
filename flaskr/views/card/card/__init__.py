@@ -5,12 +5,23 @@ from flaskr.models.installation_card_settings import InstallationCardSettings
 from flaskr.data.currencies import currencies
 
 compiled_methods = {
+    'onChangeValueType': get_method('methods/onChangeValueType'),
     'onDragFields': get_method('methods/onDragFields'),
     'onClickAddField': get_method('methods/onClickAddField'),
     'onClickDeleteField': get_method('methods/onClickDeleteField'),
     'onChangeAmountEnabled': get_method('methods/onChangeAmountEnabled'),
     'onFinishForm': get_method('methods/onFinishForm')
 }
+
+
+def json_options_to_text(json):
+    lines = []
+
+    if json:
+        for field_key, field_value in json.items():
+            lines.append("{}={}".format(field_key, field_value))
+
+    return '\r'.join(lines)
 
 
 # Page: Card (Information + Fields)
@@ -36,8 +47,7 @@ class Card(View):
 
         # Value type select
         for t in get_field_types():
-            if t[1] not in ('boolean', 'select',):
-                self.value_type_options.append({'value': t[1], 'label': t[2]})
+            self.value_type_options.append({'value': t[1], 'label': t[2]})
 
         # Currency select
         for key, currency in currencies.items():
@@ -60,6 +70,7 @@ class Card(View):
 
     def get_schema(self, params, request_data):
         table_rows = []
+        i = 0
         for field in self.fields:
             table_rows.append({
                 'key': field.id,
@@ -68,11 +79,21 @@ class Card(View):
                     'value': field.name,
                     'maxLength': 40
                 },
-                'valueType': {
-                    '_com': 'Field.Select',
-                    'options': self.value_type_options,
-                    'value': field.value_type.name
-                },
+                'valueType': [
+                    {
+                        '_com': 'Field.Select',
+                        'onChange': ['onChangeValueType', {'fieldIndex': i}],
+                        'options': self.value_type_options,
+                        'value': field.value_type.name
+                    },
+                    {
+                        '_com': 'Field.Input',
+                        'multiline': True,
+                        'maxLength': 500,
+                        'placeholder': 'key=value',
+                        'value': json_options_to_text(field.choice_options)
+                    } if field.value_type.name == 'choice' else None
+                ],
                 'boardVisibility': {
                     '_com': 'Field.Select',
                     'options': self.board_visibility_options,
@@ -88,6 +109,7 @@ class Card(View):
                     }
                 ]
             })
+            i += 1
 
         return [
             {
@@ -114,7 +136,7 @@ class Card(View):
                     {
                         '_com': 'Field.Custom',
                         '_id': 'updateCardSettingsForm_fields',
-                        'columnWidth': 10,
+                        'columnWidth': 12,
                         'label': _('v_card_scheme_form_fields'),
                         'content': [
                             {
@@ -170,5 +192,7 @@ class Card(View):
 
         methods['onClickAddField'] = method_with_vars(methods['onClickAddField'], {'VALUE_TYPE_OPTIONS': self.value_type_options,
                                                                                    'BOARD_VISIBILITY_OPTIONS': self.board_visibility_options})
+        methods['onFinishForm'] = method_with_vars(methods['onFinishForm'],
+                                                      {'SAVING_NOTIFICATION_MESSAGE': _('v_card_getMethods_changesSaved')})
 
         return methods

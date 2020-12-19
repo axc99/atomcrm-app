@@ -1,11 +1,13 @@
 from flaskr.extensions.tilda import TildaExtension
 from flaskr.extensions.mottor import MottorExtension
 from flaskr.extensions.wix import WixExtension
+from flaskr.extensions.wordpress import WordpressExtension
 
 extensions_map = {
     'tilda': TildaExtension,
     'mottor': MottorExtension,
-    'wix': WixExtension
+    'wix': WixExtension,
+    'wordpress': WordpressExtension
 }
 
 

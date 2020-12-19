@@ -8,11 +8,14 @@ const onClickAddField = (app, params, event) => {
             '_com': 'Field.Input',
             'maxLength': 40
         },
-        'valueType': {
-            '_com': 'Field.Select',
-            'options': VALUE_TYPE_OPTIONS,
-            'value': 'string'
-        },
+        'valueType': [
+            {
+                '_com': 'Field.Select',
+                'options': VALUE_TYPE_OPTIONS,
+                'value': 'string',
+                'onChange': ['onChangeValueType', {'fieldIndex': rows.length}]
+            }
+        ],
         boardVisibility: {
             '_com': 'Field.Select',
             'value': 'subtitle',
