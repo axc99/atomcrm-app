@@ -202,7 +202,7 @@ def get_lead_component(lead, installation_card_settings):
     title = ''
     description = []
     for field in lead['fields']:
-        if field['value']:
+        if field['value'] and field['field_value_type'] in ('string', 'number', 'date'):
             if field['field_board_visibility'] == 'title':
                 title += field['value'] + ' '
             elif field['field_board_visibility'] == 'subtitle':

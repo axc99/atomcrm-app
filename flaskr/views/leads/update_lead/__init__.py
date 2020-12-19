@@ -182,6 +182,23 @@ class UpdateLead(View):
                     'value': field_value,
                     'allowClear': True
                 }
+            elif field.value_type.name == 'choice':
+                choice_options = []
+
+                if field.choice_options:
+                    for option_key, option_value in field.choice_options.items():
+                        choice_options.append({
+                            'key': option_key,
+                            'label': option_value
+                        })
+
+                field_component = {
+                    '_com': 'Field.Select',
+                    'key': field.id,
+                    'label': field.name,
+                    'value': field_value,
+                    'options': choice_options
+                }
             else:
                 field_component = {
                     '_com': 'Field.Input',

@@ -100,7 +100,7 @@ def update_lead(params, request_data):
     vld = Validator({
         'id': {'type': 'number', 'required': True},
         'amount': {'type': 'number', 'required': False, 'nullable': True, 'min': 0},
-        'comment': {'type': 'string', 'required': False},
+        'comment': {'type': 'string', 'required': False, 'nullable': True},
         'statusId': {'type': 'number', 'required': True},
         'archived': {'type': 'boolean'},
         'tags': {
@@ -119,6 +119,7 @@ def update_lead(params, request_data):
         }
     })
     is_valid = vld.validate(params)
+
     if not is_valid:
         return {'res': 'err', 'message': 'Invalid params', 'errors': vld.errors}
 
