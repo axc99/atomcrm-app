@@ -8,8 +8,8 @@ from sqlalchemy import Integer, Enum, Column
 # Field type
 class FieldType(enum.Enum):
     string = 10
-    # string_phone = 11
-    # string_email = 12
+    phone = 11
+    email = 12
     long_string = 20
     number = 30
     boolean = 40
@@ -42,11 +42,13 @@ class Field(db.Model):
 def get_field_types():
     return (
         (1, 'string', _('m_status_getFieldTypes_string')),
-        (2, 'long_string', _('m_status_getFieldTypes_longString')),
-        (3, 'number', _('m_status_getFieldTypes_number')),
-        (4, 'boolean', _('m_status_getFieldTypes_boolean')),
-        (5, 'date', _('m_status_getFieldTypes_date')),
-        (6, 'choice', _('m_status_getFieldTypes_choice')),
+        (2, 'email', _('m_status_getFieldTypes_email')),
+        (3, 'phone', _('m_status_getFieldTypes_phone')),
+        (4, 'long_string', _('m_status_getFieldTypes_longString')),
+        (5, 'number', _('m_status_getFieldTypes_number')),
+        (6, 'boolean', _('m_status_getFieldTypes_boolean')),
+        (7, 'date', _('m_status_getFieldTypes_date')),
+        (8, 'choice', _('m_status_getFieldTypes_choice')),
         # (7, 'file', _('m_status_getFieldTypes_file'))
     )
 

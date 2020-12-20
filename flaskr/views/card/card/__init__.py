@@ -47,7 +47,8 @@ class Card(View):
 
         # Value type select
         for t in get_field_types():
-            self.value_type_options.append({'value': t[1], 'label': t[2]})
+            self.value_type_options.append({'value': t[1],
+                                            'label': t[2]})
 
         # Currency select
         for key, currency in currencies.items():
@@ -71,6 +72,7 @@ class Card(View):
     def get_schema(self, params, request_data):
         table_rows = []
         i = 0
+
         for field in self.fields:
             table_rows.append({
                 'key': field.id,

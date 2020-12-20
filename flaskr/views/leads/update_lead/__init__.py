@@ -199,6 +199,30 @@ class UpdateLead(View):
                     'value': field_value,
                     'options': choice_options
                 }
+            elif field.value_type.name == 'phone':
+                field_component = {
+                    '_com': 'Field.Input',
+                    'key': field.id,
+                    'type': 'text',
+                    'columnWidth': 12,
+                    'label': field.name,
+                    'value': field_value,
+                    'rules': [
+                        {'pattern': '/^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/g', 'message': _('v_updateLead_rule_phone')}
+                    ]
+                }
+            elif field.value_type.name == 'email':
+                field_component = {
+                    '_com': 'Field.Input',
+                    'key': field.id,
+                    'type': 'text',
+                    'columnWidth': 12,
+                    'label': field.name,
+                    'value': field_value,
+                    'rules': [
+                        {'pattern': '/\S+@\S+\.\S+/', 'message': _('v_updateLead_rule_email')},
+                    ]
+                }
             else:
                 field_component = {
                     '_com': 'Field.Input',

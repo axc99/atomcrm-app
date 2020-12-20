@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-12-19 14:12+0000\n"
+"POT-Creation-Date: 2020-12-20 17:36+0000\n"
 "PO-Revision-Date: 2020-10-10 19:41+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -227,34 +227,42 @@ msgid "m_status_getFieldTypes_string"
 msgstr "Text"
 
 #: flaskr/models/field.py:45
+msgid "m_status_getFieldTypes_email"
+msgstr "Email"
+
+#: flaskr/models/field.py:46
+msgid "m_status_getFieldTypes_phone"
+msgstr "Phone number"
+
+#: flaskr/models/field.py:47
 msgid "m_status_getFieldTypes_longString"
 msgstr "Long text"
 
-#: flaskr/models/field.py:46
+#: flaskr/models/field.py:48
 msgid "m_status_getFieldTypes_number"
 msgstr "Number"
 
-#: flaskr/models/field.py:47
+#: flaskr/models/field.py:49
 msgid "m_status_getFieldTypes_boolean"
 msgstr "Checkbox"
 
-#: flaskr/models/field.py:48
+#: flaskr/models/field.py:50
 msgid "m_status_getFieldTypes_date"
 msgstr "Date"
 
-#: flaskr/models/field.py:49
+#: flaskr/models/field.py:51
 msgid "m_status_getFieldTypes_choice"
 msgstr "Choice"
 
-#: flaskr/models/field.py:56
+#: flaskr/models/field.py:58
 msgid "m_status_getBoardVisibility_none"
 msgstr "Do not show"
 
-#: flaskr/models/field.py:57
+#: flaskr/models/field.py:59
 msgid "m_status_getBoardVisibility_title"
 msgstr "In title"
 
-#: flaskr/models/field.py:58
+#: flaskr/models/field.py:60
 msgid "m_status_getBoardVisibility_subtitle"
 msgstr "In description"
 
@@ -452,47 +460,47 @@ msgstr "Create token"
 msgid "v_getToken_schema_token"
 msgstr "New token"
 
-#: flaskr/views/card/card/__init__.py:30
+#: flaskr/views/card/card/__init__.py:31
 msgid "v_card_meta_name"
 msgstr "Card settings"
 
-#: flaskr/views/card/card/__init__.py:122
+#: flaskr/views/card/card/__init__.py:125
 msgid "v_card_scheme_form_leadAmount"
 msgstr "Lead amount"
 
-#: flaskr/views/card/card/__init__.py:131
+#: flaskr/views/card/card/__init__.py:134
 msgid "v_card_scheme_form_amountCurrency"
 msgstr "Amount currency"
 
-#: flaskr/views/card/card/__init__.py:139
+#: flaskr/views/card/card/__init__.py:142
 msgid "v_card_scheme_form_fields"
 msgstr "Fields"
 
-#: flaskr/views/card/card/__init__.py:145
+#: flaskr/views/card/card/__init__.py:148
 msgid "v_card_scheme_form_fields_table_noFields"
 msgstr "No fields"
 
-#: flaskr/views/card/card/__init__.py:151
+#: flaskr/views/card/card/__init__.py:154
 msgid "v_card_scheme_form_fields_table_field"
 msgstr "Field"
 
-#: flaskr/views/card/card/__init__.py:156
+#: flaskr/views/card/card/__init__.py:159
 msgid "v_card_scheme_form_fields_table_valueType"
 msgstr "Value type"
 
-#: flaskr/views/card/card/__init__.py:161
+#: flaskr/views/card/card/__init__.py:164
 msgid "v_card_scheme_form_fields_table_boardVisibility"
 msgstr "Board visibility"
 
-#: flaskr/views/card/card/__init__.py:169
+#: flaskr/views/card/card/__init__.py:172
 msgid "v_card_scheme_form_fields_addField"
 msgstr "Add field"
 
-#: flaskr/views/card/card/__init__.py:183
+#: flaskr/views/card/card/__init__.py:186
 msgid "v_card_scheme_form_save"
 msgstr "Save"
 
-#: flaskr/views/card/card/__init__.py:195
+#: flaskr/views/card/card/__init__.py:198
 msgid "v_card_getMethods_changesSaved"
 msgstr "Changes saved"
 
@@ -564,39 +572,47 @@ msgstr "Tasks"
 msgid "v_updateLead_header_activity"
 msgstr "Activity"
 
-#: flaskr/views/leads/update_lead/__init__.py:244
+#: flaskr/views/leads/update_lead/__init__.py:211
+msgid "v_updateLead_rule_phone"
+msgstr "Enter a valid phone number"
+
+#: flaskr/views/leads/update_lead/__init__.py:223
+msgid "v_updateLead_rule_email"
+msgstr "Enter a valid email"
+
+#: flaskr/views/leads/update_lead/__init__.py:269
 msgid "v_updateLead_save"
 msgstr "Save"
 
-#: flaskr/views/leads/update_lead/__init__.py:254
+#: flaskr/views/leads/update_lead/__init__.py:279
 msgid "v_updateLead_restoreLead"
 msgstr "Restore lead"
 
-#: flaskr/views/leads/update_lead/__init__.py:293
+#: flaskr/views/leads/update_lead/__init__.py:318
 msgid "v_updateLead_enterTags"
 msgstr "Enter tags"
 
-#: flaskr/views/leads/update_lead/__init__.py:301
+#: flaskr/views/leads/update_lead/__init__.py:326
 msgid "v_updateLead_enterComment"
 msgstr "Enter comment"
 
-#: flaskr/views/leads/update_lead/__init__.py:307
+#: flaskr/views/leads/update_lead/__init__.py:332
 msgid "v_updateLead_addDate"
 msgstr "Add date"
 
-#: flaskr/views/leads/update_lead/__init__.py:313
+#: flaskr/views/leads/update_lead/__init__.py:338
 msgid "v_updateLead_updateDate"
 msgstr "Update date"
 
-#: flaskr/views/leads/update_lead/__init__.py:319
+#: flaskr/views/leads/update_lead/__init__.py:344
 msgid "v_updateLead_creator"
 msgstr "Added by"
 
-#: flaskr/views/leads/update_lead/__init__.py:329
+#: flaskr/views/leads/update_lead/__init__.py:354
 msgid "v_updateLead_utmMarks"
 msgstr "UTM marks"
 
-#: flaskr/views/leads/update_lead/__init__.py:438
+#: flaskr/views/leads/update_lead/__init__.py:463
 msgid "v_updateLead_getMethods_changesSaved"
 msgstr "hanges saved\""
 
@@ -802,3 +818,4 @@ msgstr "Add subtask"
 #: flaskr/views/tasks/update_task/__init__.py:111
 msgid "v_updateTask_btn"
 msgstr "Save"
+

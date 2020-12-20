@@ -157,12 +157,6 @@ class Analytics(View):
                     'xAxis': {
                         'type': 'timeCat',
                         'tickCount': 5
-                    },
-                    # 'tooltip': {
-                    #     'showTitle': False
-                    # },
-                    'label': {
-                        'title': 'TITLE!'
                     }
                 }
             }
