@@ -68,11 +68,16 @@ def req():
             view.before_get_header(view_params, request_data)
             result_view['header'] = view.get_header(view_params, request_data)
 
+            view.before_get_data(view_params, request_data)
+            result_view['data'] = view.get_data(view_params, request_data)
+
             view.before_get_methods(view_params, request_data)
             result_view['methods'] = view.get_methods(view_params, request_data)
 
             view.before_get_schema(view_params, request_data)
             result_view['schema'] = view.get_schema(view_params, request_data)
+
+            result_view['script'] = view.script
 
             return {
                 'res': 'ok',
@@ -128,8 +133,8 @@ def webhook():
         default_fields = [
             {'index': 0, 'name': _('r_webhook_defaultStatuses_firstName'), 'value_type': 'string', 'max': 40, 'board_visibility': 'title', 'primary': False},
             {'index': 1, 'name': _('r_webhook_defaultStatuses_lastName'), 'value_type': 'string', 'max': 60, 'board_visibility': 'title', 'primary': False},
-            {'index': 2, 'name': _('r_webhook_defaultStatuses_email'), 'value_type': 'string', 'max': 260, 'board_visibility': 'subtitle', 'primary': True},
-            {'index': 3, 'name': _('r_webhook_defaultStatuses_mobilePhone'), 'value_type': 'string', 'max': 30, 'board_visibility': 'subtitle', 'primary': True}
+            {'index': 2, 'name': _('r_webhook_defaultStatuses_email'), 'value_type': 'email', 'max': 260, 'board_visibility': 'subtitle', 'primary': True},
+            {'index': 3, 'name': _('r_webhook_defaultStatuses_mobilePhone'), 'value_type': 'phone', 'max': 30, 'board_visibility': 'subtitle', 'primary': True}
         ]
         for default_field in default_fields:
             new_field = Field()

@@ -1,6 +1,6 @@
 from flaskr.requests.leads import get_lead_components, create_lead, update_lead, update_lead_status, archive_lead, restore_lead, complete_lead_tasks
-from flaskr.requests.statuses import create_status, update_status, update_status_index, delete_status
-from flaskr.requests.tasks import create_task, update_task_index, update_task, delete_task
+from flaskr.requests.statuses import get_statuses, create_status, update_status, update_status_index, delete_status
+from flaskr.requests.tasks import get_tasks, create_task, update_task_index, update_task, delete_task
 from flaskr.requests.tokens import get_token
 from flaskr.requests.card_settings import update_card_settings
 from flaskr.requests.extensions import update_extension_settings
@@ -17,12 +17,14 @@ requests_map = {
     'completeLeadTasks': complete_lead_tasks,
 
     # Statuses
+    'getStatuses': get_statuses,
     'createStatus': create_status,
     'updateStatus': update_status,
     'updateStatusIndex': update_status_index,
     'deleteStatus': delete_status,
 
     # Tasks
+    'getTasks': get_tasks,
     'createTask': create_task,
     'updateTaskIndex': update_task_index,
     'updateTask': update_task,

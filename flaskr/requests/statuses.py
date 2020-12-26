@@ -5,6 +5,37 @@ from flaskr.models.status import Status
 from flaskr.models.lead import Lead
 
 
+# Get statuses
+def get_statuses(params, request_data):
+    statuses = []
+    statuses_q = db.session.execute("""
+                SELECT 
+                    s.*,
+                    (SELECT COUNT(*) FROM public.lead AS l WHERE l.status_id = s.id AND l.archived = false) AS lead_count,
+                    COUNT(*) OVER () AS total
+                FROM 
+                    public.status AS s
+                WHERE
+                    s.nepkit_installation_id = :nepkit_installation_id
+                ORDER BY 
+                    s.index ASC""", {
+        'nepkit_installation_id': request_data['installation_id']
+    })
+
+    for status in statuses_q:
+        statuses.append({
+            'id': status['id'],
+            'name': status['name'],
+            'leadCount': status['lead_count'],
+            'color': status['color']
+        })
+
+    return {
+        'res': 'ok',
+        'statuses': statuses
+    }
+
+
 # Create status
 def create_status(params, request_data):
     vld = Validator({
