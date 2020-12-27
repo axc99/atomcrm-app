@@ -20,6 +20,29 @@ def text_options_to_json(text):
     return json
 
 
+# Get fields
+def get_fields(params, request_data):
+    fields = []
+
+    fields_q = Field.query \
+        .filter_by(nepkit_installation_id=request_data['installation_id']) \
+        .order_by(Field.index.asc()) \
+        .all()
+    for field in fields_q:
+        fields.append({
+            'id': field.id,
+            'name': field.name,
+            'valueType': field.value_type.name,
+            'choiceOptions': field.choice_options,
+            'boardVisibility': field.board_visibility.name
+        })
+
+    return {
+        'res': 'ok',
+        'fields': fields
+    }
+
+
 # Update card settings
 def update_card_settings(params, request_data):
     vld = Validator({

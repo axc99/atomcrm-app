@@ -5,48 +5,55 @@ import json
 
 from flaskr import db
 from flaskr.models.installation_extension_settings import InstallationExtensionSettings
-from flaskr.views.view import View, get_method, method_with_vars
+from flaskr.views.view import View, get_method, method_with_vars, compile_js
 from flaskr.models.lead import Lead
-from flaskr.models.status import Status, get_hex_by_color
+from flaskr.models.status import Status, get_hex_by_color, get_status_colors
 from flaskr.models.installation_card_settings import InstallationCardSettings
 
-compiled_methods = {
-    'addLead': get_method('methods/addLead'),
-    'loadLeads': get_method('methods/loadLeads'),
-    'onDragLead': get_method('methods/onDragLead'),
-    'onSearchLeads': get_method('methods/onSearchLeads')
-}
+script = compile_js('script')
 
 
 # Page: Pipeline
 class Pipeline(View):
     def __init__(self):
-        self.leads = []
-        self.statuses = []
+        self.script = script
         self.meta = {
             'name': _('v_pipeline_meta_name')
         }
+        self.data = {
+            'statuses': [],
+            'strs': {
+                'schema_header_title': 'PIPELINE'
+            }
+        }
+        self.leads = []
+        self.statuses = []
         self.installation_card_settings = None
         self.filter_used = False
         self.filter_params = {}
         self.has_any_integration = False
 
     def before(self, params, request_data):
-        self.installation_card_settings = InstallationCardSettings.query \
+        installation_card_settings = InstallationCardSettings.query \
             .filter_by(nepkit_installation_id=request_data['installation_id']) \
             .first()
 
-        self.filter_params = {
-            'period_from': params['periodFrom'].replace('.', '-') if params.get('periodFrom') else None,
-            'period_to': params['periodTo'].replace('.', '-') if params.get('periodTo') else None,
-            'archived': True if params.get('archived') == 'true' else False,
-            'utm_source': params['utmSource'] if params.get('utmSource') else None,
-            'utm_medium': params['utmMedium'] if params.get('utmMedium') else None,
-            'utm_campaign': params['utmCampaign'] if params.get('utmCampaign') else None,
-            'utm_term': params['utmTerm'] if params.get('utmTerm') else None,
-            'utm_content': params['utmContent'] if params.get('utmContent') else None,
+        self.data['installationCardSettings'] = {
+            'amountEnabled': installation_card_settings.amount_enabled,
+            'currency': installation_card_settings.currency.name
         }
-        self.filter_used = any(self.filter_params.values())
+        self.data['search'] = params.get('search')
+        self.data['filterParams'] = {
+            'periodFrom': params['periodFrom'].replace('.', '-') if params.get('periodFrom') else None,
+            'periodTo': params['periodTo'].replace('.', '-') if params.get('periodTo') else None,
+            'archived': True if params.get('archived') == 'true' else False,
+            'utmSource': params['utmSource'] if params.get('utmSource') else None,
+            'utmMedium': params['utmMedium'] if params.get('utmMedium') else None,
+            'utmCampaign': params['utmCampaign'] if params.get('utmCampaign') else None,
+            'utmTerm': params['utmTerm'] if params.get('utmTerm') else None,
+            'utmContent': params['utmContent'] if params.get('utmContent') else None,
+        }
+        self.data['filterUsed'] = any(self.data['filterParams'].values())
 
         statuses_q = db.session.execute("""  
             SELECT 
@@ -60,51 +67,56 @@ class Pipeline(View):
             ORDER BY 
                 s.index""", {
             'installation_id': request_data['installation_id'],
-            'amount_enabled': self.installation_card_settings.amount_enabled
+            'amount_enabled': installation_card_settings.amount_enabled
         })
 
-        self.has_any_integration = InstallationExtensionSettings.query \
+        self.data['hasAnyIntegration'] = InstallationExtensionSettings.query \
             .filter_by(nepkit_installation_id=request_data['installation_id']) \
             .count() > 0
+        self.data['autocreateCategoryId'] = os.environ.get('AUTOCREATE_CATEGORY_ID')
 
 
-        self.statuses = []
+        self.data['statuses'] = []
+        status_colors = get_status_colors()
         for status in statuses_q:
-            leads_q = Lead.get_with_filter(installation_id=request_data['installation_id'],
-                                           status_id=status['id'],
-                                           search=params.get('search'),
-                                           offset=0,
-                                           limit=10,
-                                           filter=self.filter_params)
-
-            status_leads = []
+            # leads_q = Lead.get_with_filter(installation_id=request_data['installation_id'],
+            #                                status_id=status['id'],
+            #                                search=params.get('search'),
+            #                                offset=0,
+            #                                limit=10,
+            #                                filter=self.filter_params)
+            #
+            # status_leads = []
             status_lead_total = 0
             status_lead_amount_sum = 0
 
-            for lead in leads_q:
-                if status_lead_total == 0:
-                    status_lead_total = lead.total
-                if status_lead_amount_sum == 0:
-                    status_lead_amount_sum = lead.amount_sum
+            status_color_hex = [c['hex'] for c in status_colors if c['key'] == status['color']]
+            #
+            # for lead in leads_q:
+            #     if status_lead_total == 0:
+            #         status_lead_total = lead.total
+            #     if status_lead_amount_sum == 0:
+            #         status_lead_amount_sum = lead.amount_sum
+            #
+            #     status_leads.append({
+            #         'id': lead.id,
+            #         'uid': lead.uid,
+            #         'status_id': lead.status_id,
+            #         'amount': lead.amount,
+            #         'archived': lead.archived,
+            #         'add_date': (lead.add_date + timedelta(minutes=request_data['timezone_offset'])).strftime('%Y-%m-%d %H:%M:%S'),
+            #         'fields': Lead.get_fields(lead.id),
+            #         'tags': Lead.get_tags(lead.id)
+            #     })
 
-                status_leads.append({
-                    'id': lead.id,
-                    'uid': lead.uid,
-                    'status_id': lead.status_id,
-                    'amount': lead.amount,
-                    'archived': lead.archived,
-                    'add_date': (lead.add_date + timedelta(minutes=request_data['timezone_offset'])).strftime('%Y-%m-%d %H:%M:%S'),
-                    'fields': Lead.get_fields(lead.id),
-                    'tags': Lead.get_tags(lead.id)
-                })
-
-            self.statuses.append({
+            self.data['statuses'].append({
                 'id': status['id'],
                 'name': status['name'],
                 'lead_count': status_lead_total,
                 'lead_amount_sum': status_lead_amount_sum,
                 'color': status['color'],
-                'leads': status_leads
+                'colorHex': status_color_hex,
+                'leads': []
             })
 
     def get_header(self, params, request_data):
@@ -185,16 +197,6 @@ class Pipeline(View):
                 'columns': board_columns
             }
         ]
-
-    def get_methods(self, params, request_data):
-        methods = compiled_methods.copy()
-
-        methods['addLead'] = method_with_vars(methods['addLead'], {'SEARCH': params['search'] if params.get('search') else '',
-                                                                   'FILTER': json.dumps(self.filter_params)})
-        methods['loadLeads'] = method_with_vars(methods['loadLeads'], {'SEARCH': params['search'] if params.get('search') else '',
-                                                                       'FILTER': json.dumps(self.filter_params)})
-
-        return methods
 
 
 # Get lead component

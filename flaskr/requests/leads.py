@@ -2,14 +2,16 @@ from datetime import datetime, timedelta
 
 from cerberus import Validator
 from flaskr import db
+from flaskr.models.field import Field
 from flaskr.models.installation_card_settings import InstallationCardSettings
 from flaskr.models.lead import Lead, LeadAction, LeadActionType
 from flaskr.models.status import Status
+from flaskr.models.task import Task
 from flaskr.views.leads.pipeline import get_lead_component
 
 
-# Get lead components for status
-def get_lead_components(params, request_data):
+# Get leads
+def get_leads(params, request_data):
     installation_card_settings = InstallationCardSettings.query \
         .filter_by(nepkit_installation_id=request_data['installation_id']) \
         .first()
@@ -32,7 +34,12 @@ def get_lead_components(params, request_data):
                                    search=params.get('search'),
                                    filter=params.get('filter'))
 
-    lead_components = []
+    fields_q = Field.query \
+        .filter_by(nepkit_installation_id=request_data['installation_id']) \
+        .order_by(Field.index) \
+        .all()
+
+    leads = []
     lead_total = 0
     lead_amount_sum = 0
 
@@ -42,23 +49,98 @@ def get_lead_components(params, request_data):
         if lead_amount_sum == 0:
             lead_amount_sum = lead.amount_sum
 
-        lead_component = get_lead_component({
+        fields = []
+        lead_fields = Lead.get_fields(lead.id)
+        for field in fields_q:
+            lead_field = next((f for f in lead_fields if f['field_id'] == field.id), None)
+            field_value = lead_field['value'] if lead_field else None
+
+            if field_value:
+                fields.append({
+                    'fieldId': field.id,
+                    'fieldName': field.name,
+                    'fieldValueType': field.value_type.name,
+                    'fieldBoardVisibility': field.board_visibility.name,
+                    'value': field_value
+                })
+
+        leads.append({
             'id': lead.id,
             'uid': lead.uid,
             'amount': lead.amount,
             'status_id': lead.status_id,
             'archived': lead.archived,
             'add_date': (lead.add_date + timedelta(minutes=request_data['timezone_offset'])).strftime('%Y-%m-%d %H:%M:%S'),
-            'fields': Lead.get_fields(lead.id),
-            'tags': Lead.get_tags(lead.id)
-        }, installation_card_settings=installation_card_settings)
-        lead_components.append(lead_component)
+            'fields': fields
+        })
+
+        # lead_component = get_lead_component({
+        #     'id': lead.id,
+        #     'uid': lead.uid,
+        #     'amount': lead.amount,
+        #     'status_id': lead.status_id,
+        #     'archived': lead.archived,
+        #     'add_date': (lead.add_date + timedelta(minutes=request_data['timezone_offset'])).strftime('%Y-%m-%d %H:%M:%S'),
+        #     'fields': Lead.get_fields(lead.id),
+        #     'tags': Lead.get_tags(lead.id)
+        # }, installation_card_settings=installation_card_settings)
+        # lead_components.append(lead_component)
 
     return {
         'res': 'ok',
-        'leadComponents': lead_components,
+        'leads': leads,
         'leadTotal': lead_total,
+        'leadAmountSum': lead_amount_sum,
         'leadAmountSumStr': installation_card_settings.format_amount(lead_amount_sum) if installation_card_settings.amount_enabled else None
+    }
+
+
+# Get lead
+def get_lead(params, request_data):
+    lead = Lead.query \
+        .filter_by(id=params['id']) \
+        .first()
+    task_count = Task.query \
+        .filter_by(nepkit_installation_id=request_data['installation_id']) \
+        .count()
+
+    fields = []
+    fields_q = Field.query \
+        .filter_by(nepkit_installation_id=request_data['installation_id']) \
+        .order_by(Field.index) \
+        .all()
+    lead_fields = Lead.get_fields(lead.id)
+    for field in fields_q:
+        lead_field = next((f for f in lead_fields if f['field_id'] == field.id), None)
+        field_value = lead_field['value'] if lead_field else None
+
+        fields.append({
+            'fieldId': field.id,
+            'fieldName': field.name,
+            'fieldValueType': field.value_type.name,
+            'value': field_value
+        })
+    tags = Lead.get_tags(lead.id)
+
+    return {
+        'res': 'ok',
+        'lead': {
+            'id': lead.id,
+            'uid': lead.uid,
+            'comment': lead.comment,
+            'statusId': lead.status_id,
+            'addDate': lead.add_date.strftime('%Y-%m-%d %H:%M:%S'),
+            'updDate': lead.upd_date.strftime('%Y-%m-%d %H:%M:%S'),
+            'nepkitUserId': lead.nepkit_user_id,
+            'utmSource': lead.utm_source,
+            'utmMedium': lead.utm_medium,
+            'utmCampaign': lead.utm_campaign,
+            'utmTerm': lead.utm_term,
+            'utmContent': lead.utm_content,
+            'taskCount': task_count,
+            'fields': fields,
+            'tags': tags
+        }
     }
 
 

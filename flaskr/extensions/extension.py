@@ -18,5 +18,11 @@ class Extension:
     def get_schema_for_settings(self, installation_extension_settings, params, request_data):
         return []
 
+    def get_data_for_settings(self, installation_extension_settings, params, request_data):
+        return []
+
+    def get_script_for_settings(self, installation_extension_settings, params, request_data):
+        return None
+
     def get_methods_for_settings(self, installation_extension_settings, params, request_data):
         return {}

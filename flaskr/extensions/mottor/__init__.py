@@ -8,11 +8,9 @@ from urllib.parse import parse_qs
 from flaskr.models.lead import Lead, LeadAction, LeadActionType
 from flaskr.models.status import Status
 from flaskr.extensions.extension import Extension
-from flaskr.views.view import get_method, method_with_vars
+from flaskr.views.view import compile_js, get_method, method_with_vars
 
-compiled_methods = {
-    'onFinishForm': get_method('methods/onFinishForm')
-}
+settings_script = compile_js('settings_script')
 
 
 # Mottor extension (LPgenerator, LPmotor)
@@ -31,6 +29,41 @@ class MottorExtension(Extension):
         return {
             'default_status': 'first'
         }
+
+    def get_data_for_settings(self, installation_extension_settings, params, request_data):
+        statuses_q = db.session.execute("""
+                        SELECT
+                            s.*,
+                            (SELECT COUNT(*) FROM public.lead AS l WHERE l.status_id = s.id AND l.archived = false) AS lead_count
+                        FROM
+                            public.status AS s
+                        WHERE
+                            s.nepkit_installation_id = :nepkit_installation_id
+                        ORDER BY
+                            s.index""", {
+            'nepkit_installation_id': request_data['installation_id']
+        })
+        statuses = []
+        for status in statuses_q:
+            statuses.append({
+                'id': status.id,
+                'color': status.color,
+                'name': status.name
+            })
+
+        return {
+            'statuses': statuses,
+            'strs': {
+
+            },
+            'installationExtensionSettings': {
+                'id': installation_extension_settings.id,
+                'data': installation_extension_settings.data
+            }
+        }
+
+    def get_script_for_settings(self, installation_extension_settings, params, request_data):
+        return settings_script
 
     def get_schema_for_information(self, installation_extension_settings, params, request_data):
         fields = db.session.execute("""
@@ -92,7 +125,7 @@ class MottorExtension(Extension):
                 'fields': [
                     {
                         '_com': 'Field.Select',
-                        'key': 'default_status',
+                        'key': 'defaulttatus',
                         'label': _('v_extension_mottor_information_settings_status'),
                         'options': status_options,
                         'value': installation_extension_settings.data.get('default_status'),
@@ -114,12 +147,12 @@ class MottorExtension(Extension):
             }
         ]
 
-    def get_methods_for_settings(self, installation_extension_settings, params, request_data):
-        methods = compiled_methods.copy()
-
-        methods['onFinishForm'] = method_with_vars(methods['onFinishForm'], {'INSTALLATION_EXTENSION_SETTINGS_ID': installation_extension_settings.id})
-
-        return methods
+    # def get_methods_for_settings(self, installation_extension_settings, params, request_data):
+    #     methods = compiled_methods.copy()
+    #
+    #     methods['onFinishForm'] = method_with_vars(methods['onFinishForm'], {'INSTALLATION_EXTENSION_SETTINGS_ID': installation_extension_settings.id})
+    #
+    #     return methods
 
     @staticmethod
     def catch_webhook(installation_extension_settings, webhook_key=None):

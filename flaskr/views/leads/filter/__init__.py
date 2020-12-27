@@ -13,6 +13,28 @@ class Filter(View):
         self.meta = {
             'name': _('v_filter_meta_name')
         }
+        self.data = {
+            'filterParams': {
+                'period': [filterParams['periodFrom'], filterParams['periodTo']],
+                'utmSource': filterParams['utmSource'],
+                'utmMedium': filterParams['utmMedium'],
+                'utmCampaign': filterParams['utmCampaign'],
+                'utmTerm': filterParams['utmTerm'],
+                'utmContent': filterParams['utmContent'],
+                'archived': filterParams['archived']
+            },
+            'strs': {
+                'schema_form_period': _('v_filter_schema_form_period'),
+                'schema_form_utmSource': _('v_filter_schema_form_utmSource'),
+                'schema_form_utmMedium': _('v_filter_schema_form_utmMedium'),
+                'schema_form_utmCampaign': _('v_filter_schema_form_utmCampaign'),
+                'schema_form_utmTerm': _('v_filter_schema_form_utmTerm'),
+                'schema_form_utmContent': _('v_filter_schema_form_utmContent'),
+                'schema_form_archivedLeads': _('v_filter_schema_form_archivedLeads'),
+                'schema_form_apply': _('v_filter_schema_form_apply'),
+                'schema_form_clear': _('v_filter_schema_form_clear')
+            }
+        }
 
     def get_header(self, params, request_data):
         return {

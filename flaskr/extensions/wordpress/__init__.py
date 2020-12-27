@@ -6,11 +6,9 @@ from flask_babel import _
 from flaskr.models.lead import Lead, LeadAction, LeadActionType
 from flaskr.models.status import Status
 from flaskr.extensions.extension import Extension
-from flaskr.views.view import get_method, method_with_vars
+from flaskr.views.view import compile_js, method_with_vars
 
-compiled_methods = {
-    'onFinishForm': get_method('methods/onFinishForm')
-}
+settings_script = compile_js('settings_script')
 
 
 # Wordpress extension
@@ -23,6 +21,10 @@ class WordpressExtension(Extension):
     def __init__(self):
         Extension.__init__(self)
         self.name = 'Wordpress'
+        self.settings_data = {
+            'strs': {}
+        }
+        self.settings_script = settings_script
 
     @staticmethod
     def get_default_data():

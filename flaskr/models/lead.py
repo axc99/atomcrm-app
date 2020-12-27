@@ -183,10 +183,10 @@ class Lead(db.Model):
         })
         for field in fields:
             res_fields.append({
-                                  'field_id': field.field_id,
-                                  'field_name': field.field_name,
-                                  'value': field.value
-                              } if for_api else {
+                'field_id': field.field_id,
+                'field_name': field.field_name,
+                'value': field.value
+            } if for_api else {
                 'field_id': field.field_id,
                 'value': field.value,
                 'field_board_visibility': field.field_board_visibility,
@@ -260,7 +260,7 @@ class Lead(db.Model):
 
     # Filter leads
     @staticmethod
-    def get_with_filter(installation_id, status_id, search, offset, limit, filter):
+    def get_with_filter(installation_id, status_id, search, offset, limit, filter={}):
         search = search.strip() if search else None
         search_exp = 'true'
         join_exp = ''
