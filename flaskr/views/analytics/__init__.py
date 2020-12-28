@@ -16,35 +16,32 @@ class Analytics(View):
         }
         self.script = script
         self.statuses = []
-        self.chartData = []
+        self.chart_data = []
         self.count_by_dates = None
-        self.data = {
-            'rows': [],
-            'period': [],
-            'period_type': None
-        }
+        self.data = {}
 
     def before(self, params, request_data):
-        self.data['period_type'] = params['periodType'] if params.get('periodType') else 'currentMonth'
+        period_type = params['periodType'] if params.get('periodType') else 'currentMonth'
+        period = []
 
         dates = None
         today_date = datetime.today()
 
-        if self.data['period_type'] == 'currentMonth':
+        if period_type == 'currentMonth':
             dates = [today_date.replace(day=1), today_date]
-        elif self.data['period_type'] == 'prevMonth':
+        elif period_type == 'prevMonth':
             last_day_of_prev_month = today_date.today().replace(day=1) - timedelta(days=1)
             dates = [today_date.replace(day=1) - timedelta(days=last_day_of_prev_month.day), last_day_of_prev_month]
-        elif self.data['period_type'] == 'last30d':
+        elif period_type == 'last30d':
             dates = [today_date - timedelta(days=30), today_date]
-        elif self.data['period_type'] == 'last3m':
+        elif period_type == 'last3m':
             dates = [today_date - timedelta(days=90), today_date]
-        elif self.data['period_type'] == 'last6m':
+        elif period_type == 'last6m':
             dates = [today_date - timedelta(days=180), today_date]
-        elif self.data['period_type'] == 'custom':
+        elif period_type == 'custom':
             dates = [datetime.strptime(params['periodFrom'], '%Y.%m.%d') if params.get('periodFrom') else today_date - timedelta(days=30),
                      datetime.strptime(params['periodTo'], '%Y.%m.%d') if params.get('periodTo') else today_date]
-        elif self.data['period_type'] == 'allTime':
+        elif period_type == 'allTime':
             first_added_lead = Lead.query \
                 .filter_by(nepkit_installation_id=request_data['installation_id']) \
                 .order_by(Lead.add_date.asc()) \
@@ -52,7 +49,7 @@ class Analytics(View):
             dates = [first_added_lead.add_date if first_added_lead else today_date, today_date]
 
         if dates:
-            self.data['period'] = [dates[0].strftime('%Y.%m.%d'), dates[1].strftime('%Y.%m.%d')]
+            period = [dates[0].strftime('%Y.%m.%d'), dates[1].strftime('%Y.%m.%d')]
 
             select_raw_items = []
 
@@ -63,7 +60,7 @@ class Analytics(View):
 
                 day = dates[0] + timedelta(days=i)
                 date = day.strftime('%Y.%m.%d')
-                self.chartData.append({
+                self.chart_data.append({
                     'date': date,
                     'leadCount': 100
                 })
@@ -89,15 +86,18 @@ class Analytics(View):
                         s.index ASC
                     LIMIT 1 OFFSET 0""".format(','.join(select_raw_items)), {
                     'nepkit_installation_id': request_data['installation_id'],
-                    'period_from': self.data['period'][0],
-                    'period_to': self.data['period'][1]
+                    'period_from': period[0],
+                    'period_to': period[1]
                 })
             self.count_by_dates = [r for r in count_by_dates_result][0]
 
-            for i, row in enumerate(self.chartData):
-                self.chartData[i]['leadCount'] = self.count_by_dates['lead_count_on_{}'.format(row['date'])]
-        else:
-            self.data['period'] = []
+            for i, row in enumerate(self.chart_data):
+                self.chart_data[i]['leadCount'] = self.count_by_dates['lead_count_on_{}'.format(row['date'])]
+
+        self.data = {
+            'period': period,
+            'periodType': period_type
+        }
 
     def get_header(self, params, request_data):
         return {
@@ -107,7 +107,7 @@ class Analytics(View):
                     '_com': 'Field.Select',
                     'key': 'periodType',
                     'onChange': 'onChangePeriodType',
-                    'value': self.data['period_type'],
+                    'value': self.data['periodType'],
                     'options': [
                         {'value': 'currentMonth', 'label': _('v_analytics_header_periodType_currentMonth')},
                         {'value': 'prevMonth', 'label': _('v_analytics_header_periodType_previousMonth')},
@@ -124,13 +124,13 @@ class Analytics(View):
                     'onChange': 'onChangePeriod',
                     'range': True,
                     'format': 'YYYY.MM.DD',
-                    'disabled': self.data['period_type'] != 'custom',
+                    'disabled': self.data['periodType'] != 'custom',
                     'value': self.data['period']
                 }
             ]
         }
 
-    def get_schema(self, params, request_data):
+    def get_scheme(self, params, request_data):
         return [
             {
                 '_com': 'Statistics',
@@ -146,7 +146,7 @@ class Analytics(View):
                 '_com': 'Chart',
                 'title': _('v_analytics_statistics_statisticsByDay'),
                 'type': 'line',
-                'data': self.chartData,
+                'data': self.chart_data,
                 'params': {
                     'padding': 'auto',
                     'xField': 'date',

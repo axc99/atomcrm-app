@@ -73,11 +73,11 @@ class Extension(View):
             'activeTab': self.tab
         }
 
-    def get_schema(self, params, request_data):
+    def get_scheme(self, params, request_data):
         if self.tab == 'information':
-            return self.extension.get_schema_for_information(self.installation_extension_settings, params, request_data)
+            return self.extension.get_scheme_for_information(self.installation_extension_settings, params, request_data)
         elif self.tab == 'settings':
-            return self.extension.get_schema_for_settings(self.installation_extension_settings, params, request_data)
+            return self.extension.get_scheme_for_settings(self.installation_extension_settings, params, request_data)
 
     def get_methods(self, params, request_data):
         if self.tab == 'settings':

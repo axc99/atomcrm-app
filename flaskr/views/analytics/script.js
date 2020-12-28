@@ -17,7 +17,7 @@ view.render = () => {
     app
       .getPage()
       .to({
-          periodType: view.data['period_type'],
+          periodType: view.data['periodType'],
           periodFrom: value[0],
           periodTo: value[1]
       })
@@ -25,6 +25,6 @@ view.render = () => {
 
   return {
     header: view.header,
-    schema: view.schema
+    scheme: view.scheme
   }
 }

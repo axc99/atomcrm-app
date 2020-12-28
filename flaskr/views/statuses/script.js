@@ -21,12 +21,12 @@ const StatusesList = ({ statuses, deleteLoadingIndex, loading, openModal, delete
       key: status.id,
       color: status.color,
       title: status.name,
-      extra: `${status.leadCount} ${status.leadCount == 1 ? strs['schema_count_lead'] : strs['schema_count_leads']}`,
+      extra: `${status.leadCount} ${status.leadCount == 1 ? strs['list_count_lead'] : strs['list_count_leads']}`,
       actions: [
         {
           _com: 'Button',
           icon: 'edit',
-          label: strs['schema_editStatus'],
+          label: strs['list_editStatus'],
           onClick: () => openModal({
             type: 'update',
             status
@@ -42,7 +42,7 @@ const StatusesList = ({ statuses, deleteLoadingIndex, loading, openModal, delete
     _id: 'statusesList',
     draggable: true,
     loading,
-    emptyText: strs['schema_noStatuses'],
+    emptyText: strs['list_noStatuses'],
     onDrag: onDragStatus,
     items
   }
@@ -81,7 +81,7 @@ const StatusModal = ({ opened=false, type, closeModal, status, loadStatuses }) =
     _com: 'Modal',
     opened,
     onCancel: () => closeModal(),
-    title: type === 'create' ? strs['schema_statusModal_createTitle'] : strs['schema_statusModal_updateTitle'],
+    title: type === 'create' ? strs['statusModal_createTitle'] : strs['statusModal_updateTitle'],
     content: [
       {
         _com: 'Form',
@@ -108,21 +108,21 @@ const StatusModal = ({ opened=false, type, closeModal, status, loadStatuses }) =
             _com: 'Field.Input',
             type: 'text',
             key: 'name',
-            label: strs['schema_statusModal_form_name'],
-            placeholder: strs['schema_statusModal_form_name_placeholder'],
+            label: strs['statusModal_form_name'],
+            placeholder: strs['statusModal_form_name_placeholder'],
             maxLength: 30,
             rules: [
-              {max: 30, message: strs['schema_statusModal_name_length']},
-              {required: true, message: strs['schema_statusModal_name_required']}
+              {max: 30, message: strs['statusModal_form_name_length']},
+              {required: true, message: strs['statusModal_form_name_required']}
             ]
           },
           {
             _com: 'Field.Select',
             key: 'color',
-            label: strs['schema_statusModal_form_color'],
+            label: strs['statusModal_form_color'],
             options: colorOptions,
             rules: [
-              {required: true, message: strs['schema_statusModal_form_color_required']}
+              {required: true, message: strs['statusModal_form_color_required']}
             ]
           }
         ],
@@ -133,7 +133,7 @@ const StatusModal = ({ opened=false, type, closeModal, status, loadStatuses }) =
             submitForm: true,
             loading: reqLoading,
             icon: type === 'create' ? 'plus' : 'save',
-            label: type === 'create' ? strs['schema_statusModal_form_createBtn'] : strs['schema_statusModal_form_saveBtn']
+            label: type === 'create' ? strs['statusModal_form_createBtn'] : strs['statusModal_form_saveBtn']
           }
         ]
     }
@@ -144,6 +144,7 @@ const StatusModal = ({ opened=false, type, closeModal, status, loadStatuses }) =
 const DeleteStatusModal = ({ id, opened, closeDeleteModal, loadStatuses, statuses }) => {
   const [form] = useForm()
   const [reqLoading, setReqLoading] = useState(false)
+  const deletedStatus = statuses.find(s => s.id === id)
 
   useEffect(() => {
     if (opened) {
@@ -156,7 +157,7 @@ const DeleteStatusModal = ({ id, opened, closeDeleteModal, loadStatuses, statuse
   const selectOptions = [
     {
       'key': 'deleteLeads',
-      'label': strs['schema_deleteStatusModal_form_deleteLeads']
+      'label': strs['deleteStatusModal_form_deleteLeads']
     }
   ]
 
@@ -170,14 +171,14 @@ const DeleteStatusModal = ({ id, opened, closeDeleteModal, loadStatuses, statuse
     selectOptions.push({
       'key': status.id,
       'color': hexColor,
-      'label': strs['schema_deleteStatusModal_form_moveLeads']
+      'label': strs['deleteStatusModal_form_moveLeads'].replace('{name}', status.name)
     })
   })
 
   return {
     _com: 'Modal',
-    title: strs['schema_deleteStatusModal_title'],
-    subtitle: strs['schema_deleteStatusModal_subtitle'],
+    title: strs['deleteStatusModal_title'],
+    subtitle: strs['deleteStatusModal_subtitle'].replace('{name}', deletedStatus && deletedStatus.name),
     opened,
     onCancel: () => closeDeleteModal(),
     content: [
@@ -218,7 +219,7 @@ const DeleteStatusModal = ({ id, opened, closeDeleteModal, loadStatuses, statuse
             type: 'danger',
             submitForm: true,
             loading: reqLoading,
-            label: strs['schema_deleteStatusModal_form_btn']
+            label: strs['deleteStatusModal_form_delete']
           }
         ]
     }
@@ -350,7 +351,7 @@ view.render = () => {
         }
       ]
     },
-    schema: [
+    scheme: [
       StatusesList({
         ...listData,
         openModal,

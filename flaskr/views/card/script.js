@@ -5,54 +5,79 @@ const { useState, useEffect, useMemo } = React
 const { useForm } = com.Form
 const { strs, statusColors } = view.data
 
+const linesToJson = (lines) => {
+  const json = {}
+
+  lines.split('\n').map(line => {
+    const [key, value] = line.split('=')
+    json[key] = value
+  })
+
+  return json
+}
+
+const jsonToLines = (json) => {
+  if (!json) {
+    json = {}
+  }
+
+  let lines = []
+
+  Object.entries(json).map(([key, value]) => {
+    lines.push(`${key}=${value}`)
+  })
+
+  return lines.join('\n')
+}
+
 const FormFields = ({ fields, setFields }) => {
   const tableRows = []
   const valueTypeOptions = [
     {
       value: 'string',
-      label: strs['schema_form_fields_table_string']
+      label: strs['form_fields_table_valueType_string']
     },
     {
       value: 'email',
-      label: strs['schema_form_fields_table_email']
+      label: strs['form_fields_table_valueType_email']
     },
     {
       value: 'phone',
-      label: strs['schema_form_fields_table_phone']
+      label: strs['form_fields_table_valueType_phone']
     },
     {
       value: 'long_string',
-      label: strs['schema_form_fields_table_longString']
+      label: strs['form_fields_table_valueType_longString']
     },
     {
       value: 'number',
-      label: strs['schema_form_fields_table_number']
+      label: strs['form_fields_table_valueType_number']
     },
     {
       value: 'boolean',
-      label: strs['schema_form_fields_table_boolean']
+      label: strs['form_fields_table_valueType_boolean']
     },
     {
       value: 'date',
-      label: strs['schema_form_fields_table_date']
+      label: strs['form_fields_table_valueType_date']
     },
     {
       value: 'choice',
-      label: strs['schema_form_fields_table_choice']
+      label: strs['form_fields_table_valueType_choice']
     }
   ]
   const boardVisibilityOptions = [
     {
       value: null,
-      label: strs['schema_form_fields_table_none']
+      label: strs['form_fields_table_boardVisibility_none']
     },
     {
       value: 'title',
-      label: strs['schema_form_fields_table_title']
+      label: strs['form_fields_table_boardVisibility_title']
     },
     {
       value: 'subtitle',
-      label: strs['schema_form_fields_table_subtitle']
+      label: strs['form_fields_table_boardVisibility_subtitle']
     }
   ]
 
@@ -125,7 +150,7 @@ const FormFields = ({ fields, setFields }) => {
     {
       _com: 'Table',
       draggable: true,
-      emptyText: strs['scheme_form_fields_table_noFields'],
+      emptyText: strs['form_fields_table_noFields'],
       onDrag: ({ oldIndex, newIndex }) => {
         moveField(oldIndex, newIndex)
       },
@@ -133,24 +158,24 @@ const FormFields = ({ fields, setFields }) => {
         {
           width: 35,
           key: 'name',
-          title: strs['scheme_form_fields_table_field']
+          title: strs['form_fields_table_field']
         },
         {
           width: 35,
           key: 'valueType',
-          title: strs['scheme_form_fields_table_valueType']
+          title: strs['form_fields_table_valueType']
         },
         {
           width: 30,
           key: 'boardVisibility',
-          title: strs['scheme_form_fields_table_boardVisibility']
+          title: strs['form_fields_table_boardVisibility']
         }
       ],
       rows: tableRows
     },
     {
       _com: 'Button',
-      label: strs['scheme_form_fields_addField'],
+      label: strs['form_fields_addField'],
       icon: 'plus',
       type: 'solid',
       onClick: () => addField()
@@ -200,7 +225,12 @@ view.render = () => {
         if (res == 'ok') {
           setData({
             ...data,
-            fields,
+            fields: fields.map(field => {
+              return {
+                ...field,
+                choiceOptions: jsonToLines(field.choiceOptions)
+              }
+            }),
             loading: false
           })
         }
@@ -216,7 +246,7 @@ view.render = () => {
     header: {
       title: strs['name']
     },
-    schema: [
+    scheme: [
       {
         _com: 'Form',
         form,
@@ -226,14 +256,19 @@ view.render = () => {
             .sendReq('updateCardSettings', {
                 amountEnabled: values.amountEnabled,
                 currency: values.currency,
-                fields: data.fields
+                fields: data.fields.map(field => {
+                  return {
+                    ...field,
+                    choiceOptions: linesToJson(field.choiceOptions)
+                  }
+                })
             })
             .then(result => {
                 setReqLoading(false)
 
                 if (result.res == 'ok') {
                     app.showNotification({
-                        message: strs['changesSaved'],
+                        message: strs['notification_changesSaved'],
                         duration: 1
                     })
                 }
@@ -243,7 +278,7 @@ view.render = () => {
           {
             _com: 'Field.Checkbox',
             key: 'amountEnabled',
-            text: strs['scheme_form_leadAmount'],
+            text: strs['form_leadAmount'],
             onChange: 'onChangeAmountEnabled'
           },
           {
@@ -251,13 +286,13 @@ view.render = () => {
             key: 'currency',
             withSearch: true,
             disabled: !data.installationCardSettings.amountEnabled,
-            label: strs['scheme_form_amountCurrency'],
+            label: strs['form_amountCurrency'],
             options: currencyOptions
           },
           {
             _com: 'Field.Custom',
             columnWidth: 12,
-            label: strs['scheme_form_fields'],
+            label: strs['form_fields'],
             content:
               FormFields({
                 fields: data.fields,
@@ -272,7 +307,7 @@ view.render = () => {
             submitForm: true,
             loading: reqLoading,
             icon: 'save',
-            label: strs['scheme_form_save']
+            label: strs['form_save']
           }
         ]
       }

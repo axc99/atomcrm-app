@@ -6,7 +6,7 @@ import dukpy
 class View:
     meta = {}
     header = {}
-    schema = []
+    scheme = []
     data = {}
     methods = {}
     script = None
@@ -23,7 +23,7 @@ class View:
     def before_get_header(self, params, request_data):
         pass
 
-    def before_get_schema(self, params, request_data):
+    def before_get_scheme(self, params, request_data):
         pass
 
     def before_get_methods(self, params, request_data):
@@ -38,8 +38,8 @@ class View:
     def get_header(self, params, request_data):
         return self.header
 
-    def get_schema(self, params, request_data):
-        return self.schema
+    def get_scheme(self, params, request_data):
+        return self.scheme
 
     def get_methods(self, params, request_data):
         return self.methods

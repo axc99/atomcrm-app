@@ -25,14 +25,14 @@ const TokenModal = ({ opened, closeTokenModal }) => {
     _com: 'Modal',
     opened,
     onCancel: () => closeTokenModal(),
-    title: strs['schema_tokenModal_title'],
-    subtitle: strs['schema_tokenModal_subtitle'],
+    title: strs['tokenModal_title'],
+    subtitle: strs['tokenModal_subtitle'],
     content: [
       {
         _com: 'Button',
         _vis: !token,
         type: 'primary',
-        label: strs['schema_tokenModal_btn'],
+        label: strs['tokenModal_createToken'],
         onClick: () => getToken(),
         loading: reqLoading
       },
@@ -40,7 +40,7 @@ const TokenModal = ({ opened, closeTokenModal }) => {
         _com: 'Field.Input',
         _vis: !!token,
         value: token,
-        label: strs['schema_tokenModal_token'],
+        label: strs['tokenModal_token'],
         multiline: true,
         type: 'text',
         readOnly: true
@@ -70,7 +70,7 @@ view.render = () => {
 
   return {
     header: view.header,
-    schema: [
+    scheme: [
       {
         _com: 'Information',
         content

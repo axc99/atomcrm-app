@@ -5,6 +5,52 @@ const { useState, useEffect, useMemo } = React
 const { useForm } = com.Form
 const { strs, statusColors, statuses, filterParams, filterUsed, search, installationCardSettings, hasAnyIntegration, autocreateCategoryId } = view.data
 
+const todayObj = new Date()
+todayObj.setHours(0,0,0,0)
+
+const yesterdayObj = new Date
+yesterdayObj.setDate(yesterdayObj.getDate()-1)
+yesterdayObj.setHours(0,0,0,0)
+
+const getRegularDate = (srcDate) => {
+  const [date, time] = srcDate.split(' ')
+  const [year, month, day] = date.split('-')
+  const [hours, minutes, seconds] = time.split(':')
+
+  const dateObj = new Date(date)
+  dateObj.setHours(0,0,0,0)
+
+  const months = {
+      '01': strs['getRegularDate_jan'],
+      '02': strs['getRegularDate_feb'],
+      '03': strs['getRegularDate_mar'],
+      '04': strs['getRegularDate_apr'],
+      '05': strs['getRegularDate_may'],
+      '06': strs['getRegularDate_jun'],
+      '07': strs['getRegularDate_jul'],
+      '08': strs['getRegularDate_aug'],
+      '09': strs['getRegularDate_sep'],
+      '10': strs['getRegularDate_oct'],
+      '11': strs['getRegularDate_nov'],
+      '12': strs['getRegularDate_dec']
+  }
+  const monthStr = months[month]
+
+  if (dateObj.getTime() === todayObj.getTime()) {
+    return strs['getRegularDate_today'].replace('{time}', `${hours}:${minutes}`)
+  } else if (dateObj.getTime() === yesterdayObj.getTime()) {
+    return strs['getRegularDate_yesterday'].replace('{time}', `${hours}:${minutes}`)
+  } else {
+    if (year == dateObj.getFullYear()) {
+      return `${day} ${monthStr}`.replace('{time}', `${hours}:${minutes}`)
+    } else {
+      return `${day} ${monthStr} ${year}`.replace('{time}', `${hours}:${minutes}`)
+    }
+  }
+
+  return date
+}
+
 const LeadModal = ({ opened, id, uid, closeLeadModal, loadLeads }) => {
   const [form] = useForm()
   const formFields = []
@@ -72,7 +118,7 @@ const LeadModal = ({ opened, id, uid, closeLeadModal, loadLeads }) => {
           'columnWidth': 12,
           'label': field.fieldName,
           'rules': [
-              {'pattern': /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/g, 'message': strs['v_updateLead_rule_phone']}
+              {'pattern': /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/g, 'message': strs['leadModal_form_phone_rule']}
           ]
         })
       } else if (field['fieldValueType'] === 'email') {
@@ -83,7 +129,7 @@ const LeadModal = ({ opened, id, uid, closeLeadModal, loadLeads }) => {
           'columnWidth': 12,
           'label': field.fieldName,
           'rules': [
-              {'pattern': /\S+@\S+\.\S+/, 'message': strs['v_updateLead_rule_email']},
+              {'pattern': /\S+@\S+\.\S+/, 'message': strs['leadModal_form_email_rule']},
           ]
         })
       } else {
@@ -159,17 +205,14 @@ const LeadModal = ({ opened, id, uid, closeLeadModal, loadLeads }) => {
       })
   }
 
-//  currency = self.installation_card_settings.getCurrency()
-  const amountPrefix = 111 // currency['format_string'].split('{}')[0]
-  const amountSuffix = 222 // currency['format_string'].split('{}')[1]
-
-  console.log('data.lead && data.lead.statusId', data.lead && data.lead.statusId)
+  const currency = installationCardSettings.currency
+  const [amountPrefix, amountSuffix] = currency.formatString.split('{}')
 
   return {
     _com: 'Modal',
     size: 'medium',
     opened,
-    title: 'title',
+    title: strs['leadModal_title'].replace('{id}', uid),
     onCancel: () => closeLeadModal(),
     content: [
       {
@@ -197,9 +240,9 @@ const LeadModal = ({ opened, id, uid, closeLeadModal, loadLeads }) => {
                       id,
                       fields,
                       tags: data.lead.tags,
-                      amount: data.lead.amount,
                       comment: data.lead.comment,
-                      statusId: data.lead.statusId
+                      amount: +data.lead.amount,
+                      statusId: +data.lead.statusId
                     })
                     .then(result => {
                       setReqLoading(false)
@@ -213,7 +256,7 @@ const LeadModal = ({ opened, id, uid, closeLeadModal, loadLeads }) => {
                         }
 
                         app.showNotification({
-                          message: 'SAVING_NOTIFICATION_MESSAGE',
+                          message: strs['leadModal_notification_changesSaved'],
                           duration: 1
                         })
                       }
@@ -227,7 +270,7 @@ const LeadModal = ({ opened, id, uid, closeLeadModal, loadLeads }) => {
                     'submitForm': true,
                     'loading': reqLoading,
                     'icon': 'save',
-                    'label': strs['v_updateLead_save']
+                    'label': strs['leadModal_form_save']
                   },
 
                   (data.lead && (!data.lead.archived ? {
@@ -240,7 +283,7 @@ const LeadModal = ({ opened, id, uid, closeLeadModal, loadLeads }) => {
                     'icon': 'reload',
                     'type': 'solid',
                     'loading': archiveReqLoading,
-                    'label': strs['v_updateLead_restoreLead'],
+                    'label': strs['leadModal_form_restoreLead'],
                     'onClick': () => restoreLead()
                   }))
                 ]
@@ -257,7 +300,6 @@ const LeadModal = ({ opened, id, uid, closeLeadModal, loadLeads }) => {
                 'content': [
                   {
                     '_com': 'Field.Select',
-                    'placeholder': 'Select status',
                     'value': data.lead && data.lead.statusId,
                     'options': statusOptions,
                     'onChange': ({ value }) => {
@@ -283,10 +325,9 @@ const LeadModal = ({ opened, id, uid, closeLeadModal, loadLeads }) => {
                   },
                   {
                     '_com': 'Field.Input',
-                    '_id': 'updateLeadForm_tags',
                     'multiple': true,
                     'value': data.lead && data.lead.tags,
-                    'placeholder': strs['v_updateLead_enterTags'],
+                    'placeholder': strs['leadModal_tags'],
                     'onChange': ({ value }) => {
                       data.lead.tags = value
                       setData({ ...data })
@@ -294,11 +335,10 @@ const LeadModal = ({ opened, id, uid, closeLeadModal, loadLeads }) => {
                   },
                   {
                     '_com': 'Field.Input',
-                    '_id': 'updateLeadForm_comment',
                     'multiline': true,
                     'maxLength': 500,
                     'value': data.lead && data.lead.comment,
-                    'placeholder': strs['v_updateLead_enterComment'],
+                    'placeholder': strs['leadModal_comment'],
                     'onChange': ({ value }) => {
                       data.lead.comment = value
                       setData({ ...data })
@@ -308,21 +348,15 @@ const LeadModal = ({ opened, id, uid, closeLeadModal, loadLeads }) => {
                     '_com': 'Details',
                     'items': [
                       {
-                        'label': strs['v_updateLead_addDate'],
-                        'value': data.lead && data.lead.addDate,
-//                        Lead.get_regular_date((self.lead.add_date + timedelta(
-//                            minutes=request_data['timezone_offset'])).strftime(
-//                            '%Y-%m-%d %H:%M:%S'))
+                        'label': strs['leadModal_addDate'],
+                        'value': data.lead && getRegularDate(data.lead.addDate)
                       },
                       {
-                        'label': strs['v_updateLead_updateDate'],
-                        'value': data.lead && data.lead.updDate
-//                        Lead.get_regular_date((self.lead.upd_date + timedelta(
-//                            minutes=request_data['timezone_offset'])).strftime(
-//                            '%Y-%m-%d %H:%M:%S'))
+                        'label': strs['leadModal_updateDate'],
+                        'value': data.lead && getRegularDate(data.lead.updDate)
                       },
                       data.lead && data.lead.nepkitUserId && {
-                        'label': strs['v_updateLead_creator'],
+                        'label': strs['leadModal_creator'],
                         'value': {
                             '_com': 'User',
                             'userId': data.lead.nepkitUserId
@@ -330,28 +364,22 @@ const LeadModal = ({ opened, id, uid, closeLeadModal, loadLeads }) => {
                       }
                     ]
                   },
-//                  {
-//                      '_com': 'Details',
-//                      'title': _('v_updateLead_utmMarks'),
-//                      'items': [
-//                          {'label': 'utm_source',
-//                           'value': self.lead.utm_source} if self.lead.utm_source else None,
-//                          {'label': 'utm_medium',
-//                           'value': self.lead.utm_medium} if self.lead.utm_medium else None,
-//                          {'label': 'utm_campaign',
-//                           'value': self.lead.utm_campaign} if self.lead.utm_campaign else None,
-//                          {'label': 'utm_term',
-//                           'value': self.lead.utm_term} if self.lead.utm_term else None,
-//                          {'label': 'utm_content',
-//                           'value': self.lead.utm_content} if self.lead.utm_content else None
-//                      ]
-//                  } if (
-//                          self.lead.utm_source or
-//                          self.lead.utm_medium or
-//                          self.lead.utm_campaign or
-//                          self.lead.utm_term or
-//                          self.lead.utm_content
-//                  ) else None
+                  (data.lead && data.lead.utmSource && data.lead.utmMedium && data.lead.utmCampaign && data.lead.utmTerm && data.lead.utmContent) && {
+                    '_com': 'Details',
+                    'title': _('v_updateLead_utmMarks'),
+                    'items': [
+                      data.lead.utmSource && {'label': 'utm_source',
+                       'value': data.lead.utmSource},
+                      data.lead.utmMedium && {'label': 'utm_medium',
+                       'value': data.lead.utmMedium},
+                      data.lead.utmCampaign && {'label': 'utm_campaign',
+                       'value': data.lead.utmCampaign},
+                      data.lead.utmTerm && {'label': 'utm_term',
+                       'value': data.lead.utmTerm},
+                      data.lead.utmContent && {'label': 'utm_content',
+                       'value': data.lead.utmContent}
+                    ]
+                  }
                 ]
               }
             ]
@@ -383,12 +411,15 @@ const FilterModal = ({ opened, closeFilterModal }) => {
   return {
     _com: 'Modal',
     opened,
-    title: 'title',
+    title: strs['filterModal_title'],
+    onCancel: () => closeFilterModal(),
     content: [
       {
         _com: 'Form',
         form,
         onFinish: ({ values }) => {
+          console.log('values', values)
+
           app
             .getPage()
             .to({
@@ -408,7 +439,7 @@ const FilterModal = ({ opened, closeFilterModal }) => {
           {
             '_com': 'Field.DatePicker',
             'key': 'period',
-            'label': strs['schema_form_period'],
+            'label': strs['filterModal_form_period'],
             'columnWidth': 12,
             'range': true,
             'allowClear': true,
@@ -447,7 +478,7 @@ const FilterModal = ({ opened, closeFilterModal }) => {
           {
             '_com': 'Field.Checkbox',
             'key': 'archived',
-            'text': strs['schema_form_archivedLeads']
+            'text': strs['filterModal_form_archivedLeads']
           }
         ],
         buttons: [
@@ -456,17 +487,18 @@ const FilterModal = ({ opened, closeFilterModal }) => {
             'icon': 'check',
             'submitForm': true,
             'type': 'primary',
-            'label': strs['schema_form_apply']
+            'label': strs['filterModal_form_apply']
           },
           {
             '_com': 'Button',
-            'label': strs['schema_form_clear'],
-            'onClick': 'onClickClear'
+            'label': strs['filterModal_form_clear'],
+            'onClick': () => {
+              form.resetFields()
+            }
           }
         ]
       }
-  ],
-    onCancel: () => closeFilterModal()
+    ]
   }
 }
 
@@ -493,8 +525,6 @@ view.render = () => {
       let title = ''
       let description = []
 
-      console.log('lead.fields-->', lead.fields)
-
       lead.fields.map(field => {
         if (field['value'] && ['string', 'number', 'date'].includes(field['fieldValueType'])) {
           if (field['fieldBoardVisibility'] === 'title') {
@@ -505,7 +535,7 @@ view.render = () => {
         }
       })
 
-      const extra = [lead['archived'] ? 'Archived' : lead['add_date']]
+      const extra = [lead['archived'] ? strs['board_archived'] : getRegularDate(lead['addDate'])]
       if (installationCardSettings['amountEnabled'] && lead['amount']) {
         extra.unshift(lead['amount'])
       }
@@ -624,8 +654,8 @@ view.render = () => {
               statusId,
               offset: 0,
               limit: 10,
-              search: '',
-              filter: {}
+              search,
+              filter: filterParams
             })
             .then(result => {
               if (result.res == 'ok') {
@@ -659,8 +689,8 @@ view.render = () => {
         statusId,
         offset: addToEnd ? data.statuses[colIndex].leads.length : 0,
         limit: (addToEnd || data.statuses[colIndex].leads.length < 10) ? 10 : data.statuses[colIndex].leads.length,
-        search: '',
-        filter: {}
+        search,
+        filter: filterParams
       })
       .then(result => {
         if (result.res === 'ok') {
@@ -676,18 +706,6 @@ view.render = () => {
             ...data,
             loadingColIndex: null
           })
-
-//              // Set total and set/append items
-//              boardColumns[columnIndex].total = leadTotal
-//              if (leadAmountSumStr) {
-//                  boardColumns[columnIndex].subtitle = leadAmountSumStr
-//              }
-//              boardColumns[columnIndex].items = !addToEnd ? leadComponents : [
-//                  ...boardColumns[columnIndex].items,
-//                  ...leadComponents
-//              ]
-//
-//              board.setAttr('columns', boardColumns)
         }
       })
   }
@@ -704,29 +722,29 @@ view.render = () => {
 
   return {
     header: {
-      'title': strs['schema_header_title'],
+      'title': strs['header_title'],
       'actions': [
+        {
+          '_com': 'Button',
+          'icon': 'filter',
+          'label': strs['header_filter'],
+          'onClick': () => openFilterModal(),
+          'dot': filterUsed
+        },
         !hasAnyIntegration && {
           '_com': 'Button',
           'type': 'solid',
           'icon': 'plusCircle',
-          'label': strs['v_pipeline_header_autoCreate'],
+          'label': strs['header_autoCreate'],
           'to': ['control', {
               'tab': 'extensions',
               'category': autocreateCategoryId
           }]
-        },
-        {
-          '_com': 'Button',
-          'icon': 'filter',
-          'label': 'Filter',
-          'onClick': () => openFilterModal(),
-          'dot': filterUsed
         }
       ],
       'search': {
         'value': search,
-        'placeholder': 'v_pipeline_header_search',
+        'placeholder': strs['header_search'],
         'onSearch': ({ value }) => {
           app
             .getPage()
@@ -736,7 +754,7 @@ view.render = () => {
         }
       }
     },
-    schema: [
+    scheme: [
       {
         _com: 'Board',
         draggableBetweenColumns: true,

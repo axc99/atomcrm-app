@@ -7,7 +7,6 @@ from flaskr.models.installation_card_settings import InstallationCardSettings
 from flaskr.models.lead import Lead, LeadAction, LeadActionType
 from flaskr.models.status import Status
 from flaskr.models.task import Task
-from flaskr.views.leads.pipeline import get_lead_component
 
 
 # Get leads
@@ -27,12 +26,24 @@ def get_leads(params, request_data):
     if not is_valid:
         return {'res': 'err', 'message': 'Invalid params', 'errors': vld.errors}
 
+    search = params['search']
+    filter = {
+        'period_from': params['filter']['periodFrom'],
+        'period_to': params['filter']['periodTo'],
+        'utm_source': params['filter']['utmSource'],
+        'utm_medium': params['filter']['utmMedium'],
+        'utm_campaign': params['filter']['utmCampaign'],
+        'utm_term': params['filter']['utmTerm'],
+        'utm_content': params['filter']['utmContent'],
+        'archived': params['filter']['archived']
+    }
+
     leads_q = Lead.get_with_filter(installation_id=request_data['installation_id'],
                                    status_id=params['statusId'],
                                    offset=params['offset'],
                                    limit=params['limit'],
-                                   search=params.get('search'),
-                                   filter=params.get('filter'))
+                                   search=search,
+                                   filter=filter)
 
     fields_q = Field.query \
         .filter_by(nepkit_installation_id=request_data['installation_id']) \
@@ -70,21 +81,9 @@ def get_leads(params, request_data):
             'amount': lead.amount,
             'status_id': lead.status_id,
             'archived': lead.archived,
-            'add_date': (lead.add_date + timedelta(minutes=request_data['timezone_offset'])).strftime('%Y-%m-%d %H:%M:%S'),
+            'addDate': (lead.add_date + timedelta(minutes=request_data['timezone_offset'])).strftime('%Y-%m-%d %H:%M:%S'),
             'fields': fields
         })
-
-        # lead_component = get_lead_component({
-        #     'id': lead.id,
-        #     'uid': lead.uid,
-        #     'amount': lead.amount,
-        #     'status_id': lead.status_id,
-        #     'archived': lead.archived,
-        #     'add_date': (lead.add_date + timedelta(minutes=request_data['timezone_offset'])).strftime('%Y-%m-%d %H:%M:%S'),
-        #     'fields': Lead.get_fields(lead.id),
-        #     'tags': Lead.get_tags(lead.id)
-        # }, installation_card_settings=installation_card_settings)
-        # lead_components.append(lead_component)
 
     return {
         'res': 'ok',
@@ -128,9 +127,10 @@ def get_lead(params, request_data):
             'id': lead.id,
             'uid': lead.uid,
             'comment': lead.comment,
+            'amount': lead.amount,
             'statusId': lead.status_id,
-            'addDate': lead.add_date.strftime('%Y-%m-%d %H:%M:%S'),
-            'updDate': lead.upd_date.strftime('%Y-%m-%d %H:%M:%S'),
+            'addDate': (lead.add_date + timedelta(minutes=request_data['timezone_offset'])).strftime('%Y-%m-%d %H:%M:%S'),
+            'updDate': (lead.upd_date + timedelta(minutes=request_data['timezone_offset'])).strftime('%Y-%m-%d %H:%M:%S'),
             'nepkitUserId': lead.nepkit_user_id,
             'utmSource': lead.utm_source,
             'utmMedium': lead.utm_medium,

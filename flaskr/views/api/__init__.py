@@ -17,10 +17,11 @@ class Api(View):
         self.data = {
             'content': '',
             'strs': {
-                'schema_tokenModal_title': _('v_getToken_meta_name'),
-                'schema_tokenModal_subtitle': _('v_getToken_meta_header_subtitle'),
-                'schema_tokenModal_btn': _('v_getToken_schema_btn'),
-                'schema_tokenModal_token': _('v_getToken_schema_token')
+                'name': _('v_api_name'),
+                'tokenModal_title': _('v_tokenModal_title'),
+                'tokenModal_subtitle': _('v_tokenModal_subtitle'),
+                'tokenModal_createToken': _('v_tokenModal_createToken'),
+                'tokenModal_token': _('v_tokenModal_token')
             }
         }
 

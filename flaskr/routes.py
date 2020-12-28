@@ -74,8 +74,8 @@ def req():
             view.before_get_methods(view_params, request_data)
             result_view['methods'] = view.get_methods(view_params, request_data)
 
-            view.before_get_schema(view_params, request_data)
-            result_view['schema'] = view.get_schema(view_params, request_data)
+            view.before_get_scheme(view_params, request_data)
+            result_view['scheme'] = view.get_scheme(view_params, request_data)
 
             result_view['script'] = view.script
 

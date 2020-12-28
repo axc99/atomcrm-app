@@ -32,7 +32,7 @@ class WordpressExtension(Extension):
             'plugin': 'contactform7'
         }
 
-    def get_schema_for_information(self, installation_extension_settings, params, request_data):
+    def get_scheme_for_information(self, installation_extension_settings, params, request_data):
         fields = db.session.execute("""
                             SELECT 
                                 f.*

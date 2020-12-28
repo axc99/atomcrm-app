@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-12-20 17:36+0000\n"
+"POT-Creation-Date: 2020-12-28 18:13+0000\n"
 "PO-Revision-Date: 2020-10-10 19:41+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -19,55 +19,75 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-#: flaskr/routes.py:111
+#: flaskr/routes.py:116
 msgid "r_webhook_defaultStatuses_lead"
 msgstr "Новый"
 
-#: flaskr/routes.py:112
+#: flaskr/routes.py:117
 msgid "r_webhook_defaultStatuses_contacted"
 msgstr "Первый контакт"
 
-#: flaskr/routes.py:113
+#: flaskr/routes.py:118
 msgid "r_webhook_defaultStatuses_qualified"
 msgstr "Принимает решение"
 
-#: flaskr/routes.py:114
+#: flaskr/routes.py:119
 msgid "r_webhook_defaultStatuses_proposalMade"
 msgstr "Переговоры"
 
-#: flaskr/routes.py:115
+#: flaskr/routes.py:120
 msgid "r_webhook_defaultStatuses_win"
 msgstr "Победа"
 
-#: flaskr/routes.py:116
+#: flaskr/routes.py:121
 msgid "r_webhook_defaultStatuses_lost"
 msgstr "Проигрыш"
 
-#: flaskr/routes.py:129
+#: flaskr/routes.py:134
 msgid "r_webhook_defaultStatuses_firstName"
 msgstr "Имя"
 
-#: flaskr/routes.py:130
+#: flaskr/routes.py:135
 msgid "r_webhook_defaultStatuses_lastName"
 msgstr "Фамилия"
 
-#: flaskr/routes.py:131
+#: flaskr/routes.py:136
 msgid "r_webhook_defaultStatuses_email"
 msgstr "Email"
 
-#: flaskr/routes.py:132
+#: flaskr/routes.py:137
 msgid "r_webhook_defaultStatuses_mobilePhone"
 msgstr "Телефон"
 
-#: flaskr/routes.py:148
+#: flaskr/routes.py:153
 msgid "r_webhook_defaultTasks_sendLetter"
 msgstr "Отправить письмо на email"
 
-#: flaskr/routes.py:149
+#: flaskr/routes.py:154
 msgid "r_webhook_defaultTasks_makeCall"
 msgstr "Сделать звонок"
 
+#: flaskr/extensions/mottor/__init__.py:57
+msgid "e_mottor_settings_form_defaultStatus"
+msgstr "Статус по умолчанию"
+
 #: flaskr/extensions/mottor/__init__.py:58
+msgid "e_mottor_settings_form_defaultStatus_alwaysFirst"
+msgstr "Первый статус"
+
+#: flaskr/extensions/mottor/__init__.py:59
+msgid "e_mottor_settings_form_defaultStatus_required"
+msgstr "Укажите статус"
+
+#: flaskr/extensions/mottor/__init__.py:60
+msgid "e_mottor_settings_form_save"
+msgstr "Сохранить"
+
+#: flaskr/extensions/mottor/__init__.py:61
+msgid "e_mottor_settings_notification_changesSaved"
+msgstr "Изменения сохранены"
+
+#: flaskr/extensions/mottor/__init__.py:95
 msgid "v_extension_mottor_information_content"
 msgstr ""
 "## Подключение формы в Mottor\r"
@@ -114,23 +134,43 @@ msgstr ""
 "ключ вашего поля в AtomCRM. \r"
 "6. Сохраните действия."
 
-#: flaskr/extensions/mottor/__init__.py:78
+#: flaskr/extensions/mottor/__init__.py:115
 msgid "v_extension_mottor_information_settings_status_alwaysFirst"
 msgstr "Первый статус"
 
-#: flaskr/extensions/mottor/__init__.py:96
+#: flaskr/extensions/mottor/__init__.py:133
 msgid "v_extension_mottor_information_settings_status"
 msgstr "Статус по умолчанию"
 
-#: flaskr/extensions/mottor/__init__.py:101
+#: flaskr/extensions/mottor/__init__.py:138
 msgid "v_extension_mottor_information_settings_primary_rules_required"
 msgstr "Статус обязателен для заполнения"
 
-#: flaskr/extensions/mottor/__init__.py:111
+#: flaskr/extensions/mottor/__init__.py:148
 msgid "v_extension_mottor_information_settings_save"
 msgstr "Сохранить"
 
+#: flaskr/extensions/tilda/__init__.py:55
+msgid "e_tilda_settings_form_defaultStatus"
+msgstr "Статус по умолчанию"
+
 #: flaskr/extensions/tilda/__init__.py:56
+msgid "e_tilda_settings_form_defaultStatus_alwaysFirst"
+msgstr "Первый статус"
+
+#: flaskr/extensions/tilda/__init__.py:57
+msgid "e_tilda_settings_form_defaultStatus_required"
+msgstr "Укажите статус"
+
+#: flaskr/extensions/tilda/__init__.py:58
+msgid "e_tilda_settings_form_save"
+msgstr "Сохранить"
+
+#: flaskr/extensions/tilda/__init__.py:59
+msgid "e_tilda_settings_notification_changesSaved"
+msgstr "Изменения сохранены"
+
+#: flaskr/extensions/tilda/__init__.py:93
 msgid "v_extension_tilda_information_content"
 msgstr ""
 "## Подключение формы в Tilda\r"
@@ -163,23 +203,43 @@ msgstr ""
 "\r"
 "4. Сохраните действия."
 
-#: flaskr/extensions/tilda/__init__.py:76
+#: flaskr/extensions/tilda/__init__.py:113
 msgid "v_extension_tilda_information_settings_status_alwaysFirst"
 msgstr "Первый статус"
 
-#: flaskr/extensions/tilda/__init__.py:94
+#: flaskr/extensions/tilda/__init__.py:131
 msgid "v_extension_tilda_information_settings_status"
 msgstr "Статус лида по умолчанию"
 
-#: flaskr/extensions/tilda/__init__.py:99
+#: flaskr/extensions/tilda/__init__.py:136
 msgid "v_extension_tilda_information_settings_primary_rules_required"
 msgstr "Статус обязателен для заполнения"
 
-#: flaskr/extensions/tilda/__init__.py:109
+#: flaskr/extensions/tilda/__init__.py:146
 msgid "v_extension_tilda_information_settings_save"
 msgstr "Сохранить"
 
-#: flaskr/extensions/wix/__init__.py:60
+#: flaskr/extensions/wix/__init__.py:93
+msgid "e_wix_settings_form_defaultStatus"
+msgstr "Статус по умолчанию"
+
+#: flaskr/extensions/wix/__init__.py:94
+msgid "e_wix_settings_form_defaultStatus_alwaysFirst"
+msgstr "Первый статус"
+
+#: flaskr/extensions/wix/__init__.py:95
+msgid "e_wix_settings_form_defaultStatus_required"
+msgstr "Укажите статус"
+
+#: flaskr/extensions/wix/__init__.py:96
+msgid "e_wix_settings_form_save"
+msgstr "Сохранить"
+
+#: flaskr/extensions/wix/__init__.py:97
+msgid "e_wix_settings_notification_changesSaved"
+msgstr "Изменения сохранены"
+
+#: flaskr/extensions/wix/__init__.py:135
 msgid "v_extension_wix_information_content"
 msgstr ""
 "## Подключение формы в Wix\r"
@@ -220,27 +280,11 @@ msgstr ""
 "Перейдите в настройки текущего расширения и сопоставьте поля из Wix с "
 "полями в AtomCRM."
 
-#: flaskr/extensions/wix/__init__.py:66
+#: flaskr/extensions/wix/__init__.py:141
 msgid "v_extension_wix_openSettings"
 msgstr "Перейти в настройки"
 
-#: flaskr/extensions/wix/__init__.py:86
-msgid "v_extension_wix_information_settings_status_alwaysFirst"
-msgstr "Первый статус"
-
-#: flaskr/extensions/wix/__init__.py:153
-msgid "v_extension_wix_information_settings_status"
-msgstr "Статус по умолчанию"
-
-#: flaskr/extensions/wix/__init__.py:158
-msgid "v_extension_wix_information_settings_primary_rules_required"
-msgstr "Статус обязателен для заполнения"
-
-#: flaskr/extensions/wix/__init__.py:192
-msgid "v_extension_wix_information_settings_save"
-msgstr "Сохранить"
-
-#: flaskr/extensions/wordpress/__init__.py:57
+#: flaskr/extensions/wordpress/__init__.py:59
 msgid "v_extension_wordpress_information_content"
 msgstr ""
 "## Подключение плагина\r"
@@ -446,125 +490,173 @@ msgstr "Зеленый"
 msgid "m_status_getStatusColors_orange"
 msgstr "Оранджевый"
 
-#: flaskr/views/analytics/analytics/__init__.py:21
+#: flaskr/views/analytics/__init__.py:15
 msgid "v_analytics_meta_name"
 msgstr "Аналитика"
 
-#: flaskr/views/analytics/analytics/__init__.py:114
+#: flaskr/views/analytics/__init__.py:112
 msgid "v_analytics_header_periodType_currentMonth"
 msgstr "Текущий месяц"
 
-#: flaskr/views/analytics/analytics/__init__.py:115
+#: flaskr/views/analytics/__init__.py:113
 msgid "v_analytics_header_periodType_previousMonth"
 msgstr "Предыдущий месяц"
 
-#: flaskr/views/analytics/analytics/__init__.py:116
+#: flaskr/views/analytics/__init__.py:114
 msgid "v_analytics_header_periodType_last30days"
 msgstr "Посл. 30 дней"
 
-#: flaskr/views/analytics/analytics/__init__.py:117
+#: flaskr/views/analytics/__init__.py:115
 msgid "v_analytics_header_periodType_last3months"
 msgstr "Посл. 3 месяца"
 
-#: flaskr/views/analytics/analytics/__init__.py:118
+#: flaskr/views/analytics/__init__.py:116
 msgid "v_analytics_header_periodType_last6months"
 msgstr "Посл. 6 месяцев"
 
-#: flaskr/views/analytics/analytics/__init__.py:119
+#: flaskr/views/analytics/__init__.py:117
 msgid "v_analytics_header_periodType_allTime"
 msgstr "Все время"
 
-#: flaskr/views/analytics/analytics/__init__.py:120
+#: flaskr/views/analytics/__init__.py:118
 msgid "v_analytics_header_periodType_customPeriod"
 msgstr "Указать период"
 
-#: flaskr/views/analytics/analytics/__init__.py:141
+#: flaskr/views/analytics/__init__.py:139
 msgid "v_analytics_statistics_allLeads"
 msgstr "Все лиды"
 
-#: flaskr/views/analytics/analytics/__init__.py:149
+#: flaskr/views/analytics/__init__.py:147
 msgid "v_analytics_statistics_statisticsByDay"
 msgstr "Статистика по дням"
 
-#: flaskr/views/api/api/__init__.py:22
-msgid "v_api_header_extensions"
-msgstr "Расширения"
+#: flaskr/views/api/__init__.py:20
+msgid "v_api_name"
+msgstr "API"
 
-#: flaskr/views/api/api/__init__.py:29
-msgid "v_api_header_getToken"
+#: flaskr/views/api/__init__.py:21
+msgid "v_tokenModal_title"
 msgstr "Получить токен"
 
-#: flaskr/views/api/api/__init__.py:36
-msgid "v_api_header_tabs_leads"
-msgstr "Лиды"
-
-#: flaskr/views/api/api/__init__.py:43
-msgid "v_api_header_tabs_statuses"
-msgstr "Статусы"
-
-#: flaskr/views/api/api/__init__.py:50
-msgid "v_api_header_tabs_fields"
-msgstr "Поля данных"
-
-#: flaskr/views/api/get_token/__init__.py:14
-msgid "v_getToken_meta_name"
-msgstr "Получить токен"
-
-#: flaskr/views/api/get_token/__init__.py:20
-msgid "v_getToken_meta_header_subtitle"
+#: flaskr/views/api/__init__.py:22
+msgid "v_tokenModal_subtitle"
 msgstr ""
 "Внимание! После нажатия на кнопку «Создать токен» ваш текущий токен будет"
 " деактивирован."
 
-#: flaskr/views/api/get_token/__init__.py:29
-msgid "v_getToken_schema_btn"
+#: flaskr/views/api/__init__.py:23
+msgid "v_tokenModal_createToken"
 msgstr "Создать токен"
 
-#: flaskr/views/api/get_token/__init__.py:36
-msgid "v_getToken_schema_token"
+#: flaskr/views/api/__init__.py:24
+msgid "v_tokenModal_token"
 msgstr "Новый токен"
 
-#: flaskr/views/card/card/__init__.py:31
+#: flaskr/views/api/__init__.py:49
+msgid "v_api_header_extensions"
+msgstr "Расширения"
+
+#: flaskr/views/api/__init__.py:56
+msgid "v_api_header_getToken"
+msgstr "Получить токен"
+
+#: flaskr/views/api/__init__.py:63
+msgid "v_api_header_tabs_leads"
+msgstr "Лиды"
+
+#: flaskr/views/api/__init__.py:68
+msgid "v_api_header_tabs_statuses"
+msgstr "Статусы"
+
+#: flaskr/views/api/__init__.py:75
+msgid "v_api_header_tabs_fields"
+msgstr "Поля данных"
+
+#: flaskr/views/card/__init__.py:15 flaskr/views/card/__init__.py:20
 msgid "v_card_meta_name"
 msgstr "Настройка карточки"
 
-#: flaskr/views/card/card/__init__.py:125
-msgid "v_card_scheme_form_leadAmount"
+#: flaskr/views/card/__init__.py:21
+msgid "v_card_form_leadAmount"
 msgstr "Стоимость лида"
 
-#: flaskr/views/card/card/__init__.py:134
-msgid "v_card_scheme_form_amountCurrency"
+#: flaskr/views/card/__init__.py:22
+msgid "v_card_form_amountCurrency"
 msgstr "Валюта стоимости"
 
-#: flaskr/views/card/card/__init__.py:142
-msgid "v_card_scheme_form_fields"
+#: flaskr/views/card/__init__.py:23
+msgid "v_card_form_fields"
 msgstr "Поля данных"
 
-#: flaskr/views/card/card/__init__.py:148
-msgid "v_card_scheme_form_fields_table_noFields"
-msgstr "Без полей"
+#: flaskr/views/card/__init__.py:24
+msgid "v_card_form_fields_table_noFields"
+msgstr "Поля отсутствуют"
 
-#: flaskr/views/card/card/__init__.py:154
-msgid "v_card_scheme_form_fields_table_field"
+#: flaskr/views/card/__init__.py:25
+msgid "v_card_form_fields_table_field"
 msgstr "Поле"
 
-#: flaskr/views/card/card/__init__.py:159
-msgid "v_card_scheme_form_fields_table_valueType"
+#: flaskr/views/card/__init__.py:26
+msgid "v_card_form_fields_table_valueType"
 msgstr "Тип поля"
 
-#: flaskr/views/card/card/__init__.py:164
-msgid "v_card_scheme_form_fields_table_boardVisibility"
+#: flaskr/views/card/__init__.py:27
+msgid "v_card_form_fields_table_valueType_string"
+msgstr "Текст"
+
+#: flaskr/views/card/__init__.py:28
+msgid "v_card_form_fields_table_valueType_email"
+msgstr "Email"
+
+#: flaskr/views/card/__init__.py:29
+msgid "v_card_form_fields_table_valueType_phone"
+msgstr "Номер телефона"
+
+#: flaskr/views/card/__init__.py:30
+msgid "v_card_form_fields_table_valueType_longString"
+msgstr "Большой текст"
+
+#: flaskr/views/card/__init__.py:31
+msgid "v_card_form_fields_table_valueType_number"
+msgstr "Число"
+
+#: flaskr/views/card/__init__.py:32
+msgid "v_card_form_fields_table_valueType_boolean"
+msgstr "Чекбокс"
+
+#: flaskr/views/card/__init__.py:33
+msgid "v_card_form_fields_table_valueType_date"
+msgstr "Дата"
+
+#: flaskr/views/card/__init__.py:34
+msgid "v_card_form_fields_table_valueType_choice"
+msgstr "Выбор из списка"
+
+#: flaskr/views/card/__init__.py:35
+msgid "v_card_form_fields_table_boardVisibility"
 msgstr "Отображение на доске"
 
-#: flaskr/views/card/card/__init__.py:172
-msgid "v_card_scheme_form_fields_addField"
+#: flaskr/views/card/__init__.py:36
+msgid "v_card_form_fields_table_boardVisibility_none"
+msgstr "Не отображать"
+
+#: flaskr/views/card/__init__.py:37
+msgid "v_card_form_fields_table_boardVisibility_title"
+msgstr "В заголовке"
+
+#: flaskr/views/card/__init__.py:38
+msgid "v_card_form_fields_table_boardVisibility_subtitle"
+msgstr "В описании"
+
+#: flaskr/views/card/__init__.py:39
+msgid "v_card_form_fields_addField"
 msgstr "Добавить поле"
 
-#: flaskr/views/card/card/__init__.py:186
-msgid "v_card_scheme_form_save"
+#: flaskr/views/card/__init__.py:40
+msgid "v_card_form_save"
 msgstr "Сохранить"
 
-#: flaskr/views/card/card/__init__.py:198
+#: flaskr/views/card/__init__.py:44
 msgid "v_card_getMethods_changesSaved"
 msgstr "Изменения сохранены"
 
@@ -572,314 +664,622 @@ msgstr "Изменения сохранены"
 msgid "v_extension_meta_name"
 msgstr "Интеграция с %(name)s"
 
-#: flaskr/views/extensions/extension/__init__.py:50
+#: flaskr/views/extensions/extension/__init__.py:54
 msgid "v_extension_header_tab_extensions"
 msgstr "Расширения"
 
-#: flaskr/views/extensions/extension/__init__.py:59
+#: flaskr/views/extensions/extension/__init__.py:63
 msgid "v_extension_header_information"
 msgstr "Информация"
 
-#: flaskr/views/extensions/extension/__init__.py:64
+#: flaskr/views/extensions/extension/__init__.py:68
 msgid "v_extension_header_settings"
 msgstr "Настройки"
 
-#: flaskr/views/leads/filter/__init__.py:14
-msgid "v_filter_meta_name"
-msgstr "Фильтр"
-
-#: flaskr/views/leads/filter/__init__.py:31
-msgid "v_filter_schema_form_period"
-msgstr "Период"
-
-#: flaskr/views/leads/filter/__init__.py:80
-msgid "v_filter_schema_form_archivedLeads"
-msgstr "Только архивные лиды"
-
-#: flaskr/views/leads/filter/__init__.py:89
-msgid "v_filter_schema_form_apply"
-msgstr "Применить"
-
-#: flaskr/views/leads/filter/__init__.py:93
-msgid "v_filter_schema_form_clear"
-msgstr "Сбросить"
-
-#: flaskr/views/leads/pipeline/__init__.py:27
-msgid "v_pipeline_meta_name"
+#: flaskr/views/pipeline/__init__.py:21
+msgid "meta_name"
 msgstr "Лиды"
 
-#: flaskr/views/leads/pipeline/__init__.py:117
+#: flaskr/views/pipeline/__init__.py:86
+msgid "v_pipeline_header_title"
+msgstr "Лиды"
+
+#: flaskr/views/pipeline/__init__.py:87
 msgid "v_pipeline_header_filter"
 msgstr "Фильтр"
 
-#: flaskr/views/leads/pipeline/__init__.py:132
-msgid "v_pipeline_header_search"
-msgstr "Поиск..."
-
-#: flaskr/views/leads/pipeline/__init__.py:142
+#: flaskr/views/pipeline/__init__.py:88
 msgid "v_pipeline_header_autoCreate"
 msgstr "Автодобавление"
 
-#: flaskr/views/leads/update_lead/__init__.py:117
-msgid "v_updateLead_meta_name"
-msgstr "Лид #%(id)s"
+#: flaskr/views/pipeline/__init__.py:89
+msgid "v_pipeline_header_search"
+msgstr "Поиск..."
 
-#: flaskr/views/leads/update_lead/__init__.py:126
-msgid "v_updateLead_header_information"
-msgstr "Информация"
+#: flaskr/views/pipeline/__init__.py:90
+msgid "v_pipeline_filterModal_title"
+msgstr "Фильтрация"
 
-#: flaskr/views/leads/update_lead/__init__.py:127
-msgid "v_updateLead_header_tasks"
-msgstr "Задачи"
+#: flaskr/views/pipeline/__init__.py:91
+msgid "v_pipeline_filterModal_form_period"
+msgstr "Период добавления"
 
-#: flaskr/views/leads/update_lead/__init__.py:128
-msgid "v_updateLead_header_activity"
-msgstr "Активность"
+#: flaskr/views/pipeline/__init__.py:92
+msgid "v_pipeline_filterModal_form_archivedLeads"
+msgstr "Архивные лиды"
 
-#: flaskr/views/leads/update_lead/__init__.py:211
-msgid "v_updateLead_rule_phone"
-msgstr "Укажите номер телефона"
+#: flaskr/views/pipeline/__init__.py:93
+msgid "v_pipeline_filterModal_form_apply"
+msgstr "Применить"
 
-#: flaskr/views/leads/update_lead/__init__.py:223
-msgid "v_updateLead_rule_email"
-msgstr "Укажите email"
+#: flaskr/views/pipeline/__init__.py:94
+msgid "v_pipeline_filterModal_form_clear"
+msgstr "Сбросить"
 
-#: flaskr/views/leads/update_lead/__init__.py:269
-msgid "v_updateLead_save"
-msgstr "Сохранить"
+#: flaskr/views/pipeline/__init__.py:95
+msgid "v_pipeline_leadModal_title"
+msgstr "Лид #{id}"
 
-#: flaskr/views/leads/update_lead/__init__.py:279
-msgid "v_updateLead_restoreLead"
-msgstr "Восстановить"
-
-#: flaskr/views/leads/update_lead/__init__.py:318
-msgid "v_updateLead_enterTags"
-msgstr "Укажите теги"
-
-#: flaskr/views/leads/update_lead/__init__.py:326
-msgid "v_updateLead_enterComment"
-msgstr "Комментарий"
-
-#: flaskr/views/leads/update_lead/__init__.py:332
-msgid "v_updateLead_addDate"
-msgstr "Добавлено"
-
-#: flaskr/views/leads/update_lead/__init__.py:338
-msgid "v_updateLead_updateDate"
-msgstr "Обновлено"
-
-#: flaskr/views/leads/update_lead/__init__.py:344
-msgid "v_updateLead_creator"
-msgstr "Пользователь"
-
-#: flaskr/views/leads/update_lead/__init__.py:354
-msgid "v_updateLead_utmMarks"
-msgstr "UTM метки"
-
-#: flaskr/views/leads/update_lead/__init__.py:463
-msgid "v_updateLead_getMethods_changesSaved"
+#: flaskr/views/pipeline/__init__.py:96
+msgid "v_pipeline_leadModal_notification_changesSaved"
 msgstr "Изменения сохранены"
 
-#: flaskr/views/statuses/create_status/__init__.py:15
-msgid "v_createStatus_meta_name"
-msgstr "Создать статус"
+#: flaskr/views/pipeline/__init__.py:97
+msgid "v_pipeline_leadModal_save"
+msgstr "Сохранить"
 
-#: flaskr/views/statuses/create_status/__init__.py:39
-msgid "v_createStatus_form_name"
-msgstr "Название"
+#: flaskr/views/pipeline/__init__.py:98
+msgid "v_pipeline_leadModal_tags"
+msgstr "Укажите теги"
 
-#: flaskr/views/statuses/create_status/__init__.py:40
-msgid "v_createStatus_form_name_placeholder"
-msgstr "Например: В процессе"
+#: flaskr/views/pipeline/__init__.py:99
+msgid "v_pipeline_leadModal_comment"
+msgstr "Комментарий"
 
-#: flaskr/views/statuses/create_status/__init__.py:43
-msgid "v_createStatus_name_length"
-msgstr "Должен содержать не более 30 симв."
+#: flaskr/views/pipeline/__init__.py:100
+msgid "v_pipeline_leadModal_addDate"
+msgstr "Добавлено"
 
-#: flaskr/views/statuses/create_status/__init__.py:44
-msgid "v_createStatus_name_required"
-msgstr "Название обязательно для заполнение"
+#: flaskr/views/pipeline/__init__.py:101
+msgid "v_pipeline_leadModal_updateDate"
+msgstr "Обновлено"
 
-#: flaskr/views/statuses/create_status/__init__.py:51
-msgid "v_createStatus_form_color"
-msgstr "Цвет"
+#: flaskr/views/pipeline/__init__.py:102
+msgid "v_pipeline_leadModal_creator"
+msgstr "Пользователь"
 
-#: flaskr/views/statuses/create_status/__init__.py:54
-msgid "v_createStatus_form_color_required"
-msgstr "Цвет обязателен для заполнения"
+#: flaskr/views/pipeline/__init__.py:103
+msgid "v_pipeline_leadModal_form_phone_rule"
+msgstr "Укажите номер телефона"
 
-#: flaskr/views/statuses/create_status/__init__.py:64
-msgid "v_createStatus_btn"
-msgstr "Создать"
+#: flaskr/views/pipeline/__init__.py:104
+msgid "v_pipeline_leadModal_form_email_rule"
+msgstr "Укажите почту"
 
-#: flaskr/views/statuses/delete_status/__init__.py:17
-msgid "v_deleteStatus_meta_name"
-msgstr "Удалить статус"
+#: flaskr/views/pipeline/__init__.py:105
+msgid "v_pipeline_leadModal_form_save"
+msgstr "Сохранить"
 
-#: flaskr/views/statuses/delete_status/__init__.py:47
-msgid "v_deleteStatus_header_subtitle"
-msgstr ""
-"Лиды с удаляемые статусом «%(status_name)s» уже существуют. Что с ними "
-"делать?"
+#: flaskr/views/pipeline/__init__.py:106
+msgid "v_pipeline_leadModal_form_restoreLead"
+msgstr "Восстановить лид"
 
-#: flaskr/views/statuses/delete_status/__init__.py:54
-msgid "v_deleteStatus_schema_form_action_deleteLeads"
-msgstr "Удалить лиды"
+#: flaskr/views/pipeline/__init__.py:107
+msgid "v_pipeline_getRegularDate_today"
+msgstr "Сегодня в {time}"
 
-#: flaskr/views/statuses/delete_status/__init__.py:62
-msgid "v_deleteStatus_schema_form_action_moveLeads"
-msgstr "Переместить лиды в «%(status_name)s»"
+#: flaskr/views/pipeline/__init__.py:108
+msgid "v_pipeline_getRegularDate_yesterday"
+msgstr "Вчера в {time}"
 
-#: flaskr/views/statuses/delete_status/__init__.py:83
-msgid "v_deleteStatus_schema_form_btn"
-msgstr "Удалить"
+#: flaskr/views/pipeline/__init__.py:109
+msgid "v_pipeline_getRegularDate_jan"
+msgstr "Янв."
 
-#: flaskr/views/statuses/statuses/__init__.py:19
+#: flaskr/views/pipeline/__init__.py:110
+msgid "v_pipeline_getRegularDate_feb"
+msgstr "Фев."
+
+#: flaskr/views/pipeline/__init__.py:111
+msgid "v_pipeline_getRegularDate_mar"
+msgstr "Мар."
+
+#: flaskr/views/pipeline/__init__.py:112
+msgid "v_pipeline_getRegularDate_apr"
+msgstr "Апр."
+
+#: flaskr/views/pipeline/__init__.py:113
+msgid "v_pipeline_getRegularDate_may"
+msgstr "Мая"
+
+#: flaskr/views/pipeline/__init__.py:114
+msgid "v_pipeline_getRegularDate_jun"
+msgstr "Июн."
+
+#: flaskr/views/pipeline/__init__.py:115
+msgid "v_pipeline_getRegularDate_jul"
+msgstr "Июл."
+
+#: flaskr/views/pipeline/__init__.py:116
+msgid "v_pipeline_getRegularDate_aug"
+msgstr "Авг."
+
+#: flaskr/views/pipeline/__init__.py:117
+msgid "v_pipeline_getRegularDate_sep"
+msgstr "Сен."
+
+#: flaskr/views/pipeline/__init__.py:118
+msgid "v_pipeline_getRegularDate_oct"
+msgstr "Окт."
+
+#: flaskr/views/pipeline/__init__.py:119
+msgid "v_pipeline_getRegularDate_nov"
+msgstr "Нояб."
+
+#: flaskr/views/pipeline/__init__.py:120
+msgid "v_pipeline_getRegularDate_dec"
+msgstr "Дек."
+
+#: flaskr/views/pipeline/__init__.py:121
+msgid "v_pipeline_board_archived"
+msgstr "В архиве"
+
+#: flaskr/views/statuses/__init__.py:14 flaskr/views/statuses/__init__.py:20
 msgid "v_statuses_meta_name"
 msgstr "Статусы"
 
-#: flaskr/views/statuses/statuses/__init__.py:44
+#: flaskr/views/statuses/__init__.py:21
 msgid "v_statuses_header_createStatus"
 msgstr "Создать статус"
 
-#: flaskr/views/statuses/statuses/__init__.py:77
-msgid "v_statuses_schema_count_lead"
-msgstr "лид"
-
-#: flaskr/views/statuses/statuses/__init__.py:77
-msgid "v_statuses_schema_count_leads"
-msgstr "лид."
-
-#: flaskr/views/statuses/statuses/__init__.py:83
-msgid "v_statuses_schema_editStatus"
+#: flaskr/views/statuses/__init__.py:22
+msgid "v_statuses_list_editStatus"
 msgstr "Изменить"
 
-#: flaskr/views/statuses/statuses/__init__.py:97
-msgid "v_statuses_schema_noStatuses"
+#: flaskr/views/statuses/__init__.py:23
+msgid "v_statuses_list_count_lead"
+msgstr "лид"
+
+#: flaskr/views/statuses/__init__.py:24
+msgid "v_statuses_list_count_leads"
+msgstr "лид."
+
+#: flaskr/views/statuses/__init__.py:25
+msgid "v_statuses_list_count_noLeads"
+msgstr "Нет лидов"
+
+#: flaskr/views/statuses/__init__.py:26
+msgid "v_statuses_list_noStatuses"
 msgstr "Статусы отсутствуют"
 
-#: flaskr/views/statuses/update_status/__init__.py:16
-msgid "v_updateStatus_meta_name"
+#: flaskr/views/statuses/__init__.py:27
+msgid "v_statuses_statusModal_createTitle"
+msgstr "Создать статус"
+
+#: flaskr/views/statuses/__init__.py:28
+msgid "v_statuses_statusModal_updateTitle"
 msgstr "Изменить статус"
 
-#: flaskr/views/statuses/update_status/__init__.py:57
-msgid "v_updateStatus_form_name"
+#: flaskr/views/statuses/__init__.py:29
+msgid "v_statuses_statusModal_form_name"
 msgstr "Название"
 
-#: flaskr/views/statuses/update_status/__init__.py:58
-msgid "v_updateStatus_form_name_placeholder"
+#: flaskr/views/statuses/__init__.py:30
+msgid "v_statuses_statusModal_form_name_placeholder"
 msgstr "Например: В процессе"
 
-#: flaskr/views/statuses/update_status/__init__.py:61
-msgid "v_updateStatus_name_length"
+#: flaskr/views/statuses/__init__.py:31
+msgid "v_statuses_statusModal_form_name_length"
 msgstr "Должен содержать не более 30 симв."
 
-#: flaskr/views/statuses/update_status/__init__.py:62
-msgid "v_updateStatus_name_required"
-msgstr "Название обязательно для заполнение"
+#: flaskr/views/statuses/__init__.py:32
+msgid "v_statuses_statusModal_form_name_required"
+msgstr "Укажите название"
 
-#: flaskr/views/statuses/update_status/__init__.py:70
-msgid "v_updateStatus_form_color"
+#: flaskr/views/statuses/__init__.py:33
+msgid "v_statuses_statusModal_form_color"
 msgstr "Цвет"
 
-#: flaskr/views/statuses/update_status/__init__.py:74
-msgid "v_updateStatus_form_color_required"
-msgstr "Цвет обязателен для заполнения"
+#: flaskr/views/statuses/__init__.py:34
+msgid "v_statuses_statusModal_form_color_required"
+msgstr "Выберите цвет"
 
-#: flaskr/views/statuses/update_status/__init__.py:84
-msgid "v_updateStatus_btn"
-msgstr "Сохранить"
-
-#: flaskr/views/tasks/create_task/__init__.py:18
-msgid "v_createTask_meta_name"
-msgstr "Создать задачу"
-
-#: flaskr/views/tasks/create_task/__init__.py:37
-msgid "v_createTask_form_name"
-msgstr "Название задачи"
-
-#: flaskr/views/tasks/create_task/__init__.py:38
-msgid "v_createTask_form_name_placeholder"
-msgstr "Например: Предложить скидку"
-
-#: flaskr/views/tasks/create_task/__init__.py:41
-msgid "v_createTask_name_length"
-msgstr "Должно содержать не более 50 симв.\""
-
-#: flaskr/views/tasks/create_task/__init__.py:42
-msgid "v_createTask_name_required"
-msgstr "Название обязательно для заполнения"
-
-#: flaskr/views/tasks/create_task/__init__.py:48
-msgid "v_createTask_form_subtasks"
-msgstr "Подзадачи"
-
-#: flaskr/views/tasks/create_task/__init__.py:54
-#: flaskr/views/tasks/update_task/__init__.py:85
-msgid "v_updateTask_form_subtasks_table_noSubtasks"
-msgstr "Нет подзадач"
-
-#: flaskr/views/tasks/create_task/__init__.py:66
-msgid "v_createTask_form_subtasks_addSubtask"
-msgstr "Добавить подзадачу"
-
-#: flaskr/views/tasks/create_task/__init__.py:80
-msgid "v_createTask_btn"
+#: flaskr/views/statuses/__init__.py:35
+msgid "v_statuses_statusModal_form_create"
 msgstr "Создать"
 
-#: flaskr/views/tasks/tasks/__init__.py:18
+#: flaskr/views/statuses/__init__.py:36
+msgid "v_statuses_statusModal_form_save"
+msgstr "Сохранить"
+
+#: flaskr/views/statuses/__init__.py:37
+msgid "v_statuses_deleteStatusModal_title"
+msgstr "Удалить статус"
+
+#: flaskr/views/statuses/__init__.py:38
+msgid "v_statuses_deleteStatusModal_subtitle"
+msgstr "Лиды с удаляемые статусом «{name}» уже существуют. Что с ними делать?"
+
+#: flaskr/views/statuses/__init__.py:39
+msgid "v_statuses_deleteStatusModal_form_moveLeads"
+msgstr "Переместить лиды в «{name}»"
+
+#: flaskr/views/statuses/__init__.py:40
+msgid "v_statuses_deleteStatusModal_form_deleteLeads"
+msgstr "Удалить лиды"
+
+#: flaskr/views/statuses/__init__.py:41
+msgid "v_statuses_deleteStatusModal_form_delete"
+msgstr "Удалить"
+
+#: flaskr/views/tasks/__init__.py:15 flaskr/views/tasks/__init__.py:20
 msgid "v_tasks_meta_name"
 msgstr "Задачи"
 
-#: flaskr/views/tasks/tasks/__init__.py:43
+#: flaskr/views/tasks/__init__.py:21
 msgid "v_tasks_header_createTask"
 msgstr "Создать задачу"
 
-#: flaskr/views/tasks/tasks/__init__.py:59
-msgid "v_tasksSets_schema_count_subtask"
-msgstr "подзадача"
-
-#: flaskr/views/tasks/tasks/__init__.py:59
-msgid "v_tasksSets_schema_count_subtasks"
-msgstr "подз."
-
-#: flaskr/views/tasks/tasks/__init__.py:65
-msgid "v_tasksSets_schema_edit"
+#: flaskr/views/tasks/__init__.py:22
+msgid "v_tasks_table_editTask"
 msgstr "Изменить"
 
-#: flaskr/views/tasks/tasks/__init__.py:85
-msgid "v_tasks_schema_noTasks"
+#: flaskr/views/tasks/__init__.py:23
+msgid "v_tasks_table_count_subtask"
+msgstr "подзадача"
+
+#: flaskr/views/tasks/__init__.py:24
+msgid "v_tasks_table_count_subtasks"
+msgstr "подз."
+
+#: flaskr/views/tasks/__init__.py:25
+msgid "v_tasks_table_count_noTasks"
+msgstr "Без подзадач"
+
+#: flaskr/views/tasks/__init__.py:26
+msgid "v_tasks_table_noTasks"
 msgstr "Задачи отсутствуют"
 
-#: flaskr/views/tasks/update_task/__init__.py:18
-msgid "v_updateTask_meta_name"
+#: flaskr/views/tasks/__init__.py:27
+msgid "v_tasks_taskModal_createTitle"
+msgstr "Создать задачу"
+
+#: flaskr/views/tasks/__init__.py:28
+msgid "v_tasks_taskModal_updateTitle"
 msgstr "Изменить задачу"
 
-#: flaskr/views/tasks/update_task/__init__.py:67
-msgid "v_updateTask_form_name"
+#: flaskr/views/tasks/__init__.py:29
+msgid "v_tasks_taskModal_form_name"
 msgstr "Название"
 
-#: flaskr/views/tasks/update_task/__init__.py:69
-msgid "v_updateTask_form_name_placeholder"
+#: flaskr/views/tasks/__init__.py:30
+msgid "v_tasks_taskModal_form_name_placeholder"
 msgstr "Например: Предложить скидку"
 
-#: flaskr/views/tasks/update_task/__init__.py:72
-msgid "v_updateTask_name_length"
+#: flaskr/views/tasks/__init__.py:31
+msgid "v_tasks_taskModal_form_name_length"
 msgstr "Должно содержать не более 50 симв."
 
-#: flaskr/views/tasks/update_task/__init__.py:73
-msgid "v_updateTask_name_required"
-msgstr "Название обязательно для заполнения"
+#: flaskr/views/tasks/__init__.py:32
+msgid "v_tasks_taskModal_form_name_required"
+msgstr "Укажите название"
 
-#: flaskr/views/tasks/update_task/__init__.py:79
-msgid "v_updateTask_form_subtasks"
+#: flaskr/views/tasks/__init__.py:33
+msgid "v_tasks_taskModal_form_subtasks"
 msgstr "Подзадачи"
 
-#: flaskr/views/tasks/update_task/__init__.py:97
-msgid "v_updateTask_form_subtasks_addSubtask"
+#: flaskr/views/tasks/__init__.py:34
+msgid "v_tasks_taskModal_form_subtasks_table_noSubtasks"
+msgstr "Подзадачи отсутствуют"
+
+#: flaskr/views/tasks/__init__.py:35
+msgid "v_tasks_taskModal_form_subtasks_addSubtask"
 msgstr "Добавить подзадачу"
 
-#: flaskr/views/tasks/update_task/__init__.py:111
-msgid "v_updateTask_btn"
+#: flaskr/views/tasks/__init__.py:36
+msgid "v_tasks_taskModal_form_create"
+msgstr "Создать"
+
+#: flaskr/views/tasks/__init__.py:37
+msgid "v_tasks_taskModal_form_save"
 msgstr "Сохранить"
+
+#: flaskr/views/tasks/__init__.py:38
+msgid "v_tasks_deleteTaskModal_title"
+msgstr "Удалить задачу"
+
+#: flaskr/views/tasks/__init__.py:39
+msgid "v_tasks_deleteTaskModal_subtitle"
+msgstr "Вы действительно хотите безвозвратно удалить эту задачу?"
+
+#: flaskr/views/tasks/__init__.py:40
+msgid "v_tasks_deleteTaskModal_delete"
+msgstr "Удалить"
+
+#~ msgid "v_extension_wix_information_settings_status_alwaysFirst"
+#~ msgstr "Первый статус"
+
+#~ msgid "v_extension_wix_information_settings_status"
+#~ msgstr "Статус по умолчанию"
+
+#~ msgid "v_extension_wix_information_settings_primary_rules_required"
+#~ msgstr "Статус обязателен для заполнения"
+
+#~ msgid "v_extension_wix_information_settings_save"
+#~ msgstr "Сохранить"
+
+#~ msgid "v_filter_meta_name"
+#~ msgstr "Фильтр"
+
+#~ msgid "v_filter_scheme_form_period"
+#~ msgstr "Период"
+
+#~ msgid "v_filter_scheme_form_archivedLeads"
+#~ msgstr "Только архивные лиды"
+
+#~ msgid "v_filter_scheme_form_apply"
+#~ msgstr "Применить"
+
+#~ msgid "v_filter_scheme_form_clear"
+#~ msgstr "Сбросить"
+
+#~ msgid "v_pipeline_meta_name"
+#~ msgstr "Лиды"
+
+#~ msgid "v_updateLead_meta_name"
+#~ msgstr "Лид #%(id)s"
+
+#~ msgid "v_updateLead_header_information"
+#~ msgstr "Информация"
+
+#~ msgid "v_updateLead_header_tasks"
+#~ msgstr "Задачи"
+
+#~ msgid "v_updateLead_header_activity"
+#~ msgstr "Активность"
+
+#~ msgid "v_updateLead_rule_phone"
+#~ msgstr "Укажите номер телефона"
+
+#~ msgid "v_updateLead_rule_email"
+#~ msgstr "Укажите email"
+
+#~ msgid "v_updateLead_save"
+#~ msgstr "Сохранить"
+
+#~ msgid "v_updateLead_restoreLead"
+#~ msgstr "Восстановить"
+
+#~ msgid "v_updateLead_enterTags"
+#~ msgstr "Укажите теги"
+
+#~ msgid "v_updateLead_enterComment"
+#~ msgstr "Комментарий"
+
+#~ msgid "v_updateLead_addDate"
+#~ msgstr "Добавлено"
+
+#~ msgid "v_updateLead_updateDate"
+#~ msgstr "Обновлено"
+
+#~ msgid "v_updateLead_creator"
+#~ msgstr "Пользователь"
+
+#~ msgid "v_updateLead_utmMarks"
+#~ msgstr "UTM метки"
+
+#~ msgid "v_updateLead_getMethods_changesSaved"
+#~ msgstr "Изменения сохранены"
+
+#~ msgid "v_createStatus_meta_name"
+#~ msgstr "Создать статус"
+
+#~ msgid "v_createStatus_form_name"
+#~ msgstr "Название"
+
+#~ msgid "v_createStatus_form_name_placeholder"
+#~ msgstr "Например: В процессе"
+
+#~ msgid "v_createStatus_name_length"
+#~ msgstr "Должен содержать не более 30 симв."
+
+#~ msgid "v_createStatus_name_required"
+#~ msgstr "Название обязательно для заполнение"
+
+#~ msgid "v_createStatus_form_color"
+#~ msgstr "Цвет"
+
+#~ msgid "v_createStatus_form_color_required"
+#~ msgstr "Цвет обязателен для заполнения"
+
+#~ msgid "v_createStatus_btn"
+#~ msgstr "Создать"
+
+#~ msgid "v_deleteStatus_meta_name"
+#~ msgstr "Удалить статус"
+
+#~ msgid "v_deleteStatus_scheme_form_action_deleteLeads"
+#~ msgstr "Удалить лиды"
+
+#~ msgid "v_deleteStatus_scheme_form_action_moveLeads"
+#~ msgstr "Переместить лиды в «%(status_name)s»"
+
+#~ msgid "v_deleteStatus_scheme_form_btn"
+#~ msgstr "Удалить"
+
+#~ msgid "v_statuses_scheme_count_lead"
+#~ msgstr "лид"
+
+#~ msgid "v_statuses_scheme_count_leads"
+#~ msgstr "лид."
+
+#~ msgid "v_statuses_scheme_editStatus"
+#~ msgstr "Изменить"
+
+#~ msgid "v_statuses_scheme_noStatuses"
+#~ msgstr "Статусы отсутствуют"
+
+#~ msgid "v_updateStatus_meta_name"
+#~ msgstr "Изменить статус"
+
+#~ msgid "v_updateStatus_form_name"
+#~ msgstr "Название"
+
+#~ msgid "v_updateStatus_form_name_placeholder"
+#~ msgstr "Например: В процессе"
+
+#~ msgid "v_updateStatus_name_length"
+#~ msgstr "Должен содержать не более 30 симв."
+
+#~ msgid "v_updateStatus_name_required"
+#~ msgstr "Название обязательно для заполнение"
+
+#~ msgid "v_updateStatus_form_color"
+#~ msgstr "Цвет"
+
+#~ msgid "v_updateStatus_form_color_required"
+#~ msgstr "Цвет обязателен для заполнения"
+
+#~ msgid "v_updateStatus_btn"
+#~ msgstr "Сохранить"
+
+#~ msgid "v_createTask_form_subtasks"
+#~ msgstr "Подзадачи"
+
+#~ msgid "v_updateTask_form_subtasks_table_noSubtasks"
+#~ msgstr "Нет подзадач"
+
+#~ msgid "v_createTask_form_subtasks_addSubtask"
+#~ msgstr "Добавить подзадачу"
+
+#~ msgid "v_tasksSets_scheme_count_subtask"
+#~ msgstr "подзадача"
+
+#~ msgid "v_tasksSets_scheme_count_subtasks"
+#~ msgstr "подз."
+
+#~ msgid "v_tasksSets_scheme_edit"
+#~ msgstr "Изменить"
+
+#~ msgid "v_updateTask_form_name"
+#~ msgstr "Название"
+
+#~ msgid "v_updateTask_form_name_placeholder"
+#~ msgstr "Например: Предложить скидку"
+
+#~ msgid "v_updateTask_name_length"
+#~ msgstr "Должно содержать не более 50 симв."
+
+#~ msgid "v_updateTask_name_required"
+#~ msgstr "Название обязательно для заполнения"
+
+#~ msgid "v_updateTask_form_subtasks"
+#~ msgstr "Подзадачи"
+
+#~ msgid "v_updateTask_form_subtasks_addSubtask"
+#~ msgstr "Добавить подзадачу"
+
+#~ msgid "v_createTask_form_color"
+#~ msgstr "Цвет"
+
+#~ msgid "v_createTask_form_color_required"
+#~ msgstr "Укажите цвет"
+
+#~ msgid "v_statuses_deleteStatusModal_moveLeads"
+#~ msgstr "Переместить лиды в {name}"
+
+#~ msgid "v_statuses_deleteStatusModal_deleteLeads"
+#~ msgstr "Удалить лиды"
+
+#~ msgid "v_deleteStatus_list_form_delete"
+#~ msgstr "Удалить"
+
+#~ msgid "v_createTask_meta_name"
+#~ msgstr "Создать задачу"
+
+#~ msgid "v_updateTask_meta_name"
+#~ msgstr "Изменить задачу"
+
+#~ msgid "v_createTask_form_name"
+#~ msgstr "Название задачи"
+
+#~ msgid "v_createTask_form_name_placeholder"
+#~ msgstr "Например: Предложить скидку"
+
+#~ msgid "v_createTask_name_length"
+#~ msgstr "Должно содержать не более 50 симв.\""
+
+#~ msgid "v_createTask_name_required"
+#~ msgstr "Укажите название"
+
+#~ msgid "v_createTask_form_subtasks_table_noSubtasks"
+#~ msgstr "Подзадачи отсутствуют"
+
+#~ msgid "v_createTask_btn"
+#~ msgstr "Создать"
+
+#~ msgid "v_updateTask_btn"
+#~ msgstr "Сохранить"
+
+#~ msgid "v_deleteStatus_header_title"
+#~ msgstr "Удалить статус"
+
+#~ msgid "v_deleteStatus_header_subtitle"
+#~ msgstr ""
+#~ "Лиды с удаляемые статусом «%(status_name)s»"
+#~ " уже существуют. Что с ними делать?"
+
+#~ msgid "v_tasks_createTask_createTitle"
+#~ msgstr ""
+
+#~ msgid "v_tasks_updateTask_updateTitle"
+#~ msgstr ""
+
+#~ msgid "v_tasks_createTask_form_name"
+#~ msgstr ""
+
+#~ msgid "v_card_scheme_form_leadAmount"
+#~ msgstr "Стоимость лида"
+
+#~ msgid "v_card_scheme_form_amountCurrency"
+#~ msgstr "Валюта стоимости"
+
+#~ msgid "v_card_scheme_form_fields"
+#~ msgstr "Поля данных"
+
+#~ msgid "v_card_scheme_form_fields_table_noFields"
+#~ msgstr "Без полей"
+
+#~ msgid "v_card_scheme_form_fields_table_field"
+#~ msgstr "Поле"
+
+#~ msgid "v_card_scheme_form_fields_table_valueType"
+#~ msgstr "Тип поля"
+
+#~ msgid "v_card_scheme_form_fields_table_boardVisibility"
+#~ msgstr "Отображение на доске"
+
+#~ msgid "v_card_scheme_form_fields_addField"
+#~ msgstr "Добавить поле"
+
+#~ msgid "v_card_scheme_form_save"
+#~ msgstr "Сохранить"
+
+#~ msgid "v_getToken_meta_name"
+#~ msgstr "Получить токен"
+
+#~ msgid "v_getToken_meta_header_subtitle"
+#~ msgstr ""
+#~ "Внимание! После нажатия на кнопку "
+#~ "«Создать токен» ваш текущий токен будет"
+#~ " деактивирован."
+
+#~ msgid "v_getToken_scheme_btn"
+#~ msgstr "Создать токен"
+
+#~ msgid "scheme_tokenModal_createToken"
+#~ msgstr ""
+
+#~ msgid "v_getToken_scheme_token"
+#~ msgstr "Новый токен"
 

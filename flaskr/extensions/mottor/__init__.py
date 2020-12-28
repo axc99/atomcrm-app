@@ -27,7 +27,7 @@ class MottorExtension(Extension):
     @staticmethod
     def get_default_data():
         return {
-            'default_status': 'first'
+            'defaultStatus': 'first'
         }
 
     def get_data_for_settings(self, installation_extension_settings, params, request_data):
@@ -54,7 +54,11 @@ class MottorExtension(Extension):
         return {
             'statuses': statuses,
             'strs': {
-
+                'form_defaultStatus': _('e_mottor_settings_form_defaultStatus'),
+                'form_defaultStatus_alwaysFirst': _('e_mottor_settings_form_defaultStatus_alwaysFirst'),
+                'form_defaultStatus_required': _('e_mottor_settings_form_defaultStatus_required'),
+                'form_save': _('e_mottor_settings_form_save'),
+                'notification_changesSaved': _('e_mottor_settings_notification_changesSaved')
             },
             'installationExtensionSettings': {
                 'id': installation_extension_settings.id,
@@ -65,7 +69,7 @@ class MottorExtension(Extension):
     def get_script_for_settings(self, installation_extension_settings, params, request_data):
         return settings_script
 
-    def get_schema_for_information(self, installation_extension_settings, params, request_data):
+    def get_scheme_for_information(self, installation_extension_settings, params, request_data):
         fields = db.session.execute("""
                     SELECT 
                         f.*
@@ -93,7 +97,7 @@ class MottorExtension(Extension):
             }
         ]
 
-    def get_schema_for_settings(self, installation_extension_settings, params, request_data):
+    def get_scheme_for_settings(self, installation_extension_settings, params, request_data):
         statuses = db.session.execute("""
             SELECT 
                 s.*,
@@ -128,7 +132,7 @@ class MottorExtension(Extension):
                         'key': 'defaulttatus',
                         'label': _('v_extension_mottor_information_settings_status'),
                         'options': status_options,
-                        'value': installation_extension_settings.data.get('default_status'),
+                        'value': installation_extension_settings.data.get('defaultStatus'),
                         'rules': [
                             {'required': True,
                              'message': _('v_extension_mottor_information_settings_primary_rules_required')}
@@ -179,13 +183,13 @@ class MottorExtension(Extension):
 
         # Get first status and status by settings
         status = None
-        if installation_extension_settings.data.get('default_status') != 'first':
+        if installation_extension_settings.data.get('defaultStatus') != 'first':
             status = Status.query \
                 .with_entities(Status.id) \
                 .filter_by(nepkit_installation_id=installation_extension_settings.nepkit_installation_id,
-                           id=installation_extension_settings.data.get('default_status')) \
+                           id=installation_extension_settings.data.get('defaultStatus')) \
                 .first()
-        if installation_extension_settings.data.get('default_status') == 'first' or not status:
+        if installation_extension_settings.data.get('defaultStatus') == 'first' or not status:
             status = Status.query \
                 .with_entities(Status.id) \
                 .filter_by(nepkit_installation_id=installation_extension_settings.nepkit_installation_id) \

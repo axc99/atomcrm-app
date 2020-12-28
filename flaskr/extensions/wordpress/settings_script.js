@@ -8,7 +8,7 @@ const { strs } = view.data
 view.render = () => {
   return {
     header: view.header,
-    schema: [
+    scheme: [
       'FORM!!1'
     ]
   }

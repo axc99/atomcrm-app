@@ -4,22 +4,6 @@ from flaskr.models.field import Field
 from flaskr.models.installation_card_settings import InstallationCardSettings
 
 
-def text_options_to_json(text):
-    json = {}
-
-    for line in text.splitlines():
-        pos_index = line.find('=')
-        if pos_index == -1:
-            break
-
-        line_key = line[0:pos_index]
-        line_value = line[(pos_index + 1):]
-        if line_key and line_value:
-            json[line_key] = line_value
-
-    return json
-
-
 # Get fields
 def get_fields(params, request_data):
     fields = []
@@ -85,7 +69,7 @@ def update_card_settings(params, request_data):
                     exist_field.index = i
                     exist_field.name = field['name']
                     exist_field.value_type = field['valueType']
-                    exist_field.choice_options = text_options_to_json(field['choiceOptions']) if field.get('choiceOptions') else None
+                    exist_field.choice_options = field['choiceOptions'] if field.get('choiceOptions') else None
                     exist_field.board_visibility = field['boardVisibility']
 
                     removed_field_ids.remove(exist_field.id)
@@ -95,7 +79,7 @@ def update_card_settings(params, request_data):
                     new_field.index = i
                     new_field.name = field['name']
                     new_field.value_type = field['valueType']
-                    new_field.choice_options = text_options_to_json(field['choiceOptions']) if field.get('choiceOptions') else None
+                    new_field.choice_options = field['choiceOptions'] if field.get('choiceOptions') else None
                     new_field.board_visibility = field['boardVisibility']
                     new_field.nepkit_installation_id = request_data['installation_id']
 

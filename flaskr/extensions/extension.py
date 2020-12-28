@@ -12,10 +12,10 @@ class Extension:
     def catch_webhook(installation_extension_settings, webhook_key=None):
         return 'OK'
 
-    def get_schema_for_information(self, installation_extension_settings, params, request_data):
+    def get_scheme_for_information(self, installation_extension_settings, params, request_data):
         return []
 
-    def get_schema_for_settings(self, installation_extension_settings, params, request_data):
+    def get_scheme_for_settings(self, installation_extension_settings, params, request_data):
         return []
 
     def get_data_for_settings(self, installation_extension_settings, params, request_data):

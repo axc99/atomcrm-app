@@ -72,7 +72,7 @@ view.render = () => {
   const statusOptions = [
     {
       'value': 'first',
-      'label': strs['v_extension_wix_information_settings_status_alwaysFirst']
+      'label': strs['form_defaultStatus_alwaysFirst']
     }
   ]
   statuses.map(status => {
@@ -91,7 +91,7 @@ view.render = () => {
 
   return {
     header: view.header,
-    schema: [
+    scheme: [
       {
         _com: 'Form',
         form,
@@ -111,7 +111,7 @@ view.render = () => {
                   setReqLoading(false)
 
                   app.showNotification({
-                    message: 'SAVING_NOTIFICATION_MESSAGE',
+                    message: strs['notification_changesSaved'],
                     duration: 1
                   })
               })
@@ -120,11 +120,11 @@ view.render = () => {
           {
             '_com': 'Field.Select',
             'key': 'defaultStatus',
-            'label': strs['v_extension_wix_information_settings_status'],
+            'label': strs['form_defaultStatus'],
             'options': statusOptions,
             'rules': [
               {'required': true,
-               'message': strs['v_extension_wix_information_settings_primary_rules_required']}
+               'message': strs['form_defaultStatus_required']}
             ]
           },
           {
@@ -146,7 +146,7 @@ view.render = () => {
             'submitForm': true,
             'loading': reqLoading,
             'icon': 'save',
-            'label': strs['v_extension_wix_information_settings_save']
+            'label': strs['form_save']
           }
         ]
     }

@@ -21,12 +21,12 @@ const TasksList = ({ tasks, deleteLoadingIndex, loading, openModal, deleteTask, 
       key: task.id,
       color: task.color,
       title: task.name,
-      extra: `${task.subtaskCount} ${task.subtaskCount == 1 ? strs['schema_count_task'] : strs['schema_count_subtasks']}`,
+      extra: `${task.subtaskCount} ${task.subtaskCount == 1 ? strs['table_count_task'] : strs['table_count_subtasks']}`,
       actions: [
         {
           _com: 'Button',
           icon: 'edit',
-          label: strs['schema_editTask'],
+          label: strs['table_editTask'],
           onClick: () => openModal({
             type: 'update',
             task
@@ -42,7 +42,7 @@ const TasksList = ({ tasks, deleteLoadingIndex, loading, openModal, deleteTask, 
     _id: 'tasksList',
     draggable: true,
     loading,
-    emptyText: strs['schema_noTasks'],
+    emptyText: strs['table_noTasks'],
     onDrag: onDragTask,
     items
   }
@@ -73,7 +73,7 @@ const TaskModal = ({ opened=false, type, closeModal, task, loadTasks }) => {
     _com: 'Modal',
     opened,
     onCancel: () => closeModal(),
-    title: type === 'create' ? strs['schema_taskModal_createTitle'] : strs['schema_taskModal_updateTitle'],
+    title: type === 'create' ? strs['taskModal_createTitle'] : strs['taskModal_updateTitle'],
     content: [
       {
         _com: 'Form',
@@ -100,23 +100,22 @@ const TaskModal = ({ opened=false, type, closeModal, task, loadTasks }) => {
             _com: 'Field.Input',
             type: 'text',
             key: 'name',
-            label: strs['schema_taskModal_form_name'],
-            placeholder: strs['schema_taskModal_form_name_placeholder'],
+            label: strs['taskModal_form_name'],
+            placeholder: strs['taskModal_form_name_placeholder'],
             maxLength: 30,
             rules: [
-              {max: 30, message: strs['schema_taskModal_name_length']},
-              {required: true, message: strs['schema_taskModal_name_required']}
+              {max: 30, message: strs['taskModal_form_name_length']},
+              {required: true, message: strs['taskModal_form_name_required']}
             ]
           },
           {
             '_com': 'Field.Custom',
-            'label': strs['taskModal_subtasks'],
+            'label': strs['taskModal_form_subtasks'],
             'content':
               TaskModalSubtasks({
                 subtasks,
                 setSubtasks
               })
-
         }
         ],
         buttons: [
@@ -126,7 +125,7 @@ const TaskModal = ({ opened=false, type, closeModal, task, loadTasks }) => {
             submitForm: true,
             loading: reqLoading,
             icon: type === 'create' ? 'plus' : 'save',
-            label: type === 'create' ? strs['schema_taskModal_form_createBtn'] : strs['schema_taskModal_form_saveBtn']
+            label: type === 'create' ? strs['taskModal_form_create'] : strs['taskModal_form_save']
           }
         ]
     }
@@ -178,7 +177,7 @@ const TaskModalSubtasks = ({ subtasks, setSubtasks }) => {
     {
       '_com': 'Table',
       'draggable': true,
-      'emptyText': strs['taskModal_subtasks_table_noSubtasks'],
+      'emptyText': strs['taskModal_form_subtasks_table_noSubtasks'],
       'onDrag': ({ oldIndex, newIndex }) => moveSubtask(oldIndex, newIndex),
       'columns': [
           {
@@ -190,7 +189,7 @@ const TaskModalSubtasks = ({ subtasks, setSubtasks }) => {
     },
     {
       '_com': 'Button',
-      'label': strs['taskModal_subtasks_table_addSubtask'],
+      'label': strs['taskModal_form_subtasks_addSubtask'],
       'icon': 'plus',
       'type': 'solid',
       'onClick': () => addSubtask()
@@ -203,8 +202,8 @@ const DeleteTaskModal = ({ id, opened, closeDeleteModal, loadTasks, tasks }) => 
 
   return {
     _com: 'Modal',
-    title: strs['schema_deleteTaskModal_title'],
-    subtitle: strs['schema_deleteTaskModal_subtitle'],
+    title: strs['deleteTaskModal_title'],
+    subtitle: strs['deleteTaskModal_subtitle'],
     buttons: [
        {
           _com: 'Button',
@@ -354,7 +353,7 @@ view.render = () => {
         }
       ]
     },
-    schema: [
+    scheme: [
       TasksList({
         ...listData,
         openModal,
