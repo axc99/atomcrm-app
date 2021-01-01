@@ -19,7 +19,7 @@ const StatusesList = ({ statuses, deleteLoadingIndex, loading, openModal, delete
 
     return {
       key: status.id,
-      color: status.color,
+      color: status.colorHex,
       title: status.name,
       extra: `${status.leadCount} ${status.leadCount == 1 ? strs['list_count_lead'] : strs['list_count_leads']}`,
       actions: [
@@ -341,6 +341,7 @@ view.render = () => {
   return {
     header: {
       title: strs['name'],
+      count: listData.statuses.length,
       actions: [
         {
           _com: 'Button',

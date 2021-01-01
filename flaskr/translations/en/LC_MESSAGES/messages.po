@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-12-28 18:13+0000\n"
+"POT-Creation-Date: 2020-12-30 11:43+0000\n"
 "PO-Revision-Date: 2020-10-10 19:41+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -310,71 +310,71 @@ msgstr "In title"
 msgid "m_status_getBoardVisibility_subtitle"
 msgstr "In description"
 
-#: flaskr/models/lead.py:233
+#: flaskr/models/lead.py:234
 msgid "m_lead_getRegularDate_jan"
 msgstr "Jan"
 
-#: flaskr/models/lead.py:234
+#: flaskr/models/lead.py:235
 msgid "m_lead_getRegularDate_feb"
 msgstr "Feb"
 
-#: flaskr/models/lead.py:235
+#: flaskr/models/lead.py:236
 msgid "m_lead_getRegularDate_mar"
 msgstr "Mar"
 
-#: flaskr/models/lead.py:236
+#: flaskr/models/lead.py:237
 msgid "m_lead_getRegularDate_apr"
 msgstr "Apr"
 
-#: flaskr/models/lead.py:237
+#: flaskr/models/lead.py:238
 msgid "m_lead_getRegularDate_may"
 msgstr "May"
 
-#: flaskr/models/lead.py:238
+#: flaskr/models/lead.py:239
 msgid "m_lead_getRegularDate_jun"
 msgstr "Jun"
 
-#: flaskr/models/lead.py:239
+#: flaskr/models/lead.py:240
 msgid "m_lead_getRegularDate_jul"
 msgstr "Jul"
 
-#: flaskr/models/lead.py:240
+#: flaskr/models/lead.py:241
 msgid "m_lead_getRegularDate_aug"
 msgstr "Aug"
 
-#: flaskr/models/lead.py:241
+#: flaskr/models/lead.py:242
 msgid "m_lead_getRegularDate_sep"
 msgstr "Sep"
 
-#: flaskr/models/lead.py:242
+#: flaskr/models/lead.py:243
 msgid "m_lead_getRegularDate_oct"
 msgstr "Oct"
 
-#: flaskr/models/lead.py:243
+#: flaskr/models/lead.py:244
 msgid "m_lead_getRegularDate_nov"
 msgstr "Nov"
 
-#: flaskr/models/lead.py:244
+#: flaskr/models/lead.py:245
 msgid "m_lead_getRegularDate_dec"
 msgstr "Dec"
 
-#: flaskr/models/lead.py:249
+#: flaskr/models/lead.py:250
 msgid "m_lead_getRegularDate_today"
 msgstr "Today at %(hours)s:%(minutes)s"
 
-#: flaskr/models/lead.py:251
+#: flaskr/models/lead.py:252
 msgid "m_lead_getRegularDate_yesterday"
 msgstr "Yesterday at %(hours)s:%(minutes)s"
 
-#: flaskr/models/lead.py:254
+#: flaskr/models/lead.py:255
 msgid "m_lead_getRegularDate_date"
 msgstr "%(day)s %(month)s at %(hours)s:%(minutes)s"
 
-#: flaskr/models/lead.py:256
+#: flaskr/models/lead.py:257
 msgid "m_lead_getRegularDate_dateWithYear"
 msgstr "%(day)s %(month)s %(year)s at %(hours)s:%(minutes)s"
 
-#: flaskr/models/lead.py:406
+#: flaskr/models/lead.py:407
 msgid "m_lead_leadAction_getItemData_createLead"
 msgstr "Add lead on «%(new_status_name)s»"
 
@@ -382,23 +382,23 @@ msgstr "Add lead on «%(new_status_name)s»"
 msgid "m_lead_leadAction_getItemData_updateLead"
 msgstr "Edit lead"
 
-#: flaskr/models/lead.py:417
+#: flaskr/models/lead.py:416
 msgid "m_lead_leadAction_getItemData_updateLeadStatus"
 msgstr "Change lead status from «%(old_status_name)s» to «%(new_status_name)s»"
 
-#: flaskr/models/lead.py:426
+#: flaskr/models/lead.py:422
 msgid "m_lead_leadAction_getItemData_archiveLead"
 msgstr "Archive lead"
 
-#: flaskr/models/lead.py:430
+#: flaskr/models/lead.py:426
 msgid "m_lead_leadAction_getItemData_restoreLead"
 msgstr "Update lead"
 
-#: flaskr/models/lead.py:434
+#: flaskr/models/lead.py:430
 msgid "m_lead_leadAction_getItemData_completeTask"
 msgstr "Complete task «%(task_name)s»"
 
-#: flaskr/models/lead.py:438
+#: flaskr/models/lead.py:434
 msgid "m_lead_leadAction_getItemData_revertCompleteTask"
 msgstr "Revert complete task «%(task_name)s»"
 
@@ -430,45 +430,45 @@ msgstr "Orange"
 msgid "v_analytics_meta_name"
 msgstr "Analytics"
 
-#: flaskr/views/analytics/__init__.py:112
+#: flaskr/views/analytics/__init__.py:114
 msgid "v_analytics_header_periodType_currentMonth"
 msgstr "Current month"
 
-#: flaskr/views/analytics/__init__.py:113
+#: flaskr/views/analytics/__init__.py:115
 msgid "v_analytics_header_periodType_previousMonth"
 msgstr "Previous month"
 
-#: flaskr/views/analytics/__init__.py:114
+#: flaskr/views/analytics/__init__.py:116
 msgid "v_analytics_header_periodType_last30days"
 msgstr "Last 30 days"
 
-#: flaskr/views/analytics/__init__.py:115
+#: flaskr/views/analytics/__init__.py:117
 msgid "v_analytics_header_periodType_last3months"
 msgstr "Last 3 months"
 
-#: flaskr/views/analytics/__init__.py:116
+#: flaskr/views/analytics/__init__.py:118
 msgid "v_analytics_header_periodType_last6months"
 msgstr "Last 6 months"
 
-#: flaskr/views/analytics/__init__.py:117
+#: flaskr/views/analytics/__init__.py:119
 msgid "v_analytics_header_periodType_allTime"
 msgstr "All time"
 
-#: flaskr/views/analytics/__init__.py:118
+#: flaskr/views/analytics/__init__.py:120
 msgid "v_analytics_header_periodType_customPeriod"
 msgstr "Custom period"
 
-#: flaskr/views/analytics/__init__.py:139
+#: flaskr/views/analytics/__init__.py:141
 msgid "v_analytics_statistics_allLeads"
 msgstr "All leads"
 
-#: flaskr/views/analytics/__init__.py:147
+#: flaskr/views/analytics/__init__.py:149
 msgid "v_analytics_statistics_statisticsByDay"
 msgstr "Statistics by day"
 
 #: flaskr/views/api/__init__.py:20
 msgid "v_api_name"
-msgstr ""
+msgstr "API"
 
 #: flaskr/views/api/__init__.py:21
 msgid "v_tokenModal_title"
@@ -650,7 +650,7 @@ msgstr "Apply"
 
 #: flaskr/views/pipeline/__init__.py:94
 msgid "v_pipeline_filterModal_form_clear"
-msgstr ""
+msgstr "Clear"
 
 #: flaskr/views/pipeline/__init__.py:95
 msgid "v_pipeline_leadModal_title"
@@ -685,78 +685,98 @@ msgid "v_pipeline_leadModal_creator"
 msgstr "Creator"
 
 #: flaskr/views/pipeline/__init__.py:103
+msgid "v_pipeline_leadModal_utmMarks"
+msgstr "UTM marks"
+
+#: flaskr/views/pipeline/__init__.py:104
 msgid "v_pipeline_leadModal_form_phone_rule"
 msgstr "Enter a valid phone number"
 
-#: flaskr/views/pipeline/__init__.py:104
+#: flaskr/views/pipeline/__init__.py:105
 msgid "v_pipeline_leadModal_form_email_rule"
 msgstr "Enter a valid email"
 
-#: flaskr/views/pipeline/__init__.py:105
+#: flaskr/views/pipeline/__init__.py:106
 msgid "v_pipeline_leadModal_form_save"
 msgstr "Save"
 
-#: flaskr/views/pipeline/__init__.py:106
+#: flaskr/views/pipeline/__init__.py:107
 msgid "v_pipeline_leadModal_form_restoreLead"
 msgstr "Restore lead"
 
-#: flaskr/views/pipeline/__init__.py:107
+#: flaskr/views/pipeline/__init__.py:108
+msgid "v_pipeline_leadModal_tabs_information"
+msgstr "Information"
+
+#: flaskr/views/pipeline/__init__.py:109
+msgid "v_pipeline_leadModal_tabs_tasks"
+msgstr "Tasks"
+
+#: flaskr/views/pipeline/__init__.py:110
+msgid "v_pipeline_leadModal_tabs_activity"
+msgstr "Activity"
+
+#: flaskr/views/pipeline/__init__.py:111
+msgid "v_pipeline_leadModal_select_selectOption"
+msgstr "Select an option"
+
+#: flaskr/views/pipeline/__init__.py:112
 msgid "v_pipeline_getRegularDate_today"
 msgstr "Today at {time}"
 
-#: flaskr/views/pipeline/__init__.py:108
+#: flaskr/views/pipeline/__init__.py:113
 msgid "v_pipeline_getRegularDate_yesterday"
 msgstr "Yesterday at {time}"
 
-#: flaskr/views/pipeline/__init__.py:109
+#: flaskr/views/pipeline/__init__.py:114
 msgid "v_pipeline_getRegularDate_jan"
 msgstr "Jan"
 
-#: flaskr/views/pipeline/__init__.py:110
+#: flaskr/views/pipeline/__init__.py:115
 msgid "v_pipeline_getRegularDate_feb"
 msgstr "Feb"
 
-#: flaskr/views/pipeline/__init__.py:111
+#: flaskr/views/pipeline/__init__.py:116
 msgid "v_pipeline_getRegularDate_mar"
 msgstr "Mar"
 
-#: flaskr/views/pipeline/__init__.py:112
+#: flaskr/views/pipeline/__init__.py:117
 msgid "v_pipeline_getRegularDate_apr"
 msgstr "Apr"
 
-#: flaskr/views/pipeline/__init__.py:113
+#: flaskr/views/pipeline/__init__.py:118
 msgid "v_pipeline_getRegularDate_may"
 msgstr "May"
 
-#: flaskr/views/pipeline/__init__.py:114
+#: flaskr/views/pipeline/__init__.py:119
 msgid "v_pipeline_getRegularDate_jun"
 msgstr "Jun"
 
-#: flaskr/views/pipeline/__init__.py:115
+#: flaskr/views/pipeline/__init__.py:120
 msgid "v_pipeline_getRegularDate_jul"
 msgstr "Jul"
 
-#: flaskr/views/pipeline/__init__.py:116
+#: flaskr/views/pipeline/__init__.py:121
 msgid "v_pipeline_getRegularDate_aug"
 msgstr "Aug"
 
-#: flaskr/views/pipeline/__init__.py:117
+#: flaskr/views/pipeline/__init__.py:122
 msgid "v_pipeline_getRegularDate_sep"
 msgstr "Sep"
 
-#: flaskr/views/pipeline/__init__.py:118
+#: flaskr/views/pipeline/__init__.py:123
 msgid "v_pipeline_getRegularDate_oct"
 msgstr "Oct"
 
-#: flaskr/views/pipeline/__init__.py:119
+#: flaskr/views/pipeline/__init__.py:124
 msgid "v_pipeline_getRegularDate_nov"
 msgstr "Nov"
 
-#: flaskr/views/pipeline/__init__.py:120
+#: flaskr/views/pipeline/__init__.py:125
 msgid "v_pipeline_getRegularDate_dec"
 msgstr "Dec"
 
-#: flaskr/views/pipeline/__init__.py:121
+#: flaskr/views/pipeline/__init__.py:126
 msgid "v_pipeline_board_archived"
 msgstr "Archived"
 
@@ -860,19 +880,19 @@ msgstr "Create task"
 
 #: flaskr/views/tasks/__init__.py:22
 msgid "v_tasks_table_editTask"
-msgstr ""
+msgstr "Edit"
 
 #: flaskr/views/tasks/__init__.py:23
 msgid "v_tasks_table_count_subtask"
-msgstr ""
+msgstr "subtask"
 
 #: flaskr/views/tasks/__init__.py:24
 msgid "v_tasks_table_count_subtasks"
-msgstr ""
+msgstr "subtasks"
 
 #: flaskr/views/tasks/__init__.py:25
 msgid "v_tasks_table_count_noTasks"
-msgstr ""
+msgstr "No tasks"
 
 #: flaskr/views/tasks/__init__.py:26
 msgid "v_tasks_table_noTasks"
@@ -880,345 +900,57 @@ msgstr "No tasks"
 
 #: flaskr/views/tasks/__init__.py:27
 msgid "v_tasks_taskModal_createTitle"
-msgstr ""
+msgstr "Create task"
 
 #: flaskr/views/tasks/__init__.py:28
 msgid "v_tasks_taskModal_updateTitle"
-msgstr ""
+msgstr "Edit task"
 
 #: flaskr/views/tasks/__init__.py:29
 msgid "v_tasks_taskModal_form_name"
-msgstr ""
+msgstr "Name"
 
 #: flaskr/views/tasks/__init__.py:30
 msgid "v_tasks_taskModal_form_name_placeholder"
-msgstr ""
+msgstr "Ex: Contact customer"
 
 #: flaskr/views/tasks/__init__.py:31
 msgid "v_tasks_taskModal_form_name_length"
-msgstr ""
+msgstr "Must contain no more 50 chars"
 
 #: flaskr/views/tasks/__init__.py:32
 msgid "v_tasks_taskModal_form_name_required"
-msgstr ""
+msgstr "Name is required"
 
 #: flaskr/views/tasks/__init__.py:33
 msgid "v_tasks_taskModal_form_subtasks"
-msgstr ""
+msgstr "Subtasks"
 
 #: flaskr/views/tasks/__init__.py:34
 msgid "v_tasks_taskModal_form_subtasks_table_noSubtasks"
-msgstr ""
+msgstr "No subtasks"
 
 #: flaskr/views/tasks/__init__.py:35
 msgid "v_tasks_taskModal_form_subtasks_addSubtask"
-msgstr ""
+msgstr "Add subtask"
 
 #: flaskr/views/tasks/__init__.py:36
 msgid "v_tasks_taskModal_form_create"
-msgstr ""
+msgstr "Create"
 
 #: flaskr/views/tasks/__init__.py:37
 msgid "v_tasks_taskModal_form_save"
-msgstr ""
+msgstr "Save"
 
 #: flaskr/views/tasks/__init__.py:38
 msgid "v_tasks_deleteTaskModal_title"
-msgstr ""
+msgstr "Delete task"
 
 #: flaskr/views/tasks/__init__.py:39
 msgid "v_tasks_deleteTaskModal_subtitle"
-msgstr ""
+msgstr "Are you sure you want to permanently delete this task?"
 
 #: flaskr/views/tasks/__init__.py:40
 msgid "v_tasks_deleteTaskModal_delete"
-msgstr ""
-
-#~ msgid "v_extension_wix_information_settings_status_alwaysFirst"
-#~ msgstr "First status"
-
-#~ msgid "v_extension_wix_information_settings_status"
-#~ msgstr "Default status"
-
-#~ msgid "v_extension_wix_information_settings_primary_rules_required"
-#~ msgstr "Status is required"
-
-#~ msgid "v_extension_wix_information_settings_save"
-#~ msgstr "Save"
-
-#~ msgid "v_filter_meta_name"
-#~ msgstr "Filter"
-
-#~ msgid "v_filter_scheme_form_period"
-#~ msgstr "Period"
-
-#~ msgid "v_filter_scheme_form_archivedLeads"
-#~ msgstr "Archived leads"
-
-#~ msgid "v_filter_scheme_form_apply"
-#~ msgstr "Apply"
-
-#~ msgid "v_filter_scheme_form_clear"
-#~ msgstr "Clear"
-
-#~ msgid "v_pipeline_meta_name"
-#~ msgstr "Leads"
-
-#~ msgid "v_updateLead_meta_name"
-#~ msgstr "Lead #%(id)s"
-
-#~ msgid "v_updateLead_header_information"
-#~ msgstr "Information"
-
-#~ msgid "v_updateLead_header_tasks"
-#~ msgstr "Tasks"
-
-#~ msgid "v_updateLead_header_activity"
-#~ msgstr "Activity"
-
-#~ msgid "v_updateLead_rule_phone"
-#~ msgstr "Enter a valid phone number"
-
-#~ msgid "v_updateLead_rule_email"
-#~ msgstr "Enter a valid email"
-
-#~ msgid "v_updateLead_save"
-#~ msgstr "Save"
-
-#~ msgid "v_updateLead_restoreLead"
-#~ msgstr "Restore lead"
-
-#~ msgid "v_updateLead_enterTags"
-#~ msgstr "Enter tags"
-
-#~ msgid "v_updateLead_enterComment"
-#~ msgstr "Enter comment"
-
-#~ msgid "v_updateLead_addDate"
-#~ msgstr "Add date"
-
-#~ msgid "v_updateLead_updateDate"
-#~ msgstr "Update date"
-
-#~ msgid "v_updateLead_creator"
-#~ msgstr "Added by"
-
-#~ msgid "v_updateLead_utmMarks"
-#~ msgstr "UTM marks"
-
-#~ msgid "v_updateLead_getMethods_changesSaved"
-#~ msgstr "hanges saved\""
-
-#~ msgid "v_createStatus_meta_name"
-#~ msgstr "Create status"
-
-#~ msgid "v_createStatus_form_name"
-#~ msgstr "Name"
-
-#~ msgid "v_createStatus_form_name_placeholder"
-#~ msgstr "Ex: In Process"
-
-#~ msgid "v_createStatus_name_length"
-#~ msgstr "Must contain no more 30 chars"
-
-#~ msgid "v_createStatus_name_required"
-#~ msgstr "Name is required"
-
-#~ msgid "v_createStatus_form_color"
-#~ msgstr "Color"
-
-#~ msgid "v_createStatus_form_color_required"
-#~ msgstr "Color is required"
-
-#~ msgid "v_createStatus_btn"
-#~ msgstr "Create"
-
-#~ msgid "v_deleteStatus_meta_name"
-#~ msgstr "Update status"
-
-#~ msgid "v_deleteStatus_scheme_form_action_deleteLeads"
-#~ msgstr "Delete"
-
-#~ msgid "v_deleteStatus_scheme_form_action_moveLeads"
-#~ msgstr "Move leads to «%(status_name)s»"
-
-#~ msgid "v_deleteStatus_scheme_form_btn"
-#~ msgstr "Delete"
-
-#~ msgid "v_statuses_scheme_count_lead"
-#~ msgstr "lead"
-
-#~ msgid "v_statuses_scheme_count_leads"
-#~ msgstr "leads"
-
-#~ msgid "v_statuses_scheme_editStatus"
-#~ msgstr "Edit status"
-
-#~ msgid "v_statuses_scheme_noStatuses"
-#~ msgstr "No statuses"
-
-#~ msgid "v_updateStatus_meta_name"
-#~ msgstr "Edit status"
-
-#~ msgid "v_updateStatus_form_name"
-#~ msgstr "Name"
-
-#~ msgid "v_updateStatus_form_name_placeholder"
-#~ msgstr "Ex: In Progress"
-
-#~ msgid "v_updateStatus_name_length"
-#~ msgstr "Must contain no more 30 chars"
-
-#~ msgid "v_updateStatus_name_required"
-#~ msgstr "Name is required"
-
-#~ msgid "v_updateStatus_form_color"
-#~ msgstr "Color"
-
-#~ msgid "v_updateStatus_form_color_required"
-#~ msgstr "Color is required"
-
-#~ msgid "v_updateStatus_btn"
-#~ msgstr "Save"
-
-#~ msgid "v_createTask_form_subtasks"
-#~ msgstr "Subtasks"
-
-#~ msgid "v_updateTask_form_subtasks_table_noSubtasks"
-#~ msgstr "No subtasks"
-
-#~ msgid "v_createTask_form_subtasks_addSubtask"
-#~ msgstr "Add subtask"
-
-#~ msgid "v_tasksSets_scheme_count_subtask"
-#~ msgstr "subtask"
-
-#~ msgid "v_tasksSets_scheme_count_subtasks"
-#~ msgstr "subtasks"
-
-#~ msgid "v_tasksSets_scheme_edit"
-#~ msgstr "Edit tas"
-
-#~ msgid "v_updateTask_form_name"
-#~ msgstr "Name"
-
-#~ msgid "v_updateTask_form_name_placeholder"
-#~ msgstr "Ex: Contact customer"
-
-#~ msgid "v_updateTask_name_length"
-#~ msgstr "Must contain no more 50 chars"
-
-#~ msgid "v_updateTask_name_required"
-#~ msgstr "Name is required"
-
-#~ msgid "v_updateTask_form_subtasks"
-#~ msgstr "Subtasks"
-
-#~ msgid "v_updateTask_form_subtasks_addSubtask"
-#~ msgstr "Add subtask"
-
-#~ msgid "v_createTask_form_color"
-#~ msgstr "Color"
-
-#~ msgid "v_createTask_form_color_required"
-#~ msgstr ""
-
-#~ msgid "v_statuses_deleteStatusModal_moveLeads"
-#~ msgstr "Move leads to {name}"
-
-#~ msgid "v_statuses_deleteStatusModal_deleteLeads"
-#~ msgstr "Delete leads"
-
-#~ msgid "v_deleteStatus_list_form_delete"
-#~ msgstr "Delete"
-
-#~ msgid "v_createTask_meta_name"
-#~ msgstr "Create set"
-
-#~ msgid "v_updateTask_meta_name"
-#~ msgstr "Edit task"
-
-#~ msgid "v_createTask_form_name"
-#~ msgstr "Name"
-
-#~ msgid "v_createTask_form_name_placeholder"
-#~ msgstr "Ex: Contact customer"
-
-#~ msgid "v_createTask_name_length"
-#~ msgstr "Must contain no more 50 chars"
-
-#~ msgid "v_createTask_name_required"
-#~ msgstr "Name is required"
-
-#~ msgid "v_createTask_form_subtasks_table_noSubtasks"
-#~ msgstr "No subtasks"
-
-#~ msgid "v_createTask_btn"
-#~ msgstr "Create"
-
-#~ msgid "v_updateTask_btn"
-#~ msgstr "Save"
-
-#~ msgid "v_deleteStatus_header_title"
-#~ msgstr ""
-
-#~ msgid "v_deleteStatus_header_subtitle"
-#~ msgstr ""
-#~ "Leads with a deleted status exist. "
-#~ "What to do with leads with the "
-#~ "status «%(status_name)s»?"
-
-#~ msgid "v_tasks_createTask_createTitle"
-#~ msgstr ""
-
-#~ msgid "v_tasks_updateTask_updateTitle"
-#~ msgstr ""
-
-#~ msgid "v_tasks_createTask_form_name"
-#~ msgstr ""
-
-#~ msgid "v_card_scheme_form_leadAmount"
-#~ msgstr "Lead amount"
-
-#~ msgid "v_card_scheme_form_amountCurrency"
-#~ msgstr "Amount currency"
-
-#~ msgid "v_card_scheme_form_fields"
-#~ msgstr "Fields"
-
-#~ msgid "v_card_scheme_form_fields_table_noFields"
-#~ msgstr "No fields"
-
-#~ msgid "v_card_scheme_form_fields_table_field"
-#~ msgstr "Field"
-
-#~ msgid "v_card_scheme_form_fields_table_valueType"
-#~ msgstr "Value type"
-
-#~ msgid "v_card_scheme_form_fields_table_boardVisibility"
-#~ msgstr "Board visibility"
-
-#~ msgid "v_card_scheme_form_fields_addField"
-#~ msgstr "Add field"
-
-#~ msgid "v_card_scheme_form_save"
-#~ msgstr "Save"
-
-#~ msgid "v_getToken_meta_name"
-#~ msgstr "Get token"
-
-#~ msgid "v_getToken_meta_header_subtitle"
-#~ msgstr ""
-#~ "=After clicking on the \"Create token\""
-#~ " button, your current token will be"
-#~ " deactivated!"
-
-#~ msgid "v_getToken_scheme_btn"
-#~ msgstr "Create token"
-
-#~ msgid "scheme_tokenModal_createToken"
-#~ msgstr ""
-
-#~ msgid "v_getToken_scheme_token"
-#~ msgstr "New token"
+msgstr "Delete"
 

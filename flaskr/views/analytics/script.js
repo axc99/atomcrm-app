@@ -6,7 +6,7 @@ view.render = () => {
   // Handle period type change
   view.methods.onChangePeriodType = ({ value }) => {
     app
-      .getPage()
+      .getView()
       .to({
           periodType: value
       })
@@ -15,7 +15,7 @@ view.render = () => {
   // Handle period change
   view.methods.onChangePeriod = ({ value }) => {
     app
-      .getPage()
+      .getView()
       .to({
           periodType: view.data['periodType'],
           periodFrom: value[0],

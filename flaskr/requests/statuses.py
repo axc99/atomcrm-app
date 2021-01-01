@@ -1,7 +1,7 @@
 from cerberus import Validator
 
 from flaskr import db
-from flaskr.models.status import Status
+from flaskr.models.status import Status, get_status_colors
 from flaskr.models.lead import Lead
 
 
@@ -21,13 +21,17 @@ def get_statuses(params, request_data):
                     s.index ASC""", {
         'nepkit_installation_id': request_data['installation_id']
     })
+    status_colors = get_status_colors()
 
     for status in statuses_q:
+        status_color_hex = [c['hex'] for c in status_colors if c['key'] == status['color']]
+
         statuses.append({
             'id': status['id'],
             'name': status['name'],
             'leadCount': status['lead_count'],
-            'color': status['color']
+            'color': status['color'],
+            'colorHex': status_color_hex,
         })
 
     return {

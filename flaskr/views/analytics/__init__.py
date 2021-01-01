@@ -89,10 +89,12 @@ class Analytics(View):
                     'period_from': period[0],
                     'period_to': period[1]
                 })
-            self.count_by_dates = [r for r in count_by_dates_result][0]
+            count_by_dates_rows = [r for r in count_by_dates_result]
+            self.count_by_dates = count_by_dates_rows[0] if len(count_by_dates_rows) else {}
 
             for i, row in enumerate(self.chart_data):
-                self.chart_data[i]['leadCount'] = self.count_by_dates['lead_count_on_{}'.format(row['date'])]
+                key = 'lead_count_on_{}'.format(row['date'])
+                self.chart_data[i]['leadCount'] = self.count_by_dates[key] if key in self.count_by_dates else 0
 
         self.data = {
             'period': period,
@@ -137,7 +139,7 @@ class Analytics(View):
                 'rows': [
                     {
                         'title': _('v_analytics_statistics_allLeads'),
-                        'value': self.count_by_dates['lead_count'],
+                        'value': self.count_by_dates['lead_count'] if 'lead_count' in self.count_by_dates else 0,
                         'span': 2
                     }
                 ]

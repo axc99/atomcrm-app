@@ -343,6 +343,7 @@ view.render = () => {
   return {
     header: {
       title: strs['name'],
+      count: listData.tasks.length,
       actions: [
         {
           _com: 'Button',

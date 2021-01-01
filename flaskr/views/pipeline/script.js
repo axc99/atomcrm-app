@@ -57,6 +57,7 @@ const LeadModal = ({ opened, id, uid, closeLeadModal, loadLeads }) => {
   const statusOptions = []
   const [reqLoading, setReqLoading] = useState(false)
   const [archiveReqLoading, setArchiveReqLoading] = useState(false)
+  const [activeTab, setActiveTab] = useState('information')
   const [data, setData] = useState({
     lead: null,
     loading: true
@@ -64,6 +65,7 @@ const LeadModal = ({ opened, id, uid, closeLeadModal, loadLeads }) => {
 
   useEffect(() => {
     if (opened) {
+      setActiveTab('information')
       loadLead()
     }
   }, [opened])
@@ -104,9 +106,19 @@ const LeadModal = ({ opened, id, uid, closeLeadModal, loadLeads }) => {
       } else if (field['fieldValueType'] === 'choice') {
         const choiceOptions = []
 
+        if (field['choiceOptions']) {
+          Object.entries(field['choiceOptions']).map(([optionKey, optionValue]) => {
+            choiceOptions.push({
+              value: optionKey,
+              label: optionValue
+            })
+          })
+        }
+
         formFields.push({
           '_com': 'Field.Select',
-          'key': field.id,
+          'key': field.fieldId,
+          'placeholder': strs['leadModal_select_selectOption'],
           'label': field.fieldName,
           'options': choiceOptions
         })
@@ -153,6 +165,11 @@ const LeadModal = ({ opened, id, uid, closeLeadModal, loadLeads }) => {
   })
 
   const loadLead = () => {
+    setData({
+      ...data,
+      loading: true
+    })
+
     app
       .sendReq('getLead', { id })
       .then(result => {
@@ -162,12 +179,16 @@ const LeadModal = ({ opened, id, uid, closeLeadModal, loadLeads }) => {
           data.lead = lead
           data.lead.originalStatusId = lead.statusId
 
-          setData({ ...data })
+          setData({
+            ...data,
+            loading: false
+          })
 
           const fieldsValue = {}
           data.lead.fields.map(field => {
             fieldsValue[field.fieldId] = field.value
           })
+
           form.setFieldsValue(fieldsValue)
         }
       })
@@ -205,181 +226,243 @@ const LeadModal = ({ opened, id, uid, closeLeadModal, loadLeads }) => {
       })
   }
 
+  return {
+    _com: 'Modal',
+    size: 'medium',
+    loading: data.loading,
+    opened,
+    title: strs['leadModal_title'].replace('{id}', uid),
+    tabs: [
+      {
+        'text': strs['leadModal_tabs_information'],
+        'key': 'information',
+        'active': activeTab === 'information'
+       },
+      (data.lead && data.lead.taskCount > 0) && {
+        'text': strs['leadModal_tabs_tasks'],
+        'key': 'tasks',
+        'active': activeTab === 'tasks'
+      },
+      {
+        'text': strs['leadModal_tabs_activity'],
+        'key': 'activity',
+        'active': activeTab === 'activity'
+      }
+    ],
+    onChangeTab: ({ key }) => setActiveTab(key),
+    onCancel: () => closeLeadModal(),
+    content: [
+      {
+        'information': (
+          LeadModalInformation({
+            form,
+            formFields,
+            statusOptions,
+            reqLoading,
+            setReqLoading,
+            archiveReqLoading,
+            setArchiveReqLoading,
+            data,
+            setData,
+            loadLeads
+          })
+        ),
+        'tasks': (
+          LeadModalTasks({
+            data,
+            setData
+          })
+        ),
+        'activity': (
+          LeadModalActivity({
+            data,
+            setData,
+            opened: activeTab === 'activity'
+          })
+        )
+      }[activeTab]
+    ]
+  }
+}
+
+const LeadModalInformation = ({
+  form,
+  formFields,
+  statusOptions,
+  reqLoading,
+  setReqLoading,
+  archiveReqLoading,
+  setArchiveReqLoading,
+  data,
+  setData,
+  loadLeads
+}) => {
   const currency = installationCardSettings.currency
   const [amountPrefix, amountSuffix] = currency.formatString.split('{}')
 
   return {
-    _com: 'Modal',
-    size: 'medium',
-    opened,
-    title: strs['leadModal_title'].replace('{id}', uid),
-    onCancel: () => closeLeadModal(),
-    content: [
+    '_com': 'Grid',
+    'columns': [
       {
-        '_com': 'Grid',
-        'columns': [
+        'span': 12,
+        'sm': 7,
+        'content': [
           {
-            'span': 12,
-            'sm': 7,
-            'content': [
-              {
-                _com: 'Form',
-                form,
-                onFinish: ({ values }) => {
-                  const fields = []
-                  Object.entries(values).map(([key, value]) => {
-                    fields.push({
-                      fieldId: +key,
-                      value: value
+            _com: 'Form',
+            form,
+            onFinish: ({ values }) => {
+              const fields = []
+              Object.entries(values).map(([key, value]) => {
+                fields.push({
+                  fieldId: +key,
+                  value: value
+                })
+              })
+
+              setReqLoading(true)
+              app
+                .sendReq('updateLead', {
+                  id: data.lead.id,
+                  fields,
+                  tags: data.lead.tags,
+                  comment: data.lead.comment,
+                  amount: +data.lead.amount,
+                  statusId: +data.lead.statusId
+                })
+                .then(result => {
+                  setReqLoading(false)
+
+                  if (result.res == 'ok') {
+                    if (data.lead.statusId != data.lead.originalStatusId) {
+                      loadLeads({ statusId: data.lead.statusId })
+                      loadLeads({ statusId: data.lead.originalStatusId })
+                    } else {
+                      loadLeads({ statusId: data.lead.statusId })
+                    }
+
+                    app.showNotification({
+                      message: strs['leadModal_notification_changesSaved'],
+                      duration: 1
                     })
-                  })
-
-                  setReqLoading(true)
-                  app
-                    .sendReq('updateLead', {
-                      id,
-                      fields,
-                      tags: data.lead.tags,
-                      comment: data.lead.comment,
-                      amount: +data.lead.amount,
-                      statusId: +data.lead.statusId
-                    })
-                    .then(result => {
-                      setReqLoading(false)
-
-                      if (result.res == 'ok') {
-                        if (data.lead.statusId != data.lead.originalStatusId) {
-                          loadLeads({ statusId: data.lead.statusId })
-                          loadLeads({ statusId: data.lead.originalStatusId })
-                        } else {
-                          loadLeads({ statusId: data.lead.statusId })
-                        }
-
-                        app.showNotification({
-                          message: strs['leadModal_notification_changesSaved'],
-                          duration: 1
-                        })
-                      }
-                    })
-                },
-                'fields': formFields,
-                'buttons': [
-                  {
-                    '_com': 'Button',
-                    'type': 'primary',
-                    'submitForm': true,
-                    'loading': reqLoading,
-                    'icon': 'save',
-                    'label': strs['leadModal_form_save']
-                  },
-
-                  (data.lead && (!data.lead.archived ? {
-                    '_com': 'Button',
-                    'icon': 'delete',
-                    'loading': archiveReqLoading,
-                    'onClick': () => archiveLead()
-                  } : {
-                    '_com': 'Button',
-                    'icon': 'reload',
-                    'type': 'solid',
-                    'loading': archiveReqLoading,
-                    'label': strs['leadModal_form_restoreLead'],
-                    'onClick': () => restoreLead()
-                  }))
-                ]
-              }
-            ]
-          },
-          {
-            'span': 12,
-            'sm': 5,
-            'content': [
-              {
-                '_com': 'Area',
-                'background': '#f9f9f9',
-                'content': [
-                  {
-                    '_com': 'Field.Select',
-                    'value': data.lead && data.lead.statusId,
-                    'options': statusOptions,
-                    'onChange': ({ value }) => {
-                      data.lead.statusId = value
-                      setData({ ...data })
-                    }
-                  },
-                  {
-                    '_com': 'Field.Input',
-                    '_id': 'updateLeadForm_amount',
-                    '_vis': installationCardSettings.amountEnabled,
-                    'type': 'number',
-                    'prefix': amountPrefix,
-                    'suffix': amountSuffix,
-                    'min': 0,
-                    'max': 10000000000,
-                    'placeholder': '0',
-                    'value': (data.lead && data.lead.amount) ? data.lead.amount : 0,
-                    'onChange': ({ value }) => {
-                      data.lead.amount = value
-                      setData({ ...data })
-                    }
-                  },
-                  {
-                    '_com': 'Field.Input',
-                    'multiple': true,
-                    'value': data.lead && data.lead.tags,
-                    'placeholder': strs['leadModal_tags'],
-                    'onChange': ({ value }) => {
-                      data.lead.tags = value
-                      setData({ ...data })
-                    }
-                  },
-                  {
-                    '_com': 'Field.Input',
-                    'multiline': true,
-                    'maxLength': 500,
-                    'value': data.lead && data.lead.comment,
-                    'placeholder': strs['leadModal_comment'],
-                    'onChange': ({ value }) => {
-                      data.lead.comment = value
-                      setData({ ...data })
-                    }
-                  },
-                  {
-                    '_com': 'Details',
-                    'items': [
-                      {
-                        'label': strs['leadModal_addDate'],
-                        'value': data.lead && getRegularDate(data.lead.addDate)
-                      },
-                      {
-                        'label': strs['leadModal_updateDate'],
-                        'value': data.lead && getRegularDate(data.lead.updDate)
-                      },
-                      data.lead && data.lead.nepkitUserId && {
-                        'label': strs['leadModal_creator'],
-                        'value': {
-                            '_com': 'User',
-                            'userId': data.lead.nepkitUserId
-                        }
-                      }
-                    ]
-                  },
-                  (data.lead && data.lead.utmSource && data.lead.utmMedium && data.lead.utmCampaign && data.lead.utmTerm && data.lead.utmContent) && {
-                    '_com': 'Details',
-                    'title': _('v_updateLead_utmMarks'),
-                    'items': [
-                      data.lead.utmSource && {'label': 'utm_source',
-                       'value': data.lead.utmSource},
-                      data.lead.utmMedium && {'label': 'utm_medium',
-                       'value': data.lead.utmMedium},
-                      data.lead.utmCampaign && {'label': 'utm_campaign',
-                       'value': data.lead.utmCampaign},
-                      data.lead.utmTerm && {'label': 'utm_term',
-                       'value': data.lead.utmTerm},
-                      data.lead.utmContent && {'label': 'utm_content',
-                       'value': data.lead.utmContent}
-                    ]
                   }
+                })
+            },
+            'fields': formFields,
+            'buttons': [
+              {
+                '_com': 'Button',
+                'type': 'primary',
+                'submitForm': true,
+                'loading': reqLoading,
+                'icon': 'save',
+                'label': strs['leadModal_form_save']
+              },
+
+              (data.lead && (!data.lead.archived ? {
+                '_com': 'Button',
+                'icon': 'delete',
+                'loading': archiveReqLoading,
+                'onClick': () => archiveLead()
+              } : {
+                '_com': 'Button',
+                'icon': 'reload',
+                'type': 'solid',
+                'loading': archiveReqLoading,
+                'label': strs['leadModal_form_restoreLead'],
+                'onClick': () => restoreLead()
+              }))
+            ]
+          }
+        ]
+      },
+      {
+        'span': 12,
+        'sm': 5,
+        'content': [
+          {
+            '_com': 'Area',
+            'backgroundColor': '#f9f9f9',
+            'content': [
+              {
+                '_com': 'Field.Select',
+                'value': data.lead && data.lead.statusId,
+                'options': statusOptions,
+                'onChange': ({ value }) => {
+                  data.lead.statusId = value
+                  setData({ ...data })
+                }
+              },
+              {
+                '_com': 'Field.Input',
+                '_id': 'updateLeadForm_amount',
+                '_vis': installationCardSettings.amountEnabled,
+                'type': 'number',
+                'prefix': amountPrefix,
+                'suffix': amountSuffix,
+                'min': 0,
+                'max': 10000000000,
+                'placeholder': '0',
+                'value': (data.lead && data.lead.amount) ? data.lead.amount : 0,
+                'onChange': ({ value }) => {
+                  data.lead.amount = value
+                  setData({ ...data })
+                }
+              },
+              {
+                '_com': 'Field.Input',
+                'multiple': true,
+                'value': data.lead && data.lead.tags,
+                'placeholder': strs['leadModal_tags'],
+                'onChange': ({ value }) => {
+                  data.lead.tags = value
+                  setData({ ...data })
+                }
+              },
+              {
+                '_com': 'Field.Input',
+                'multiline': true,
+                'maxLength': 500,
+                'value': data.lead && data.lead.comment,
+                'placeholder': strs['leadModal_comment'],
+                'onChange': ({ value }) => {
+                  data.lead.comment = value
+                  setData({ ...data })
+                }
+              },
+              {
+                '_com': 'Details',
+                'items': [
+                  {
+                    'label': strs['leadModal_addDate'],
+                    'value': data.lead && getRegularDate(data.lead.addDate)
+                  },
+                  {
+                    'label': strs['leadModal_updateDate'],
+                    'value': data.lead && getRegularDate(data.lead.updDate)
+                  },
+                  data.lead && data.lead.nepkitUserId && {
+                    'label': strs['leadModal_creator'],
+                    'value': {
+                        '_com': 'User',
+                        'userId': data.lead.nepkitUserId
+                    }
+                  }
+                ]
+              },
+              (data.lead && data.lead.utmSource && data.lead.utmMedium && data.lead.utmCampaign && data.lead.utmTerm && data.lead.utmContent) && {
+                '_com': 'Details',
+                'title': strs['leadModal_utmMarks'],
+                'items': [
+                  data.lead.utmSource && {'label': 'utm_source',
+                   'value': data.lead.utmSource},
+                  data.lead.utmMedium && {'label': 'utm_medium',
+                   'value': data.lead.utmMedium},
+                  data.lead.utmCampaign && {'label': 'utm_campaign',
+                   'value': data.lead.utmCampaign},
+                  data.lead.utmTerm && {'label': 'utm_term',
+                   'value': data.lead.utmTerm},
+                  data.lead.utmContent && {'label': 'utm_content',
+                   'value': data.lead.utmContent}
                 ]
               }
             ]
@@ -387,6 +470,132 @@ const LeadModal = ({ opened, id, uid, closeLeadModal, loadLeads }) => {
         ]
       }
     ]
+  }
+}
+
+const LeadModalTasks = ({ data, setData }) => {
+  const checkedKeys = []
+  const tasksItems = data.lead && data.lead.tasks.map(task => {
+    if (task.completed) {
+      checkedKeys.push(task.id)
+    }
+
+    return {
+      'title': task.name,
+      'key': task.id,
+      'children': task.subtasks && task.subtasks.map(subtask => {
+        if (subtask.completed) {
+          checkedKeys.push(subtask.id)
+        }
+
+        return {
+          'title': subtask.name,
+          'key': subtask.id
+        }
+      })
+    }
+  })
+
+  return {
+    '_com': 'Form',
+    '_id': 'updateLeadForm',
+    'fields': [
+      {
+        '_com': 'Field.Tree',
+        'key': 'tasks',
+        'items': tasksItems,
+        'value': checkedKeys,
+        'onChange': ({ value }) => {
+          app
+            .sendReq('completeLeadTasks', {
+              id: data.lead.id,
+              task_ids: value
+            })
+            .then(result => {
+              if (result.res == 'ok') {
+                data.lead.tasks.map(task => {
+                  task.completed = value.includes(task.id)
+
+                  if (task.subtasks) {
+                    task.subtasks.map(subtask => {
+                      subtask.completed = value.includes(subtask.id)
+                    })
+                  }
+                })
+                console.log('data.lead.tasks', data.lead.tasks)
+                setData({ ...data })
+              }
+            })
+        },
+        'defaultExpandAll': true
+    }
+    ]
+  }
+}
+
+const LeadModalActivity = ({ data, opened }) => {
+  const [activityData, setActivityData] = useState({
+    actions: [],
+    loading: true,
+    page: 1
+  })
+
+  const loadActions = () => {
+    const offset = (activityData.page - 1) * 10
+    const limit = 10
+
+    setActivityData({
+      ...activityData,
+      loading: true
+    })
+
+    app
+      .sendReq('getLeadActions', {
+        leadId: data.lead.id,
+        offset,
+        limit
+      })
+      .then(result => {
+        if (result.res === 'ok') {
+          const { actions, actionTotal } = result
+
+          setActivityData({
+            ...activityData,
+            loading: false,
+            actionTotal: actionTotal,
+            actions
+          })
+        }
+      })
+  }
+
+  useEffect(() => {
+    if (data.lead && opened) {
+      loadActions()
+    }
+  }, [activityData.page, data.lead, opened])
+
+  const items = activityData.actions.map(action => {
+    return {
+      'title': action['title'],
+      'color': action['color'],
+      'extra': action['log_date']
+    }
+  })
+
+  return {
+    '_com': 'Timeline',
+    'loading': activityData.loading,
+    'page': activityData.page,
+    'total': activityData.actionTotal,
+    'onChangePage': ({ page }) => {
+      setActivityData({
+        ...activityData,
+        page
+      })
+    },
+    'pageSize': 10,
+    'items': items
   }
 }
 
@@ -421,7 +630,7 @@ const FilterModal = ({ opened, closeFilterModal }) => {
           console.log('values', values)
 
           app
-            .getPage()
+            .getView()
             .to({
               periodFrom: (values['period'][0] && values['period'][0].format('YYYY.MM.DD')) || '',
               periodTo: (values['period'][1] && values['period'][1].format('YYYY.MM.DD')) || '',
@@ -506,7 +715,7 @@ const FilterModal = ({ opened, closeFilterModal }) => {
 view.render = () => {
   const [data, setData] = useState({
     statuses: [],
-    loading: true,
+    loading: false,
     loadingColIndex: null,
     addLoadingColIndex: null
   })
@@ -526,7 +735,7 @@ view.render = () => {
       let description = []
 
       lead.fields.map(field => {
-        if (field['value'] && ['string', 'number', 'date'].includes(field['fieldValueType'])) {
+        if (field['value'] && ['string', 'email', 'phone', 'number', 'date'].includes(field['fieldValueType'])) {
           if (field['fieldBoardVisibility'] === 'title') {
             title += field['value'] + ' '
           } else if (field['fieldBoardVisibility'] === 'subtitle') {
@@ -541,7 +750,6 @@ view.render = () => {
       }
 
       title = title.trim()
-
       return {
         key: lead['id'],
         title: title || `#${lead['uid']}`,
@@ -590,21 +798,22 @@ view.render = () => {
       data.statuses.push({
         ...status,
         leads: [],
+        inited: false,
         leadTotal: 0,
         leadAmountSumStr: 0
       })
     })
 
     setData({ ...data })
-  }, [statuses])
 
-  useEffect(() => {
     data.statuses.map(status => {
       loadLeads({
         statusId: status.id
       })
     })
-  }, [data.statuses])
+
+    setData(data => ({ ...data, loading: false }))
+  }, [statuses])
 
   // Open filter modal
   const openFilterModal = () => {
@@ -701,11 +910,12 @@ view.render = () => {
           status.leadTotal = leadTotal
           status.leadAmountSum = leadAmountSum
           status.leadAmountSumStr = leadAmountSumStr
+          status.inited = true
 
-          setData({
+          setData(data => ({
             ...data,
             loadingColIndex: null
-          })
+          }))
         }
       })
   }
@@ -721,6 +931,7 @@ view.render = () => {
   }, [statuses])
 
   return {
+    loading: data.loading,
     header: {
       'title': strs['header_title'],
       'actions': [
@@ -747,7 +958,7 @@ view.render = () => {
         'placeholder': strs['header_search'],
         'onSearch': ({ value }) => {
           app
-            .getPage()
+            .getView()
             .to({
                 search: value
             })

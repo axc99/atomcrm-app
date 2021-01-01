@@ -117,9 +117,46 @@ def get_lead(params, request_data):
             'fieldId': field.id,
             'fieldName': field.name,
             'fieldValueType': field.value_type.name,
-            'value': field_value
+            'value': field_value,
+            'choiceOptions': field.choice_options
         })
     tags = Lead.get_tags(lead.id)
+
+    tasks = []
+    tasks_q = db.session.execute("""
+        SELECT
+            t.*,
+            (
+                CASE
+                    WHEN :lead_id is not NULL THEN (SELECT COUNT(*) FROM public.lead_completed_task as lct WHERE lct.task_id = t.id AND lct.lead_id = :lead_id) != 0
+                    ELSE false
+                END
+            ) AS completed
+        FROM
+            public.task AS t
+        WHERE
+            t.parent_task_id is null AND
+            t.nepkit_installation_id = :nepkit_installation_id
+        ORDER BY
+            t.index""", {
+        'nepkit_installation_id': request_data['installation_id'],
+        'lead_id': lead.id
+    })
+    for task in tasks_q:
+        subtasks = []
+        for subtask in Task.get_subtasks(task, lead_id=lead.id):
+            subtasks.append({
+                'id': subtask.id,
+                'name': subtask.name,
+                'completed': subtask.completed
+            })
+
+        tasks.append({
+            'id': task.id,
+            'name': task.name,
+            'completed': task.completed,
+            'subtasks': subtasks
+        })
 
     return {
         'res': 'ok',
@@ -139,8 +176,56 @@ def get_lead(params, request_data):
             'utmContent': lead.utm_content,
             'taskCount': task_count,
             'fields': fields,
-            'tags': tags
+            'tags': tags,
+            'tasks': tasks
         }
+    }
+
+
+# Get lead actions
+def get_lead_actions(params, request_data):
+    actions = []
+    actions_q = db.session.execute("""
+        SELECT
+            la.*,
+            old_s.name AS old_status_name,
+            new_s.name AS new_status_name,
+            comp_t.name AS task_name,
+            COUNT(*) OVER () AS total
+        FROM
+            public.lead_action AS la
+        LEFT JOIN 
+            public.status AS old_s ON old_s.id = la.old_status_id
+        LEFT JOIN  
+            public.status AS new_s ON new_s.id = la.new_status_id
+        LEFT JOIN  
+            public.task AS comp_t ON comp_t.id = la.completed_task_id
+        WHERE
+            la.lead_id = :lead_id
+        ORDER BY 
+            la.log_date DESC
+        LIMIT :limit OFFSET :offset""", {
+        'lead_id': params['leadId'],
+        'offset': params['offset'],
+        'limit': params['limit']
+    })
+
+    action_total = 0
+    for action in actions_q:
+        if action_total == 0:
+            action_total = action.total
+
+        action_data = LeadAction.get_color_and_title(action)
+        actions.append({
+            'title': action_data['title'],
+            'color': action_data['color'],
+            'log_date': Lead.get_regular_date((action.log_date + timedelta(minutes=request_data['timezone_offset'])).strftime('%Y-%m-%d %H:%M:%S'))
+        })
+
+    return {
+        'res': 'ok',
+        'actions': actions,
+        'actionTotal': action_total
     }
 
 

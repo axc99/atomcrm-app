@@ -5,10 +5,6 @@ from flaskr.models.installation_extension_settings import InstallationExtensionS
 from flaskr.extensions import extensions_map
 from flaskr.views.view import View, get_method
 
-compiled_methods = {
-    'onFinishForm': get_method('methods/onFinishForm')
-}
-
 
 # Page: Extension
 class Extension(View):
@@ -82,5 +78,3 @@ class Extension(View):
     def get_methods(self, params, request_data):
         if self.tab == 'settings':
             return self.extension.get_methods_for_settings(self.installation_extension_settings, params, request_data)
-
-    methods = compiled_methods

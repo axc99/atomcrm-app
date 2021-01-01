@@ -52,13 +52,13 @@ def create_lead(data, nepkit_installation_id):
         'statusId': {'type': 'number', 'required': True},
         'tags': {
             'type': 'list',
-            'scheme': {'type': ['number', 'string']}
+            'schema': {'type': ['number', 'string']}
         },
         'fields': {
             'type': 'list',
-            'scheme': {
+            'schema': {
                 'type': 'dict',
-                'scheme': {
+                'schema': {
                     'fieldId': {'type': 'number', 'required': True, 'nullable': False},
                     'value': {'type': ['number', 'string', 'boolean', 'list'], 'required': True}
                 }
@@ -139,13 +139,13 @@ def update_lead(data, nepkit_installation_id):
         'statusId': {'type': 'number', 'required': True},
         'tags': {
             'type': 'list',
-            'scheme': {'type': ['number', 'string']}
+            'schema': {'type': ['number', 'string']}
         },
         'fields': {
             'type': 'list',
             'scheme': {
                 'type': 'dict',
-                'scheme': {
+                'schema': {
                     'fieldId': {'type': 'number', 'required': True, 'nullable': False},
                     'value': {'type': ['number', 'string', 'boolean', 'list'], 'required': True}
                 }

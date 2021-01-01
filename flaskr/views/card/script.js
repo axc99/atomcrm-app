@@ -198,6 +198,7 @@ view.render = () => {
       fields
     })
   }
+  const [currencyEnabled, setCurrencyEnabled] = useState(data.installationCardSettings.amountEnabled)
 
   useEffect(() => {
     loadFields()
@@ -250,6 +251,11 @@ view.render = () => {
       {
         _com: 'Form',
         form,
+        onValuesChange: ({ values }) => {
+          if (values.amountEnabled !== undefined) {
+            setCurrencyEnabled(values.amountEnabled)
+          }
+        },
         onFinish: ({ values }) => {
           setReqLoading(true)
           app
@@ -278,16 +284,16 @@ view.render = () => {
           {
             _com: 'Field.Checkbox',
             key: 'amountEnabled',
-            text: strs['form_leadAmount'],
-            onChange: 'onChangeAmountEnabled'
+            text: strs['form_leadAmount']
           },
           {
             _com: 'Field.Select',
             key: 'currency',
             withSearch: true,
-            disabled: !data.installationCardSettings.amountEnabled,
+            disabled: !currencyEnabled,
             label: strs['form_amountCurrency'],
-            options: currencyOptions
+            options: currencyOptions,
+            shouldUpdate: true
           },
           {
             _com: 'Field.Custom',
