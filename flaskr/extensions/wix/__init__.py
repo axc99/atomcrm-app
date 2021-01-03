@@ -8,11 +8,9 @@ from flask_babel import _
 from flaskr.models.lead import LeadAction, LeadActionType
 from flaskr.models.status import Status
 from flaskr.extensions.extension import Extension
-from flaskr.views.view import get_method, method_with_vars
+from flaskr.views.view import compile_js, method_with_vars
 
-compiled_methods = {
-    'onFinishForm': get_method('methods/onFinishForm')
-}
+settings_script = compile_js('settings_script')
 
 
 # Wix extension
@@ -29,11 +27,88 @@ class WixExtension(Extension):
     @staticmethod
     def get_default_data():
         return {
-            'default_status': 'first',
+            'defaultStatus': 'first',
             'mapping': []
         }
 
-    def get_schema_for_information(self, installation_extension_settings, params, request_data):
+    def get_data_for_settings(self, installation_extension_settings, params, request_data):
+        statuses_q = db.session.execute("""
+                SELECT
+                    s.*,
+                    (SELECT COUNT(*) FROM public.lead AS l WHERE l.status_id = s.id AND l.archived = false) AS lead_count
+                FROM
+                    public.status AS s
+                WHERE
+                    s.nepkit_installation_id = :nepkit_installation_id
+                ORDER BY
+                    s.index""", {
+            'nepkit_installation_id': request_data['installation_id']
+        })
+        statuses = []
+        for status in statuses_q:
+            statuses.append({
+                'id': status.id,
+                'color': status.color,
+                'name': status.name
+            })
+
+        fields_q = db.session.execute("""
+            SELECT
+                f.*
+            FROM
+                public.field AS f
+            WHERE
+                f.nepkit_installation_id = :nepkit_installation_id
+            ORDER BY
+                f.index""", {
+            'nepkit_installation_id': request_data['installation_id']
+        })
+        fields = []
+        for field in fields_q:
+            fields.append({
+                'id': field['id'],
+                'name': field['name']
+            })
+
+        print('installation_extension_settings.data', installation_extension_settings.data)
+
+        wix_fields = [
+            {'key': 'contact.Name.First', 'name': 'Имя контакта'},
+            {'key': 'contact.Name.Middle', 'name': 'Отчество контакта'},
+            {'key': 'contact.Name.Last', 'name': 'Фамилия контакта'},
+            {'key': 'contact.Email[0]', 'name': 'Первая эл. почта контакта'},
+            {'key': 'contact.Email[1]', 'name': 'Вторая эл. почта контакта'},
+            {'key': 'contact.Email[2]', 'name': 'Третья эл. почта контакта'},
+            {'key': 'contact.Phone[0]', 'name': 'Первый телефон контакта'},
+            {'key': 'contact.Phone[1]', 'name': 'Второй телефон контакта'},
+            {'key': 'contact.Phone[2]', 'name': 'Третий телефон контакта'},
+            {'key': 'contact.Address[0].Country', 'name': 'Страна контакта'},
+            {'key': 'contact.Address[0].Street', 'name': 'Улица контакта'},
+            {'key': 'contact.Address[0].City', 'name': 'Город контакта'},
+            {'key': 'contact.Address[0].Zip', 'name': 'Индекс контакта'}
+        ]
+
+        return {
+            'strs': {
+                'form_defaultStatus': _('e_wix_settings_form_defaultStatus'),
+                'form_defaultStatus_alwaysFirst': _('e_wix_settings_form_defaultStatus_alwaysFirst'),
+                'form_defaultStatus_required': _('e_wix_settings_form_defaultStatus_required'),
+                'form_save': _('e_wix_settings_form_save'),
+                'notification_changesSaved': _('e_wix_settings_notification_changesSaved')
+            },
+            'statuses': statuses,
+            'fields': fields,
+            'wixFields': wix_fields,
+            'installationExtensionSettings': {
+                'id': installation_extension_settings.id,
+                'data': installation_extension_settings.data
+            }
+        }
+
+    def get_script_for_settings(self, installation_extension_settings, params, request_data):
+        return settings_script
+
+    def get_scheme_for_information(self, installation_extension_settings, params, request_data):
         fields = db.session.execute("""
                     SELECT 
                         f.*
@@ -68,141 +143,6 @@ class WixExtension(Extension):
             }
         ]
 
-    def get_schema_for_settings(self, installation_extension_settings, params, request_data):
-        statuses = db.session.execute("""
-            SELECT 
-                s.*,
-                (SELECT COUNT(*) FROM public.lead AS l WHERE l.status_id = s.id AND l.archived = false) AS lead_count
-            FROM 
-                public.status AS s
-            WHERE
-                s.nepkit_installation_id = :nepkit_installation_id
-            ORDER BY 
-                s.index""", {
-            'nepkit_installation_id': request_data['installation_id']
-        })
-
-        status_options = [
-            {'value': 'first', 'label': _('v_extension_wix_information_settings_status_alwaysFirst')}
-        ]
-        for status in statuses:
-            status_options.append({
-                'value': status.id,
-                'color': status.color,
-                'label': status.name
-            })
-
-        fields = db.session.execute("""
-                            SELECT 
-                                f.*
-                            FROM 
-                                public.field AS f
-                            WHERE
-                                f.nepkit_installation_id = :nepkit_installation_id
-                            ORDER BY 
-                                f.index""", {
-            'nepkit_installation_id': request_data['installation_id']
-        })
-        field_options = [
-            {'value': 0, 'label': 'Не указано'}
-        ]
-        for field in fields:
-            field_options.append({
-                'value': field['id'], 'label': field['name']
-            })
-
-        table_rows = []
-        wix_fields = [
-            {'key': 'contact.Name.First', 'name': 'Имя контакта'},
-            {'key': 'contact.Name.Middle', 'name': 'Отчество контакта'},
-            {'key': 'contact.Name.Last', 'name': 'Фамилия контакта'},
-            {'key': 'contact.Email[0]', 'name': 'Первая эл. почта контакта'},
-            {'key': 'contact.Email[1]', 'name': 'Вторая эл. почта контакта'},
-            {'key': 'contact.Email[2]', 'name': 'Третья эл. почта контакта'},
-            {'key': 'contact.Phone[0]', 'name': 'Первый телефон контакта'},
-            {'key': 'contact.Phone[1]', 'name': 'Второй телефон контакта'},
-            {'key': 'contact.Phone[2]', 'name': 'Третий телефон контакта'},
-            {'key': 'contact.Address[0].Country', 'name': 'Страна контакта'},
-            {'key': 'contact.Address[0].Street', 'name': 'Улица контакта'},
-            {'key': 'contact.Address[0].City', 'name': 'Город контакта'},
-            {'key': 'contact.Address[0].Zip', 'name': 'Индекс контакта'}
-        ]
-
-        mapping = installation_extension_settings.data['mapping']
-        for wix_field in wix_fields:
-            mapping_value = next((r.get('field') for r in mapping if r.get('key') == wix_field['key']), 0)
-            table_rows.append({
-                'key': wix_field['key'],
-                'wixField': wix_field['name'],
-                'field': {
-                    '_com': 'Field.Select',
-                    'value': mapping_value,
-                    'options': field_options
-                }
-            })
-
-        return [
-            {
-                '_com': 'Form',
-                '_id': 'extensionSettingsForm',
-                'onFinish': 'onFinishForm',
-                'fields': [
-                    {
-                        '_com': 'Field.Select',
-                        'key': 'default_status',
-                        'label': _('v_extension_wix_information_settings_status'),
-                        'options': status_options,
-                        'value': installation_extension_settings.data.get('default_status'),
-                        'rules': [
-                            {'required': True,
-                             'message': _('v_extension_wix_information_settings_primary_rules_required')}
-                        ]
-                    },
-                    {
-                        '_com': 'Field.Custom',
-                        'columnWidth': 8,
-                        'label': 'Соотношение полей',
-                        'content': [
-                            {
-                                '_com': 'Table',
-                                '_id': 'extensionSettingsForm_mapping_table',
-                                'columns': [
-                                    {
-                                        'width': 50,
-                                        'key': 'wixField',
-                                        'title': 'Поле в Wix'
-                                    },
-                                    {
-                                        'width': 50,
-                                        'key': 'field',
-                                        'title': 'Поле в AtomCRM'
-                                    }
-                                ],
-                                'rows': table_rows
-                            }
-                        ]
-                    }
-                ],
-                'buttons': [
-                    {
-                        '_com': 'Button',
-                        'type': 'primary',
-                        'submitForm': True,
-                        'icon': 'save',
-                        'label': _('v_extension_wix_information_settings_save')
-                    }
-                ]
-            }
-        ]
-
-    def get_methods_for_settings(self, installation_extension_settings, params, request_data):
-        methods = compiled_methods.copy()
-
-        methods['onFinishForm'] = method_with_vars(methods['onFinishForm'], {
-            'INSTALLATION_EXTENSION_SETTINGS_ID': installation_extension_settings.id})
-
-        return methods
-
     @staticmethod
     def catch_webhook(installation_extension_settings, webhook_key=None):
         data = request.get_json(force=True).get('data')
@@ -222,13 +162,13 @@ class WixExtension(Extension):
 
         # Get first status and status by settings
         status = None
-        if installation_extension_settings.data.get('default_status') != 'first':
+        if installation_extension_settings.data.get('defaultStatus') != 'first':
             status = Status.query \
                 .with_entities(Status.id) \
                 .filter_by(nepkit_installation_id=installation_extension_settings.nepkit_installation_id,
-                           id=installation_extension_settings.data.get('default_status')) \
+                           id=installation_extension_settings.data.get('defaultStatus')) \
                 .first()
-        if installation_extension_settings.data.get('default_status') == 'first' or not status:
+        if installation_extension_settings.data.get('defaultStatus') == 'first' or not status:
             status = Status.query \
                 .with_entities(Status.id) \
                 .filter_by(nepkit_installation_id=installation_extension_settings.nepkit_installation_id) \

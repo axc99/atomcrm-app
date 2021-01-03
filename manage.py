@@ -1,10 +1,9 @@
 import glob
 import os
-import logging
 import dukpy
-from logging.handlers import RotatingFileHandler
 from dotenv import load_dotenv
 from flask_script import Manager
+from waitress import serve
 
 from flaskr import app, init_db
 
@@ -16,22 +15,18 @@ manager = Manager(app)
 
 @manager.command
 def runserver():
-    extra_files = None
+    init_db()
 
     if os.environ.get('FLASK_ENV') == 'production':
         compile()
+        serve(app,
+              host='0.0.0.0',
+              port=4000)
     else:
         extra_files = glob.glob('flaskr/**/*.js', recursive=True)
-
-    init_db()
-
-    handler = RotatingFileHandler('logs/errors.log', maxBytes=10000, backupCount=1)
-    handler.setLevel(logging.ERROR)
-    app.logger.addHandler(handler)
-
-    app.run(host='0.0.0.0',
-            port=4000,
-            extra_files=extra_files)
+        app.run(host='0.0.0.0',
+                port=4000,
+                extra_files=extra_files)
 
 
 @manager.command

@@ -58,6 +58,7 @@ class Lead(db.Model):
             .all()
         current_completed_tasks_ids = [t.task_id for t in current_completed_tasks]
         deleted_tasks_ids = [id for id in current_completed_tasks_ids if id not in completed_task_ids]
+        deleted_tasks_ids = [x for x in deleted_tasks_ids if x is not None]
         new_completed_tasks_ids = [id for id in completed_task_ids if id not in current_completed_tasks_ids]
 
         # Delete tasks
@@ -183,10 +184,10 @@ class Lead(db.Model):
         })
         for field in fields:
             res_fields.append({
-                                  'field_id': field.field_id,
-                                  'field_name': field.field_name,
-                                  'value': field.value
-                              } if for_api else {
+                'field_id': field.field_id,
+                'field_name': field.field_name,
+                'value': field.value
+            } if for_api else {
                 'field_id': field.field_id,
                 'value': field.value,
                 'field_board_visibility': field.field_board_visibility,
@@ -260,7 +261,7 @@ class Lead(db.Model):
 
     # Filter leads
     @staticmethod
-    def get_with_filter(installation_id, status_id, search, offset, limit, filter):
+    def get_with_filter(installation_id, status_id, search, offset, limit, filter={}):
         search = search.strip() if search else None
         search_exp = 'true'
         join_exp = ''
@@ -399,43 +400,38 @@ class LeadAction(db.Model):
     lead_id = db.Column(db.Integer, db.ForeignKey('lead.id', ondelete='CASCADE'), nullable=False)
 
     @staticmethod
-    def get_item_data(action):
+    def get_color_and_title(action):
         types_date = {
             'create_lead': {
                 'color': 'green',
                 'title': _('m_lead_leadAction_getItemData_createLead',
                            new_status_name=action['new_status_name'] if action['new_status_name'] else '...')
-                # 'Create lead in {}'.format()
             },
             'update_lead': {
                 'color': 'blue',
-                'title': _('m_lead_leadAction_getItemData_updateLead'),
-                # 'title': 'Update lead'
+                'title': _('m_lead_leadAction_getItemData_updateLead')
             },
             'update_lead_status': {
                 'color': 'blue',
                 'title': _('m_lead_leadAction_getItemData_updateLeadStatus',
                            old_status_name=action['old_status_name'] if action['old_status_name'] else '...',
                            new_status_name=action['new_status_name'] if action['new_status_name'] else '...')
-                # 'title': 'Change status from {} to {}'.format(
-                #     action['old_status_name'] if action['old_status_name'] else '...',
-                #     action['new_status_name'] if action['new_status_name'] else '...')
             },
             'archive_lead': {
                 'color': 'red',
-                'title': _('m_lead_leadAction_getItemData_archiveLead')  # 'Archive lead'
+                'title': _('m_lead_leadAction_getItemData_archiveLead')
             },
             'restore_lead': {
                 'color': 'green',
-                'title': _('m_lead_leadAction_getItemData_restoreLead')  # 'Restore lead'
+                'title': _('m_lead_leadAction_getItemData_restoreLead')
             },
             'complete_task': {
                 'color': 'green',
-                'title': _('m_lead_leadAction_getItemData_completeTask', task_name=action['task_name'])
+                'title': _('m_lead_leadAction_getItemData_completeTask', task_name=action['task_name'] if action['task_name'] else '...')
             },
             'revert_complete_task': {
                 'color': 'red',
-                'title': _('m_lead_leadAction_getItemData_revertCompleteTask', task_name=action['task_name'])
+                'title': _('m_lead_leadAction_getItemData_revertCompleteTask', task_name=action['task_name'] if action['task_name'] else '...')
             }
         }
 

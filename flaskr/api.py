@@ -143,7 +143,7 @@ def update_lead(data, nepkit_installation_id):
         },
         'fields': {
             'type': 'list',
-            'schema': {
+            'scheme': {
                 'type': 'dict',
                 'schema': {
                     'fieldId': {'type': 'number', 'required': True, 'nullable': False},

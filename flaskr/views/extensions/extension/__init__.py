@@ -5,10 +5,6 @@ from flaskr.models.installation_extension_settings import InstallationExtensionS
 from flaskr.extensions import extensions_map
 from flaskr.views.view import View, get_method
 
-compiled_methods = {
-    'onFinishForm': get_method('methods/onFinishForm')
-}
-
 
 # Page: Extension
 class Extension(View):
@@ -41,6 +37,10 @@ class Extension(View):
             'name': _('v_extension_meta_name', name=self.extension.name)
         }
 
+        if self.tab == 'settings':
+            self.data = self.extension.get_data_for_settings(self.installation_extension_settings, params, request_data)
+            self.script = self.extension.get_script_for_settings(self.installation_extension_settings, params, request_data)
+
     def get_header(self, params, request_data):
         print('self.extension', self.extension.with_settings)
         return {
@@ -69,19 +69,12 @@ class Extension(View):
             'activeTab': self.tab
         }
 
-    def get_schema(self, params, request_data):
+    def get_scheme(self, params, request_data):
         if self.tab == 'information':
-            return self.get_schema_for_information(params, request_data)
+            return self.extension.get_scheme_for_information(self.installation_extension_settings, params, request_data)
         elif self.tab == 'settings':
-            return self.get_schema_for_settings(params, request_data)
-
-    def get_schema_for_information(self, params, request_data):
-        return self.extension.get_schema_for_information(self.installation_extension_settings, params, request_data)
-
-    def get_schema_for_settings(self, params, request_data):
-        return self.extension.get_schema_for_settings(self.installation_extension_settings, params, request_data)
+            return self.extension.get_scheme_for_settings(self.installation_extension_settings, params, request_data)
 
     def get_methods(self, params, request_data):
-        return self.extension.get_methods_for_settings(self.installation_extension_settings, params, request_data)
-
-    methods = compiled_methods
+        if self.tab == 'settings':
+            return self.extension.get_methods_for_settings(self.installation_extension_settings, params, request_data)

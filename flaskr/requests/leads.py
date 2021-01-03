@@ -2,14 +2,15 @@ from datetime import datetime, timedelta
 
 from cerberus import Validator
 from flaskr import db
+from flaskr.models.field import Field
 from flaskr.models.installation_card_settings import InstallationCardSettings
 from flaskr.models.lead import Lead, LeadAction, LeadActionType
 from flaskr.models.status import Status
-from flaskr.views.leads.pipeline import get_lead_component
+from flaskr.models.task import Task
 
 
-# Get lead components for status
-def get_lead_components(params, request_data):
+# Get leads
+def get_leads(params, request_data):
     installation_card_settings = InstallationCardSettings.query \
         .filter_by(nepkit_installation_id=request_data['installation_id']) \
         .first()
@@ -25,14 +26,31 @@ def get_lead_components(params, request_data):
     if not is_valid:
         return {'res': 'err', 'message': 'Invalid params', 'errors': vld.errors}
 
+    search = params['search']
+    filter = {
+        'period_from': params['filter']['periodFrom'],
+        'period_to': params['filter']['periodTo'],
+        'utm_source': params['filter']['utmSource'],
+        'utm_medium': params['filter']['utmMedium'],
+        'utm_campaign': params['filter']['utmCampaign'],
+        'utm_term': params['filter']['utmTerm'],
+        'utm_content': params['filter']['utmContent'],
+        'archived': params['filter']['archived']
+    }
+
     leads_q = Lead.get_with_filter(installation_id=request_data['installation_id'],
                                    status_id=params['statusId'],
                                    offset=params['offset'],
                                    limit=params['limit'],
-                                   search=params.get('search'),
-                                   filter=params.get('filter'))
+                                   search=search,
+                                   filter=filter)
 
-    lead_components = []
+    fields_q = Field.query \
+        .filter_by(nepkit_installation_id=request_data['installation_id']) \
+        .order_by(Field.index) \
+        .all()
+
+    leads = []
     lead_total = 0
     lead_amount_sum = 0
 
@@ -42,23 +60,172 @@ def get_lead_components(params, request_data):
         if lead_amount_sum == 0:
             lead_amount_sum = lead.amount_sum
 
-        lead_component = get_lead_component({
+        fields = []
+        lead_fields = Lead.get_fields(lead.id)
+        for field in fields_q:
+            lead_field = next((f for f in lead_fields if f['field_id'] == field.id), None)
+            field_value = lead_field['value'] if lead_field else None
+
+            if field_value:
+                fields.append({
+                    'fieldId': field.id,
+                    'fieldName': field.name,
+                    'fieldValueType': field.value_type.name,
+                    'fieldBoardVisibility': field.board_visibility.name,
+                    'value': field_value
+                })
+
+        leads.append({
             'id': lead.id,
             'uid': lead.uid,
             'amount': lead.amount,
             'status_id': lead.status_id,
             'archived': lead.archived,
-            'add_date': (lead.add_date + timedelta(minutes=request_data['timezone_offset'])).strftime('%Y-%m-%d %H:%M:%S'),
-            'fields': Lead.get_fields(lead.id),
-            'tags': Lead.get_tags(lead.id)
-        }, installation_card_settings=installation_card_settings)
-        lead_components.append(lead_component)
+            'addDate': (lead.add_date + timedelta(minutes=request_data['timezone_offset'])).strftime('%Y-%m-%d %H:%M:%S'),
+            'fields': fields
+        })
 
     return {
         'res': 'ok',
-        'leadComponents': lead_components,
+        'leads': leads,
         'leadTotal': lead_total,
+        'leadAmountSum': lead_amount_sum,
         'leadAmountSumStr': installation_card_settings.format_amount(lead_amount_sum) if installation_card_settings.amount_enabled else None
+    }
+
+
+# Get lead
+def get_lead(params, request_data):
+    lead = Lead.query \
+        .filter_by(id=params['id']) \
+        .first()
+    task_count = Task.query \
+        .filter_by(nepkit_installation_id=request_data['installation_id']) \
+        .count()
+
+    fields = []
+    fields_q = Field.query \
+        .filter_by(nepkit_installation_id=request_data['installation_id']) \
+        .order_by(Field.index) \
+        .all()
+    lead_fields = Lead.get_fields(lead.id)
+    for field in fields_q:
+        lead_field = next((f for f in lead_fields if f['field_id'] == field.id), None)
+        field_value = lead_field['value'] if lead_field else None
+
+        fields.append({
+            'fieldId': field.id,
+            'fieldName': field.name,
+            'fieldValueType': field.value_type.name,
+            'value': field_value,
+            'choiceOptions': field.choice_options
+        })
+    tags = Lead.get_tags(lead.id)
+
+    tasks = []
+    tasks_q = db.session.execute("""
+        SELECT
+            t.*,
+            (
+                CASE
+                    WHEN :lead_id is not NULL THEN (SELECT COUNT(*) FROM public.lead_completed_task as lct WHERE lct.task_id = t.id AND lct.lead_id = :lead_id) != 0
+                    ELSE false
+                END
+            ) AS completed
+        FROM
+            public.task AS t
+        WHERE
+            t.parent_task_id is null AND
+            t.nepkit_installation_id = :nepkit_installation_id
+        ORDER BY
+            t.index""", {
+        'nepkit_installation_id': request_data['installation_id'],
+        'lead_id': lead.id
+    })
+    for task in tasks_q:
+        subtasks = []
+        for subtask in Task.get_subtasks(task, lead_id=lead.id):
+            subtasks.append({
+                'id': subtask.id,
+                'name': subtask.name,
+                'completed': subtask.completed
+            })
+
+        tasks.append({
+            'id': task.id,
+            'name': task.name,
+            'completed': task.completed,
+            'subtasks': subtasks
+        })
+
+    return {
+        'res': 'ok',
+        'lead': {
+            'id': lead.id,
+            'uid': lead.uid,
+            'comment': lead.comment,
+            'amount': lead.amount,
+            'statusId': lead.status_id,
+            'addDate': (lead.add_date + timedelta(minutes=request_data['timezone_offset'])).strftime('%Y-%m-%d %H:%M:%S'),
+            'updDate': (lead.upd_date + timedelta(minutes=request_data['timezone_offset'])).strftime('%Y-%m-%d %H:%M:%S'),
+            'nepkitUserId': lead.nepkit_user_id,
+            'utmSource': lead.utm_source,
+            'utmMedium': lead.utm_medium,
+            'utmCampaign': lead.utm_campaign,
+            'utmTerm': lead.utm_term,
+            'utmContent': lead.utm_content,
+            'taskCount': task_count,
+            'fields': fields,
+            'tags': tags,
+            'tasks': tasks
+        }
+    }
+
+
+# Get lead actions
+def get_lead_actions(params, request_data):
+    actions = []
+    actions_q = db.session.execute("""
+        SELECT
+            la.*,
+            old_s.name AS old_status_name,
+            new_s.name AS new_status_name,
+            comp_t.name AS task_name,
+            COUNT(*) OVER () AS total
+        FROM
+            public.lead_action AS la
+        LEFT JOIN 
+            public.status AS old_s ON old_s.id = la.old_status_id
+        LEFT JOIN  
+            public.status AS new_s ON new_s.id = la.new_status_id
+        LEFT JOIN  
+            public.task AS comp_t ON comp_t.id = la.completed_task_id
+        WHERE
+            la.lead_id = :lead_id
+        ORDER BY 
+            la.log_date DESC
+        LIMIT :limit OFFSET :offset""", {
+        'lead_id': params['leadId'],
+        'offset': params['offset'],
+        'limit': params['limit']
+    })
+
+    action_total = 0
+    for action in actions_q:
+        if action_total == 0:
+            action_total = action.total
+
+        action_data = LeadAction.get_color_and_title(action)
+        actions.append({
+            'title': action_data['title'],
+            'color': action_data['color'],
+            'log_date': Lead.get_regular_date((action.log_date + timedelta(minutes=request_data['timezone_offset'])).strftime('%Y-%m-%d %H:%M:%S'))
+        })
+
+    return {
+        'res': 'ok',
+        'actions': actions,
+        'actionTotal': action_total
     }
 
 

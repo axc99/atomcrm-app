@@ -1,6 +1,11 @@
+import json
 import os
-from flask import request
+
+import werkzeug
+from flask import request, jsonify
 from flask_babel import _
+from werkzeug.exceptions import HTTPException
+
 from flaskr import db
 from flaskr import app
 from flaskr.views import views_map
@@ -42,8 +47,8 @@ def req():
     # Check secret key
     if not is_secret_key_valid:
         return {
-            'message': 'Wrong request data'
-        }, 401
+                   'message': 'Wrong request data'
+               }, 401
 
     # Get view
     if req == 'getView':
@@ -68,11 +73,16 @@ def req():
             view.before_get_header(view_params, request_data)
             result_view['header'] = view.get_header(view_params, request_data)
 
+            view.before_get_data(view_params, request_data)
+            result_view['data'] = view.get_data(view_params, request_data)
+
             view.before_get_methods(view_params, request_data)
             result_view['methods'] = view.get_methods(view_params, request_data)
 
-            view.before_get_schema(view_params, request_data)
-            result_view['schema'] = view.get_schema(view_params, request_data)
+            view.before_get_scheme(view_params, request_data)
+            result_view['scheme'] = view.get_scheme(view_params, request_data)
+
+            result_view['script'] = view.script
 
             return {
                 'res': 'ok',
@@ -102,8 +112,8 @@ def webhook():
     # Check secret key
     if not is_secret_key_valid:
         return {
-           'message': 'Wrong request data'
-        }, 401
+                   'message': 'Wrong request data'
+               }, 401
 
     if event == 'installApp':
         # Add statuses
@@ -126,10 +136,14 @@ def webhook():
 
         # Add fields
         default_fields = [
-            {'index': 0, 'name': _('r_webhook_defaultStatuses_firstName'), 'value_type': 'string', 'max': 40, 'board_visibility': 'title', 'primary': False},
-            {'index': 1, 'name': _('r_webhook_defaultStatuses_lastName'), 'value_type': 'string', 'max': 60, 'board_visibility': 'title', 'primary': False},
-            {'index': 2, 'name': _('r_webhook_defaultStatuses_email'), 'value_type': 'string', 'max': 260, 'board_visibility': 'subtitle', 'primary': True},
-            {'index': 3, 'name': _('r_webhook_defaultStatuses_mobilePhone'), 'value_type': 'string', 'max': 30, 'board_visibility': 'subtitle', 'primary': True}
+            {'index': 0, 'name': _('r_webhook_defaultStatuses_firstName'), 'value_type': 'string', 'max': 40,
+             'board_visibility': 'title', 'primary': False},
+            {'index': 1, 'name': _('r_webhook_defaultStatuses_lastName'), 'value_type': 'string', 'max': 60,
+             'board_visibility': 'title', 'primary': False},
+            {'index': 2, 'name': _('r_webhook_defaultStatuses_email'), 'value_type': 'email', 'max': 260,
+             'board_visibility': 'subtitle', 'primary': True},
+            {'index': 3, 'name': _('r_webhook_defaultStatuses_mobilePhone'), 'value_type': 'phone', 'max': 30,
+             'board_visibility': 'subtitle', 'primary': True}
         ]
         for default_field in default_fields:
             new_field = Field()
@@ -196,9 +210,9 @@ def webhook():
         extension_class = get_extension_by_id(data['extensionId'])
 
         # Disable extension
-        InstallationExtensionSettings.query\
+        InstallationExtensionSettings.query \
             .filter_by(nepkit_installation_id=data['installationId'],
-                       nepkit_extension_id=data['extensionId'])\
+                       nepkit_extension_id=data['extensionId']) \
             .delete()
         db.session.commit()
 
@@ -212,8 +226,8 @@ def api_method(token, method):
 
     if not is_token_valid:
         return {
-            'message': 'Invalid token'
-        }, 401
+                   'message': 'Invalid token'
+               }, 401
 
     data = {}
     if request.is_json:
@@ -232,8 +246,8 @@ def api_method(token, method):
 
     if not method_map.get(method):
         return {
-           'message': 'Method /{} does not exist'.format(method)
-       }, 400
+                   'message': 'Method /{} does not exist'.format(method)
+               }, 400
     else:
         method_func = getattr(api_methods, method_map[method])
 
@@ -247,14 +261,27 @@ def extension_webhook(extension_key, webhook_token, webhook_key=None):
     extension_class = extensions_map[extension_key]
 
     installation_extension_id, installation_extension_token = webhook_token.split('_')
-    installation_extension_settings = InstallationExtensionSettings.query\
-                                .filter_by(id=installation_extension_id,
-                                           token=installation_extension_token)\
-                                .first()
+    installation_extension_settings = InstallationExtensionSettings.query \
+        .filter_by(id=installation_extension_id,
+                   token=installation_extension_token) \
+        .first()
 
     if not installation_extension_settings or not extension_class:
         return {
-           'message': 'Wrong request data'
-        }, 401
+                   'message': 'Wrong request data'
+               }, 401
 
     return extension_class.catch_webhook(installation_extension_settings, webhook_key)
+
+
+# @app.errorhandler(Exception)
+# def handle_invalid_usage(error):
+#     response = jsonify(error.to_dict())
+#     response.status_code = error.status_code
+#     return response
+
+
+
+
+
+

@@ -30,15 +30,15 @@ class Status(db.Model):
 # Get HEX color by color key
 def get_hex_by_color(color_key):
     status_colors = get_status_colors()
-    return next((c[2] for c in status_colors if c[1] == color_key), None)
+    return next((c['hex'] for c in status_colors if c['key'] == color_key), None)
 
 
 def get_status_colors():
-    return (
-        (1, 'red', '#E57373', _('m_status_getStatusColors_red')),
-        (2, 'pink', '#F48FB1', _('m_status_getStatusColors_pink')),
-        (3, 'purple', '#9575CD', _('m_status_getStatusColors_purple')),
-        (4, 'blue', '#64B5F6', _('m_status_getStatusColors_blue')),
-        (5, 'green', '#81C784', _('m_status_getStatusColors_green')),
-        (6, 'orange', '#FFA726', _('m_status_getStatusColors_orange'))
-    )
+    return [
+        {'id': 1, 'key': 'red', 'hex': '#E57373', 'name': _('m_status_getStatusColors_red')},
+        {'id': 2, 'key': 'pink', 'hex': '#F48FB1', 'name': _('m_status_getStatusColors_pink')},
+        {'id': 3, 'key': 'purple', 'hex': '#9575CD', 'name': _('m_status_getStatusColors_purple')},
+        {'id': 4, 'key': 'blue', 'hex': '#64B5F6', 'name': _('m_status_getStatusColors_blue')},
+        {'id': 5, 'key': 'green', 'hex': '#81C784', 'name': _('m_status_getStatusColors_green')},
+        {'id': 6, 'key': 'orange', 'hex': '#FFA726', 'name': _('m_status_getStatusColors_orange')}
+    ]

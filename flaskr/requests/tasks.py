@@ -5,6 +5,57 @@ from flaskr.models.task import Task, Task
 from flaskr.models.lead import LeadCompletedTask
 
 
+# Get tasks
+def get_tasks(params, request_data):
+    tasks = []
+    tasks_q = db.session.execute("""
+        SELECT
+            t.*,
+            (SELECT COUNT(*) FROM public.task AS st WHERE st.parent_task_id = t.id) AS subtask_count,
+            (SELECT COUNT(*) FROM public.lead_completed_task AS lct WHERE lct.task_id = t.id) AS completed
+        FROM
+            public.task AS t
+        WHERE
+            t.parent_task_id is null AND
+            t.nepkit_installation_id = :nepkit_installation_id
+        ORDER BY
+            t.index""", {
+        'nepkit_installation_id': request_data['installation_id']
+    })
+
+    for task in tasks_q:
+        subtasks = []
+        subtasks_q = db.session.execute("""
+            SELECT
+                t.*
+            FROM
+                public.task AS t
+            WHERE
+                t.parent_task_id = :parent_task_id
+            ORDER BY
+                t.index""", {
+            'parent_task_id': task['id']
+        })
+        for subtask in subtasks_q:
+            subtasks.append({
+                'id': subtask['id'],
+                'name': subtask['name']
+            })
+
+        tasks.append({
+            'id': task['id'],
+            'name': task['name'],
+            'subtasks': subtasks,
+            'subtaskCount': task['subtask_count'],
+            'completed': task['completed']
+        })
+
+    return {
+        'res': 'ok',
+        'tasks': tasks
+    }
+
+
 # Create tasks set
 def create_task(params, request_data):
     vld = Validator({
