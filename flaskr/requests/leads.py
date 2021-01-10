@@ -11,10 +11,6 @@ from flaskr.models.task import Task
 
 # Get leads
 def get_leads(params, request_data):
-    installation_card_settings = InstallationCardSettings.query \
-        .filter_by(nepkit_installation_id=request_data['installation_id']) \
-        .first()
-
     vld = Validator({
         'offset': {'type': 'number'},
         'limit': {'type': 'number'},
@@ -25,6 +21,10 @@ def get_leads(params, request_data):
     is_valid = vld.validate(params)
     if not is_valid:
         return {'res': 'err', 'message': 'Invalid params', 'errors': vld.errors}
+
+    installation_card_settings = InstallationCardSettings.query \
+        .filter_by(nepkit_installation_id=request_data['installation_id']) \
+        .first()
 
     search = params['search']
     filter = {
@@ -96,6 +96,13 @@ def get_leads(params, request_data):
 
 # Get lead
 def get_lead(params, request_data):
+    vld = Validator({
+        'id': {'type': 'number', 'required': True}
+    })
+    is_valid = vld.validate(params)
+    if not is_valid:
+        return {'res': 'err', 'message': 'Invalid params', 'errors': vld.errors}
+
     lead = Lead.query \
         .filter_by(id=params['id']) \
         .first()
@@ -184,6 +191,15 @@ def get_lead(params, request_data):
 
 # Get lead actions
 def get_lead_actions(params, request_data):
+    vld = Validator({
+        'leadId': {'type': 'number', 'required': True},
+        'limit': {'type': 'number'},
+        'offset': {'type': 'number'}
+    })
+    is_valid = vld.validate(params)
+    if not is_valid:
+        return {'res': 'err', 'message': 'Invalid params', 'errors': vld.errors}
+
     actions = []
     actions_q = db.session.execute("""
         SELECT
@@ -286,7 +302,6 @@ def update_lead(params, request_data):
         }
     })
     is_valid = vld.validate(params)
-
     if not is_valid:
         return {'res': 'err', 'message': 'Invalid params', 'errors': vld.errors}
 

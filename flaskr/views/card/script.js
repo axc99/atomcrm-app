@@ -30,7 +30,7 @@ const jsonToLines = (json) => {
   return lines.join('\n')
 }
 
-const FormFields = ({ fields, setFields }) => {
+const FormFields = ({ fields, setFields, loading }) => {
   const tableRows = []
   const valueTypeOptions = [
     {
@@ -150,6 +150,7 @@ const FormFields = ({ fields, setFields }) => {
     {
       _com: 'Table',
       draggable: true,
+      loading,
       emptyText: strs['form_fields_table_noFields'],
       onDrag: ({ oldIndex, newIndex }) => {
         moveField(oldIndex, newIndex)
@@ -301,6 +302,7 @@ view.render = () => {
             label: strs['form_fields'],
             content:
               FormFields({
+                loading: data.loading,
                 fields: data.fields,
                 setFields
               })
