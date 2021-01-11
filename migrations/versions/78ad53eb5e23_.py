@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 8bdd3eb746b5
+Revision ID: 78ad53eb5e23
 Revises: 
-Create Date: 2020-11-09 20:30:20.938515
+Create Date: 2021-01-11 02:14:26.710400
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision = '8bdd3eb746b5'
+revision = '78ad53eb5e23'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -21,8 +21,9 @@ def upgrade():
     op.create_table('field',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=40), nullable=False),
-    sa.Column('value_type', sa.Enum('string', 'long_string', 'number', 'boolean', 'date', name='fieldtype'), server_default='string', nullable=False),
+    sa.Column('value_type', sa.Enum('string', 'phone', 'email', 'long_string', 'number', 'boolean', 'date', 'choice', name='fieldtype'), server_default='string', nullable=False),
     sa.Column('board_visibility', sa.Enum('none', 'title', 'subtitle', name='fieldboardvisibility'), server_default='none', nullable=False),
+    sa.Column('choice_options', postgresql.JSONB(astext_type=sa.Text()), nullable=True),
     sa.Column('index', sa.Integer(), nullable=False),
     sa.Column('nepkit_installation_id', sa.Integer(), nullable=False),
     sa.PrimaryKeyConstraint('id')
@@ -68,6 +69,7 @@ def upgrade():
     sa.Column('index', sa.Integer(), nullable=False),
     sa.Column('parent_task_id', sa.Integer(), nullable=True),
     sa.Column('nepkit_installation_id', sa.Integer(), nullable=False),
+    # sa.ForeignKeyConstraint['parent_task_id'], ['task.id'], ondelete='SET NULL'),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_task_nepkit_installation_id'), 'task', ['nepkit_installation_id'], unique=False)
@@ -85,6 +87,7 @@ def upgrade():
     sa.Column('add_date', sa.DateTime(), nullable=False),
     sa.Column('upd_date', sa.DateTime(), nullable=False),
     sa.Column('amount', sa.Float(), nullable=True),
+    sa.Column('comment', sa.String(length=500), nullable=True),
     sa.Column('archived', sa.Boolean(), nullable=False),
     sa.Column('nepkit_installation_id', sa.Integer(), nullable=False),
     sa.Column('nepkit_user_id', sa.Integer(), nullable=True),
@@ -94,6 +97,7 @@ def upgrade():
     sa.Column('utm_campaign', sa.String(length=500), nullable=True),
     sa.Column('utm_term', sa.String(length=500), nullable=True),
     sa.Column('utm_content', sa.String(length=500), nullable=True),
+    # sa.ForeignKeyConstraint['status_id'], ['status.id'], ondelete='SET NULL'),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_lead_nepkit_installation_id'), 'lead', ['nepkit_installation_id'], unique=False)
@@ -107,6 +111,10 @@ def upgrade():
     sa.Column('log_date', sa.DateTime(), nullable=False),
     sa.Column('nepkit_user_id', sa.Integer(), nullable=True),
     sa.Column('lead_id', sa.Integer(), nullable=False),
+    # sa.ForeignKeyConstraint['completed_task_id'], ['task.id'], ondelete='CASCADE'),
+    # sa.ForeignKeyConstraint['lead_id'], ['lead.id'], ondelete='CASCADE'),
+    # sa.ForeignKeyConstraint['new_status_id'], ['status.id'], ondelete='CASCADE'),
+    # sa.ForeignKeyConstraint['old_status_id'], ['status.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_lead_action_nepkit_user_id'), 'lead_action', ['nepkit_user_id'], unique=False)
@@ -116,6 +124,8 @@ def upgrade():
     sa.Column('lead_id', sa.Integer(), nullable=False),
     sa.Column('task_id', sa.Integer(), nullable=True),
     sa.Column('nepkit_user_id', sa.Integer(), nullable=True),
+    # sa.ForeignKeyConstraint['lead_id'], ['lead.id'], ondelete='CASCADE'),
+    # sa.ForeignKeyConstraint['task_id'], ['task.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_lead_completed_task_nepkit_user_id'), 'lead_completed_task', ['nepkit_user_id'], unique=False)
@@ -124,12 +134,16 @@ def upgrade():
     sa.Column('value', sa.String(length=1000), nullable=True),
     sa.Column('lead_id', sa.Integer(), nullable=False),
     sa.Column('field_id', sa.Integer(), nullable=False),
+    # sa.ForeignKeyConstraint['field_id'], ['field.id'], ondelete='CASCADE'),
+    # sa.ForeignKeyConstraint['lead_id'], ['lead.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('lead_tag',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('lead_id', sa.Integer(), nullable=False),
     sa.Column('tag_id', sa.Integer(), nullable=False),
+    # sa.ForeignKeyConstraint['lead_id'], ['lead.id'], ondelete='CASCADE'),
+    # sa.ForeignKeyConstraint['tag_id'], ['tag.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###
