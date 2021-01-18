@@ -37,7 +37,7 @@ def req():
     params = data['params']
     request_data = {
         'installation_id': data['installationId'],
-        'system_id': data['systemId'],
+        'workspace_id': data['workspaceId'],
         'user_id': data['userId'],
         'app_id': data['appId'],
         'lang_key': data['langKey'],
