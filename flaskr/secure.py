@@ -29,12 +29,12 @@ def validate_api_token(token):
 
 # Get api token
 def get_api_token(nepkit_installation_id):
-    # Delete all tokens for this system
+    # Delete all tokens for this installation
     Token.query\
         .filter_by(nepkit_installation_id=nepkit_installation_id)\
         .delete()
 
-    # Create new token for this system
+    # Create new token for this installation
     token = Token()
     token.active = True
     token.token = ''.join([choice(string.ascii_uppercase + string.ascii_letters + string.digits) for _ in range(300)])
