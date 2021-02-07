@@ -1,11 +1,4 @@
-# Logs
-logs/
-
-# IDEA project
 .idea
-
-# Compiled view methods
-*.prod.js
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
