@@ -4,9 +4,16 @@ from flaskr.requests.tasks import get_tasks, create_task, update_task_index, upd
 from flaskr.requests.tokens import get_token
 from flaskr.requests.card_settings import update_card_settings, get_fields
 from flaskr.requests.extensions import update_extension_settings
+from flaskr.requests.handlers import handle_install_app, handle_uninstall_app, handle_enable_extension, handle_disable_extension
 
 
 requests_map = {
+    # Handle events
+    'handleInstallApp': handle_install_app,
+    'handleUninstallApp': handle_uninstall_app,
+    'handleEnableExtension': handle_enable_extension,
+    'handleDisableExtension': handle_disable_extension,
+
     # Pipeline
     'getLeads': get_leads,
     'getLead': get_lead,
