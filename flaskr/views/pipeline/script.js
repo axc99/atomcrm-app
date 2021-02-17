@@ -392,10 +392,9 @@ const LeadModalInformation = ({
                   setData({ ...data })
                 }
               },
-              {
+              installationCardSettings.amountEnabled && {
                 '_com': 'Field.Input',
                 '_id': 'updateLeadForm_amount',
-                '_vis': installationCardSettings.amountEnabled,
                 'type': 'number',
                 'prefix': amountPrefix,
                 'suffix': amountSuffix,

@@ -826,7 +826,7 @@ msgstr "Ex: In Process"
 
 #: flaskr/views/statuses/__init__.py:31
 msgid "v_statuses_statusModal_form_name_length"
-msgstr "Must contain no more 50 chars"
+msgstr "Must contain no more 50 characters"
 
 #: flaskr/views/statuses/__init__.py:32
 msgid "v_statuses_statusModal_form_name_required"
@@ -916,7 +916,7 @@ msgstr "Ex: Contact customer"
 
 #: flaskr/views/tasks/__init__.py:31
 msgid "v_tasks_taskModal_form_name_length"
-msgstr "Must contain no more 50 chars"
+msgstr "Must contain no more 50 characters"
 
 #: flaskr/views/tasks/__init__.py:32
 msgid "v_tasks_taskModal_form_name_required"

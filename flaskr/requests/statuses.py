@@ -51,8 +51,8 @@ def create_status(params, request_data):
         return {'res': 'err', 'message': 'Invalid params', 'errors': vld.errors}
 
     new_status_index = Status.query \
-                           .filter_by(nepkit_installation_id=request_data['installation_id']) \
-                           .count() - 1
+        .filter_by(nepkit_installation_id=request_data['installation_id']) \
+        .count()
 
     new_status = Status()
     new_status.nepkit_installation_id = request_data['installation_id']

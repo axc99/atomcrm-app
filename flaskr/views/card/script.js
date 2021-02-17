@@ -8,10 +8,14 @@ const { strs, statusColors } = view.data
 const linesToJson = (lines) => {
   const json = {}
 
-  lines.split('\n').map(line => {
-    const [key, value] = line.split('=')
-    json[key] = value
-  })
+  if (lines) {
+    lines
+      .split('\n')
+      .map(line => {
+        const [key, value] = line.split('=')
+        json[key] = value
+      })
+  }
 
   return json
 }
@@ -266,7 +270,7 @@ view.render = () => {
                 fields: data.fields.map(field => {
                   return {
                     ...field,
-                    choiceOptions: linesToJson(field.choiceOptions)
+                    choiceOptions: field.choiceOptions && linesToJson(field.choiceOptions)
                   }
                 })
             })
