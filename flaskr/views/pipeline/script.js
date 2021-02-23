@@ -264,7 +264,9 @@ const LeadModal = ({ opened, id, uid, closeLeadModal, loadLeads }) => {
             setArchiveReqLoading,
             data,
             setData,
-            loadLeads
+            loadLeads,
+            archiveLead,
+            restoreLead
           })
         ),
         'tasks': (
@@ -295,7 +297,9 @@ const LeadModalInformation = ({
   setArchiveReqLoading,
   data,
   setData,
-  loadLeads
+  loadLeads,
+  archiveLead,
+  restoreLead
 }) => {
   const currency = installationCardSettings.currency
   const [amountPrefix, amountSuffix] = currency.formatString.split('{}')
