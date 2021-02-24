@@ -37,11 +37,11 @@ msgstr "Переговоры"
 
 #: flaskr/routes.py:120
 msgid "r_webhook_defaultStatuses_win"
-msgstr "Победа"
+msgstr "Завершено"
 
 #: flaskr/routes.py:121
 msgid "r_webhook_defaultStatuses_lost"
-msgstr "Проигрыш"
+msgstr "Не завершено"
 
 #: flaskr/routes.py:134
 msgid "r_webhook_defaultStatuses_firstName"
