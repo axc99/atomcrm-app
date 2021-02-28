@@ -105,7 +105,7 @@ def req():
 @app.route('/api/v<version>/<resource>/<resource_id>', methods=['GET', 'POST', 'PATCH'])
 def api_method(resource, resource_id=None, token=None, version=1):
     if not token:
-        token = request.headers.get('Authorization')
+        token = request.headers.get('Authorization').split(' ')[1]
 
     if int(version) not in (1,):
         return {
