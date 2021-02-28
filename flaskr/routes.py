@@ -101,38 +101,43 @@ def req():
 
 
 # API
-@app.route('/api/<token>/<method>', methods=['POST'])
-def api_method(token, method):
+@app.route('/api/v<version>/<resource>', methods=['GET', 'POST', 'PATCH'])
+@app.route('/api/v<version>/<resource>/<resource_id>', methods=['GET', 'POST', 'PATCH'])
+def api_method(resource, resource_id=None, token=None, version=1):
+    if not token:
+        token = request.headers.get('Authorization')
+
+    if int(version) not in (1,):
+        return {
+           'message': 'API version not supported'
+        }, 401
+
     is_token_valid, nepkit_installation_id = validate_api_token(token)
 
     if not is_token_valid:
         return {
-                   'message': 'Invalid token'
-               }, 401
+           'message': 'Invalid token'
+        }, 401
 
     data = {}
     if request.is_json:
         data = request.get_json()
 
-    method_map = {
-        'getLeads': 'get_leads',
-        'createLead': 'create_lead',
-        'updateLead': 'update_lead',
-        'archiveLead': 'archive_lead',
+    method = None
+    if resource == 'leads':
+        if request.method == 'GET' and resource_id:
+            method = 'get_leads'
+        elif request.method == 'POST':
+            method = 'create_lead'
+        elif request.method == 'PATCH' and resource_id:
+            method = 'update_lead'
 
-        'getStatuses': 'get_statuses',
-
-        'getFields': 'get_fields'
-    }
-
-    if not method_map.get(method):
-        return {
-                   'message': 'Method /{} does not exist'.format(method)
-               }, 400
+    if not method:
+        return 'Wrong request', 400
     else:
-        method_func = getattr(api_methods, method_map[method])
+        method_func = getattr(api_methods, method)
 
-        return method_func(data, nepkit_installation_id)
+        return method_func(resource_id, data, nepkit_installation_id)
 
 
 # Extension web hook
@@ -153,16 +158,3 @@ def extension_webhook(extension_key, webhook_token, webhook_key=None):
                }, 401
 
     return extension_class.catch_webhook(installation_extension_settings, webhook_key)
-
-
-# @app.errorhandler(Exception)
-# def handle_invalid_usage(error):
-#     response = jsonify(error.to_dict())
-#     response.status_code = error.status_code
-#     return response
-
-
-
-
-
-

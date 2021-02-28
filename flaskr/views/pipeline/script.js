@@ -477,62 +477,45 @@ const LeadModalInformation = ({
 }
 
 const LeadModalTasks = ({ data, setData }) => {
-  const checkedKeys = []
   const tasksItems = data.lead && data.lead.tasks.map(task => {
-    if (task.completed) {
-      checkedKeys.push(task.id)
-    }
-
     return {
-      'title': task.name,
-      'key': task.id,
-      'children': task.subtasks && task.subtasks.map(subtask => {
-        if (subtask.completed) {
-          checkedKeys.push(subtask.id)
-        }
+      title: [
+        {
+          _com: 'Field.Checkbox',
+          value: task.completed,
+          onChange: ({ value }) => {
+            const taskIds = data.lead.tasks.filter(t => t.completed).map(t => t.id)
 
-        return {
-          'title': subtask.name,
-          'key': subtask.id
+            if (value) {
+              taskIds.push(task.id)
+            } else {
+              taskIds.splice(taskIds.indexOf(task.id), 1);
+            }
+
+            app
+              .sendReq('completeLeadTasks', {
+                id: data.lead.id,
+                taskIds: taskIds
+              })
+              .then(result => {
+                if (result.res == 'ok') {
+                  data.lead.tasks.map(task => {
+                    task.completed = taskIds.includes(task.id)
+                  })
+                  setData({ ...data })
+                }
+              })
+          },
+          text: task.name
         }
-      })
+      ],
+      extra: task.completed && task.completeDate && getRegularDate(task.completeDate)
     }
   })
 
   return {
-    '_com': 'Form',
-    '_id': 'updateLeadForm',
-    'fields': [
-      {
-        '_com': 'Field.Tree',
-        'key': 'tasks',
-        'items': tasksItems,
-        'value': checkedKeys,
-        'onChange': ({ value }) => {
-          app
-            .sendReq('completeLeadTasks', {
-              id: data.lead.id,
-              task_ids: value
-            })
-            .then(result => {
-              if (result.res == 'ok') {
-                data.lead.tasks.map(task => {
-                  task.completed = value.includes(task.id)
-
-                  if (task.subtasks) {
-                    task.subtasks.map(subtask => {
-                      subtask.completed = value.includes(subtask.id)
-                    })
-                  }
-                })
-                console.log('data.lead.tasks', data.lead.tasks)
-                setData({ ...data })
-              }
-            })
-        },
-        'defaultExpandAll': true
-    }
-    ]
+    '_com': 'List',
+    'items': tasksItems
   }
 }
 
@@ -749,7 +732,7 @@ view.render = () => {
 
       const extra = [lead['archived'] ? strs['board_archived'] : getRegularDate(lead['addDate'])]
       if (installationCardSettings['amountEnabled'] && lead['amount']) {
-        extra.unshift(lead['amount'])
+        extra.unshift(lead['amountStr'])
       }
 
       title = title.trim()
@@ -939,11 +922,17 @@ view.render = () => {
       'title': strs['header_title'],
       'actions': [
         {
-          '_com': 'Button',
-          'icon': 'filter',
-          'label': strs['header_filter'],
-          'onClick': () => openFilterModal(),
-          'dot': filterUsed
+          '_com': 'Tooltip',
+          'placement': 'bottom',
+          'coveredContent': (
+            {
+              '_com': 'Button',
+              'icon': 'filter',
+              'onClick': () => openFilterModal(),
+              'dot': filterUsed
+            }
+          ),
+          'title': strs['header_filter']
         },
         !hasAnyIntegration && {
           '_com': 'Button',

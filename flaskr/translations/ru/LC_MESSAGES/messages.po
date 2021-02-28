@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-12-30 11:43+0000\n"
+"POT-Creation-Date: 2021-02-27 16:59+0300\n"
 "PO-Revision-Date: 2020-10-10 19:41+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -18,54 +18,6 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
-
-#: flaskr/routes.py:116
-msgid "r_webhook_defaultStatuses_lead"
-msgstr "Новый"
-
-#: flaskr/routes.py:117
-msgid "r_webhook_defaultStatuses_contacted"
-msgstr "Первый контакт"
-
-#: flaskr/routes.py:118
-msgid "r_webhook_defaultStatuses_qualified"
-msgstr "Принимает решение"
-
-#: flaskr/routes.py:119
-msgid "r_webhook_defaultStatuses_proposalMade"
-msgstr "Переговоры"
-
-#: flaskr/routes.py:120
-msgid "r_webhook_defaultStatuses_win"
-msgstr "Завершено"
-
-#: flaskr/routes.py:121
-msgid "r_webhook_defaultStatuses_lost"
-msgstr "Не завершено"
-
-#: flaskr/routes.py:134
-msgid "r_webhook_defaultStatuses_firstName"
-msgstr "Имя"
-
-#: flaskr/routes.py:135
-msgid "r_webhook_defaultStatuses_lastName"
-msgstr "Фамилия"
-
-#: flaskr/routes.py:136
-msgid "r_webhook_defaultStatuses_email"
-msgstr "Email"
-
-#: flaskr/routes.py:137
-msgid "r_webhook_defaultStatuses_mobilePhone"
-msgstr "Телефон"
-
-#: flaskr/routes.py:153
-msgid "r_webhook_defaultTasks_sendLetter"
-msgstr "Отправить письмо на email"
-
-#: flaskr/routes.py:154
-msgid "r_webhook_defaultTasks_makeCall"
-msgstr "Сделать звонок"
 
 #: flaskr/extensions/mottor/__init__.py:57
 msgid "e_mottor_settings_form_defaultStatus"
@@ -374,95 +326,95 @@ msgstr "В заголовке"
 msgid "m_status_getBoardVisibility_subtitle"
 msgstr "В описании"
 
-#: flaskr/models/lead.py:234
+#: flaskr/models/lead.py:255
 msgid "m_lead_getRegularDate_jan"
 msgstr "Янв."
 
-#: flaskr/models/lead.py:235
+#: flaskr/models/lead.py:256
 msgid "m_lead_getRegularDate_feb"
 msgstr "Фев."
 
-#: flaskr/models/lead.py:236
+#: flaskr/models/lead.py:257
 msgid "m_lead_getRegularDate_mar"
 msgstr "Мар."
 
-#: flaskr/models/lead.py:237
+#: flaskr/models/lead.py:258
 msgid "m_lead_getRegularDate_apr"
 msgstr "Апр."
 
-#: flaskr/models/lead.py:238
+#: flaskr/models/lead.py:259
 msgid "m_lead_getRegularDate_may"
 msgstr "Мая"
 
-#: flaskr/models/lead.py:239
+#: flaskr/models/lead.py:260
 msgid "m_lead_getRegularDate_jun"
 msgstr "Июн."
 
-#: flaskr/models/lead.py:240
+#: flaskr/models/lead.py:261
 msgid "m_lead_getRegularDate_jul"
 msgstr "Июл."
 
-#: flaskr/models/lead.py:241
+#: flaskr/models/lead.py:262
 msgid "m_lead_getRegularDate_aug"
 msgstr "Авг."
 
-#: flaskr/models/lead.py:242
+#: flaskr/models/lead.py:263
 msgid "m_lead_getRegularDate_sep"
 msgstr "Сен."
 
-#: flaskr/models/lead.py:243
+#: flaskr/models/lead.py:264
 msgid "m_lead_getRegularDate_oct"
 msgstr "Окт."
 
-#: flaskr/models/lead.py:244
+#: flaskr/models/lead.py:265
 msgid "m_lead_getRegularDate_nov"
 msgstr "Нояб."
 
-#: flaskr/models/lead.py:245
+#: flaskr/models/lead.py:266
 msgid "m_lead_getRegularDate_dec"
 msgstr "Дек."
 
-#: flaskr/models/lead.py:250
+#: flaskr/models/lead.py:271
 msgid "m_lead_getRegularDate_today"
 msgstr "Сегодня в %(hours)s:%(minutes)s"
 
-#: flaskr/models/lead.py:252
+#: flaskr/models/lead.py:273
 msgid "m_lead_getRegularDate_yesterday"
 msgstr "Вчера в %(hours)s:%(minutes)s"
 
-#: flaskr/models/lead.py:255
+#: flaskr/models/lead.py:276
 msgid "m_lead_getRegularDate_date"
 msgstr "%(day)s %(month)s в %(hours)s:%(minutes)s"
 
-#: flaskr/models/lead.py:257
+#: flaskr/models/lead.py:278
 msgid "m_lead_getRegularDate_dateWithYear"
 msgstr "%(day)s %(month)s %(year)s в %(hours)s:%(minutes)s"
 
-#: flaskr/models/lead.py:407
+#: flaskr/models/lead.py:428
 msgid "m_lead_leadAction_getItemData_createLead"
 msgstr "Добавление лида в «%(new_status_name)s»"
 
-#: flaskr/models/lead.py:412
+#: flaskr/models/lead.py:433
 msgid "m_lead_leadAction_getItemData_updateLead"
 msgstr "Обновление лида"
 
-#: flaskr/models/lead.py:416
+#: flaskr/models/lead.py:437
 msgid "m_lead_leadAction_getItemData_updateLeadStatus"
 msgstr "Смена статуса лида с «%(old_status_name)s» на «%(new_status_name)s»"
 
-#: flaskr/models/lead.py:422
+#: flaskr/models/lead.py:443
 msgid "m_lead_leadAction_getItemData_archiveLead"
 msgstr "Архивация лида"
 
-#: flaskr/models/lead.py:426
+#: flaskr/models/lead.py:447
 msgid "m_lead_leadAction_getItemData_restoreLead"
 msgstr "Восстановление лида"
 
-#: flaskr/models/lead.py:430
+#: flaskr/models/lead.py:451
 msgid "m_lead_leadAction_getItemData_completeTask"
 msgstr "Выполнение задачи «%(task_name)s»"
 
-#: flaskr/models/lead.py:434
+#: flaskr/models/lead.py:455
 msgid "m_lead_leadAction_getItemData_revertCompleteTask"
 msgstr "Отмены выполнения задачи «%(task_name)s»"
 
@@ -490,87 +442,143 @@ msgstr "Зеленый"
 msgid "m_status_getStatusColors_orange"
 msgstr "Оранджевый"
 
+#: flaskr/requests/handlers.py:23
+msgid "r_webhook_defaultStatuses_lead"
+msgstr "Новый"
+
+#: flaskr/requests/handlers.py:24
+msgid "r_webhook_defaultStatuses_contacted"
+msgstr "Первый контакт"
+
+#: flaskr/requests/handlers.py:25
+msgid "r_webhook_defaultStatuses_qualified"
+msgstr "Принимает решение"
+
+#: flaskr/requests/handlers.py:26
+msgid "r_webhook_defaultStatuses_proposalMade"
+msgstr "Переговоры"
+
+#: flaskr/requests/handlers.py:27
+msgid "r_webhook_defaultStatuses_win"
+msgstr "Завершено"
+
+#: flaskr/requests/handlers.py:28
+msgid "r_webhook_defaultStatuses_lost"
+msgstr "Не завершено"
+
+#: flaskr/requests/handlers.py:41
+msgid "r_webhook_defaultStatuses_firstName"
+msgstr "Имя"
+
+#: flaskr/requests/handlers.py:43
+msgid "r_webhook_defaultStatuses_lastName"
+msgstr "Фамилия"
+
+#: flaskr/requests/handlers.py:45
+msgid "r_webhook_defaultStatuses_email"
+msgstr "Email"
+
+#: flaskr/requests/handlers.py:47
+msgid "r_webhook_defaultStatuses_mobilePhone"
+msgstr "Телефон"
+
+#: flaskr/requests/handlers.py:64
+msgid "r_webhook_defaultTasks_sendLetter"
+msgstr "Отправить письмо на email"
+
+#: flaskr/requests/handlers.py:65
+msgid "r_webhook_defaultTasks_makeCall"
+msgstr "Сделать звонок"
+
 #: flaskr/views/analytics/__init__.py:15
 msgid "v_analytics_meta_name"
 msgstr "Аналитика"
 
-#: flaskr/views/analytics/__init__.py:114
+#: flaskr/views/analytics/__init__.py:127
 msgid "v_analytics_header_periodType_currentMonth"
 msgstr "Текущий месяц"
 
-#: flaskr/views/analytics/__init__.py:115
+#: flaskr/views/analytics/__init__.py:128
 msgid "v_analytics_header_periodType_previousMonth"
 msgstr "Предыдущий месяц"
 
-#: flaskr/views/analytics/__init__.py:116
+#: flaskr/views/analytics/__init__.py:129
 msgid "v_analytics_header_periodType_last30days"
 msgstr "Посл. 30 дней"
 
-#: flaskr/views/analytics/__init__.py:117
+#: flaskr/views/analytics/__init__.py:130
 msgid "v_analytics_header_periodType_last3months"
 msgstr "Посл. 3 месяца"
 
-#: flaskr/views/analytics/__init__.py:118
+#: flaskr/views/analytics/__init__.py:131
 msgid "v_analytics_header_periodType_last6months"
 msgstr "Посл. 6 месяцев"
 
-#: flaskr/views/analytics/__init__.py:119
+#: flaskr/views/analytics/__init__.py:132
 msgid "v_analytics_header_periodType_allTime"
 msgstr "Все время"
 
-#: flaskr/views/analytics/__init__.py:120
+#: flaskr/views/analytics/__init__.py:133
 msgid "v_analytics_header_periodType_customPeriod"
 msgstr "Указать период"
 
-#: flaskr/views/analytics/__init__.py:141
+#: flaskr/views/analytics/__init__.py:154
 msgid "v_analytics_statistics_allLeads"
 msgstr "Все лиды"
 
-#: flaskr/views/analytics/__init__.py:149
+#: flaskr/views/analytics/__init__.py:159
+msgid "v_analytics_statistics_tasksCompleted"
+msgstr "Задач выполнено"
+
+#: flaskr/views/analytics/__init__.py:167
 msgid "v_analytics_statistics_statisticsByDay"
 msgstr "Статистика по дням"
 
-#: flaskr/views/api/__init__.py:20
+#: flaskr/views/api/__init__.py:22
 msgid "v_api_name"
 msgstr "API"
 
-#: flaskr/views/api/__init__.py:21
+#: flaskr/views/api/__init__.py:23
 msgid "v_tokenModal_title"
 msgstr "Получить токен"
 
-#: flaskr/views/api/__init__.py:22
+#: flaskr/views/api/__init__.py:24
 msgid "v_tokenModal_subtitle"
 msgstr ""
 "Внимание! После нажатия на кнопку «Создать токен» ваш текущий токен будет"
 " деактивирован."
 
-#: flaskr/views/api/__init__.py:23
+#: flaskr/views/api/__init__.py:25
 msgid "v_tokenModal_createToken"
 msgstr "Создать токен"
 
-#: flaskr/views/api/__init__.py:24
+#: flaskr/views/api/__init__.py:26
 msgid "v_tokenModal_token"
 msgstr "Новый токен"
 
-#: flaskr/views/api/__init__.py:49
+#: flaskr/views/api/__init__.py:80
 msgid "v_api_header_extensions"
 msgstr "Расширения"
 
-#: flaskr/views/api/__init__.py:56
+#: flaskr/views/api/__init__.py:87
 msgid "v_api_header_getToken"
 msgstr "Получить токен"
 
-#: flaskr/views/api/__init__.py:63
+#: flaskr/views/api/__init__.py:94
 msgid "v_api_header_tabs_leads"
 msgstr "Лиды"
 
-#: flaskr/views/api/__init__.py:68
+#: flaskr/views/api/__init__.py:99
 msgid "v_api_header_tabs_statuses"
 msgstr "Статусы"
 
-#: flaskr/views/api/__init__.py:75
+#: flaskr/views/api/__init__.py:106
 msgid "v_api_header_tabs_fields"
 msgstr "Поля данных"
+
+#: flaskr/views/api/__init__.py:113
+msgid "v_api_header_tabs_tasks"
+msgstr "Задачи"
 
 #: flaskr/views/card/__init__.py:15 flaskr/views/card/__init__.py:20
 msgid "v_card_meta_name"
@@ -578,11 +586,11 @@ msgstr "Настройка карточки"
 
 #: flaskr/views/card/__init__.py:21
 msgid "v_card_form_leadAmount"
-msgstr "Стоимость лида"
+msgstr "Отображать сумму лида"
 
 #: flaskr/views/card/__init__.py:22
 msgid "v_card_form_amountCurrency"
-msgstr "Валюта стоимости"
+msgstr "Валюта суммы"
 
 #: flaskr/views/card/__init__.py:23
 msgid "v_card_form_fields"
@@ -660,19 +668,19 @@ msgstr "Сохранить"
 msgid "v_card_getMethods_changesSaved"
 msgstr "Изменения сохранены"
 
-#: flaskr/views/extensions/extension/__init__.py:41
+#: flaskr/views/extensions/extension/__init__.py:37
 msgid "v_extension_meta_name"
 msgstr "Интеграция с %(name)s"
 
-#: flaskr/views/extensions/extension/__init__.py:54
+#: flaskr/views/extensions/extension/__init__.py:50
 msgid "v_extension_header_tab_extensions"
 msgstr "Расширения"
 
-#: flaskr/views/extensions/extension/__init__.py:63
+#: flaskr/views/extensions/extension/__init__.py:59
 msgid "v_extension_header_information"
 msgstr "Информация"
 
-#: flaskr/views/extensions/extension/__init__.py:68
+#: flaskr/views/extensions/extension/__init__.py:64
 msgid "v_extension_header_settings"
 msgstr "Настройки"
 

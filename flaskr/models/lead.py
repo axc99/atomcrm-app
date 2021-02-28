@@ -52,7 +52,7 @@ class Lead(db.Model):
     def generate_uid():
         return ''.join(random.choice('ABCD' + string.digits) for _ in range(8))
 
-    def complete_tasks(self, completed_task_ids, user_id):
+    def complete_tasks(self, completed_task_ids, user_id=None):
         current_completed_tasks = LeadCompletedTask.query \
             .filter_by(lead_id=self.id) \
             .all()
@@ -74,7 +74,8 @@ class Lead(db.Model):
             new_action.type = LeadActionType.revert_complete_task
             new_action.lead_id = self.id
             new_action.completed_task_id = task_id
-            new_action.nepkit_user_id = user_id
+            if user_id:
+                new_action.nepkit_user_id = user_id
             db.session.add(new_action)
 
         # Create new task
@@ -89,7 +90,8 @@ class Lead(db.Model):
             new_action.type = LeadActionType.complete_task
             new_action.lead_id = self.id
             new_action.completed_task_id = task_id
-            new_action.nepkit_user_id = user_id
+            if user_id:
+                new_action.nepkit_user_id = user_id
             db.session.add(new_action)
 
         db.session.commit()
@@ -219,6 +221,27 @@ class Lead(db.Model):
             res_tags.append(tag.tag_name)
 
         return res_tags
+
+    # Get completed tasks
+    @staticmethod
+    def get_completed_tasks(lead_id, for_api=False):
+        res_completed_tasks = []
+
+        completed_tasks = db.session.execute("""
+                SELECT
+                    lct.id AS id
+                FROM
+                    public.lead_completed_task AS lct
+                WHERE
+                    lct.lead_id = :lead_id
+                ORDER BY
+                    lct.id ASC""", {
+            'lead_id': lead_id
+        })
+        for task in completed_tasks:
+            res_completed_tasks.append(task.id)
+
+        return res_completed_tasks
 
     @staticmethod
     def get_regular_date(src_date):

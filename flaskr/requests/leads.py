@@ -79,6 +79,7 @@ def get_leads(params, request_data):
             'id': lead.id,
             'uid': lead.uid,
             'amount': lead.amount,
+            'amountStr': installation_card_settings.format_amount(lead.amount) if lead.amount else None,
             'status_id': lead.status_id,
             'archived': lead.archived,
             'addDate': (lead.add_date + timedelta(minutes=request_data['timezone_offset'])).strftime('%Y-%m-%d %H:%M:%S'),
@@ -138,7 +139,8 @@ def get_lead(params, request_data):
                     WHEN :lead_id is not NULL THEN (SELECT COUNT(*) FROM public.lead_completed_task as lct WHERE lct.task_id = t.id AND lct.lead_id = :lead_id) != 0
                     ELSE false
                 END
-            ) AS completed
+            ) AS completed,
+            (SELECT lct.add_date FROM public.lead_completed_task as lct WHERE lct.task_id = t.id AND lct.lead_id = :lead_id) AS complete_date
         FROM
             public.task AS t
         WHERE
@@ -150,19 +152,11 @@ def get_lead(params, request_data):
         'lead_id': lead.id
     })
     for task in tasks_q:
-        subtasks = []
-        for subtask in Task.get_subtasks(task, lead_id=lead.id):
-            subtasks.append({
-                'id': subtask.id,
-                'name': subtask.name,
-                'completed': subtask.completed
-            })
-
         tasks.append({
             'id': task.id,
             'name': task.name,
             'completed': task.completed,
-            'subtasks': subtasks
+            'completeDate': (task.complete_date + timedelta(minutes=request_data['timezone_offset'])).strftime('%Y-%m-%d %H:%M:%S') if task.complete_date else None
         })
 
     return {
@@ -389,7 +383,7 @@ def update_lead_status(params, request_data):
 def complete_lead_tasks(params, request_data):
     vld = Validator({
         'id': {'type': 'number', 'required': True},
-        'task_ids': {'type': 'list', 'required': True}
+        'taskIds': {'type': 'list', 'required': True}
     })
     is_valid = vld.validate(params)
     if not is_valid:
@@ -403,7 +397,7 @@ def complete_lead_tasks(params, request_data):
     if not lead:
         return {'res': 'err', 'message': 'Unknown lead'}
 
-    lead.complete_tasks(params['task_ids'],
+    lead.complete_tasks(params['taskIds'],
                         user_id=request_data['user_id'])
 
     return {

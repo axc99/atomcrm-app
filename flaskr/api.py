@@ -8,28 +8,13 @@ from cerberus import Validator
 
 
 # Get leads
-def get_leads(data, nepkit_installation_id):
-    vld = Validator({
-        'uid': {'type': ['string', 'list'], 'nullable': True}
-    })
-    is_valid = vld.validate(data)
-
-    if not is_valid:
-        return vld.errors, 400
-
+def get_leads(resource_id, data, nepkit_installation_id):
     res_leads = []
 
-    leads_q = Lead.query.filter_by(nepkit_installation_id=nepkit_installation_id)
-
-    if data.get('uid'):
-        if isinstance(data['uid'], list):
-            leads_q = leads_q.filter(Lead.uid.in_(data['uid']))
-        else:
-            leads_q = leads_q.filter_by(uid=data['uid'])
-    else:
-        leads_q = leads_q.limit(500)
-
-    leads = leads_q.all()
+    leads = Lead.query\
+        .filter_by(nepkit_installation_id=nepkit_installation_id,
+                                   uid=resource_id) \
+        .all()
 
     for lead in leads:
         res_leads.append({
@@ -38,7 +23,8 @@ def get_leads(data, nepkit_installation_id):
             'addDate': lead.add_date.strftime('%Y-%m-%d %H:%M:%S'),
             'updDate': lead.upd_date.strftime('%Y-%m-%d %H:%M:%S'),
             'fields': Lead.get_fields(lead.id, for_api=True),
-            'tags': Lead.get_tags(lead.id, for_api=True)
+            'tags': Lead.get_tags(lead.id, for_api=True),
+            'completedTasks': Lead.get_completed_tasks(lead.id, for_api=True)
         })
 
     return {
@@ -47,13 +33,9 @@ def get_leads(data, nepkit_installation_id):
 
 
 # Create lead
-def create_lead(data, nepkit_installation_id):
+def create_lead(resource_id, data, nepkit_installation_id):
     vld = Validator({
         'statusId': {'type': 'number', 'required': True},
-        'tags': {
-            'type': 'list',
-            'schema': {'type': ['number', 'string']}
-        },
         'fields': {
             'type': 'list',
             'schema': {
@@ -64,6 +46,15 @@ def create_lead(data, nepkit_installation_id):
                 }
             }
         },
+        'tags': {
+            'type': 'list',
+            'schema': {'type': ['number', 'string']}
+        },
+        'completedTasks': {
+            'type': 'list',
+            'schema': {'type': ['number', 'string']}
+        },
+        'amount': {'type': ['number', 'string']},
         'utmSource': {'type': 'string'},
         'utmMedium': {'type': 'string'},
         'utmCampaign': {'type': 'string'},
@@ -97,6 +88,7 @@ def create_lead(data, nepkit_installation_id):
     lead.uid = Lead.get_uid()
     lead.nepkit_installation_id = nepkit_installation_id
     lead.status_id = data['statusId']
+    lead.amount = data.get('amount', 0)
     lead.utm_source = data.get('utmSource', None)
     lead.utm_medium = data.get('utmMedium', None)
     lead.utm_campaign = data.get('utmCampaign', None)
@@ -127,30 +119,35 @@ def create_lead(data, nepkit_installation_id):
             'addDate': lead.add_date.strftime('%Y-%m-%d %H:%M:%S'),
             'updDate': lead.upd_date.strftime('%Y-%m-%d %H:%M:%S'),
             'fields': Lead.get_fields(lead.id, for_api=True),
-            'tags': Lead.get_tags(lead.id, for_api=True)
+            'tags': Lead.get_tags(lead.id, for_api=True),
+            'completedTasks': []
         }
     }
 
 
 # Update lead
-def update_lead(data, nepkit_installation_id):
+def update_lead(resource_id, data, nepkit_installation_id):
     vld = Validator({
-        'uid': {'type': 'string', 'required': True},
         'statusId': {'type': 'number', 'required': True},
-        'tags': {
-            'type': 'list',
-            'schema': {'type': ['number', 'string']}
-        },
         'fields': {
             'type': 'list',
-            'scheme': {
+            'schema': {
                 'type': 'dict',
                 'schema': {
                     'fieldId': {'type': 'number', 'required': True, 'nullable': False},
                     'value': {'type': ['number', 'string', 'boolean', 'list'], 'required': True}
                 }
             }
-        }
+        },
+        'tags': {
+            'type': 'list',
+            'schema': {'type': ['number', 'string']}
+        },
+        'completedTasks': {
+            'type': 'list',
+            'schema': {'type': ['number', 'string']}
+        },
+        'amount': {'type': ['number', 'string']}
     })
     is_valid = vld.validate(data)
 
@@ -167,12 +164,12 @@ def update_lead(data, nepkit_installation_id):
 
     # Get lead by id
     lead = Lead.query \
-        .filter_by(uid=data['uid'],
+        .filter_by(uid=resource_id,
                    nepkit_installation_id=nepkit_installation_id) \
         .first()
 
     if not lead:
-        return {"message": "Lead (uid={}) does not exist".format(data['uid'])}, 400
+        return {"message": "Lead (uid={}) does not exist".format(resource_id)}, 400
 
     if lead.status_id != data['statusId']:
         # Check status id
@@ -189,11 +186,14 @@ def update_lead(data, nepkit_installation_id):
     # Update lead
     lead.status_id = data['statusId']
     lead.upd_date = datetime.utcnow()
+    lead.amount = data.get('amount', 0)
     db.session.commit()
 
-    # Set tags and fields
-    if data.get('tags'):
+    # Set tags, completed tasks and fields
+    if 'tags' in data:
         lead.set_tags(data['tags'])
+    if 'completedTasks' in data:
+        lead.complete_tasks(data['completedTasks'])
     if len(fields) > 0:
         lead.set_fields(fields)
 
@@ -221,61 +221,7 @@ def update_lead(data, nepkit_installation_id):
             'addDate': lead.add_date.strftime('%Y-%m-%d %H:%M:%S'),
             'updDate': lead.upd_date.strftime('%Y-%m-%d %H:%M:%S'),
             'fields': Lead.get_fields(lead.id, for_api=True),
-            'tags': Lead.get_tags(lead.id, for_api=True)
+            'tags': Lead.get_tags(lead.id, for_api=True),
+            'completedTasks': Lead.get_completed_tasks(lead.id, for_api=True)
         }
-    }
-
-
-# Get statuses
-def get_statuses(data, nepkit_installation_id):
-    res_statuses = []
-
-    statuses_q = Status.query.filter_by(nepkit_installation_id=nepkit_installation_id)
-
-    if data.get('id'):
-        if isinstance(data['id'], list):
-            statuses_q = statuses_q.filter(Status.id.in_(data['id']))
-        else:
-            statuses_q = statuses_q.filter_by(id=data['id'])
-    else:
-        statuses_q = statuses_q.limit(500)
-
-    statuses = statuses_q.all()
-
-    for status in statuses:
-        res_statuses.append({
-            'id': status.id,
-            'name': status.name
-        })
-
-    return {
-        'statuses': res_statuses
-    }
-
-
-# Get fields
-def get_fields(data, nepkit_installation_id):
-    res_fields = []
-
-    fields_q = Field.query.filter_by(nepkit_installation_id=nepkit_installation_id)
-
-    if data.get('id'):
-        if isinstance(data['id'], list):
-            fields_q = fields_q.filter(Status.id.in_(data['id']))
-        else:
-            fields_q = fields_q.filter_by(id=data['id'])
-    else:
-        fields_q = fields_q.limit(500)
-
-    fields = fields_q.all()
-
-    for field in fields:
-        res_fields.append({
-            'id': field.id,
-            'valueType': field.value_type.name,
-            'name': field.name
-        })
-
-    return {
-        'fields': res_fields
     }

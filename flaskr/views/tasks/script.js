@@ -13,7 +13,7 @@ const TasksList = ({ tasks, deleteLoadingIndex, loading, openModal, deleteTask, 
       loading:  deleteLoadingIndex !== null && (i === deleteLoadingIndex),
       onClick: () => deleteTask({
         id: task.id,
-        completed: task.completed
+        completedCount: task.completedCount
       })
     }
 
@@ -21,7 +21,6 @@ const TasksList = ({ tasks, deleteLoadingIndex, loading, openModal, deleteTask, 
       key: task.id,
       color: task.color,
       title: task.name,
-      extra: `${task.subtaskCount} ${task.subtaskCount == 1 ? strs['table_count_task'] : strs['table_count_subtasks']}`,
       actions: [
         {
           _com: 'Button',
@@ -51,7 +50,6 @@ const TasksList = ({ tasks, deleteLoadingIndex, loading, openModal, deleteTask, 
 const TaskModal = ({ opened=false, type, closeModal, task, loadTasks }) => {
   const [form] = useForm()
   const [reqLoading, setReqLoading] = useState(false)
-  const [subtasks, setSubtasks] = useState([])
 
   useEffect(() => {
     if (opened) {
@@ -59,12 +57,10 @@ const TaskModal = ({ opened=false, type, closeModal, task, loadTasks }) => {
         form.setFieldsValue({
           name: task.name
         })
-        setSubtasks(task.subtasks)
       } else {
         form.setFieldsValue({
           name: ''
         })
-        setSubtasks([])
       }
     }
   }, [task, opened])
@@ -83,8 +79,7 @@ const TaskModal = ({ opened=false, type, closeModal, task, loadTasks }) => {
           app
             .sendReq(type === 'create' ? 'createTask' : 'updateTask', {
               id: task && task.id,
-              name: values.name,
-              tasks: subtasks
+              name: values.name
             })
             .then(result => {
               setReqLoading(false)
@@ -107,16 +102,7 @@ const TaskModal = ({ opened=false, type, closeModal, task, loadTasks }) => {
               {max: 30, message: strs['taskModal_form_name_length']},
               {required: true, message: strs['taskModal_form_name_required']}
             ]
-          },
-          {
-            '_com': 'Field.Custom',
-            'label': strs['taskModal_form_subtasks'],
-            'content':
-              TaskModalSubtasks({
-                subtasks,
-                setSubtasks
-              })
-        }
+          }
         ],
         buttons: [
           {
@@ -131,70 +117,6 @@ const TaskModal = ({ opened=false, type, closeModal, task, loadTasks }) => {
     }
     ]
   }
-}
-
-const TaskModalSubtasks = ({ subtasks, setSubtasks }) => {
-  const addSubtask = () => {
-    subtasks.push({
-      name: ''
-    })
-    setSubtasks([...subtasks])
-  }
-
-  const updateSubtask = (i, subtask) => {
-    subtasks[i] = subtask
-    setSubtasks([...subtasks])
-  }
-
-  const removeSubtask = (i) => {
-    subtasks.splice(i, 1)
-    setSubtasks([...subtasks])
-  }
-
-  const moveSubtask = (oldIndex, newIndex) => {
-    subtasks.splice(newIndex, 0, subtasks.splice(oldIndex, 1)[0])
-    setSubtasks([...subtasks])
-  }
-
-  const rows = subtasks.map((subtask, i) => ({
-    name: {
-      _com: 'Field.Input',
-      value: subtask.name,
-      onChange: ({ value }) => updateSubtask(i, { name: value })
-    },
-    actions: [
-      {
-        _com: 'Button',
-        icon: 'delete',
-        onClick: () => removeSubtask(i)
-      }
-    ]
-  }))
-
-  console.log('rows>>>', rows)
-
-  return [
-    {
-      '_com': 'Table',
-      'draggable': true,
-      'emptyText': strs['taskModal_form_subtasks_table_noSubtasks'],
-      'onDrag': ({ oldIndex, newIndex }) => moveSubtask(oldIndex, newIndex),
-      'columns': [
-          {
-              'width': 35,
-              'key': 'name'
-          }
-      ],
-      'rows': rows
-    },
-    {
-      '_com': 'Button',
-      'label': strs['taskModal_form_subtasks_addSubtask'],
-      'icon': 'plus',
-      'type': 'solid',
-      'onClick': () => addSubtask()
-    }
-  ]
 }
 
 const DeleteTaskModal = ({ id, opened, closeDeleteModal, loadTasks, tasks }) => {
@@ -315,8 +237,8 @@ view.render = () => {
   }
 
   // Handle delete task
-  const deleteTask = ({ id, completed }) => {
-    if (completed) {
+  const deleteTask = ({ id, completedCount }) => {
+    if (completedCount > 0) {
       openDeleteModal({ id })
     } else {
       const deletedItemIndex = listData.tasks.findIndex(task => task.id == id)
