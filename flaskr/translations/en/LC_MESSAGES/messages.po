@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-12-30 11:43+0000\n"
+"POT-Creation-Date: 2021-02-27 16:59+0300\n"
 "PO-Revision-Date: 2020-10-10 19:41+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -17,54 +17,6 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
-
-#: flaskr/routes.py:116
-msgid "r_webhook_defaultStatuses_lead"
-msgstr "Lead"
-
-#: flaskr/routes.py:117
-msgid "r_webhook_defaultStatuses_contacted"
-msgstr "Contacted"
-
-#: flaskr/routes.py:118
-msgid "r_webhook_defaultStatuses_qualified"
-msgstr "Qualified"
-
-#: flaskr/routes.py:119
-msgid "r_webhook_defaultStatuses_proposalMade"
-msgstr "Proposal made"
-
-#: flaskr/routes.py:120
-msgid "r_webhook_defaultStatuses_win"
-msgstr "Win"
-
-#: flaskr/routes.py:121
-msgid "r_webhook_defaultStatuses_lost"
-msgstr "Lost"
-
-#: flaskr/routes.py:134
-msgid "r_webhook_defaultStatuses_firstName"
-msgstr "First name"
-
-#: flaskr/routes.py:135
-msgid "r_webhook_defaultStatuses_lastName"
-msgstr "Last name"
-
-#: flaskr/routes.py:136
-msgid "r_webhook_defaultStatuses_email"
-msgstr "Email"
-
-#: flaskr/routes.py:137
-msgid "r_webhook_defaultStatuses_mobilePhone"
-msgstr "Mobile phone"
-
-#: flaskr/routes.py:153
-msgid "r_webhook_defaultTasks_sendLetter"
-msgstr "Send an email"
-
-#: flaskr/routes.py:154
-msgid "r_webhook_defaultTasks_makeCall"
-msgstr "Make a call"
 
 #: flaskr/extensions/mottor/__init__.py:57
 msgid "e_mottor_settings_form_defaultStatus"
@@ -310,95 +262,95 @@ msgstr "In title"
 msgid "m_status_getBoardVisibility_subtitle"
 msgstr "In description"
 
-#: flaskr/models/lead.py:234
+#: flaskr/models/lead.py:255
 msgid "m_lead_getRegularDate_jan"
 msgstr "Jan"
 
-#: flaskr/models/lead.py:235
+#: flaskr/models/lead.py:256
 msgid "m_lead_getRegularDate_feb"
 msgstr "Feb"
 
-#: flaskr/models/lead.py:236
+#: flaskr/models/lead.py:257
 msgid "m_lead_getRegularDate_mar"
 msgstr "Mar"
 
-#: flaskr/models/lead.py:237
+#: flaskr/models/lead.py:258
 msgid "m_lead_getRegularDate_apr"
 msgstr "Apr"
 
-#: flaskr/models/lead.py:238
+#: flaskr/models/lead.py:259
 msgid "m_lead_getRegularDate_may"
 msgstr "May"
 
-#: flaskr/models/lead.py:239
+#: flaskr/models/lead.py:260
 msgid "m_lead_getRegularDate_jun"
 msgstr "Jun"
 
-#: flaskr/models/lead.py:240
+#: flaskr/models/lead.py:261
 msgid "m_lead_getRegularDate_jul"
 msgstr "Jul"
 
-#: flaskr/models/lead.py:241
+#: flaskr/models/lead.py:262
 msgid "m_lead_getRegularDate_aug"
 msgstr "Aug"
 
-#: flaskr/models/lead.py:242
+#: flaskr/models/lead.py:263
 msgid "m_lead_getRegularDate_sep"
 msgstr "Sep"
 
-#: flaskr/models/lead.py:243
+#: flaskr/models/lead.py:264
 msgid "m_lead_getRegularDate_oct"
 msgstr "Oct"
 
-#: flaskr/models/lead.py:244
+#: flaskr/models/lead.py:265
 msgid "m_lead_getRegularDate_nov"
 msgstr "Nov"
 
-#: flaskr/models/lead.py:245
+#: flaskr/models/lead.py:266
 msgid "m_lead_getRegularDate_dec"
 msgstr "Dec"
 
-#: flaskr/models/lead.py:250
+#: flaskr/models/lead.py:271
 msgid "m_lead_getRegularDate_today"
 msgstr "Today at %(hours)s:%(minutes)s"
 
-#: flaskr/models/lead.py:252
+#: flaskr/models/lead.py:273
 msgid "m_lead_getRegularDate_yesterday"
 msgstr "Yesterday at %(hours)s:%(minutes)s"
 
-#: flaskr/models/lead.py:255
+#: flaskr/models/lead.py:276
 msgid "m_lead_getRegularDate_date"
 msgstr "%(day)s %(month)s at %(hours)s:%(minutes)s"
 
-#: flaskr/models/lead.py:257
+#: flaskr/models/lead.py:278
 msgid "m_lead_getRegularDate_dateWithYear"
 msgstr "%(day)s %(month)s %(year)s at %(hours)s:%(minutes)s"
 
-#: flaskr/models/lead.py:407
+#: flaskr/models/lead.py:428
 msgid "m_lead_leadAction_getItemData_createLead"
 msgstr "Add lead on «%(new_status_name)s»"
 
-#: flaskr/models/lead.py:412
+#: flaskr/models/lead.py:433
 msgid "m_lead_leadAction_getItemData_updateLead"
 msgstr "Edit lead"
 
-#: flaskr/models/lead.py:416
+#: flaskr/models/lead.py:437
 msgid "m_lead_leadAction_getItemData_updateLeadStatus"
 msgstr "Change lead status from «%(old_status_name)s» to «%(new_status_name)s»"
 
-#: flaskr/models/lead.py:422
+#: flaskr/models/lead.py:443
 msgid "m_lead_leadAction_getItemData_archiveLead"
 msgstr "Archive lead"
 
-#: flaskr/models/lead.py:426
+#: flaskr/models/lead.py:447
 msgid "m_lead_leadAction_getItemData_restoreLead"
 msgstr "Update lead"
 
-#: flaskr/models/lead.py:430
+#: flaskr/models/lead.py:451
 msgid "m_lead_leadAction_getItemData_completeTask"
 msgstr "Complete task «%(task_name)s»"
 
-#: flaskr/models/lead.py:434
+#: flaskr/models/lead.py:455
 msgid "m_lead_leadAction_getItemData_revertCompleteTask"
 msgstr "Revert complete task «%(task_name)s»"
 
@@ -426,87 +378,143 @@ msgstr "Green"
 msgid "m_status_getStatusColors_orange"
 msgstr "Orange"
 
+#: flaskr/requests/handlers.py:23
+msgid "r_webhook_defaultStatuses_lead"
+msgstr "Lead"
+
+#: flaskr/requests/handlers.py:24
+msgid "r_webhook_defaultStatuses_contacted"
+msgstr "Contacted"
+
+#: flaskr/requests/handlers.py:25
+msgid "r_webhook_defaultStatuses_qualified"
+msgstr "Qualified"
+
+#: flaskr/requests/handlers.py:26
+msgid "r_webhook_defaultStatuses_proposalMade"
+msgstr "Proposal made"
+
+#: flaskr/requests/handlers.py:27
+msgid "r_webhook_defaultStatuses_win"
+msgstr "Win"
+
+#: flaskr/requests/handlers.py:28
+msgid "r_webhook_defaultStatuses_lost"
+msgstr "Lost"
+
+#: flaskr/requests/handlers.py:41
+msgid "r_webhook_defaultStatuses_firstName"
+msgstr "First name"
+
+#: flaskr/requests/handlers.py:43
+msgid "r_webhook_defaultStatuses_lastName"
+msgstr "Last name"
+
+#: flaskr/requests/handlers.py:45
+msgid "r_webhook_defaultStatuses_email"
+msgstr "Email"
+
+#: flaskr/requests/handlers.py:47
+msgid "r_webhook_defaultStatuses_mobilePhone"
+msgstr "Mobile phone"
+
+#: flaskr/requests/handlers.py:64
+msgid "r_webhook_defaultTasks_sendLetter"
+msgstr "Send an email"
+
+#: flaskr/requests/handlers.py:65
+msgid "r_webhook_defaultTasks_makeCall"
+msgstr "Make a call"
+
 #: flaskr/views/analytics/__init__.py:15
 msgid "v_analytics_meta_name"
 msgstr "Analytics"
 
-#: flaskr/views/analytics/__init__.py:114
+#: flaskr/views/analytics/__init__.py:127
 msgid "v_analytics_header_periodType_currentMonth"
 msgstr "Current month"
 
-#: flaskr/views/analytics/__init__.py:115
+#: flaskr/views/analytics/__init__.py:128
 msgid "v_analytics_header_periodType_previousMonth"
 msgstr "Previous month"
 
-#: flaskr/views/analytics/__init__.py:116
+#: flaskr/views/analytics/__init__.py:129
 msgid "v_analytics_header_periodType_last30days"
 msgstr "Last 30 days"
 
-#: flaskr/views/analytics/__init__.py:117
+#: flaskr/views/analytics/__init__.py:130
 msgid "v_analytics_header_periodType_last3months"
 msgstr "Last 3 months"
 
-#: flaskr/views/analytics/__init__.py:118
+#: flaskr/views/analytics/__init__.py:131
 msgid "v_analytics_header_periodType_last6months"
 msgstr "Last 6 months"
 
-#: flaskr/views/analytics/__init__.py:119
+#: flaskr/views/analytics/__init__.py:132
 msgid "v_analytics_header_periodType_allTime"
 msgstr "All time"
 
-#: flaskr/views/analytics/__init__.py:120
+#: flaskr/views/analytics/__init__.py:133
 msgid "v_analytics_header_periodType_customPeriod"
 msgstr "Custom period"
 
-#: flaskr/views/analytics/__init__.py:141
+#: flaskr/views/analytics/__init__.py:154
 msgid "v_analytics_statistics_allLeads"
 msgstr "All leads"
 
-#: flaskr/views/analytics/__init__.py:149
+#: flaskr/views/analytics/__init__.py:159
+msgid "v_analytics_statistics_tasksCompleted"
+msgstr "Tasks completed"
+
+#: flaskr/views/analytics/__init__.py:167
 msgid "v_analytics_statistics_statisticsByDay"
 msgstr "Statistics by day"
 
-#: flaskr/views/api/__init__.py:20
+#: flaskr/views/api/__init__.py:22
 msgid "v_api_name"
 msgstr "API"
 
-#: flaskr/views/api/__init__.py:21
+#: flaskr/views/api/__init__.py:23
 msgid "v_tokenModal_title"
 msgstr "Get token"
 
-#: flaskr/views/api/__init__.py:22
+#: flaskr/views/api/__init__.py:24
 msgid "v_tokenModal_subtitle"
 msgstr ""
 "After clicking on the \"Create token\" button, your current token will be"
 " deactivated!"
 
-#: flaskr/views/api/__init__.py:23
+#: flaskr/views/api/__init__.py:25
 msgid "v_tokenModal_createToken"
 msgstr "Create token"
 
-#: flaskr/views/api/__init__.py:24
+#: flaskr/views/api/__init__.py:26
 msgid "v_tokenModal_token"
 msgstr "New token"
 
-#: flaskr/views/api/__init__.py:49
+#: flaskr/views/api/__init__.py:80
 msgid "v_api_header_extensions"
 msgstr "Extensions"
 
-#: flaskr/views/api/__init__.py:56
+#: flaskr/views/api/__init__.py:87
 msgid "v_api_header_getToken"
 msgstr "Get token"
 
-#: flaskr/views/api/__init__.py:63
+#: flaskr/views/api/__init__.py:94
 msgid "v_api_header_tabs_leads"
 msgstr "Leads"
 
-#: flaskr/views/api/__init__.py:68
+#: flaskr/views/api/__init__.py:99
 msgid "v_api_header_tabs_statuses"
 msgstr "Statuses"
 
-#: flaskr/views/api/__init__.py:75
+#: flaskr/views/api/__init__.py:106
 msgid "v_api_header_tabs_fields"
 msgstr "Fields"
+
+#: flaskr/views/api/__init__.py:113
+msgid "v_api_header_tabs_tasks"
+msgstr "Tasks"
 
 #: flaskr/views/card/__init__.py:15 flaskr/views/card/__init__.py:20
 msgid "v_card_meta_name"
@@ -596,19 +604,19 @@ msgstr "Save"
 msgid "v_card_getMethods_changesSaved"
 msgstr "Changes saved"
 
-#: flaskr/views/extensions/extension/__init__.py:41
+#: flaskr/views/extensions/extension/__init__.py:37
 msgid "v_extension_meta_name"
 msgstr "Extension with %(name)s"
 
-#: flaskr/views/extensions/extension/__init__.py:54
+#: flaskr/views/extensions/extension/__init__.py:50
 msgid "v_extension_header_tab_extensions"
 msgstr "Extensions"
 
-#: flaskr/views/extensions/extension/__init__.py:63
+#: flaskr/views/extensions/extension/__init__.py:59
 msgid "v_extension_header_information"
 msgstr "Information"
 
-#: flaskr/views/extensions/extension/__init__.py:68
+#: flaskr/views/extensions/extension/__init__.py:64
 msgid "v_extension_header_settings"
 msgstr "Settings"
 

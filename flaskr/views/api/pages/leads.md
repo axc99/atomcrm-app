@@ -1,15 +1,18 @@
 ## Create lead
 
-`POST https://nepkit.team/atomcrm/api/<TOKEN HERE>/createLead`
+### Sample request:
 
-Sample request body:
+```
+POST https://nepkit.team/atomcrm/api/v1/leads
+```
+
+```
+Authorization: Basic <YOUR TOKEN>
+Content-Type: application/json
+```
 ```json
 {
    "statusId": 1,
-   "tags": [
-      "google_search",
-      "form_2"
-   ],
    "fields": [
       {
          "fieldId": 1,
@@ -19,7 +22,9 @@ Sample request body:
          "fieldId": 2,
          "value": "john@gmail.com"
       }
-   ],
+   ], 
+   "tags": ["google_search", "form_2"],
+   "amount": 25.45,   
    "utmSource": "google",
    "utmMedium": "cpc",
    "utmCampaign": "spring_sale",
@@ -28,7 +33,8 @@ Sample request body:
 }
 ```
 
-Sample response body:
+### Sample response:
+
 ```json
 {
    "lead": {
@@ -36,10 +42,6 @@ Sample response body:
       "statusId": 1,
       "addDate": "2020-08-29 13:47:12",
       "updDate": "2020-08-29 13:47:12",
-      "tags": [
-         "google_search",
-         "form_2"
-      ],
       "fields": [
          {
             "fieldId": 1,
@@ -51,8 +53,10 @@ Sample response body:
             "fieldName": "Email",
             "value": "john@gmail.com"
          }
-      ]
+      ],
+      "tags": ["google_search", "form_2"]
    },
+   "amount": 25.45,
    "utmSource": "google",
    "utmMedium": "cpc",
    "utmCampaign": "spring_sale",
@@ -61,18 +65,22 @@ Sample response body:
 }
 ```
 
+---------
+
 ## Get leads
 
-`POST https://nepkit.team/atomcrm/api/<TOKEN HERE>/getLeads`
+### Sample request:
 
-Sample request body:
-```json
-{
-   "uid": ["A1B2C345"]
-}
+```
+GET https://nepkit.team/atomcrm/api/v1/leads/A1B2C345
 ```
 
-Sample response body:
+```
+Authorization: Basic <YOUR TOKEN>
+```
+
+### Sample response:
+
 ```json
 {
    "leads": [
@@ -81,10 +89,6 @@ Sample response body:
          "statusId": 1,
          "addDate": "2020-08-29 13:47:12",
          "updDate": "2020-08-30 14:23:00",
-         "tags": [
-            "google_search",
-            "form_2"
-         ],
          "fields": [
             {
                "fieldId": 1,
@@ -97,6 +101,9 @@ Sample response body:
                "value": "john@gmail.com"
             }
          ],
+         "tags": ["google_search", "form_2"],
+         "completedTasks": [1, 2],
+         "amount": 25.45,
          "utmSource": "google",
          "utmMedium": "cpc",
          "utmCampaign": "spring_sale",
@@ -107,16 +114,24 @@ Sample response body:
 }
 ```
 
+---------
+
 ## Update lead
 
-`POST https://nepkit.team/atomcrm/api/<TOKEN HERE>/updateLead`
+### Sample request:
 
-Sample request body:
+```
+PATCH https://nepkit.team/atomcrm/api/v1/leads/<LEAD ID>
+```
+
+```
+Authorization: Basic <YOUR TOKEN>
+Content-Type: application/json
+```
+
 ```json
 {
-   "uid": "A1B2C345",
    "statusId": 2,
-   "tags": [],
    "fields": [
       {
          "fieldId": 1,
@@ -126,11 +141,15 @@ Sample request body:
          "fieldId": 2,
          "value": "andrew@gmail.com"
       }
-   ]
+   ],
+   "tags": [],
+   "completedTasks": [2, 3],
+   "amount": 105
 }
 ```
 
-Sample response body:
+### Sample response:
+
 ```json
 {
    "leads": [
@@ -139,7 +158,6 @@ Sample response body:
          "statusId": 2,
          "addDate": "2020-08-29 13:47:12",
          "updDate": "2020-08-30 14:23:00",
-         "tags": [],
          "fields": [
             {
                "fieldId": 1,
@@ -151,7 +169,10 @@ Sample response body:
                "fieldName": "Email",
                "value": "andrew@gmail.com"
             }
-         ]
+         ],
+         "tags": [],
+         "completedTasks": [2, 3],
+         "amount": 105
       }
    ]
 }

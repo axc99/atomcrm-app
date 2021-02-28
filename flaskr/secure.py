@@ -1,3 +1,4 @@
+import base64
 import os
 from secrets import choice
 import string
@@ -12,9 +13,13 @@ def validate_secret_key(secret_key):
 
 # Validate api token
 def validate_api_token(token):
+    if not token:
+        return False, None
+
     is_token_valid = True
 
-    nepkit_installation_id, token = token.split('_')
+    token = base64.b64decode(token.encode()).decode()
+    nepkit_installation_id, token = token.split(':')
 
     if nepkit_installation_id and token:
         is_token_valid = Token.query \
@@ -43,4 +48,4 @@ def get_api_token(nepkit_installation_id):
     db.session.add(token)
     db.session.commit()
 
-    return '{}_{}'.format(nepkit_installation_id, token.token)
+    return base64.b64encode('{}:{}'.format(nepkit_installation_id, token.token).encode()).decode()

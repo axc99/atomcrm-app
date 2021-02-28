@@ -70,13 +70,26 @@ class Analytics(View):
                 .execute("""
                     SELECT
                         (
-                            SELECT COUNT(*) 
+                            SELECT COUNT(distinct l.*) 
                             FROM public.lead AS l 
                             WHERE 
                                 (l.add_date::date >= :period_from AND l.add_date::date <= :period_to) AND 
                                 l.archived = false AND 
                                 l.nepkit_installation_id = :nepkit_installation_id
+                            LIMIT 1
                         ) AS lead_count,
+                        (
+                            SELECT COUNT(distinct lct.*) 
+                            FROM public.lead_completed_task AS lct 
+                            LEFT JOIN 
+                                public.lead AS l ON l.id = lct.lead_id
+                            WHERE
+                                l.archived = false AND 
+                                l.nepkit_installation_id = :nepkit_installation_id AND
+                                (:period_from is null OR l.add_date > :period_from) AND
+                                (lct.add_date::date >= :period_from AND lct.add_date::date <= :period_to) 
+                            LIMIT 1
+                        ) AS completed_tasks_count,
                         {}
                     FROM
                         public.status AS s
@@ -140,7 +153,12 @@ class Analytics(View):
                     {
                         'title': _('v_analytics_statistics_allLeads'),
                         'value': self.count_by_dates['lead_count'] if 'lead_count' in self.count_by_dates else 0,
-                        'span': 2
+                        'span': 3
+                    },
+                    {
+                        'title': _('v_analytics_statistics_tasksCompleted'),
+                        'value': self.count_by_dates['completed_tasks_count'],
+                        'span': 3
                     }
                 ]
             },

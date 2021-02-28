@@ -50,7 +50,7 @@ class Pipeline(View):
             SELECT 
                 s.*,
                 (SELECT COUNT(*) FROM public.lead AS l WHERE l.status_id = s.id AND l.archived = false) AS lead_count,
-                123456 AS lead_amount_sum
+                0 AS lead_amount_sum
             FROM 
                 public.status AS s
             WHERE

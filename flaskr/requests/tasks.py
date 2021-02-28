@@ -11,8 +11,7 @@ def get_tasks(params, request_data):
     tasks_q = db.session.execute("""
         SELECT
             t.*,
-            (SELECT COUNT(*) FROM public.task AS st WHERE st.parent_task_id = t.id) AS subtask_count,
-            (SELECT COUNT(*) FROM public.lead_completed_task AS lct WHERE lct.task_id = t.id) AS completed
+            (SELECT COUNT(*) FROM public.lead_completed_task AS lct WHERE lct.task_id = t.id) AS completed_count
         FROM
             public.task AS t
         WHERE
@@ -24,30 +23,10 @@ def get_tasks(params, request_data):
     })
 
     for task in tasks_q:
-        subtasks = []
-        subtasks_q = db.session.execute("""
-            SELECT
-                t.*
-            FROM
-                public.task AS t
-            WHERE
-                t.parent_task_id = :parent_task_id
-            ORDER BY
-                t.index""", {
-            'parent_task_id': task['id']
-        })
-        for subtask in subtasks_q:
-            subtasks.append({
-                'id': subtask['id'],
-                'name': subtask['name']
-            })
-
         tasks.append({
             'id': task['id'],
             'name': task['name'],
-            'subtasks': subtasks,
-            'subtaskCount': task['subtask_count'],
-            'completed': task['completed']
+            'completedCount': task['completed_count']
         })
 
     return {
@@ -59,8 +38,7 @@ def get_tasks(params, request_data):
 # Create tasks set
 def create_task(params, request_data):
     vld = Validator({
-        'name': {'type': 'string', 'required': True},
-        'tasks': {'type': 'list', 'required': True}
+        'name': {'type': 'string', 'required': True}
     })
     is_valid = vld.validate(params)
     if not is_valid:
@@ -70,14 +48,11 @@ def create_task(params, request_data):
     new_set.nepkit_installation_id = request_data['installation_id']
     new_set.name = params['name']
     new_set.index = Task.query \
-                       .filter_by(nepkit_installation_id=request_data['installation_id']) \
-                       .count() - 1
+       .filter_by(nepkit_installation_id=request_data['installation_id']) \
+       .count()
 
     db.session.add(new_set)
     db.session.commit()
-
-    # Set tasks
-    new_set.set_subtasks(params['tasks'])
 
     return {
         'res': 'ok',
@@ -89,8 +64,7 @@ def create_task(params, request_data):
 def update_task(params, request_data):
     vld = Validator({
         'id': {'type': 'number', 'required': True},
-        'name': {'type': 'string', 'required': True},
-        'tasks': {'type': 'list', 'required': True}
+        'name': {'type': 'string', 'required': True}
     })
     is_valid = vld.validate(params)
     if not is_valid:
@@ -103,9 +77,6 @@ def update_task(params, request_data):
     task.name = params.get('name')
 
     db.session.commit()
-
-    # Set tasks
-    task.set_subtasks(params['tasks'])
 
     return {
         'res': 'ok'
