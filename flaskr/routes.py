@@ -17,7 +17,7 @@ from flaskr.models.field import Field
 from flaskr.models.tag import Tag
 from flaskr.models.task import Task
 from flaskr.models.token import Token
-from flaskr.models.installation_card_settings import InstallationCardSettings
+from flaskr.models.installation_settings import InstallationSettings
 from flaskr.models.installation_extension_settings import InstallationExtensionSettings
 from flaskr.secure import validate_api_token, validate_secret_key
 from flaskr.extensions import get_extension_by_id, extensions_map

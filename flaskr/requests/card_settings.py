@@ -1,7 +1,7 @@
 from cerberus import Validator
 from flaskr import db
 from flaskr.models.field import Field
-from flaskr.models.installation_card_settings import InstallationCardSettings
+from flaskr.models.installation_settings import InstallationSettings
 
 
 # Get fields
@@ -30,20 +30,32 @@ def get_fields(params, request_data):
 # Update card settings
 def update_card_settings(params, request_data):
     vld = Validator({
-        'amountEnabled': {'type': 'boolean', 'required': True},
-        'currency': {'type': 'string', 'required': True},
-        'fields': {'type': 'list', 'required': True}
+        'amountEnabled': {'type': 'boolean', 'nullable': True},
+        'currency': {'type': 'string', 'nullable': True},
+        'fields': {'type': 'list', 'nullable': True},
+        'notificationsNewLeadUserEnabled': {'type': 'boolean', 'nullable': True},
+        'notificationsNewLeadExtensionEnabled': {'type': 'boolean', 'nullable': True},
+        'notificationsNewLeadApiEnabled': {'type': 'boolean', 'nullable': True}
     })
     is_valid = vld.validate(params)
     if not is_valid:
         return {'res': 'err', 'message': 'Invalid params', 'errors': vld.errors}
 
-    card_settings = InstallationCardSettings.query \
+    card_settings = InstallationSettings.query \
         .filter_by(nepkit_installation_id=request_data['installation_id']) \
         .first()
 
-    card_settings.amount_enabled = params.get('amountEnabled')
-    card_settings.currency = params.get('currency')
+    if params.get('amountEnabled', None) is not None:
+        card_settings.amount_enabled = params['amountEnabled']
+    if params.get('currency', None) is not None:
+        card_settings.currency = params['currency']
+
+    if params.get('notificationsNewLeadUserEnabled', None) is not None:
+        card_settings.notifications_new_lead_user_enabled = params['notificationsNewLeadUserEnabled']
+    if params.get('notificationsNewLeadExtensionEnabled', None) is not None:
+        card_settings.notifications_new_lead_extension_enabled = params['notificationsNewLeadExtensionEnabled']
+    if params.get('notificationsNewLeadApiEnabled', None) is not None:
+        card_settings.notifications_new_lead_api_enabled = params['notificationsNewLeadApiEnabled']
 
     # Set fields
     if params.get('fields'):

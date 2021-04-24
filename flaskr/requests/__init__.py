@@ -40,7 +40,7 @@ requests_map = {
     'deleteTask': delete_task,
 
     # Card settings
-    'updateCardSettings': update_card_settings,
+    'updateSettings': update_card_settings,
     'getFields': get_fields,
 
     # API

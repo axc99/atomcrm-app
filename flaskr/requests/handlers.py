@@ -5,7 +5,7 @@ from flask_babel import _
 
 from flaskr.extensions import get_extension_by_id
 from flaskr.models.field import Field
-from flaskr.models.installation_card_settings import InstallationCardSettings
+from flaskr.models.installation_settings import InstallationSettings
 from flaskr.models.lead import Lead
 from flaskr.models.status import Status
 from flaskr.models.installation_extension_settings import InstallationExtensionSettings
@@ -78,10 +78,13 @@ def handle_install_app(params, request_data):
     currency = currency_by_lang[request_data['lang_key']] if request_data['lang_key'] in currency_by_lang else 'en'
 
     # Create card settings
-    new_card_settings = InstallationCardSettings()
+    new_card_settings = InstallationSettings()
     new_card_settings.amount_enabled = False
     new_card_settings.currency = currency
     new_card_settings.nepkit_installation_id = request_data['installation_id']
+    new_card_settings.notifications_new_lead_user_enabled = False
+    new_card_settings.notifications_new_lead_extension_enabled = True
+    new_card_settings.notifications_new_lead_api_enabled = True
     db.session.add(new_card_settings)
     db.session.commit()
 
@@ -93,7 +96,7 @@ def handle_install_app(params, request_data):
 # Uninstall app
 def handle_uninstall_app(params, request_data):
     # Delete all data
-    InstallationCardSettings.query.filter_by(nepkit_installation_id=request_data['installation_id']).delete()
+    InstallationSettings.query.filter_by(nepkit_installation_id=request_data['installation_id']).delete()
     Lead.query.filter_by(nepkit_installation_id=request_data['installation_id']).delete()
     Status.query.filter_by(nepkit_installation_id=request_data['installation_id']).delete()
     Field.query.filter_by(nepkit_installation_id=request_data['installation_id']).delete()

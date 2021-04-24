@@ -5,7 +5,7 @@ const { view, app } = window.localEnv;
 const { useState, useEffect, useMemo } = React;
 
 const { useForm } = com.Form;
-const { strs, statusColors, statuses, filterParams, filterUsed, search, installationCardSettings, hasAnyIntegration, autocreateCategoryId } = view.data;
+const { strs, statusColors, statuses, filterParams, filterUsed, search, installationSettings, hasAnyIntegration, autocreateCategoryId } = view.data;
 
 const todayObj = new Date();
 todayObj.setHours(0, 0, 0, 0);
@@ -275,7 +275,7 @@ const LeadModalInformation = ({
   setData,
   loadLeads
 }) => {
-  const currency = installationCardSettings.currency;
+  const currency = installationSettings.currency;
   const [amountPrefix, amountSuffix] = currency.formatString.split('{}');
 
   return {
@@ -360,7 +360,7 @@ const LeadModalInformation = ({
         }, {
           '_com': 'Field.Input',
           '_id': 'updateLeadForm_amount',
-          '_vis': installationCardSettings.amountEnabled,
+          '_vis': installationSettings.amountEnabled,
           'type': 'number',
           'prefix': amountPrefix,
           'suffix': amountSuffix,
@@ -665,7 +665,7 @@ view.render = () => {
       });
 
       const extra = [lead['archived'] ? strs['board_archived'] : getRegularDate(lead['addDate'])];
-      if (installationCardSettings['amountEnabled'] && lead['amount']) {
+      if (installationSettings['amountEnabled'] && lead['amount']) {
         extra.unshift(lead['amount']);
       }
 
@@ -687,7 +687,7 @@ view.render = () => {
     boardColumns.push({
       'key': status['id'],
       'title': status['name'],
-      'subtitle': installationCardSettings['amountEnabled'] && status['leadAmountSumStr'],
+      'subtitle': installationSettings['amountEnabled'] && status['leadAmountSumStr'],
       'color': status['colorHex'],
       'items': boardColumnItems,
       'loading': data.loadingColIndex === i,

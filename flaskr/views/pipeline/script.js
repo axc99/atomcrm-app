@@ -3,7 +3,7 @@ const { view, app } = window.localEnv
 const { useState, useEffect, useMemo } = React
 
 const { useForm } = com.Form
-const { strs, statusColors, statuses, filterParams, filterUsed, search, installationCardSettings, hasAnyIntegration, autocreateCategoryId } = view.data
+const { strs, statusColors, statuses, filterParams, filterUsed, search, installationSettings, hasAnyIntegration, autocreateCategoryId } = view.data
 
 const todayObj = new Date()
 todayObj.setHours(0,0,0,0)
@@ -301,7 +301,7 @@ const LeadModalInformation = ({
   archiveLead,
   restoreLead
 }) => {
-  const currency = installationCardSettings.currency
+  const currency = installationSettings.currency
   const [amountPrefix, amountSuffix] = currency.formatString.split('{}')
 
   return {
@@ -396,7 +396,7 @@ const LeadModalInformation = ({
                   setData({ ...data })
                 }
               },
-              installationCardSettings.amountEnabled && {
+              installationSettings.amountEnabled && {
                 '_com': 'Field.Input',
                 '_id': 'updateLeadForm_amount',
                 'type': 'number',
@@ -697,6 +697,85 @@ const FilterModal = ({ opened, closeFilterModal }) => {
   }
 }
 
+const NotificationSettingsModal = ({ opened, closeNotificationsSettingsModal }) => {
+  const [form] = useForm()
+  const [reqLoading, setReqLoading] = useState(false)
+
+  useEffect(() => {
+    const notifications = []
+
+    if (installationSettings['notificationsNewLeadUserEnabled']) {
+      notifications.push('user')
+    }
+    if (installationSettings['notificationsNewLeadExtensionEnabled']) {
+      notifications.push('extension')
+    }
+    if (installationSettings['notificationsNewLeadApiEnabled']) {
+      notifications.push('api')
+    }
+
+    form.setFieldsValue({
+       notifications
+    })
+  }, [])
+
+  return {
+    _com: 'Modal',
+    opened,
+    title: strs['notificationsSettingsModal_title'],
+    onCancel: () => closeNotificationsSettingsModal(),
+    content: [
+      {
+        _com: 'Form',
+        form,
+        onFinish: ({ values }) => {
+          const { notifications } = values
+
+          setReqLoading(true)
+          app
+            .sendReq('updateSettings', {
+              notificationsNewLeadUserEnabled: notifications.includes('user'),
+              notificationsNewLeadExtensionEnabled: notifications.includes('extension'),
+              notificationsNewLeadApiEnabled: notifications.includes('api')
+            })
+            .then(result => {
+                setReqLoading(false)
+
+                if (result.res == 'ok') {
+                    app.showNotification({
+                        message: strs['notificationsSettingsModal_changesSaved'],
+                        duration: 1
+                    })
+                }
+            })
+        },
+        fields: [
+          {
+            '_com': 'Field.CheckboxGroup',
+            'key': 'notifications',
+            'label': strs['notificationsSettingsModal_form_notifications'],
+            'items': [
+              {key: 'user', label: strs['notificationsSettingsModal_form_notifications_user']},
+              {key: 'extension', label: strs['notificationsSettingsModal_form_notifications_extension']},
+              {key: 'api', label: strs['notificationsSettingsModal_form_notifications_api']}
+            ],
+            'defaultValue': []
+          }
+        ],
+        buttons: [
+          {
+            _com: 'Button',
+            icon: 'save',
+            loading: reqLoading,
+            submitForm: true,
+            type: 'primary',
+            label: strs['notificationsSettingsModal_form_save']
+          }
+        ]
+      }
+    ]
+  }
+}
 
 view.render = () => {
   const [data, setData] = useState({
@@ -706,6 +785,9 @@ view.render = () => {
     addLoadingColIndex: null
   })
   const [filterModal, setFilterModal] = useState({
+    opened: false
+  })
+  const [notificationsSettingsModal, setNotificationSettingsModal] = useState({
     opened: false
   })
   const [leadModal, setLeadModal] = useState({
@@ -731,7 +813,7 @@ view.render = () => {
       })
 
       const extra = [lead['archived'] ? strs['board_archived'] : getRegularDate(lead['addDate'])]
-      if (installationCardSettings['amountEnabled'] && lead['amount']) {
+      if (installationSettings['amountEnabled'] && lead['amount']) {
         extra.unshift(lead['amountStr'])
       }
 
@@ -753,7 +835,7 @@ view.render = () => {
     boardColumns.push({
       'key': status['id'],
       'title': status['name'],
-      'subtitle': installationCardSettings['amountEnabled'] && status['leadAmountSumStr'],
+      'subtitle': installationSettings['amountEnabled'] && status['leadAmountSumStr'],
       'color': status['colorHex'],
       'items': boardColumnItems,
       'loading': data.loadingColIndex === i,
@@ -800,6 +882,20 @@ view.render = () => {
 
     setData(data => ({ ...data, loading: false }))
   }, [statuses])
+
+  // Open notifications settings modal
+  const openNotificationsSettingsModal = () => {
+    setNotificationSettingsModal({
+      opened: true
+    })
+  }
+
+  // Close notifications settings modal
+  const closeNotificationsSettingsModal = () => {
+    setNotificationSettingsModal({
+      opened: false
+    })
+  }
 
   // Open filter modal
   const openFilterModal = () => {
@@ -936,13 +1032,18 @@ view.render = () => {
         },
         !hasAnyIntegration && {
           '_com': 'Button',
-          'type': 'solid',
           'icon': 'plusCircle',
           'label': strs['header_autoCreate'],
           'to': ['control', {
               'tab': 'extensions',
               'category': autocreateCategoryId
           }]
+        },
+        {
+          '_com': 'Button',
+          'icon': 'bell',
+          'label': strs['header_notifications'],
+          'onClick': () => openNotificationsSettingsModal()
         }
       ],
       'search': {
@@ -994,6 +1095,10 @@ view.render = () => {
         closeLeadModal,
         loadLeads,
         statuses: data.statuses
+      }),
+      NotificationSettingsModal({
+        ...notificationsSettingsModal,
+        closeNotificationsSettingsModal
       })
     ]
   }

@@ -8,7 +8,7 @@ from flaskr.models.installation_extension_settings import InstallationExtensionS
 from flaskr.views.view import View, get_method, method_with_vars, compile_js
 from flaskr.models.lead import Lead
 from flaskr.models.status import Status, get_hex_by_color, get_status_colors
-from flaskr.models.installation_card_settings import InstallationCardSettings
+from flaskr.models.installation_settings import InstallationSettings
 
 script = compile_js('script')
 
@@ -24,7 +24,7 @@ class Pipeline(View):
         self.data = {}
 
     def before(self, params, request_data):
-        installation_card_settings = InstallationCardSettings.query \
+        installation_settings = InstallationSettings.query \
             .filter_by(nepkit_installation_id=request_data['installation_id']) \
             .first()
 
@@ -58,7 +58,7 @@ class Pipeline(View):
             ORDER BY 
                 s.index""", {
             'installation_id': request_data['installation_id'],
-            'amount_enabled': installation_card_settings.amount_enabled
+            'amount_enabled': installation_settings.amount_enabled
         })
 
         statuses = []
@@ -79,19 +79,27 @@ class Pipeline(View):
                 'leads': []
             })
 
-        currency = installation_card_settings.getCurrency()
+        currency = installation_settings.getCurrency()
 
         self.data = {
             'strs': {
                 'header_title': _('v_pipeline_header_title'),
                 'header_filter': _('v_pipeline_header_filter'),
                 'header_autoCreate': _('v_pipeline_header_autoCreate'),
+                'header_notifications': _('v_pipeline_header_notifications'),
                 'header_search': _('v_pipeline_header_search'),
                 'filterModal_title': _('v_pipeline_filterModal_title'),
                 'filterModal_form_period': _('v_pipeline_filterModal_form_period'),
                 'filterModal_form_archivedLeads': _('v_pipeline_filterModal_form_archivedLeads'),
                 'filterModal_form_apply': _('v_pipeline_filterModal_form_apply'),
                 'filterModal_form_clear': _('v_pipeline_filterModal_form_clear'),
+                'notificationsSettingsModal_title': _('v_pipeline_notificationsSettingsModal_title'),
+                'notificationsSettingsModal_changesSaved': _('v_pipeline_notificationsSettingsModal_changesSaved'),
+                'notificationsSettingsModal_form_save': _('v_pipeline_notificationsSettingsModal_form_save'),
+                'notificationsSettingsModal_form_notifications': _('v_pipeline_notificationsSettingsModal_form_notifications'),
+                'notificationsSettingsModal_form_notifications_user': _('v_pipeline_notificationsSettingsModal_form_notifications_user'),
+                'notificationsSettingsModal_form_notifications_extension': _('v_pipeline_notificationsSettingsModal_form_notifications_extension'),
+                'notificationsSettingsModal_form_notifications_api': _('v_pipeline_notificationsSettingsModal_form_notifications_api'),
                 'leadModal_title': _('v_pipeline_leadModal_title'),
                 'leadModal_notification_changesSaved': _('v_pipeline_leadModal_notification_changesSaved'),
                 'leadModal_save': _('v_pipeline_leadModal_save'),
@@ -126,13 +134,16 @@ class Pipeline(View):
                 'board_archived': _('v_pipeline_board_archived')
             },
 
-            'installationCardSettings': {
-                'amountEnabled': installation_card_settings.amount_enabled,
+            'installationSettings': {
+                'amountEnabled': installation_settings.amount_enabled,
                 'currency': {
                     'formatString': currency['format_string'],
                     'rounding': currency['rounding'],
                     'decimalDigits': currency['decimal_digits']
-                }
+                },
+                'notificationsNewLeadUserEnabled': installation_settings.notifications_new_lead_user_enabled,
+                'notificationsNewLeadExtensionEnabled': installation_settings.notifications_new_lead_extension_enabled,
+                'notificationsNewLeadApiEnabled': installation_settings.notifications_new_lead_api_enabled
             },
             'search': search,
             'filterParams': filter_params,

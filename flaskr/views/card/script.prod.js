@@ -164,7 +164,7 @@ view.render = () => {
   const [form] = useForm();
   const [reqLoading, setReqLoading] = useState(false);
   const [data, setData] = useState({
-    installationCardSettings: view.data.installationCardSettings,
+    installationSettings: view.data.installationSettings,
     currencies: view.data.currencies,
     fields: [],
     loading: false
@@ -174,7 +174,7 @@ view.render = () => {
       fields
     }));
   };
-  const [currencyEnabled, setCurrencyEnabled] = useState(data.installationCardSettings.amountEnabled);
+  const [currencyEnabled, setCurrencyEnabled] = useState(data.installationSettings.amountEnabled);
 
   useEffect(() => {
     loadFields();
@@ -182,8 +182,8 @@ view.render = () => {
 
   useEffect(() => {
     form.setFieldsValue({
-      amountEnabled: data.installationCardSettings.amountEnabled,
-      currency: data.installationCardSettings.currency
+      amountEnabled: data.installationSettings.amountEnabled,
+      currency: data.installationSettings.currency
     });
   }, [data]);
 
@@ -228,7 +228,7 @@ view.render = () => {
       },
       onFinish: ({ values }) => {
         setReqLoading(true);
-        app.sendReq('updateCardSettings', {
+        app.sendReq('updateSettings', {
           amountEnabled: values.amountEnabled,
           currency: values.currency,
           fields: data.fields.map(field => {

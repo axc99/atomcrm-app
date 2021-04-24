@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from cerberus import Validator
 from flaskr import db
 from flaskr.models.field import Field
-from flaskr.models.installation_card_settings import InstallationCardSettings
+from flaskr.models.installation_settings import InstallationSettings
 from flaskr.models.lead import Lead, LeadAction, LeadActionType
 from flaskr.models.status import Status
 from flaskr.models.task import Task
@@ -22,7 +22,7 @@ def get_leads(params, request_data):
     if not is_valid:
         return {'res': 'err', 'message': 'Invalid params', 'errors': vld.errors}
 
-    installation_card_settings = InstallationCardSettings.query \
+    installation_settings = InstallationSettings.query \
         .filter_by(nepkit_installation_id=request_data['installation_id']) \
         .first()
 
@@ -79,7 +79,7 @@ def get_leads(params, request_data):
             'id': lead.id,
             'uid': lead.uid,
             'amount': lead.amount,
-            'amountStr': installation_card_settings.format_amount(lead.amount) if lead.amount else None,
+            'amountStr': installation_settings.format_amount(lead.amount) if lead.amount else None,
             'status_id': lead.status_id,
             'archived': lead.archived,
             'addDate': (lead.add_date + timedelta(minutes=request_data['timezone_offset'])).strftime('%Y-%m-%d %H:%M:%S'),
@@ -91,7 +91,7 @@ def get_leads(params, request_data):
         'leads': leads,
         'leadTotal': lead_total,
         'leadAmountSum': lead_amount_sum,
-        'leadAmountSumStr': installation_card_settings.format_amount(lead_amount_sum) if installation_card_settings.amount_enabled else None
+        'leadAmountSumStr': installation_settings.format_amount(lead_amount_sum) if installation_settings.amount_enabled else None
     }
 
 
@@ -265,6 +265,16 @@ def create_lead(params, request_data):
     new_action.nepkit_user_id = request_data['user_id']
     db.session.add(new_action)
     db.session.commit()
+
+    installation_settings = InstallationSettings.query \
+        .filter_by(nepkit_installation_id=request_data['installation_id']) \
+        .first()
+    if installation_settings.notifications_new_lead_user_enabled:
+        # Send notification
+        new_lead.send_notification(content={
+            'en': 'Added new lead #{}'.format(new_lead.uid),
+            'ru': 'Добавлен новый лид #{}'.format(new_lead.uid)
+        })
 
     return {
         'res': 'ok',

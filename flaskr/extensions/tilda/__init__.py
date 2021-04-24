@@ -3,6 +3,7 @@ from flaskr import db
 from flask import request
 from flask_babel import _
 
+from flaskr.models.installation_settings import InstallationSettings
 from flaskr.models.lead import Lead, LeadAction, LeadActionType
 from flaskr.models.status import Status
 from flaskr.extensions.extension import Extension
@@ -206,5 +207,18 @@ class TildaExtension(Extension):
         new_action.new_status_id = lead.status_id
         db.session.add(new_action)
         db.session.commit()
+
+        installation_settings = InstallationSettings.query \
+            .filter_by(nepkit_installation_id=lead.nepkit_installation_id) \
+            .first()
+        if installation_settings.notifications_new_lead_extension_enabled:
+            # Send notification
+            fields_str = ''
+            for field in Lead.get_fields(lead.id, for_api=True):
+                fields_str += '{}: {} \r'.format(field['field_name'], field['value'])
+            lead.send_notification(content={
+                'en': 'New lead #{} \r{}'.format(lead.uid, fields_str),
+                'ru': 'Новый лид #{} \r{}'.format(lead.uid, fields_str)
+            })
 
         return '#{}'.format(lead.uid)
