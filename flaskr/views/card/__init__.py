@@ -1,7 +1,7 @@
 from flask_babel import _
 from flaskr.views.view import View, get_method, method_with_vars, compile_js
 from flaskr.models.field import Field, FieldType, get_field_types, get_board_visibility
-from flaskr.models.installation_card_settings import InstallationCardSettings
+from flaskr.models.installation_settings import InstallationSettings
 from flaskr.data.currencies import currencies
 
 script = compile_js('script')
@@ -44,13 +44,13 @@ class Card(View):
                 'notification_changesSaved': _('v_card_getMethods_changesSaved')
             }
         }
-        self.installation_card_settings = None
+        self.installation_settings = None
         self.fields = []
         self.value_type_options = []
         self.board_visibility_options = []
 
     def before(self, params, request_data):
-        installation_card_settings = InstallationCardSettings.query \
+        installation_settings = InstallationSettings.query \
             .filter_by(nepkit_installation_id=request_data['installation_id']) \
             .first()
 
@@ -63,8 +63,8 @@ class Card(View):
                 'code': currency['code']
             })
 
-        self.data['installationCardSettings'] = {
-            'amountEnabled': installation_card_settings.amount_enabled,
-            'currency': installation_card_settings.currency.name
+        self.data['installationSettings'] = {
+            'amountEnabled': installation_settings.amount_enabled,
+            'currency': installation_settings.currency.name
         }
         self.data['currencies'] = currencies_to_data

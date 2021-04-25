@@ -8,6 +8,7 @@ from flaskr.models.field import Field
 import random
 import string
 from sqlalchemy import Enum
+from flaskr.shared_api_client import SharedApiClient
 
 
 # Lead
@@ -361,6 +362,17 @@ class Lead(db.Model):
             'utm_content': filter.get('utm_content'),
             'period_from': "{} 00:00:00".format(filter['period_from']) if filter.get('period_from') else None,
             'period_to': "{} 23:59:59".format(filter['period_to']) if filter.get('period_to') else None
+        })
+
+    # Send notification
+    def send_notification(self, content, group_id=[], user_id=[]):
+        shared_api_client = SharedApiClient(installation_id=self.nepkit_installation_id)
+        shared_api_client.create_message({
+            'content': content,
+            'filters': {
+                'group_id': group_id,
+                'user_id': user_id
+            }
         })
 
 

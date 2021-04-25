@@ -130,13 +130,16 @@ class CardCurrencies(enum.Enum):
     zwl = 119
 
 
-# Installation card settings
-class InstallationCardSettings(db.Model):
+# Installation settings
+class InstallationSettings(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
     amount_enabled = db.Column(db.Boolean, default=False, nullable=False)
-
     currency = Column(Enum(CardCurrencies), nullable=False, default='string')
+
+    notifications_new_lead_user_enabled = db.Column(db.Boolean, default=False, nullable=False)
+    notifications_new_lead_extension_enabled = db.Column(db.Boolean, default=True, nullable=False)
+    notifications_new_lead_api_enabled = db.Column(db.Boolean, default=True, nullable=False)
 
     nepkit_installation_id = db.Column(db.Integer, nullable=False, index=True)
 

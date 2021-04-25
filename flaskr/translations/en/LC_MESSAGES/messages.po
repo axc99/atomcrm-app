@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-02-27 16:59+0300\n"
+"POT-Creation-Date: 2021-04-23 20:12+0300\n"
 "PO-Revision-Date: 2020-10-10 19:41+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -70,27 +70,27 @@ msgstr "Status is required"
 msgid "v_extension_mottor_information_settings_save"
 msgstr "Save"
 
-#: flaskr/extensions/tilda/__init__.py:55
+#: flaskr/extensions/tilda/__init__.py:56
 msgid "e_tilda_settings_form_defaultStatus"
 msgstr "Default status"
 
-#: flaskr/extensions/tilda/__init__.py:56
+#: flaskr/extensions/tilda/__init__.py:57
 msgid "e_tilda_settings_form_defaultStatus_alwaysFirst"
 msgstr "First status"
 
-#: flaskr/extensions/tilda/__init__.py:57
+#: flaskr/extensions/tilda/__init__.py:58
 msgid "e_tilda_settings_form_defaultStatus_required"
 msgstr "Default status is required"
 
-#: flaskr/extensions/tilda/__init__.py:58
+#: flaskr/extensions/tilda/__init__.py:59
 msgid "e_tilda_settings_form_save"
 msgstr "Save"
 
-#: flaskr/extensions/tilda/__init__.py:59
+#: flaskr/extensions/tilda/__init__.py:60
 msgid "e_tilda_settings_notification_changesSaved"
 msgstr "Changes saved"
 
-#: flaskr/extensions/tilda/__init__.py:93
+#: flaskr/extensions/tilda/__init__.py:94
 msgid "v_extension_tilda_information_content"
 msgstr ""
 "## Connecting a Tilda form\r"
@@ -118,19 +118,19 @@ msgstr ""
 "\r"
 "4. Save actions."
 
-#: flaskr/extensions/tilda/__init__.py:113
+#: flaskr/extensions/tilda/__init__.py:114
 msgid "v_extension_tilda_information_settings_status_alwaysFirst"
 msgstr "Always first"
 
-#: flaskr/extensions/tilda/__init__.py:131
+#: flaskr/extensions/tilda/__init__.py:132
 msgid "v_extension_tilda_information_settings_status"
 msgstr "Default lead status"
 
-#: flaskr/extensions/tilda/__init__.py:136
+#: flaskr/extensions/tilda/__init__.py:137
 msgid "v_extension_tilda_information_settings_primary_rules_required"
 msgstr "Default lead status is required"
 
-#: flaskr/extensions/tilda/__init__.py:146
+#: flaskr/extensions/tilda/__init__.py:147
 msgid "v_extension_tilda_information_settings_save"
 msgstr "Save"
 
@@ -262,95 +262,95 @@ msgstr "In title"
 msgid "m_status_getBoardVisibility_subtitle"
 msgstr "In description"
 
-#: flaskr/models/lead.py:255
+#: flaskr/models/lead.py:258
 msgid "m_lead_getRegularDate_jan"
 msgstr "Jan"
 
-#: flaskr/models/lead.py:256
+#: flaskr/models/lead.py:259
 msgid "m_lead_getRegularDate_feb"
 msgstr "Feb"
 
-#: flaskr/models/lead.py:257
+#: flaskr/models/lead.py:260
 msgid "m_lead_getRegularDate_mar"
 msgstr "Mar"
 
-#: flaskr/models/lead.py:258
+#: flaskr/models/lead.py:261
 msgid "m_lead_getRegularDate_apr"
 msgstr "Apr"
 
-#: flaskr/models/lead.py:259
+#: flaskr/models/lead.py:262
 msgid "m_lead_getRegularDate_may"
 msgstr "May"
 
-#: flaskr/models/lead.py:260
+#: flaskr/models/lead.py:263
 msgid "m_lead_getRegularDate_jun"
 msgstr "Jun"
 
-#: flaskr/models/lead.py:261
+#: flaskr/models/lead.py:264
 msgid "m_lead_getRegularDate_jul"
 msgstr "Jul"
 
-#: flaskr/models/lead.py:262
+#: flaskr/models/lead.py:265
 msgid "m_lead_getRegularDate_aug"
 msgstr "Aug"
 
-#: flaskr/models/lead.py:263
+#: flaskr/models/lead.py:266
 msgid "m_lead_getRegularDate_sep"
 msgstr "Sep"
 
-#: flaskr/models/lead.py:264
+#: flaskr/models/lead.py:267
 msgid "m_lead_getRegularDate_oct"
 msgstr "Oct"
 
-#: flaskr/models/lead.py:265
+#: flaskr/models/lead.py:268
 msgid "m_lead_getRegularDate_nov"
 msgstr "Nov"
 
-#: flaskr/models/lead.py:266
+#: flaskr/models/lead.py:269
 msgid "m_lead_getRegularDate_dec"
 msgstr "Dec"
 
-#: flaskr/models/lead.py:271
+#: flaskr/models/lead.py:274
 msgid "m_lead_getRegularDate_today"
 msgstr "Today at %(hours)s:%(minutes)s"
 
-#: flaskr/models/lead.py:273
+#: flaskr/models/lead.py:276
 msgid "m_lead_getRegularDate_yesterday"
 msgstr "Yesterday at %(hours)s:%(minutes)s"
 
-#: flaskr/models/lead.py:276
+#: flaskr/models/lead.py:279
 msgid "m_lead_getRegularDate_date"
 msgstr "%(day)s %(month)s at %(hours)s:%(minutes)s"
 
-#: flaskr/models/lead.py:278
+#: flaskr/models/lead.py:281
 msgid "m_lead_getRegularDate_dateWithYear"
 msgstr "%(day)s %(month)s %(year)s at %(hours)s:%(minutes)s"
 
-#: flaskr/models/lead.py:428
+#: flaskr/models/lead.py:442
 msgid "m_lead_leadAction_getItemData_createLead"
 msgstr "Add lead on «%(new_status_name)s»"
 
-#: flaskr/models/lead.py:433
+#: flaskr/models/lead.py:447
 msgid "m_lead_leadAction_getItemData_updateLead"
 msgstr "Edit lead"
 
-#: flaskr/models/lead.py:437
+#: flaskr/models/lead.py:451
 msgid "m_lead_leadAction_getItemData_updateLeadStatus"
 msgstr "Change lead status from «%(old_status_name)s» to «%(new_status_name)s»"
 
-#: flaskr/models/lead.py:443
+#: flaskr/models/lead.py:457
 msgid "m_lead_leadAction_getItemData_archiveLead"
 msgstr "Archive lead"
 
-#: flaskr/models/lead.py:447
+#: flaskr/models/lead.py:461
 msgid "m_lead_leadAction_getItemData_restoreLead"
 msgstr "Update lead"
 
-#: flaskr/models/lead.py:451
+#: flaskr/models/lead.py:465
 msgid "m_lead_leadAction_getItemData_completeTask"
 msgstr "Complete task «%(task_name)s»"
 
-#: flaskr/models/lead.py:455
+#: flaskr/models/lead.py:469
 msgid "m_lead_leadAction_getItemData_revertCompleteTask"
 msgstr "Revert complete task «%(task_name)s»"
 
@@ -492,27 +492,27 @@ msgstr "Create token"
 msgid "v_tokenModal_token"
 msgstr "New token"
 
-#: flaskr/views/api/__init__.py:80
+#: flaskr/views/api/__init__.py:83
 msgid "v_api_header_extensions"
 msgstr "Extensions"
 
-#: flaskr/views/api/__init__.py:87
+#: flaskr/views/api/__init__.py:90
 msgid "v_api_header_getToken"
 msgstr "Get token"
 
-#: flaskr/views/api/__init__.py:94
+#: flaskr/views/api/__init__.py:97
 msgid "v_api_header_tabs_leads"
 msgstr "Leads"
 
-#: flaskr/views/api/__init__.py:99
+#: flaskr/views/api/__init__.py:102
 msgid "v_api_header_tabs_statuses"
 msgstr "Statuses"
 
-#: flaskr/views/api/__init__.py:106
+#: flaskr/views/api/__init__.py:109
 msgid "v_api_header_tabs_fields"
 msgstr "Fields"
 
-#: flaskr/views/api/__init__.py:113
+#: flaskr/views/api/__init__.py:116
 msgid "v_api_header_tabs_tasks"
 msgstr "Tasks"
 
@@ -637,154 +637,186 @@ msgid "v_pipeline_header_autoCreate"
 msgstr "Auto-create"
 
 #: flaskr/views/pipeline/__init__.py:89
+msgid "v_pipeline_header_notifications"
+msgstr "Notifications"
+
+#: flaskr/views/pipeline/__init__.py:90
 msgid "v_pipeline_header_search"
 msgstr "Search..."
 
-#: flaskr/views/pipeline/__init__.py:90
+#: flaskr/views/pipeline/__init__.py:91
 msgid "v_pipeline_filterModal_title"
 msgstr "Filter"
 
-#: flaskr/views/pipeline/__init__.py:91
+#: flaskr/views/pipeline/__init__.py:92
 msgid "v_pipeline_filterModal_form_period"
 msgstr "Period"
 
-#: flaskr/views/pipeline/__init__.py:92
+#: flaskr/views/pipeline/__init__.py:93
 msgid "v_pipeline_filterModal_form_archivedLeads"
 msgstr "Archived leads"
 
-#: flaskr/views/pipeline/__init__.py:93
+#: flaskr/views/pipeline/__init__.py:94
 msgid "v_pipeline_filterModal_form_apply"
 msgstr "Apply"
 
-#: flaskr/views/pipeline/__init__.py:94
+#: flaskr/views/pipeline/__init__.py:95
 msgid "v_pipeline_filterModal_form_clear"
 msgstr "Clear"
 
-#: flaskr/views/pipeline/__init__.py:95
+#: flaskr/views/pipeline/__init__.py:96
+msgid "v_pipeline_notificationsSettingsModal_title"
+msgstr "Notifications settings"
+
+#: flaskr/views/pipeline/__init__.py:97
+msgid "v_pipeline_notificationsSettingsModal_changesSaved"
+msgstr "Changes saved"
+
+#: flaskr/views/pipeline/__init__.py:98
+msgid "v_pipeline_notificationsSettingsModal_form_save"
+msgstr "Save"
+
+#: flaskr/views/pipeline/__init__.py:99
+msgid "v_pipeline_notificationsSettingsModal_form_notifications"
+msgstr "Action notifications"
+
+#: flaskr/views/pipeline/__init__.py:100
+msgid "v_pipeline_notificationsSettingsModal_form_notifications_user"
+msgstr "Adding a lead by a user"
+
+#: flaskr/views/pipeline/__init__.py:101
+msgid "v_pipeline_notificationsSettingsModal_form_notifications_extension"
+msgstr "Adding a lead by an extension"
+
+#: flaskr/views/pipeline/__init__.py:102
+msgid "v_pipeline_notificationsSettingsModal_form_notifications_api"
+msgstr "Adding a lead by API"
+
+#: flaskr/views/pipeline/__init__.py:103
 msgid "v_pipeline_leadModal_title"
 msgstr "Lead #{id}"
 
-#: flaskr/views/pipeline/__init__.py:96
+#: flaskr/views/pipeline/__init__.py:104
 msgid "v_pipeline_leadModal_notification_changesSaved"
 msgstr "Changes saved"
 
-#: flaskr/views/pipeline/__init__.py:97
+#: flaskr/views/pipeline/__init__.py:105
 msgid "v_pipeline_leadModal_save"
 msgstr "Save"
 
-#: flaskr/views/pipeline/__init__.py:98
+#: flaskr/views/pipeline/__init__.py:106
 msgid "v_pipeline_leadModal_tags"
 msgstr "Enter tags"
 
-#: flaskr/views/pipeline/__init__.py:99
+#: flaskr/views/pipeline/__init__.py:107
 msgid "v_pipeline_leadModal_comment"
 msgstr "Comment"
 
-#: flaskr/views/pipeline/__init__.py:100
+#: flaskr/views/pipeline/__init__.py:108
 msgid "v_pipeline_leadModal_addDate"
 msgstr "Add date"
 
-#: flaskr/views/pipeline/__init__.py:101
+#: flaskr/views/pipeline/__init__.py:109
 msgid "v_pipeline_leadModal_updateDate"
 msgstr "Update date"
 
-#: flaskr/views/pipeline/__init__.py:102
+#: flaskr/views/pipeline/__init__.py:110
 msgid "v_pipeline_leadModal_creator"
 msgstr "Creator"
 
-#: flaskr/views/pipeline/__init__.py:103
+#: flaskr/views/pipeline/__init__.py:111
 msgid "v_pipeline_leadModal_utmMarks"
 msgstr "UTM marks"
 
-#: flaskr/views/pipeline/__init__.py:104
+#: flaskr/views/pipeline/__init__.py:112
 msgid "v_pipeline_leadModal_form_phone_rule"
 msgstr "Enter a valid phone number"
 
-#: flaskr/views/pipeline/__init__.py:105
+#: flaskr/views/pipeline/__init__.py:113
 msgid "v_pipeline_leadModal_form_email_rule"
 msgstr "Enter a valid email"
 
-#: flaskr/views/pipeline/__init__.py:106
+#: flaskr/views/pipeline/__init__.py:114
 msgid "v_pipeline_leadModal_form_save"
 msgstr "Save"
 
-#: flaskr/views/pipeline/__init__.py:107
+#: flaskr/views/pipeline/__init__.py:115
 msgid "v_pipeline_leadModal_form_restoreLead"
 msgstr "Restore lead"
 
-#: flaskr/views/pipeline/__init__.py:108
+#: flaskr/views/pipeline/__init__.py:116
 msgid "v_pipeline_leadModal_tabs_information"
 msgstr "Information"
 
-#: flaskr/views/pipeline/__init__.py:109
+#: flaskr/views/pipeline/__init__.py:117
 msgid "v_pipeline_leadModal_tabs_tasks"
 msgstr "Tasks"
 
-#: flaskr/views/pipeline/__init__.py:110
+#: flaskr/views/pipeline/__init__.py:118
 msgid "v_pipeline_leadModal_tabs_activity"
 msgstr "Activity"
 
-#: flaskr/views/pipeline/__init__.py:111
+#: flaskr/views/pipeline/__init__.py:119
 msgid "v_pipeline_leadModal_select_selectOption"
 msgstr "Select an option"
 
-#: flaskr/views/pipeline/__init__.py:112
+#: flaskr/views/pipeline/__init__.py:120
 msgid "v_pipeline_getRegularDate_today"
 msgstr "Today at {time}"
 
-#: flaskr/views/pipeline/__init__.py:113
+#: flaskr/views/pipeline/__init__.py:121
 msgid "v_pipeline_getRegularDate_yesterday"
 msgstr "Yesterday at {time}"
 
-#: flaskr/views/pipeline/__init__.py:114
+#: flaskr/views/pipeline/__init__.py:122
 msgid "v_pipeline_getRegularDate_jan"
 msgstr "Jan"
 
-#: flaskr/views/pipeline/__init__.py:115
+#: flaskr/views/pipeline/__init__.py:123
 msgid "v_pipeline_getRegularDate_feb"
 msgstr "Feb"
 
-#: flaskr/views/pipeline/__init__.py:116
+#: flaskr/views/pipeline/__init__.py:124
 msgid "v_pipeline_getRegularDate_mar"
 msgstr "Mar"
 
-#: flaskr/views/pipeline/__init__.py:117
+#: flaskr/views/pipeline/__init__.py:125
 msgid "v_pipeline_getRegularDate_apr"
 msgstr "Apr"
 
-#: flaskr/views/pipeline/__init__.py:118
+#: flaskr/views/pipeline/__init__.py:126
 msgid "v_pipeline_getRegularDate_may"
 msgstr "May"
 
-#: flaskr/views/pipeline/__init__.py:119
+#: flaskr/views/pipeline/__init__.py:127
 msgid "v_pipeline_getRegularDate_jun"
 msgstr "Jun"
 
-#: flaskr/views/pipeline/__init__.py:120
+#: flaskr/views/pipeline/__init__.py:128
 msgid "v_pipeline_getRegularDate_jul"
 msgstr "Jul"
 
-#: flaskr/views/pipeline/__init__.py:121
+#: flaskr/views/pipeline/__init__.py:129
 msgid "v_pipeline_getRegularDate_aug"
 msgstr "Aug"
 
-#: flaskr/views/pipeline/__init__.py:122
+#: flaskr/views/pipeline/__init__.py:130
 msgid "v_pipeline_getRegularDate_sep"
 msgstr "Sep"
 
-#: flaskr/views/pipeline/__init__.py:123
+#: flaskr/views/pipeline/__init__.py:131
 msgid "v_pipeline_getRegularDate_oct"
 msgstr "Oct"
 
-#: flaskr/views/pipeline/__init__.py:124
+#: flaskr/views/pipeline/__init__.py:132
 msgid "v_pipeline_getRegularDate_nov"
 msgstr "Nov"
 
-#: flaskr/views/pipeline/__init__.py:125
+#: flaskr/views/pipeline/__init__.py:133
 msgid "v_pipeline_getRegularDate_dec"
 msgstr "Dec"
 
-#: flaskr/views/pipeline/__init__.py:126
+#: flaskr/views/pipeline/__init__.py:134
 msgid "v_pipeline_board_archived"
 msgstr "Archived"
 
