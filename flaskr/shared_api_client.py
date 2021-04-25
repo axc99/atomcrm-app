@@ -45,7 +45,7 @@ class SharedApiClient:
 
         if response.status_code == 401:
             print('SharedApiClient: create_message - 401')
-            self.auth():
+            self.auth()
             self.create_message(data)
         elif response.status_code == 201:
             print('SharedApiClient: create_message - OK 201')
