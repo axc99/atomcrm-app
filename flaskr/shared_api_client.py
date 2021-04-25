@@ -32,7 +32,7 @@ class SharedApiClient:
             print('SharedApiClient: auth - {}'.format(response.status_code), response.json())
 
     def create_message(self, data):
-        url = '{}api/shared/v{}/workspaces/{}/messages'.format(os.environ.get('SHARED_API_URL'),
+        url = '{}v{}/workspaces/{}/messages'.format(os.environ.get('SHARED_API_URL'),
                                                                self.version,
                                                                self.workspace_id)
         headers = {'Authorization': 'Bearer {}'.format(self.token)}
