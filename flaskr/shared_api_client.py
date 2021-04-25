@@ -17,7 +17,7 @@ class SharedApiClient:
             self.installation_id = installation_id
 
     def auth(self):
-        url = '{}api/shared/v{}/app-auth/token'.format(os.environ.get('SHARED_API_URL'), self.version)
+        url = '{}v{}/app-auth/token'.format(os.environ.get('SHARED_API_URL'), self.version)
         headers = {}
         data = {'installation_id': self.installation_id,
                 'app_secret_key': os.environ.get('APP_SECRET_KEY')}
@@ -28,8 +28,11 @@ class SharedApiClient:
             response_data = response.json()
             self.token = response_data['access_token']
             self.workspace_id = response_data['workspace_id']
+            return True
         else:
             print('SharedApiClient: auth - {}'.format(response.status_code), response.json())
+
+        return False
 
     def create_message(self, data):
         url = '{}v{}/workspaces/{}/messages'.format(os.environ.get('SHARED_API_URL'),
@@ -42,8 +45,8 @@ class SharedApiClient:
 
         if response.status_code == 401:
             print('SharedApiClient: create_message - 401')
-            self.auth()
-            self.create_messages(data)
+            self.auth():
+            self.create_message(data)
         elif response.status_code == 201:
             print('SharedApiClient: create_message - OK 201')
         else:
