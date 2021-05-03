@@ -72,7 +72,7 @@ const FormFields = ({ fields, setFields, loading }) => {
   ]
   const boardVisibilityOptions = [
     {
-      value: null,
+      value: 'none',
       label: strs['form_fields_table_boardVisibility_none']
     },
     {
