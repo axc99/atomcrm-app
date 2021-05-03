@@ -738,7 +738,7 @@ msgstr "Добавить"
 
 #: flaskr/views/card/__init__.py:63
 msgid "v_card_tasks_taskModal_form_save"
-msgstr "Сорхранить"
+msgstr "Сохранить"
 
 #: flaskr/views/card/__init__.py:64
 msgid "v_card_tasks_deleteTaskModal_title"
