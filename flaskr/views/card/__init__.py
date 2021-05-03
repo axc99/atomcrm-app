@@ -18,6 +18,8 @@ class Card(View):
             'currencies': [],
             'strs': {
                 'name': _('v_card_meta_name'),
+                'header_general': _('v_card_header_general'),
+                'header_tasks': _('v_card_header_tasks'),
                 'form_leadAmount': _('v_card_form_leadAmount'),
                 'form_amountCurrency': _('v_card_form_amountCurrency'),
                 'form_fields': _('v_card_form_fields'),
@@ -41,6 +43,28 @@ class Card(View):
                 'form_fields_table_none': 'None',
                 'form_fields_table_title': 'Title',
                 'form_fields_table_subtitle': 'Subtitle',
+
+                'tasks_createTask': _('v_card_tasks_header_createTask'),
+                'tasks_table_editTask': _('v_card_tasks_table_editTask'),
+                'tasks_table_count_subtask': _('v_card_tasks_table_count_subtask'),
+                'tasks_table_count_subtasks': _('v_card_tasks_table_count_subtasks'),
+                'tasks_table_count_noTasks': _('v_card_tasks_table_count_noTasks'),
+                'tasks_table_noTasks': _('v_card_tasks_table_noTasks'),
+                'tasks_taskModal_createTitle': _('v_card_tasks_taskModal_createTitle'),
+                'tasks_taskModal_updateTitle': _('v_card_tasks_taskModal_updateTitle'),
+                'tasks_taskModal_form_name': _('v_card_tasks_taskModal_form_name'),
+                'tasks_taskModal_form_name_placeholder': _('v_card_tasks_taskModal_form_name_placeholder'),
+                'tasks_taskModal_form_name_length': _('v_card_tasks_taskModal_form_name_length'),
+                'tasks_taskModal_form_name_required': _('v_card_tasks_taskModal_form_name_required'),
+                'tasks_taskModal_form_subtasks': _('v_card_tasks_taskModal_form_subtasks'),
+                'tasks_taskModal_form_subtasks_table_noSubtasks': _('v_card_tasks_taskModal_form_subtasks_table_noSubtasks'),
+                'tasks_taskModal_form_subtasks_addSubtask': _('v_card_tasks_taskModal_form_subtasks_addSubtask'),
+                'tasks_taskModal_form_create': _('v_card_tasks_taskModal_form_create'),
+                'tasks_taskModal_form_save': _('v_card_tasks_taskModal_form_save'),
+                'tasks_deleteTaskModal_title': _('v_card_tasks_deleteTaskModal_title'),
+                'tasks_deleteTaskModal_subtitle': _('v_card_tasks_deleteTaskModal_subtitle'),
+                'tasks_deleteTaskModal_delete': _('v_card_tasks_deleteTaskModal_delete'),
+
                 'notification_changesSaved': _('v_card_getMethods_changesSaved')
             }
         }

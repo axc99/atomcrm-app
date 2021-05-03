@@ -1,5 +1,4 @@
 from flaskr.views.pipeline import Pipeline
-from flaskr.views.tasks import Tasks
 from flaskr.views.statuses import Statuses
 from flaskr.views.card import Card
 from flaskr.views.api import Api
@@ -12,9 +11,6 @@ views_map = {
 
     # Statuses
     'statuses': Statuses,
-
-    # Tasks
-    'tasks': Tasks,
 
     # Card settings
     'card': Card,
