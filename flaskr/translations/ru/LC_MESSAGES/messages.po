@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-04-23 20:12+0300\n"
+"POT-Creation-Date: 2021-05-03 20:33+0000\n"
 "PO-Revision-Date: 2020-10-10 19:41+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -19,27 +19,27 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-#: flaskr/extensions/mottor/__init__.py:57
+#: flaskr/extensions/mottor/__init__.py:58
 msgid "e_mottor_settings_form_defaultStatus"
 msgstr "Статус по умолчанию"
 
-#: flaskr/extensions/mottor/__init__.py:58
+#: flaskr/extensions/mottor/__init__.py:59
 msgid "e_mottor_settings_form_defaultStatus_alwaysFirst"
 msgstr "Первый статус"
 
-#: flaskr/extensions/mottor/__init__.py:59
+#: flaskr/extensions/mottor/__init__.py:60
 msgid "e_mottor_settings_form_defaultStatus_required"
 msgstr "Укажите статус"
 
-#: flaskr/extensions/mottor/__init__.py:60
+#: flaskr/extensions/mottor/__init__.py:61
 msgid "e_mottor_settings_form_save"
 msgstr "Сохранить"
 
-#: flaskr/extensions/mottor/__init__.py:61
+#: flaskr/extensions/mottor/__init__.py:62
 msgid "e_mottor_settings_notification_changesSaved"
 msgstr "Изменения сохранены"
 
-#: flaskr/extensions/mottor/__init__.py:95
+#: flaskr/extensions/mottor/__init__.py:96
 msgid "v_extension_mottor_information_content"
 msgstr ""
 "## Подключение формы в Mottor\r"
@@ -86,19 +86,19 @@ msgstr ""
 "ключ вашего поля в AtomCRM. \r"
 "6. Сохраните действия."
 
-#: flaskr/extensions/mottor/__init__.py:115
+#: flaskr/extensions/mottor/__init__.py:116
 msgid "v_extension_mottor_information_settings_status_alwaysFirst"
 msgstr "Первый статус"
 
-#: flaskr/extensions/mottor/__init__.py:133
+#: flaskr/extensions/mottor/__init__.py:134
 msgid "v_extension_mottor_information_settings_status"
 msgstr "Статус по умолчанию"
 
-#: flaskr/extensions/mottor/__init__.py:138
+#: flaskr/extensions/mottor/__init__.py:139
 msgid "v_extension_mottor_information_settings_primary_rules_required"
 msgstr "Статус обязателен для заполнения"
 
-#: flaskr/extensions/mottor/__init__.py:148
+#: flaskr/extensions/mottor/__init__.py:149
 msgid "v_extension_mottor_information_settings_save"
 msgstr "Сохранить"
 
@@ -171,27 +171,27 @@ msgstr "Статус обязателен для заполнения"
 msgid "v_extension_tilda_information_settings_save"
 msgstr "Сохранить"
 
-#: flaskr/extensions/wix/__init__.py:93
+#: flaskr/extensions/wix/__init__.py:94
 msgid "e_wix_settings_form_defaultStatus"
 msgstr "Статус по умолчанию"
 
-#: flaskr/extensions/wix/__init__.py:94
+#: flaskr/extensions/wix/__init__.py:95
 msgid "e_wix_settings_form_defaultStatus_alwaysFirst"
 msgstr "Первый статус"
 
-#: flaskr/extensions/wix/__init__.py:95
+#: flaskr/extensions/wix/__init__.py:96
 msgid "e_wix_settings_form_defaultStatus_required"
 msgstr "Укажите статус"
 
-#: flaskr/extensions/wix/__init__.py:96
+#: flaskr/extensions/wix/__init__.py:97
 msgid "e_wix_settings_form_save"
 msgstr "Сохранить"
 
-#: flaskr/extensions/wix/__init__.py:97
+#: flaskr/extensions/wix/__init__.py:98
 msgid "e_wix_settings_notification_changesSaved"
 msgstr "Изменения сохранены"
 
-#: flaskr/extensions/wix/__init__.py:135
+#: flaskr/extensions/wix/__init__.py:136
 msgid "v_extension_wix_information_content"
 msgstr ""
 "## Подключение формы в Wix\r"
@@ -232,7 +232,7 @@ msgstr ""
 "Перейдите в настройки текущего расширения и сопоставьте поля из Wix с "
 "полями в AtomCRM."
 
-#: flaskr/extensions/wix/__init__.py:141
+#: flaskr/extensions/wix/__init__.py:142
 msgid "v_extension_wix_openSettings"
 msgstr "Перейти в настройки"
 
@@ -585,86 +585,174 @@ msgid "v_card_meta_name"
 msgstr "Настройка карточки"
 
 #: flaskr/views/card/__init__.py:21
+msgid "v_card_header_general"
+msgstr "Основное"
+
+#: flaskr/views/card/__init__.py:22
+msgid "v_card_header_tasks"
+msgstr "Задачи"
+
+#: flaskr/views/card/__init__.py:23
 msgid "v_card_form_leadAmount"
 msgstr "Отображать сумму лида"
 
-#: flaskr/views/card/__init__.py:22
+#: flaskr/views/card/__init__.py:24
 msgid "v_card_form_amountCurrency"
 msgstr "Валюта суммы"
 
-#: flaskr/views/card/__init__.py:23
+#: flaskr/views/card/__init__.py:25
 msgid "v_card_form_fields"
 msgstr "Поля данных"
 
-#: flaskr/views/card/__init__.py:24
+#: flaskr/views/card/__init__.py:26
 msgid "v_card_form_fields_table_noFields"
 msgstr "Поля отсутствуют"
 
-#: flaskr/views/card/__init__.py:25
+#: flaskr/views/card/__init__.py:27
 msgid "v_card_form_fields_table_field"
 msgstr "Поле"
 
-#: flaskr/views/card/__init__.py:26
+#: flaskr/views/card/__init__.py:28
 msgid "v_card_form_fields_table_valueType"
 msgstr "Тип поля"
 
-#: flaskr/views/card/__init__.py:27
+#: flaskr/views/card/__init__.py:29
 msgid "v_card_form_fields_table_valueType_string"
 msgstr "Текст"
 
-#: flaskr/views/card/__init__.py:28
+#: flaskr/views/card/__init__.py:30
 msgid "v_card_form_fields_table_valueType_email"
 msgstr "Email"
 
-#: flaskr/views/card/__init__.py:29
+#: flaskr/views/card/__init__.py:31
 msgid "v_card_form_fields_table_valueType_phone"
 msgstr "Номер телефона"
 
-#: flaskr/views/card/__init__.py:30
+#: flaskr/views/card/__init__.py:32
 msgid "v_card_form_fields_table_valueType_longString"
 msgstr "Большой текст"
 
-#: flaskr/views/card/__init__.py:31
+#: flaskr/views/card/__init__.py:33
 msgid "v_card_form_fields_table_valueType_number"
 msgstr "Число"
 
-#: flaskr/views/card/__init__.py:32
+#: flaskr/views/card/__init__.py:34
 msgid "v_card_form_fields_table_valueType_boolean"
 msgstr "Чекбокс"
 
-#: flaskr/views/card/__init__.py:33
+#: flaskr/views/card/__init__.py:35
 msgid "v_card_form_fields_table_valueType_date"
 msgstr "Дата"
 
-#: flaskr/views/card/__init__.py:34
+#: flaskr/views/card/__init__.py:36
 msgid "v_card_form_fields_table_valueType_choice"
 msgstr "Выбор из списка"
 
-#: flaskr/views/card/__init__.py:35
+#: flaskr/views/card/__init__.py:37
 msgid "v_card_form_fields_table_boardVisibility"
 msgstr "Отображение на доске"
 
-#: flaskr/views/card/__init__.py:36
+#: flaskr/views/card/__init__.py:38
 msgid "v_card_form_fields_table_boardVisibility_none"
 msgstr "Не отображать"
 
-#: flaskr/views/card/__init__.py:37
+#: flaskr/views/card/__init__.py:39
 msgid "v_card_form_fields_table_boardVisibility_title"
 msgstr "В заголовке"
 
-#: flaskr/views/card/__init__.py:38
+#: flaskr/views/card/__init__.py:40
 msgid "v_card_form_fields_table_boardVisibility_subtitle"
 msgstr "В описании"
 
-#: flaskr/views/card/__init__.py:39
+#: flaskr/views/card/__init__.py:41
 msgid "v_card_form_fields_addField"
 msgstr "Добавить поле"
 
-#: flaskr/views/card/__init__.py:40
+#: flaskr/views/card/__init__.py:42
 msgid "v_card_form_save"
 msgstr "Сохранить"
 
-#: flaskr/views/card/__init__.py:44
+#: flaskr/views/card/__init__.py:47
+msgid "v_card_tasks_header_createTask"
+msgstr "Добавить задачу"
+
+#: flaskr/views/card/__init__.py:48
+msgid "v_card_tasks_table_editTask"
+msgstr "Изменить"
+
+#: flaskr/views/card/__init__.py:49
+msgid "v_card_tasks_table_count_subtask"
+msgstr ""
+
+#: flaskr/views/card/__init__.py:50
+msgid "v_card_tasks_table_count_subtasks"
+msgstr ""
+
+#: flaskr/views/card/__init__.py:51
+msgid "v_card_tasks_table_count_noTasks"
+msgstr "Задачи отсутствуют"
+
+#: flaskr/views/card/__init__.py:52
+msgid "v_card_tasks_table_noTasks"
+msgstr "Задачи отсутствуют"
+
+#: flaskr/views/card/__init__.py:53
+msgid "v_card_tasks_taskModal_createTitle"
+msgstr "Добавить задачу"
+
+#: flaskr/views/card/__init__.py:54
+msgid "v_card_tasks_taskModal_updateTitle"
+msgstr "Изменить задачу"
+
+#: flaskr/views/card/__init__.py:55
+msgid "v_card_tasks_taskModal_form_name"
+msgstr "Название"
+
+#: flaskr/views/card/__init__.py:56
+msgid "v_card_tasks_taskModal_form_name_placeholder"
+msgstr "Например: Предложить скидку"
+
+#: flaskr/views/card/__init__.py:57
+msgid "v_card_tasks_taskModal_form_name_length"
+msgstr "Должно содержать не более 50 симв."
+
+#: flaskr/views/card/__init__.py:58
+msgid "v_card_tasks_taskModal_form_name_required"
+msgstr "Укажите название"
+
+#: flaskr/views/card/__init__.py:59
+msgid "v_card_tasks_taskModal_form_subtasks"
+msgstr ""
+
+#: flaskr/views/card/__init__.py:60
+msgid "v_card_tasks_taskModal_form_subtasks_table_noSubtasks"
+msgstr ""
+
+#: flaskr/views/card/__init__.py:61
+msgid "v_card_tasks_taskModal_form_subtasks_addSubtask"
+msgstr ""
+
+#: flaskr/views/card/__init__.py:62
+msgid "v_card_tasks_taskModal_form_create"
+msgstr "Добавить"
+
+#: flaskr/views/card/__init__.py:63
+msgid "v_card_tasks_taskModal_form_save"
+msgstr "Сорхранить"
+
+#: flaskr/views/card/__init__.py:64
+msgid "v_card_tasks_deleteTaskModal_title"
+msgstr "Удалить задачу"
+
+#: flaskr/views/card/__init__.py:65
+msgid "v_card_tasks_deleteTaskModal_subtitle"
+msgstr "Вы действительно хотите безвозвратно удалить эту задачу?"
+
+#: flaskr/views/card/__init__.py:66
+msgid "v_card_tasks_deleteTaskModal_delete"
+msgstr "Удалить"
+
+#: flaskr/views/card/__init__.py:68
 msgid "v_card_getMethods_changesSaved"
 msgstr "Изменения сохранены"
 
@@ -971,88 +1059,3 @@ msgstr "Удалить лиды"
 #: flaskr/views/statuses/__init__.py:41
 msgid "v_statuses_deleteStatusModal_form_delete"
 msgstr "Удалить"
-
-#: flaskr/views/tasks/__init__.py:15 flaskr/views/tasks/__init__.py:20
-msgid "v_tasks_meta_name"
-msgstr "Задачи"
-
-#: flaskr/views/tasks/__init__.py:21
-msgid "v_tasks_header_createTask"
-msgstr "Создать задачу"
-
-#: flaskr/views/tasks/__init__.py:22
-msgid "v_tasks_table_editTask"
-msgstr "Изменить"
-
-#: flaskr/views/tasks/__init__.py:23
-msgid "v_tasks_table_count_subtask"
-msgstr "подзадача"
-
-#: flaskr/views/tasks/__init__.py:24
-msgid "v_tasks_table_count_subtasks"
-msgstr "подз."
-
-#: flaskr/views/tasks/__init__.py:25
-msgid "v_tasks_table_count_noTasks"
-msgstr "Без подзадач"
-
-#: flaskr/views/tasks/__init__.py:26
-msgid "v_tasks_table_noTasks"
-msgstr "Задачи отсутствуют"
-
-#: flaskr/views/tasks/__init__.py:27
-msgid "v_tasks_taskModal_createTitle"
-msgstr "Создать задачу"
-
-#: flaskr/views/tasks/__init__.py:28
-msgid "v_tasks_taskModal_updateTitle"
-msgstr "Изменить задачу"
-
-#: flaskr/views/tasks/__init__.py:29
-msgid "v_tasks_taskModal_form_name"
-msgstr "Название"
-
-#: flaskr/views/tasks/__init__.py:30
-msgid "v_tasks_taskModal_form_name_placeholder"
-msgstr "Например: Предложить скидку"
-
-#: flaskr/views/tasks/__init__.py:31
-msgid "v_tasks_taskModal_form_name_length"
-msgstr "Должно содержать не более 50 симв."
-
-#: flaskr/views/tasks/__init__.py:32
-msgid "v_tasks_taskModal_form_name_required"
-msgstr "Укажите название"
-
-#: flaskr/views/tasks/__init__.py:33
-msgid "v_tasks_taskModal_form_subtasks"
-msgstr "Подзадачи"
-
-#: flaskr/views/tasks/__init__.py:34
-msgid "v_tasks_taskModal_form_subtasks_table_noSubtasks"
-msgstr "Подзадачи отсутствуют"
-
-#: flaskr/views/tasks/__init__.py:35
-msgid "v_tasks_taskModal_form_subtasks_addSubtask"
-msgstr "Добавить подзадачу"
-
-#: flaskr/views/tasks/__init__.py:36
-msgid "v_tasks_taskModal_form_create"
-msgstr "Создать"
-
-#: flaskr/views/tasks/__init__.py:37
-msgid "v_tasks_taskModal_form_save"
-msgstr "Сохранить"
-
-#: flaskr/views/tasks/__init__.py:38
-msgid "v_tasks_deleteTaskModal_title"
-msgstr "Удалить задачу"
-
-#: flaskr/views/tasks/__init__.py:39
-msgid "v_tasks_deleteTaskModal_subtitle"
-msgstr "Вы действительно хотите безвозвратно удалить эту задачу?"
-
-#: flaskr/views/tasks/__init__.py:40
-msgid "v_tasks_deleteTaskModal_delete"
-msgstr "Удалить"
-

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-04-23 20:12+0300\n"
+"POT-Creation-Date: 2021-05-03 20:33+0000\n"
 "PO-Revision-Date: 2020-10-10 19:41+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,27 +18,27 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-#: flaskr/extensions/mottor/__init__.py:57
+#: flaskr/extensions/mottor/__init__.py:58
 msgid "e_mottor_settings_form_defaultStatus"
 msgstr "Default status"
 
-#: flaskr/extensions/mottor/__init__.py:58
+#: flaskr/extensions/mottor/__init__.py:59
 msgid "e_mottor_settings_form_defaultStatus_alwaysFirst"
 msgstr "First status"
 
-#: flaskr/extensions/mottor/__init__.py:59
+#: flaskr/extensions/mottor/__init__.py:60
 msgid "e_mottor_settings_form_defaultStatus_required"
 msgstr "Default status is required"
 
-#: flaskr/extensions/mottor/__init__.py:60
+#: flaskr/extensions/mottor/__init__.py:61
 msgid "e_mottor_settings_form_save"
 msgstr "Save"
 
-#: flaskr/extensions/mottor/__init__.py:61
+#: flaskr/extensions/mottor/__init__.py:62
 msgid "e_mottor_settings_notification_changesSaved"
 msgstr "Changes saved"
 
-#: flaskr/extensions/mottor/__init__.py:95
+#: flaskr/extensions/mottor/__init__.py:96
 msgid "v_extension_mottor_information_content"
 msgstr ""
 "## Form connection in Mottor\r"
@@ -54,19 +54,19 @@ msgstr ""
 "5. In the **«Data»** field, you must indicate the ratio of the parameters"
 " of the form fields to the fields in the card. `\r"
 
-#: flaskr/extensions/mottor/__init__.py:115
+#: flaskr/extensions/mottor/__init__.py:116
 msgid "v_extension_mottor_information_settings_status_alwaysFirst"
 msgstr "First status"
 
-#: flaskr/extensions/mottor/__init__.py:133
+#: flaskr/extensions/mottor/__init__.py:134
 msgid "v_extension_mottor_information_settings_status"
 msgstr "Default status"
 
-#: flaskr/extensions/mottor/__init__.py:138
+#: flaskr/extensions/mottor/__init__.py:139
 msgid "v_extension_mottor_information_settings_primary_rules_required"
 msgstr "Status is required"
 
-#: flaskr/extensions/mottor/__init__.py:148
+#: flaskr/extensions/mottor/__init__.py:149
 msgid "v_extension_mottor_information_settings_save"
 msgstr "Save"
 
@@ -134,27 +134,27 @@ msgstr "Default lead status is required"
 msgid "v_extension_tilda_information_settings_save"
 msgstr "Save"
 
-#: flaskr/extensions/wix/__init__.py:93
+#: flaskr/extensions/wix/__init__.py:94
 msgid "e_wix_settings_form_defaultStatus"
 msgstr "Default status"
 
-#: flaskr/extensions/wix/__init__.py:94
+#: flaskr/extensions/wix/__init__.py:95
 msgid "e_wix_settings_form_defaultStatus_alwaysFirst"
 msgstr "First status"
 
-#: flaskr/extensions/wix/__init__.py:95
+#: flaskr/extensions/wix/__init__.py:96
 msgid "e_wix_settings_form_defaultStatus_required"
 msgstr "Default status is required"
 
-#: flaskr/extensions/wix/__init__.py:96
+#: flaskr/extensions/wix/__init__.py:97
 msgid "e_wix_settings_form_save"
 msgstr "Save"
 
-#: flaskr/extensions/wix/__init__.py:97
+#: flaskr/extensions/wix/__init__.py:98
 msgid "e_wix_settings_notification_changesSaved"
 msgstr "Changes saved"
 
-#: flaskr/extensions/wix/__init__.py:135
+#: flaskr/extensions/wix/__init__.py:136
 msgid "v_extension_wix_information_content"
 msgstr ""
 "## Connecting a form in Wix\r"
@@ -180,7 +180,7 @@ msgstr ""
 "Go to settings and match the fields from the form to the fields in the "
 "card."
 
-#: flaskr/extensions/wix/__init__.py:141
+#: flaskr/extensions/wix/__init__.py:142
 msgid "v_extension_wix_openSettings"
 msgstr "Open settings"
 
@@ -521,86 +521,174 @@ msgid "v_card_meta_name"
 msgstr "Card settings"
 
 #: flaskr/views/card/__init__.py:21
+msgid "v_card_header_general"
+msgstr "General"
+
+#: flaskr/views/card/__init__.py:22
+msgid "v_card_header_tasks"
+msgstr "Tasks"
+
+#: flaskr/views/card/__init__.py:23
 msgid "v_card_form_leadAmount"
 msgstr "Lead amount"
 
-#: flaskr/views/card/__init__.py:22
+#: flaskr/views/card/__init__.py:24
 msgid "v_card_form_amountCurrency"
 msgstr "Amount currency"
 
-#: flaskr/views/card/__init__.py:23
+#: flaskr/views/card/__init__.py:25
 msgid "v_card_form_fields"
 msgstr "Fields"
 
-#: flaskr/views/card/__init__.py:24
+#: flaskr/views/card/__init__.py:26
 msgid "v_card_form_fields_table_noFields"
 msgstr "No fields"
 
-#: flaskr/views/card/__init__.py:25
+#: flaskr/views/card/__init__.py:27
 msgid "v_card_form_fields_table_field"
 msgstr "Field"
 
-#: flaskr/views/card/__init__.py:26
+#: flaskr/views/card/__init__.py:28
 msgid "v_card_form_fields_table_valueType"
 msgstr "Value type"
 
-#: flaskr/views/card/__init__.py:27
+#: flaskr/views/card/__init__.py:29
 msgid "v_card_form_fields_table_valueType_string"
 msgstr "Text"
 
-#: flaskr/views/card/__init__.py:28
+#: flaskr/views/card/__init__.py:30
 msgid "v_card_form_fields_table_valueType_email"
 msgstr "Email"
 
-#: flaskr/views/card/__init__.py:29
+#: flaskr/views/card/__init__.py:31
 msgid "v_card_form_fields_table_valueType_phone"
 msgstr "Phone number"
 
-#: flaskr/views/card/__init__.py:30
+#: flaskr/views/card/__init__.py:32
 msgid "v_card_form_fields_table_valueType_longString"
 msgstr "Long text"
 
-#: flaskr/views/card/__init__.py:31
+#: flaskr/views/card/__init__.py:33
 msgid "v_card_form_fields_table_valueType_number"
 msgstr "Number"
 
-#: flaskr/views/card/__init__.py:32
+#: flaskr/views/card/__init__.py:34
 msgid "v_card_form_fields_table_valueType_boolean"
 msgstr "Checkbox"
 
-#: flaskr/views/card/__init__.py:33
+#: flaskr/views/card/__init__.py:35
 msgid "v_card_form_fields_table_valueType_date"
 msgstr "Date"
 
-#: flaskr/views/card/__init__.py:34
+#: flaskr/views/card/__init__.py:36
 msgid "v_card_form_fields_table_valueType_choice"
 msgstr "Choice"
 
-#: flaskr/views/card/__init__.py:35
+#: flaskr/views/card/__init__.py:37
 msgid "v_card_form_fields_table_boardVisibility"
 msgstr "Board visibility"
 
-#: flaskr/views/card/__init__.py:36
+#: flaskr/views/card/__init__.py:38
 msgid "v_card_form_fields_table_boardVisibility_none"
 msgstr "Do not show"
 
-#: flaskr/views/card/__init__.py:37
+#: flaskr/views/card/__init__.py:39
 msgid "v_card_form_fields_table_boardVisibility_title"
 msgstr "In title"
 
-#: flaskr/views/card/__init__.py:38
+#: flaskr/views/card/__init__.py:40
 msgid "v_card_form_fields_table_boardVisibility_subtitle"
 msgstr "In description"
 
-#: flaskr/views/card/__init__.py:39
+#: flaskr/views/card/__init__.py:41
 msgid "v_card_form_fields_addField"
 msgstr "Add field"
 
-#: flaskr/views/card/__init__.py:40
+#: flaskr/views/card/__init__.py:42
 msgid "v_card_form_save"
 msgstr "Save"
 
-#: flaskr/views/card/__init__.py:44
+#: flaskr/views/card/__init__.py:47
+msgid "v_card_tasks_header_createTask"
+msgstr "Add task"
+
+#: flaskr/views/card/__init__.py:48
+msgid "v_card_tasks_table_editTask"
+msgstr "Edit"
+
+#: flaskr/views/card/__init__.py:49
+msgid "v_card_tasks_table_count_subtask"
+msgstr "subtask"
+
+#: flaskr/views/card/__init__.py:50
+msgid "v_card_tasks_table_count_subtasks"
+msgstr "subtasks"
+
+#: flaskr/views/card/__init__.py:51
+msgid "v_card_tasks_table_count_noTasks"
+msgstr "No tasks"
+
+#: flaskr/views/card/__init__.py:52
+msgid "v_card_tasks_table_noTasks"
+msgstr "No tasks"
+
+#: flaskr/views/card/__init__.py:53
+msgid "v_card_tasks_taskModal_createTitle"
+msgstr "Create task"
+
+#: flaskr/views/card/__init__.py:54
+msgid "v_card_tasks_taskModal_updateTitle"
+msgstr "Edit task"
+
+#: flaskr/views/card/__init__.py:55
+msgid "v_card_tasks_taskModal_form_name"
+msgstr "Name"
+
+#: flaskr/views/card/__init__.py:56
+msgid "v_card_tasks_taskModal_form_name_placeholder"
+msgstr "Ex: Contact customer"
+
+#: flaskr/views/card/__init__.py:57
+msgid "v_card_tasks_taskModal_form_name_length"
+msgstr "Must contain no more 50 characters"
+
+#: flaskr/views/card/__init__.py:58
+msgid "v_card_tasks_taskModal_form_name_required"
+msgstr "Name is required"
+
+#: flaskr/views/card/__init__.py:59
+msgid "v_card_tasks_taskModal_form_subtasks"
+msgstr ""
+
+#: flaskr/views/card/__init__.py:60
+msgid "v_card_tasks_taskModal_form_subtasks_table_noSubtasks"
+msgstr ""
+
+#: flaskr/views/card/__init__.py:61
+msgid "v_card_tasks_taskModal_form_subtasks_addSubtask"
+msgstr ""
+
+#: flaskr/views/card/__init__.py:62
+msgid "v_card_tasks_taskModal_form_create"
+msgstr "Add"
+
+#: flaskr/views/card/__init__.py:63
+msgid "v_card_tasks_taskModal_form_save"
+msgstr "Save"
+
+#: flaskr/views/card/__init__.py:64
+msgid "v_card_tasks_deleteTaskModal_title"
+msgstr "Delete task"
+
+#: flaskr/views/card/__init__.py:65
+msgid "v_card_tasks_deleteTaskModal_subtitle"
+msgstr "Are you sure you want to permanently delete this task?"
+
+#: flaskr/views/card/__init__.py:66
+msgid "v_card_tasks_deleteTaskModal_delete"
+msgstr "Delete"
+
+#: flaskr/views/card/__init__.py:68
 msgid "v_card_getMethods_changesSaved"
 msgstr "Changes saved"
 
@@ -909,88 +997,3 @@ msgstr "Delete leads"
 #: flaskr/views/statuses/__init__.py:41
 msgid "v_statuses_deleteStatusModal_form_delete"
 msgstr "Delete"
-
-#: flaskr/views/tasks/__init__.py:15 flaskr/views/tasks/__init__.py:20
-msgid "v_tasks_meta_name"
-msgstr "Tasks"
-
-#: flaskr/views/tasks/__init__.py:21
-msgid "v_tasks_header_createTask"
-msgstr "Create task"
-
-#: flaskr/views/tasks/__init__.py:22
-msgid "v_tasks_table_editTask"
-msgstr "Edit"
-
-#: flaskr/views/tasks/__init__.py:23
-msgid "v_tasks_table_count_subtask"
-msgstr "subtask"
-
-#: flaskr/views/tasks/__init__.py:24
-msgid "v_tasks_table_count_subtasks"
-msgstr "subtasks"
-
-#: flaskr/views/tasks/__init__.py:25
-msgid "v_tasks_table_count_noTasks"
-msgstr "No tasks"
-
-#: flaskr/views/tasks/__init__.py:26
-msgid "v_tasks_table_noTasks"
-msgstr "No tasks"
-
-#: flaskr/views/tasks/__init__.py:27
-msgid "v_tasks_taskModal_createTitle"
-msgstr "Create task"
-
-#: flaskr/views/tasks/__init__.py:28
-msgid "v_tasks_taskModal_updateTitle"
-msgstr "Edit task"
-
-#: flaskr/views/tasks/__init__.py:29
-msgid "v_tasks_taskModal_form_name"
-msgstr "Name"
-
-#: flaskr/views/tasks/__init__.py:30
-msgid "v_tasks_taskModal_form_name_placeholder"
-msgstr "Ex: Contact customer"
-
-#: flaskr/views/tasks/__init__.py:31
-msgid "v_tasks_taskModal_form_name_length"
-msgstr "Must contain no more 50 characters"
-
-#: flaskr/views/tasks/__init__.py:32
-msgid "v_tasks_taskModal_form_name_required"
-msgstr "Name is required"
-
-#: flaskr/views/tasks/__init__.py:33
-msgid "v_tasks_taskModal_form_subtasks"
-msgstr "Subtasks"
-
-#: flaskr/views/tasks/__init__.py:34
-msgid "v_tasks_taskModal_form_subtasks_table_noSubtasks"
-msgstr "No subtasks"
-
-#: flaskr/views/tasks/__init__.py:35
-msgid "v_tasks_taskModal_form_subtasks_addSubtask"
-msgstr "Add subtask"
-
-#: flaskr/views/tasks/__init__.py:36
-msgid "v_tasks_taskModal_form_create"
-msgstr "Create"
-
-#: flaskr/views/tasks/__init__.py:37
-msgid "v_tasks_taskModal_form_save"
-msgstr "Save"
-
-#: flaskr/views/tasks/__init__.py:38
-msgid "v_tasks_deleteTaskModal_title"
-msgstr "Delete task"
-
-#: flaskr/views/tasks/__init__.py:39
-msgid "v_tasks_deleteTaskModal_subtitle"
-msgstr "Are you sure you want to permanently delete this task?"
-
-#: flaskr/views/tasks/__init__.py:40
-msgid "v_tasks_deleteTaskModal_delete"
-msgstr "Delete"
-

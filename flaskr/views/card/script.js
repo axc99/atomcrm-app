@@ -189,39 +189,24 @@ const FormFields = ({ fields, setFields, loading }) => {
 }
 
 view.render = () => {
-  const [form] = useForm()
-  const [reqLoading, setReqLoading] = useState(false)
+  const [activeTab, setActiveTab] = useState('general')
   const [data, setData] = useState({
     installationSettings: view.data.installationSettings,
     currencies: view.data.currencies,
     fields: [],
     loading: false
   })
-  const setFields = fields => {
-    setData({
-      ...data,
-      fields
-    })
-  }
-  const [currencyEnabled, setCurrencyEnabled] = useState(data.installationSettings.amountEnabled)
 
   useEffect(() => {
     loadFields()
   }, [])
 
-  useEffect(() => {
-    form.setFieldsValue({
-      amountEnabled: data.installationSettings.amountEnabled,
-      currency: data.installationSettings.currency
-    })
-  }, [data])
-
   const loadFields = () => {
-    setData({
+    setData(data => ({
       ...data,
       fields: [],
       loading: true
-    })
+    }))
 
     app
       .sendReq('getFields', {})
@@ -229,7 +214,7 @@ view.render = () => {
         const { res, fields } = result
 
         if (res == 'ok') {
-          setData({
+          setData(data => ({
             ...data,
             fields: fields.map(field => {
               return {
@@ -238,9 +223,60 @@ view.render = () => {
               }
             }),
             loading: false
-          })
+          }))
         }
       })
+  }
+
+  return {
+    header: {
+      title: strs['name'],
+      onChangeTab: ({ key }) => setActiveTab(key),
+      tabs: [
+        {
+          'key': 'general',
+          'text': strs['header_general'],
+          'active': activeTab === 'general'
+        },
+        {
+          'key': 'tasks',
+          'text': strs['header_tasks'],
+          'active': activeTab === 'tasks'
+        }
+      ]
+    },
+    scheme: [
+      {
+        general: CardGeneral({
+          data,
+          setData
+        }),
+        tasks: CardTasks({
+          data,
+          setData
+        }),
+      }[activeTab]
+    ]
+  }
+}
+
+const CardGeneral = ({ data, setData }) => {
+  const [form] = useForm()
+  const [reqLoading, setReqLoading] = useState(false)
+  const [currencyEnabled, setCurrencyEnabled] = useState(data.installationSettings.amountEnabled)
+
+  useEffect(() => {
+    form.setFieldsValue({
+      amountEnabled: data.installationSettings.amountEnabled,
+      currency: data.installationSettings.currency
+    })
+  }, [data])
+
+  const setFields = fields => {
+    setData({
+      ...data,
+      fields
+    })
   }
 
   const currencyOptions = data.currencies.map(currency => ({
@@ -249,67 +285,174 @@ view.render = () => {
   }))
 
   return {
-    header: {
-      title: strs['name']
+    _com: 'Form',
+    form,
+    onValuesChange: ({ values }) => {
+      if (values.amountEnabled !== undefined) {
+        setCurrencyEnabled(values.amountEnabled)
+      }
     },
-    scheme: [
+    onFinish: ({ values }) => {
+      setReqLoading(true)
+      app
+        .sendReq('updateSettings', {
+            amountEnabled: values.amountEnabled,
+            currency: values.currency,
+            fields: data.fields.map(field => {
+              return {
+                ...field,
+                choiceOptions: field.choiceOptions && linesToJson(field.choiceOptions)
+              }
+            })
+        })
+        .then(result => {
+            setReqLoading(false)
+
+            if (result.res == 'ok') {
+                app.showNotification({
+                    message: strs['notification_changesSaved'],
+                    duration: 1
+                })
+            }
+        })
+    },
+    fields: [
+      {
+        _com: 'Field.Checkbox',
+        key: 'amountEnabled',
+        text: strs['form_leadAmount']
+      },
+      {
+        _com: 'Field.Select',
+        key: 'currency',
+        withSearch: true,
+        disabled: !currencyEnabled,
+        label: strs['form_amountCurrency'],
+        options: currencyOptions,
+        shouldUpdate: true
+      },
+      {
+        _com: 'Field.Custom',
+        columnWidth: 12,
+        label: strs['form_fields'],
+        content:
+          FormFields({
+            loading: data.loading,
+            fields: data.fields,
+            setFields
+          })
+      }
+    ],
+    buttons: [
+      {
+        _com: 'Button',
+        type: 'primary',
+        submitForm: true,
+        loading: reqLoading,
+        icon: 'save',
+        label: strs['form_save']
+      }
+    ]
+  }
+}
+
+const CardTasksList = ({ tasks, deleteLoadingIndex, loading, openModal, deleteTask, onDragTask }) => {
+  const items = tasks.map((task, i) => {
+    const deleteButton = {
+      _com: 'Button',
+      icon: 'delete',
+      loading:  deleteLoadingIndex !== null && (i === deleteLoadingIndex),
+      onClick: () => deleteTask({
+        id: task.id,
+        completedCount: task.completedCount
+      })
+    }
+
+    return {
+      key: task.id,
+      color: task.color,
+      title: task.name,
+      actions: [
+        {
+          _com: 'Button',
+          icon: 'edit',
+          label: strs['tasks_table_editTask'],
+          onClick: () => openModal({
+            type: 'update',
+            task
+          })
+        },
+        deleteButton
+      ]
+    }
+  })
+
+  return {
+    _com: 'List',
+    _id: 'tasksList',
+    draggable: true,
+    loading,
+    emptyText: strs['tasks_table_noTasks'],
+    onDrag: onDragTask,
+    items
+  }
+}
+
+const CardTasksModal = ({ opened=false, type, closeModal, task, loadTasks }) => {
+  const [form] = useForm()
+  const [reqLoading, setReqLoading] = useState(false)
+
+  useEffect(() => {
+    if (opened) {
+      if (task) {
+        form.setFieldsValue({
+          name: task.name
+        })
+      } else {
+        form.setFieldsValue({
+          name: ''
+        })
+      }
+    }
+  }, [task, opened])
+
+  return {
+    _com: 'Modal',
+    opened,
+    onCancel: () => closeModal(),
+    title: type === 'create' ? strs['tasks_taskModal_createTitle'] : strs['tasks_taskModal_updateTitle'],
+    content: [
       {
         _com: 'Form',
         form,
-        onValuesChange: ({ values }) => {
-          if (values.amountEnabled !== undefined) {
-            setCurrencyEnabled(values.amountEnabled)
-          }
-        },
         onFinish: ({ values }) => {
           setReqLoading(true)
           app
-            .sendReq('updateSettings', {
-                amountEnabled: values.amountEnabled,
-                currency: values.currency,
-                fields: data.fields.map(field => {
-                  return {
-                    ...field,
-                    choiceOptions: field.choiceOptions && linesToJson(field.choiceOptions)
-                  }
-                })
+            .sendReq(type === 'create' ? 'createTask' : 'updateTask', {
+              id: task && task.id,
+              name: values.name
             })
             .then(result => {
-                setReqLoading(false)
+              setReqLoading(false)
 
-                if (result.res == 'ok') {
-                    app.showNotification({
-                        message: strs['notification_changesSaved'],
-                        duration: 1
-                    })
-                }
+              if (result.res == 'ok') {
+                closeModal()
+                loadTasks()
+              }
             })
         },
         fields: [
           {
-            _com: 'Field.Checkbox',
-            key: 'amountEnabled',
-            text: strs['form_leadAmount']
-          },
-          {
-            _com: 'Field.Select',
-            key: 'currency',
-            withSearch: true,
-            disabled: !currencyEnabled,
-            label: strs['form_amountCurrency'],
-            options: currencyOptions,
-            shouldUpdate: true
-          },
-          {
-            _com: 'Field.Custom',
-            columnWidth: 12,
-            label: strs['form_fields'],
-            content:
-              FormFields({
-                loading: data.loading,
-                fields: data.fields,
-                setFields
-              })
+            _com: 'Field.Input',
+            type: 'text',
+            key: 'name',
+            label: strs['tasks_taskModal_form_name'],
+            placeholder: strs['tasks_taskModal_form_name_placeholder'],
+            maxLength: 30,
+            rules: [
+              {max: 30, message: strs['tasks_taskModal_form_name_length']},
+              {required: true, message: strs['tasks_taskModal_form_name_required']}
+            ]
           }
         ],
         buttons: [
@@ -318,11 +461,183 @@ view.render = () => {
             type: 'primary',
             submitForm: true,
             loading: reqLoading,
-            icon: 'save',
-            label: strs['form_save']
+            icon: type === 'create' ? 'plus' : 'save',
+            label: type === 'create' ? strs['tasks_taskModal_form_create'] : strs['tasks_taskModal_form_save']
           }
         ]
-      }
+    }
     ]
   }
 }
+
+const CardTasksDeleteModal = ({ id, opened, closeDeleteModal, loadTasks, tasks }) => {
+  const [reqLoading, setReqLoading] = useState(false)
+
+  return {
+    _com: 'Modal',
+    title: strs['tasks_deleteTaskModal_title'],
+    subtitle: strs['tasks_deleteTaskModal_subtitle'],
+    buttons: [
+       {
+          _com: 'Button',
+          type: 'danger',
+          icon: 'delete',
+          label: strs['tasks_deleteTaskModal_delete'],
+          onClick: () => {
+            setReqLoading(false)
+            app
+              .sendReq('deleteTask', { id })
+              .then(result => {
+                setReqLoading(false)
+
+                if (result.res == 'ok') {
+                  closeDeleteModal()
+                  loadTasks()
+                }
+              })
+          }
+        }
+    ],
+    opened,
+    onCancel: () => closeDeleteModal()
+  }
+}
+
+const CardTasks = () => {
+  const [listData, setListData] = useState({
+    tasks: [],
+    loading: true
+  })
+  const [taskModal, setTaskModal] = useState({
+    task: null,
+    type: 'create', // create | update
+    opened: false
+  })
+  const [deleteTaskModal, setDeleteTaskModal] = useState({
+    id: null,
+    opened: false
+  })
+
+  const loadTasks = () => {
+    setListData({
+      tasks: [],
+      loading: true
+    })
+
+    app
+      .sendReq('getTasks', {})
+      .then(result => {
+        const { res, tasks } = result
+
+        if (res == 'ok') {
+          setListData({
+            tasks,
+            loading: false
+          })
+        }
+      })
+  }
+
+  useEffect(() => {
+    loadTasks()
+  }, [])
+
+  // Open create/update modal
+  const openModal = ({ type, task }) => {
+    setTaskModal({
+      task,
+      type,
+      opened: true
+    })
+  }
+
+  // Close create/update modal
+  const closeModal = () => {
+    setTaskModal({
+      ...taskModal,
+      opened: false
+    })
+  }
+
+  // Open delete modal
+  const openDeleteModal = ({ id }) => {
+    setDeleteTaskModal({
+      id,
+      opened: true
+    })
+  }
+
+  // Close delete modal
+  const closeDeleteModal = () => {
+    setDeleteTaskModal({
+      ...deleteTaskModal,
+      opened: false
+    })
+  }
+
+  // Handle drag task
+  const onDragTask = ({ key, oldIndex, newIndex }) => {
+    listData.tasks.splice(newIndex, 0, listData.tasks.splice(oldIndex, 1)[0])
+    setListData({ ...listData })
+
+    app
+      .sendReq('updateTaskIndex', {
+        id: key,
+        newIndex
+      })
+  }
+
+  // Handle delete task
+  const deleteTask = ({ id, completedCount }) => {
+    if (completedCount > 0) {
+      openDeleteModal({ id })
+    } else {
+      const deletedItemIndex = listData.tasks.findIndex(task => task.id == id)
+      setListData({
+        ...listData,
+        deleteLoadingIndex: deletedItemIndex
+      })
+
+      app
+        .sendReq('deleteTask', { id })
+        .then(result => {
+          if (result.res == 'ok') {
+            listData.tasks.splice(deletedItemIndex, 1)
+            setListData({
+              ...listData,
+              deleteLoadingIndex: null,
+              tasks: listData.tasks
+            })
+          }
+        })
+    }
+  }
+
+  return [
+    CardTasksList({
+      ...listData,
+      openModal,
+      onDragTask,
+      deleteTask
+    }),
+    {
+      _com: 'Button',
+      label: strs['tasks_createTask'],
+      icon: 'plus',
+      type: 'primary',
+      onClick: () => openModal({ type: 'create' })
+    },
+    CardTasksModal({
+      ...taskModal,
+      loadTasks,
+      closeModal
+    }),
+    CardTasksDeleteModal({
+      ...deleteTaskModal,
+      closeDeleteModal,
+      loadTasks,
+      tasks: listData.tasks
+    })
+  ]
+}
+
