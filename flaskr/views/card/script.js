@@ -263,7 +263,6 @@ view.render = () => {
 const CardGeneral = ({ data, setData }) => {
   const [form] = useForm()
   const [reqLoading, setReqLoading] = useState(false)
-  const [currencyEnabled, setCurrencyEnabled] = useState(data.installationSettings.amountEnabled)
 
   useEffect(() => {
     form.setFieldsValue({
@@ -284,13 +283,21 @@ const CardGeneral = ({ data, setData }) => {
     'label': `${currency['code']} - ${currency['namePlural']}`
   }))
 
+  console.debug('data', data)
+
   return {
     _com: 'Form',
     form,
     onValuesChange: ({ values }) => {
-      if (values.amountEnabled !== undefined) {
-        setCurrencyEnabled(values.amountEnabled)
-      }
+      console.debug('values', values)
+      setData({
+        ...data,
+        installationSettings: {
+          ...data.installationSettings,
+          amountEnabled: values.amountEnabled === undefined ? data.installationSettings.amountEnabled : values.amountEnabled,
+          currency: values.currency === undefined ? data.installationSettings.currency : values.currency
+        }
+      })
     },
     onFinish: ({ values }) => {
       setReqLoading(true)
@@ -326,7 +333,7 @@ const CardGeneral = ({ data, setData }) => {
         _com: 'Field.Select',
         key: 'currency',
         withSearch: true,
-        disabled: !currencyEnabled,
+        disabled: !data.installationSettings.amountEnabled,
         label: strs['form_amountCurrency'],
         options: currencyOptions,
         shouldUpdate: true

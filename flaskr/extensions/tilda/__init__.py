@@ -90,7 +90,7 @@ class TildaExtension(Extension):
             {
                 '_com': 'Information',
                 'content': _('v_extension_tilda_information_content',
-                             webhook_url='https://nepkit.team/atomcrm/ext/tilda/wh/{}_{}'.format(installation_extension_settings.id, installation_extension_settings.token),
+                             webhook_url='https://atomcrm.nepkit.team/ext/tilda/wh/{}_{}'.format(installation_extension_settings.id, installation_extension_settings.token),
                              STATIC_URL=os.environ.get('STATIC_URL'),
                              field_keys_list=field_keys_list)
             }

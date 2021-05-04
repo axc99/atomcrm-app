@@ -3,7 +3,7 @@
 ### Sample request:
 
 ```
-POST https://nepkit.team/atomcrm/api/v1/leads
+POST https://atomcrm.nepkit.team/api/v1/leads
 ```
 
 ```
@@ -72,7 +72,7 @@ Content-Type: application/json
 ### Sample request:
 
 ```
-GET https://nepkit.team/atomcrm/api/v1/leads/A1B2C345
+GET https://atomcrm.nepkit.team/api/v1/leads/A1B2C345
 ```
 
 ```
@@ -121,7 +121,7 @@ Authorization: Basic <YOUR TOKEN>
 ### Sample request:
 
 ```
-PATCH https://nepkit.team/atomcrm/api/v1/leads/<LEAD ID>
+PATCH https://atomcrm.nepkit.team/api/v1/leads/<LEAD ID>
 ```
 
 ```

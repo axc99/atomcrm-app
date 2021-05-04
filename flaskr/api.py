@@ -35,10 +35,14 @@ def get_leads(resource_id, data, nepkit_installation_id):
 
 # Create lead
 def create_lead(resource_id, data, nepkit_installation_id):
+    if not data:
+        return {'message': 'Empty request body'}, 400
+
     vld = Validator({
         'statusId': {'type': 'number', 'required': True},
         'fields': {
             'type': 'list',
+            'required': True,
             'schema': {
                 'type': 'dict',
                 'schema': {
@@ -141,10 +145,14 @@ def create_lead(resource_id, data, nepkit_installation_id):
 
 # Update lead
 def update_lead(resource_id, data, nepkit_installation_id):
+    if not data:
+        return {'message': 'Empty request body'}, 400
+
     vld = Validator({
         'statusId': {'type': 'number', 'required': True},
         'fields': {
             'type': 'list',
+            'required': True,
             'schema': {
                 'type': 'dict',
                 'schema': {

@@ -1046,7 +1046,7 @@ msgstr "Удалить статус"
 
 #: flaskr/views/statuses/__init__.py:38
 msgid "v_statuses_deleteStatusModal_subtitle"
-msgstr "Лиды с удаляемые статусом «{name}» уже существуют. Что с ними делать?"
+msgstr "Что делать с лидами с удаляемым статусом «{name}»?"
 
 #: flaskr/views/statuses/__init__.py:39
 msgid "v_statuses_deleteStatusModal_form_moveLeads"

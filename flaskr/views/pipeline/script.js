@@ -613,13 +613,11 @@ const FilterModal = ({ opened, closeFilterModal }) => {
         _com: 'Form',
         form,
         onFinish: ({ values }) => {
-          console.log('values', values)
-
           app
             .getView()
             .to({
-              periodFrom: (values['period'][0] && values['period'][0].format('YYYY.MM.DD')) || '',
-              periodTo: (values['period'][1] && values['period'][1].format('YYYY.MM.DD')) || '',
+              periodFrom: (values['period'] && values['period'][0] && values['period'][0].format('YYYY.MM.DD')) || '',
+              periodTo: (values['period'] && values['period'][1] && values['period'][1].format('YYYY.MM.DD')) || '',
               utmSource: values['utmSource'] || '',
               utmMedium: values['utmMedium'] || '',
               utmCampaign: values['utmCampaign'] || '',
@@ -689,6 +687,11 @@ const FilterModal = ({ opened, closeFilterModal }) => {
             'label': strs['filterModal_form_clear'],
             'onClick': () => {
               form.resetFields()
+              app
+                .getView()
+                .to({})
+
+              closeFilterModal()
             }
           }
         ]
@@ -862,6 +865,7 @@ view.render = () => {
   })
 
   useEffect(() => {
+    data.statuses = []
     statuses.map(status => {
       data.statuses.push({
         ...status,
