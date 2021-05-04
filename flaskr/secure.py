@@ -18,7 +18,11 @@ def validate_api_token(token):
 
     is_token_valid = True
 
-    token = base64.b64decode(token.encode()).decode()
+    try:
+        token = base64.b64decode(token.encode()).decode()
+    except Exception as e:
+        print(e)
+        return False, None
     nepkit_installation_id, token = token.split(':')
 
     if nepkit_installation_id and token:
